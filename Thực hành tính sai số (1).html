@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Physics Lab - Sai Số Phép Đo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .glass-panel { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        .slider-custom { -webkit-appearance: none; width: 100%; height: 8px; border-radius: 5px; background: #e5e7eb; outline: none; }
+        .slider-custom::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #3b82f6; cursor: pointer; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <h1 class="text-2xl font-bold flex items-center gap-2">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                Physics Gem Lab: Sai Số Trong Phép Đo
+            </h1>
+            <nav class="mt-4 flex flex-wrap gap-2">
+                <button onclick="switchTab('theory')" class="tab-btn px-4 py-2 bg-white/20 rounded-t-lg font-semibold hover:bg-white/30 transition">1. Lý Thuyết</button>
+                <button onclick="switchTab('simulation')" class="tab-btn px-4 py-2 bg-white/10 rounded-t-lg font-semibold hover:bg-white/30 transition">2. Lab Mô Phỏng</button>
+                <button onclick="switchTab('calculator')" class="tab-btn px-4 py-2 bg-white/10 rounded-t-lg font-semibold hover:bg-white/30 transition">3. Máy Tính</button>
+                <button onclick="switchTab('practice')" class="tab-btn px-4 py-2 bg-white/10 rounded-t-lg font-semibold hover:bg-white/30 transition">4. Luyện Tập</button>
+                <button onclick="switchTab('quiz')" class="tab-btn px-4 py-2 bg-white/10 rounded-t-lg font-semibold hover:bg-white/30 transition">5. Tự Đánh Giá</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+
+        <!-- PART 1: THEORY -->
+        <section id="theory" class="tab-content active glass-panel rounded-xl shadow-md p-6 lg:p-8">
+            <h2 class="text-2xl font-bold text-blue-800 mb-6 border-b pb-2">📖 1. CỐT LÕI LÝ THUYẾT & BẢN CHẤT VẬT LÝ</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="font-bold text-lg text-indigo-700 mb-2">A. Khái niệm then chốt</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>Phép đo vật lý:</strong> Là phép so sánh đại lượng cần đo với đại lượng cùng loại được quy ước làm đơn vị.</li>
+                        <li><strong>Phép đo trực tiếp:</strong> Đọc giá trị trực tiếp trên dụng cụ (vd: đo chiều dài bằng thước).</li>
+                        <li><strong>Phép đo gián tiếp:</strong> Tính toán thông qua công thức liên hệ với các đại lượng đo trực tiếp (vd: đo gia tốc rơi tự do $g$).</li>
+                        <li><strong>Sai số hệ thống:</strong> Sai số có tính quy luật, do dụng cụ (chưa hiệu chỉnh số 0) hoặc cấu tạo. Khắc phục: hiệu chỉnh dụng cụ.</li>
+                        <li><strong>Sai số ngẫu nhiên:</strong> Sai số do thao tác, giác quan người đo, yếu tố môi trường. Khắc phục: đo nhiều lần lấy giá trị trung bình.</li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h3 class="font-bold text-lg text-red-600 mb-2">B. Bẫy lý thuyết thường gặp ⚠️</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-sm">
+                        <li><strong>Quên sai số dụng cụ ($\Delta A_{dc}$):</strong> Học sinh thường chỉ tính $\overline{\Delta A}$ mà quên cộng sai số dụng cụ (thường bằng nửa hoặc một ĐCNN).</li>
+                        <li><strong>Sai quy tắc làm tròn (Chữ số có nghĩa):</strong> Kết quả phép đo $\Delta A$ thường chỉ lấy 1 hoặc tối đa 2 chữ số có nghĩa. Giá trị trung bình $\bar{A}$ phải làm tròn cùng bậc thập phân với $\Delta A$.</li>
+                        <li><strong>Nhầm lẫn công thức truyền sai số:</strong>
+                            <br>- Tổng/Hiệu ($F = X \pm Y$): Tính tổng sai số <strong>tuyệt đối</strong> $\Delta F = \Delta X + \Delta Y$.
+                            <br>- Tích/Thương ($F = X^m \cdot Y^n$): Tính tổng sai số <strong>tỉ đối</strong> $\delta F = m \cdot \delta X + n \cdot \delta Y$.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-lg text-indigo-700 mt-8 mb-4">C. Hệ thống công thức cốt lõi</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-indigo-100">
+                            <th class="p-3 border">Đại lượng</th>
+                            <th class="p-3 border">Công thức</th>
+                            <th class="p-3 border">Ý nghĩa / Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-3 border font-semibold">Giá trị trung bình</td>
+                            <td class="p-3 border">$\bar{A} = \frac{A_1 + A_2 + ... + A_n}{n}$</td>
+                            <td class="p-3 border">Đại diện cho kết quả sát với thực tế nhất sau $n$ lần đo.</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border font-semibold">Sai số tuyệt đối</td>
+                            <td class="p-3 border">$\Delta A = \overline{\Delta A} + \Delta A_{dc}$</td>
+                            <td class="p-3 border">Gồm sai số ngẫu nhiên trung bình và sai số dụng cụ.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 border font-semibold">Sai số tỉ đối (tương đối)</td>
+                            <td class="p-3 border">$\delta A = \frac{\Delta A}{\bar{A}} \cdot 100\%$</td>
+                            <td class="p-3 border">Đánh giá <strong>mức độ chính xác</strong> của phép đo (càng nhỏ càng chính xác).</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="p-3 border font-semibold">Ghi kết quả</td>
+                            <td class="p-3 border">$A = \bar{A} \pm \Delta A$</td>
+                            <td class="p-3 border">Khoảng giá trị thực: $[\bar{A} - \Delta A ; \bar{A} + \Delta A]$</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- PART 2: SIMULATION LAB -->
+        <section id="simulation" class="tab-content glass-panel rounded-xl shadow-md p-6 lg:p-8">
+            <h2 class="text-2xl font-bold text-teal-700 mb-4 border-b pb-2">🔬 2. MÔ PHỎNG TƯƠNG TÁC: ĐO GIA TỐC RƠI TỰ DO $g$</h2>
+            <p class="mb-4"><strong>Mô hình:</strong> Học sinh thực hiện đo chiều dài dây treo $L$ và chu kỳ $T$ của con lắc đơn để tính $g$. Công thức: $$g = \frac{4\pi^2 \cdot L}{T^2}$$</p>
+            <p class="mb-6 text-sm text-gray-600"><em>Hướng dẫn thao tác: Hãy kéo thanh trượt để thay đổi giá trị đo và sai số dụng cụ. Chú ý xem sai số tỉ đối của thời gian ($\delta T$) ảnh hưởng lớn thế nào đến sai số của gia tốc ($\delta g$) vì nó mang bậc 2 trong công thức!</em></p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-inner border">
+                    <h3 class="font-bold text-gray-700 mb-4">Tham số đầu vào (Inputs)</h3>
+                    
+                    <label class="block mb-2 font-semibold">Chiều dài dây $L$ (m): <span id="val_L" class="text-teal-600">1.00</span></label>
+                    <input type="range" id="sim_L" class="slider-custom mb-4" min="0.5" max="2.0" step="0.01" value="1.00">
+                    
+                    <label class="block mb-2 font-semibold">Sai số đo $L$ - $\Delta L$ (m): <span id="val_dL" class="text-teal-600">0.02</span></label>
+                    <input type="range" id="sim_dL" class="slider-custom mb-4" min="0.005" max="0.1" step="0.005" value="0.02">
+                    
+                    <hr class="my-4">
+
+                    <label class="block mb-2 font-semibold">Chu kỳ $T$ (s): <span id="val_T" class="text-teal-600">2.01</span></label>
+                    <input type="range" id="sim_T" class="slider-custom mb-4" min="1.0" max="3.0" step="0.01" value="2.01">
+                    
+                    <label class="block mb-2 font-semibold">Sai số đo $T$ - $\Delta T$ (s): <span id="val_dT" class="text-teal-600">0.05</span></label>
+                    <input type="range" id="sim_dT" class="slider-custom mb-4" min="0.01" max="0.2" step="0.01" value="0.05">
+                </div>
+
+                <div class="bg-teal-50 p-6 rounded-lg shadow-inner border border-teal-200 flex flex-col justify-center">
+                    <h3 class="font-bold text-teal-800 mb-4">Kết quả Phân tích (Outputs)</h3>
+                    
+                    <div class="space-y-4">
+                        <p><strong>Truyền sai số:</strong> <br> $$\delta g = \frac{\Delta L}{\bar{L}} + 2 \cdot \frac{\Delta T}{\bar{T}}$$</p>
+                        
+                        <div class="bg-white p-3 rounded border">
+                            <p class="text-sm text-gray-500">Sai số tỉ đối $\delta L$:</p>
+                            <p class="font-mono text-lg" id="out_relL">2.00%</p>
+                        </div>
+                        <div class="bg-white p-3 rounded border">
+                            <p class="text-sm text-gray-500">Sai số tỉ đối $\delta T$ (x2 trong công thức):</p>
+                            <p class="font-mono text-lg text-red-500" id="out_relT">4.98%</p>
+                        </div>
+                        <div class="bg-white p-3 rounded border border-teal-400">
+                            <p class="text-sm text-gray-500">Kết quả đo gia tốc $g$ ($m/s^2$):</p>
+                            <p class="font-mono text-2xl font-bold text-teal-700" id="out_g">9.77 ± 0.68 (6.98%)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 3: CALCULATOR MODULE -->
+        <section id="calculator" class="tab-content glass-panel rounded-xl shadow-md p-6 lg:p-8">
+            <h2 class="text-2xl font-bold text-purple-700 mb-4 border-b pb-2">🧮 3. MÁY TÍNH THAM SỐ VẬT LÝ</h2>
+            <p class="mb-4">Công cụ tự động xử lý số liệu thực hành cho <strong>Phép đo gián tiếp tốc độ: $v = \frac{s}{t}$</strong>.</p>
+            
+            <div class="bg-white p-6 rounded-lg border shadow-sm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-bold text-purple-600 mb-2">Nhập dữ liệu Quãng đường $S$ (m)</h4>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-12 text-center">$\bar{S}$ =</span>
+                            <input type="number" id="calc_S" class="border rounded p-2 flex-1" value="0.651">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-12 text-center">$\Delta S$ =</span>
+                            <input type="number" id="calc_dS" class="border rounded p-2 flex-1" value="0.002">
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-purple-600 mb-2">Nhập dữ liệu Thời gian $t$ (s)</h4>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-12 text-center">$\bar{t}$ =</span>
+                            <input type="number" id="calc_t" class="border rounded p-2 flex-1" value="3.514">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-12 text-center">$\Delta t$ =</span>
+                            <input type="number" id="calc_dt" class="border rounded p-2 flex-1" value="0.022">
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="calculateVelocity()" class="mt-6 w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg transition shadow-md">
+                    Tính Toán Sai Số Phép Đo Vận Tốc
+                </button>
+
+                <div id="calc_result" class="mt-6 hidden bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 class="font-bold text-purple-800 mb-2">Các bước giải chi tiết:</h4>
+                    <ol class="list-decimal pl-5 space-y-2 text-gray-700" id="calc_steps">
+                        <!-- Rendered by JS -->
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 4: GUIDED PRACTICE -->
+        <section id="practice" class="tab-content glass-panel rounded-xl shadow-md p-6 lg:p-8">
+            <h2 class="text-2xl font-bold text-orange-600 mb-6 border-b pb-2">📝 4. PHÒNG LUYỆN TẬP PHÂN HÓA</h2>
+            
+            <!-- Cấp 1 -->
+            <div class="mb-8 bg-white p-5 rounded border-l-4 border-green-500 shadow-sm">
+                <span class="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">Cấp 1: Nhận biết</span>
+                <h3 class="text-lg font-bold mt-2">Bài toán đọc dụng cụ</h3>
+                <p class="mt-2 text-gray-700">Một bạn học sinh dùng thước thẳng có Giới hạn đo (GHĐ) 20cm, Độ chia nhỏ nhất (ĐCNN) là 1mm để đo chiều dài bút chì. Kết quả đo được là 15.4 cm. Hãy viết kết quả phép đo chuẩn xác định nếu lấy sai số dụng cụ bằng một nửa ĐCNN.</p>
+                <button onclick="toggleAnswer('ans1')" class="mt-3 text-green-600 font-semibold hover:underline text-sm">Xem gợi ý & Lời giải >></button>
+                <div id="ans1" class="hidden mt-3 p-3 bg-gray-50 rounded text-sm">
+                    <strong>Gợi ý tư duy:</strong> $\Delta \ell_{dc} = \frac{1}{2} \text{ĐCNN}$. Chú ý đổi đơn vị về cùng hệ (cm hoặc mm).<br><br>
+                    <strong>Giải chi tiết:</strong><br>
+                    - ĐCNN = 1 mm = 0.1 cm.<br>
+                    - Sai số dụng cụ: $\Delta \ell_{dc} = 0.1 / 2 = 0.05 \text{ cm}$.<br>
+                    - Ở đây đo 1 lần nên bỏ qua sai số ngẫu nhiên, $\Delta \ell = \Delta \ell_{dc} = 0.05 \text{ cm}$.<br>
+                    - Kết quả ghi: $\ell = (15.40 \pm 0.05) \text{ cm}$. <em>(Thêm số 0 vào 15.4 để cùng bậc thập phân với 0.05)</em>.
+                </div>
+            </div>
+
+            <!-- Cấp 2 -->
+            <div class="mb-8 bg-white p-5 rounded border-l-4 border-yellow-500 shadow-sm">
+                <span class="bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">Cấp 2: Thông hiểu - Vận dụng</span>
+                <h3 class="text-lg font-bold mt-2">Bài toán xử lý bảng số liệu</h3>
+                <p class="mt-2 text-gray-700">Đo thời gian rơi của một vật trong 4 lần thu được các giá trị (s): $0.202 ; 0.204 ; 0.206 ; 0.204$. Biết sai số dụng cụ đo là $0.001$ s. Tính sai số tuyệt đối của phép đo và viết kết quả.</p>
+                <button onclick="toggleAnswer('ans2')" class="mt-3 text-yellow-600 font-semibold hover:underline text-sm">Xem gợi ý & Lời giải >></button>
+                <div id="ans2" class="hidden mt-3 p-3 bg-gray-50 rounded text-sm">
+                    <strong>Gợi ý tư duy:</strong> Làm theo 4 bước: Tính $\bar{t} \rightarrow$ Tính các $\Delta t_i \rightarrow$ Tính $\overline{\Delta t} \rightarrow$ Tính $\Delta t = \overline{\Delta t} + \Delta t_{dc}$.<br><br>
+                    <strong>Giải chi tiết:</strong><br>
+                    1. $\bar{t} = \frac{0.202 + 0.204 + 0.206 + 0.204}{4} = 0.204 \text{ (s)}$<br>
+                    2. $\Delta t_1 = |0.204 - 0.202| = 0.002$ s; $\Delta t_2 = \Delta t_4 = 0$; $\Delta t_3 = |0.204 - 0.206| = 0.002$ s.<br>
+                    3. $\overline{\Delta t} = \frac{0.002 + 0 + 0.002 + 0}{4} = 0.001 \text{ (s)}$<br>
+                    4. Sai số tuyệt đối: $\Delta t = 0.001 + 0.001 = 0.002 \text{ (s)}$.<br>
+                    5. Ghi kết quả: $t = (0.204 \pm 0.002) \text{ s}$.
+                </div>
+            </div>
+
+            <!-- Cấp 3 -->
+            <div class="bg-white p-5 rounded border-l-4 border-red-500 shadow-sm">
+                <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">Cấp 3: Vận dụng cao</span>
+                <h3 class="text-lg font-bold mt-2">Đo lường cực trị / Thực tiễn</h3>
+                <p class="mt-2 text-gray-700">Khối lượng riêng của một vật cầu được đo qua hai đại lượng: Khối lượng $m = (100 \pm 1) \text{ g}$ và Bán kính $r = (2.0 \pm 0.1) \text{ cm}$. Xác định sai số tỉ đối của phép đo khối lượng riêng $\rho$. Biết công thức thể tích khối cầu $V = \frac{4}{3}\pi r^3$ và $\rho = \frac{m}{V}$.</p>
+                <button onclick="toggleAnswer('ans3')" class="mt-3 text-red-600 font-semibold hover:underline text-sm">Xem gợi ý & Lời giải >></button>
+                <div id="ans3" class="hidden mt-3 p-3 bg-gray-50 rounded text-sm">
+                    <strong>Gợi ý tư duy:</strong> Rút gọn biểu thức $\rho$ theo $m$ và $r$. Áp dụng quy tắc truyền sai số tỉ đối cho thương và luỹ thừa. Bỏ qua sai số của hằng số $\frac{4}{3}\pi$.<br><br>
+                    <strong>Giải chi tiết:</strong><br>
+                    - Công thức: $\rho = \frac{m}{\frac{4}{3}\pi r^3}$.<br>
+                    - Phương trình truyền sai số tỉ đối: $\delta \rho = \delta m + 3 \cdot \delta r$<br>
+                    - $\delta m = \frac{1}{100} \cdot 100\% = 1\%$<br>
+                    - $\delta r = \frac{0.1}{2.0} \cdot 100\% = 5\%$<br>
+                    - $\delta \rho = 1\% + 3 \times 5\% = 16\%$<br>
+                    <strong>Nhận xét:</strong> Sai số của bán kính đóng góp rất lớn (gấp 3 lần) vào sai số cuối cùng do nó mang bậc 3. Do đó trong thực tế cần đo bán kính/đường kính bằng dụng cụ cực kỳ chính xác (như Panme).
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 5: INTERACTIVE QUIZ -->
+        <section id="quiz" class="tab-content glass-panel rounded-xl shadow-md p-6 lg:p-8">
+            <h2 class="text-2xl font-bold text-rose-600 mb-6 border-b pb-2">🎯 5. BÀI TỰ ĐÁNH GIÁ (QUIZ)</h2>
+            
+            <div id="quiz-container" class="space-y-6">
+                <!-- Quiz dynamically generated by JS -->
+            </div>
+            
+            <button onclick="submitQuiz()" class="mt-8 bg-rose-600 hover:bg-rose-700 text-white px-8 py-3 rounded-lg font-bold transition shadow-md">
+                Nộp bài & Xem kết quả
+            </button>
+            <div id="quiz-score" class="mt-4 text-xl font-bold hidden"></div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-12">
+        <p>Thực hiện bởi Interactive Physics Lab Gem &copy; 2026. Chuẩn kiến thức THPT.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Tab Navigation ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-white/30'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('bg-white/30');
+        }
+
+        // --- 2. Simulation Logic (Part 2) ---
+        const inputs = ['sim_L', 'sim_dL', 'sim_T', 'sim_dT'];
+        inputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', updateSimulation);
+        });
+
+        function updateSimulation() {
+            const L = parseFloat(document.getElementById('sim_L').value);
+            const dL = parseFloat(document.getElementById('sim_dL').value);
+            const T = parseFloat(document.getElementById('sim_T').value);
+            const dT = parseFloat(document.getElementById('sim_dT').value);
+
+            // Update labels
+            document.getElementById('val_L').innerText = L.toFixed(2);
+            document.getElementById('val_dL').innerText = dL.toFixed(3);
+            document.getElementById('val_T').innerText = T.toFixed(2);
+            document.getElementById('val_dT').innerText = dT.toFixed(2);
+
+            // Calculations
+            const pi2 = Math.pow(Math.PI, 2);
+            const g = (4 * pi2 * L) / Math.pow(T, 2);
+            
+            const rel_L = dL / L;
+            const rel_T = dT / T;
+            const rel_g = rel_L + 2 * rel_T;
+            
+            const dg = g * rel_g;
+
+            // Output updates
+            document.getElementById('out_relL').innerText = (rel_L * 100).toFixed(2) + "%";
+            document.getElementById('out_relT').innerText = (2 * rel_T * 100).toFixed(2) + "%";
+            document.getElementById('out_g').innerHTML = `${g.toFixed(2)} &plusmn; ${dg.toFixed(2)} (${(rel_g * 100).toFixed(2)}%)`;
+        }
+        
+        // Initialize sim
+        updateSimulation();
+
+        // --- 3. Calculator Logic (Part 3) ---
+        function calculateVelocity() {
+            const S = parseFloat(document.getElementById('calc_S').value);
+            const dS = parseFloat(document.getElementById('calc_dS').value);
+            const t = parseFloat(document.getElementById('calc_t').value);
+            const dt = parseFloat(document.getElementById('calc_dt').value);
+
+            if(!S || !t) return alert("Vui lòng nhập số liệu S và t hợp lệ!");
+
+            const v = S / t;
+            const rel_S = dS / S;
+            const rel_t = dt / t;
+            const rel_v = rel_S + rel_t;
+            const dv = v * rel_v;
+
+            const stepsHTML = `
+                <li>Tính vận tốc trung bình: $\\bar{v} = \\frac{\\bar{S}}{\\bar{t}} = \\frac{${S}}{${t}} \\approx ${v.toFixed(4)}$ (m/s).</li>
+                <li>Tính sai số tỉ đối của $S$: $\\delta S = \\frac{\\Delta S}{\\bar{S}} = \\frac{${dS}}{${S}} \\approx ${(rel_S*100).toFixed(3)}\\%$.</li>
+                <li>Tính sai số tỉ đối của $t$: $\\delta t = \\frac{\\Delta t}{\\bar{t}} = \\frac{${dt}}{${t}} \\approx ${(rel_t*100).toFixed(3)}\\%$.</li>
+                <li>Truyền sai số thương: $\\delta v = \\delta S + \\delta t \\approx ${(rel_v*100).toFixed(3)}\\%$.</li>
+                <li>Tính sai số tuyệt đối của $v$: $\\Delta v = \\bar{v} \\cdot \\delta v = ${v.toFixed(4)} \\cdot ${(rel_v).toFixed(5)} \\approx ${dv.toFixed(4)}$ (m/s).</li>
+                <li class="font-bold text-lg text-purple-900 mt-2">Kết quả cuối cùng: $v = ${v.toFixed(3)} \\pm ${dv.toFixed(3)}$ (m/s)</li>
+            `;
+
+            document.getElementById('calc_steps').innerHTML = stepsHTML;
+            document.getElementById('calc_result').classList.remove('hidden');
+            
+            // Re-render KaTeX for injected dynamic HTML
+            renderMathInElement(document.getElementById('calc_result'), {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+        }
+
+        // --- 4. Guided Practice Toggle ---
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if(el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                // render katex if shown for first time
+                renderMathInElement(el, {delimiters: [{left: '$', right: '$', display: false}]});
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // --- 5. Quiz Logic ---
+        const quizData = [
+            {
+                q: "1. Câu nào sau đây là SAI khi nói về sai số ngẫu nhiên? (Lý thuyết bản chất)",
+                options: [
+                    "A. Chịu tác động của các yếu tố ngẫu nhiên bên ngoài.",
+                    "B. Có thể do khả năng giác quan của con người dẫn đến thao tác đo không chuẩn.",
+                    "C. Là sai số do điểm 0 ban đầu của dụng cụ đo bị lệch.",
+                    "D. Thường không có nguyên nhân rõ ràng."
+                ],
+                ans: 2, // C
+                explain: "Sai số do điểm 0 ban đầu của dụng cụ bị lệch (ví dụ kim cân không chỉ số 0) gọi là SAI SỐ HỆ THỐNG, không phải ngẫu nhiên."
+            },
+            {
+                q: "2. Diện tích mặt tròn tính bằng công thức $S = \\frac{\\pi d^2}{4}$. Nếu bỏ qua sai số của $\\pi$, sai số tỉ đối của phép đo diện tích là:",
+                options: [
+                    "A. $\\delta S = 2\\frac{\\Delta d}{d}$",
+                    "B. $\\delta S = \\frac{\\Delta d}{d}$",
+                    "C. $\\delta S = \\frac{\\Delta d}{2d}$",
+                    "D. $\\delta S = \\frac{1}{2}\\frac{\\Delta d}{d}$"
+                ],
+                ans: 0, // A
+                explain: "Vì $S$ tỉ lệ với $d^2$, theo quy tắc tính sai số tỉ đối của lũy thừa, $\\delta S = 2\\delta d = 2\\frac{\\Delta d}{\\bar{d}}$."
+            },
+            {
+                q: "3. Trong bài thực hành, gia tốc rơi tự do tính bằng công thức $g = \\frac{2h}{t^2}$. Sai số tỉ đối $\\delta g$ tính theo công thức nào?",
+                options: [
+                    "A. $\\frac{\\Delta g}{\\bar{g}} = \\frac{\\Delta h}{\\bar{h}} + \\frac{\\Delta t}{\\bar{t}}$",
+                    "B. $\\frac{\\Delta g}{\\bar{g}} = \\frac{\\Delta h}{\\bar{h}} - 2\\frac{\\Delta t}{\\bar{t}}$",
+                    "C. $\\frac{\\Delta g}{\\bar{g}} = \\frac{\\Delta h}{\\bar{h}} + 2\\frac{\\Delta t}{\\bar{t}}$",
+                    "D. $\\frac{\\Delta g}{\\bar{g}} = 2\\frac{\\Delta h}{\\bar{h}} + 2\\frac{\\Delta t}{\\bar{t}}$"
+                ],
+                ans: 2, // C
+                explain: "Sai số tỉ đối của một tích/thương bằng tổng sai số tỉ đối. Đại lượng $t$ có mũ 2 nên hệ số là 2. Hằng số '2' ở tử số không có sai số."
+            },
+            {
+                q: "4. Một phép đo quãng đường cho $s = 5.0 \\pm 0.1$ m, đo thời gian $t = 2.0 \\pm 0.1$ s. Vận tốc trung bình và sai số tỉ đối của vận tốc xấp xỉ bằng:",
+                options: [
+                    "A. $v = 2.5$ m/s ; $\\delta v = 7\\%$",
+                    "B. $v = 2.5$ m/s ; $\\delta v = 2\\%$",
+                    "C. $v = 3.0$ m/s ; $\\delta v = 5\\%$",
+                    "D. $v = 2.5$ m/s ; $\\delta v = 10\\%$"
+                ],
+                ans: 0, // A
+                explain: "$v = \\frac{s}{t} = \\frac{5.0}{2.0} = 2.5$. Sai số tỉ đối $\\delta v = \\delta s + \\delta t = \\frac{0.1}{5.0} + \\frac{0.1}{2.0} = 0.02 + 0.05 = 0.07 = 7\\%$."
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+        quizData.forEach((item, index) => {
+            let optionsHTML = '';
+            item.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <label class="block p-3 rounded border border-gray-200 cursor-pointer hover:bg-rose-50 transition quiz-opt" data-q="${index}" data-o="${optIndex}">
+                        <input type="radio" name="q${index}" value="${optIndex}" class="mr-2">
+                        ${opt}
+                    </label>
+                `;
+            });
+
+            quizContainer.innerHTML += `
+                <div class="bg-white p-5 rounded-lg border shadow-sm">
+                    <p class="font-bold text-gray-800 mb-3">${item.q}</p>
+                    <div class="space-y-2" id="q-opts-${index}">
+                        ${optionsHTML}
+                    </div>
+                    <div id="q-explain-${index}" class="hidden mt-4 p-3 bg-blue-50 text-blue-800 border-l-4 border-blue-500 rounded text-sm">
+                        ${item.explain}
+                    </div>
+                </div>
+            `;
+        });
+
+        function submitQuiz() {
+            let score = 0;
+            quizData.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const optsContainer = document.getElementById(`q-opts-${index}`);
+                const explainBox = document.getElementById(`q-explain-${index}`);
+                
+                // Reset styles
+                optsContainer.querySelectorAll('.quiz-opt').forEach(el => {
+                    el.classList.remove('bg-green-100', 'border-green-500', 'bg-red-100', 'border-red-500');
+                });
+
+                if (selected) {
+                    const selVal = parseInt(selected.value);
+                    const correctEl = optsContainer.querySelector(`[data-o="${item.ans}"]`);
+                    const selectedEl = optsContainer.querySelector(`[data-o="${selVal}"]`);
+
+                    if (selVal === item.ans) {
+                        score++;
+                        selectedEl.classList.add('bg-green-100', 'border-green-500');
+                    } else {
+                        selectedEl.classList.add('bg-red-100', 'border-red-500');
+                        correctEl.classList.add('bg-green-100', 'border-green-500');
+                    }
+                    explainBox.classList.remove('hidden');
+                } else {
+                    explainBox.innerHTML = "<em>Bạn chưa chọn đáp án.</em> " + explainBox.innerHTML;
+                    explainBox.classList.remove('hidden');
+                }
+            });
+
+            const scoreBox = document.getElementById('quiz-score');
+            scoreBox.innerHTML = `Kết quả của bạn: <span class="text-rose-600">${score} / ${quizData.length}</span>`;
+            scoreBox.classList.remove('hidden');
+            
+            // Render MathJax/KaTeX in explains
+            renderMathInElement(quizContainer, {delimiters: [{left: '$', right: '$', display: false}]});
+        }
+    </script>
+</body>
+</html>
