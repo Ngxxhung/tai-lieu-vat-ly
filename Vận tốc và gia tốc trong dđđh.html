@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phòng Thí Nghiệm Vật Lý: Dao Động Điều Hòa</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX cho công thức Toán/Lý -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdf4; /* Light green background */
+            color: #064e3b;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(209, 250, 229, 0.5);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+        }
+
+        .tab-btn.active {
+            border-bottom: 3px solid #10b981;
+            color: #047857;
+            font-weight: 700;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        /* Canvas simulation styling */
+        #sim-canvas {
+            background: #1e293b; /* Dark theme for canvas */
+            border-radius: 0.75rem;
+            width: 100%;
+            height: 350px;
+            object-fit: contain;
+        }
+
+        .latex-block {
+            overflow-x: auto;
+            padding: 0.5rem 0;
+            color: #0f172a;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-emerald-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start">
+                    <div class="bg-emerald-500 p-2 rounded-xl shadow-inner"><i class="fa-solid fa-wave-square text-xl"></i></div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight">Vật Lý Tương Tác</h1>
+                        <p class="text-[11px] text-emerald-200 font-medium uppercase tracking-wider">Chủ đề 3: Vận tốc & Gia tốc trong DĐĐH</p>
+                    </div>
+                </div>
+                <nav class="flex gap-1 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide">
+                    <button onclick="switchTab('theory')" class="tab-btn active px-4 py-2 rounded-lg hover:bg-emerald-800 transition whitespace-nowrap"><i class="fa-solid fa-book-open mr-2"></i>Lý Thuyết</button>
+                    <button onclick="switchTab('simulation')" class="tab-btn px-4 py-2 rounded-lg hover:bg-emerald-800 transition whitespace-nowrap"><i class="fa-solid fa-flask text-emerald-400 mr-2"></i>Mô Phỏng</button>
+                    <button onclick="switchTab('calculator')" class="tab-btn px-4 py-2 rounded-lg hover:bg-emerald-800 transition whitespace-nowrap"><i class="fa-solid fa-calculator text-amber-400 mr-2"></i>Máy Tính</button>
+                    <button onclick="switchTab('practice')" class="tab-btn px-4 py-2 rounded-lg hover:bg-emerald-800 transition whitespace-nowrap"><i class="fa-solid fa-dumbbell text-purple-400 mr-2"></i>Luyện Tập</button>
+                    <button onclick="switchTab('quiz')" class="tab-btn px-4 py-2 rounded-lg hover:bg-emerald-800 transition whitespace-nowrap"><i class="fa-solid fa-check-double text-rose-400 mr-2"></i>Kiểm tra</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <section id="theory" class="tab-content block animate-fade-in">
+            <div class="glass-panel rounded-2xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-emerald-800 border-b-2 border-emerald-200 pb-3 mb-6 flex items-center">
+                    <i class="fa-solid fa-lightbulb text-amber-500 mr-3"></i> TÓM TẮT LÝ THUYẾT TRỌNG TÂM
+                </h2>
+                
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Khối kiến thức: Phương trình & Đạo hàm -->
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                        <h3 class="text-lg font-semibold text-blue-700 mb-4 border-b pb-2">1. Phương trình x, v, a</h3>
+                        
+                        <div class="space-y-4 text-sm text-slate-700">
+                            <div>
+                                <p class="font-medium text-gray-900 mb-1">Li độ (x):</p>
+                                <div class="bg-blue-50 p-2 rounded border border-blue-100 latex-block text-center font-semibold text-blue-900">
+                                    \( x = A\cos(\omega t + \varphi) \)
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <p class="font-medium text-gray-900 mb-1">Vận tốc (v): Là đạo hàm của x theo t</p>
+                                <div class="bg-emerald-50 p-2 rounded border border-emerald-100 latex-block text-center font-semibold text-emerald-900">
+                                    \( v = x' = -\omega A\sin(\omega t + \varphi) \) <br>
+                                    \( \Rightarrow v = \omega A\cos(\omega t + \varphi + \frac{\pi}{2}) \)
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1 italic"><i class="fa-solid fa-info-circle mr-1"></i> Nhận xét: Vận tốc sớm pha \(\frac{\pi}{2}\) so với li độ.</p>
+                            </div>
+
+                            <div>
+                                <p class="font-medium text-gray-900 mb-1">Gia tốc (a): Là đạo hàm của v theo t</p>
+                                <div class="bg-rose-50 p-2 rounded border border-rose-100 latex-block text-center font-semibold text-rose-900">
+                                    \( a = v' = x'' = -\omega^2 A\cos(\omega t + \varphi) \) <br>
+                                    \( \Rightarrow a = -\omega^2 x \)
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1 italic"><i class="fa-solid fa-info-circle mr-1"></i> Nhận xét: Gia tốc ngược pha với li độ (và sớm pha \(\frac{\pi}{2}\) so với vận tốc).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Khối kiến thức: Đặc điểm & Mối quan hệ độc lập -->
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                            <h3 class="text-lg font-semibold text-purple-700 mb-4 border-b pb-2">2. Giá trị Cực trị</h3>
+                            <table class="w-full text-sm text-left border-collapse">
+                                <thead class="bg-gray-100 text-gray-700">
+                                    <tr>
+                                        <th class="p-3 border-b">Đại lượng</th>
+                                        <th class="p-3 border-b text-center">Tại Vị trí Cân bằng (x = 0)</th>
+                                        <th class="p-3 border-b text-center">Tại Biên (x = ±A)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-slate-700">
+                                    <tr class="border-b hover:bg-gray-50">
+                                        <td class="p-3 font-medium">Độ lớn Vận tốc \(|v|\) (Tốc độ)</td>
+                                        <td class="p-3 text-center text-emerald-600 font-bold latex-block">Cực đại: \( \omega A \)</td>
+                                        <td class="p-3 text-center latex-block">Bằng \( 0 \)</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="p-3 font-medium">Độ lớn Gia tốc \(|a|\)</td>
+                                        <td class="p-3 text-center latex-block">Bằng \( 0 \)</td>
+                                        <td class="p-3 text-center text-rose-600 font-bold latex-block">Cực đại: \( \omega^2 A \)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p class="text-xs text-gray-500 mt-2"><strong>Lưu ý:</strong> Véc tơ gia tốc \(\vec{a}\) luôn hướng về vị trí cân bằng.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-xl border border-amber-200 shadow-sm">
+                            <h3 class="text-lg font-semibold text-amber-800 mb-3"><i class="fa-solid fa-link mr-2"></i>3. Hệ thức Độc lập Thời gian</h3>
+                            <p class="text-sm text-slate-700 mb-2">Vì \(x\) và \(v\) vuông pha nhau, ta có hệ thức elip:</p>
+                            <div class="latex-block text-center font-bold text-lg text-amber-900 bg-white/50 p-3 rounded-lg border border-amber-300">
+                                \( \frac{x^2}{A^2} + \frac{v^2}{(\omega A)^2} = 1 \Rightarrow A^2 = x^2 + \frac{v^2}{\omega^2} \)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="simulation" class="tab-content hidden animate-fade-in">
+            <div class="glass-panel rounded-2xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-blue-800 border-b-2 border-blue-100 pb-3 mb-6">
+                    🔬 2. MÔ PHỎNG: PHÂN TÍCH VECTOR TRONG DĐĐH
+                </h2>
+                
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <!-- Bảng điều khiển -->
+                    <div class="lg:col-span-1 bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-4 border-b pb-2">🎛️ Điều chỉnh Tham số</h3>
+                            
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="flex justify-between text-sm font-medium text-gray-700 mb-1">
+                                        <span>Biên độ (A)</span>
+                                        <span id="amp-val" class="text-blue-600 font-bold">10 cm</span>
+                                    </label>
+                                    <input type="range" id="amp-slider" min="5" max="15" step="1" value="10" class="w-full accent-blue-500">
+                                </div>
+
+                                <div>
+                                    <label class="flex justify-between text-sm font-medium text-gray-700 mb-1">
+                                        <span>Tần số góc (\(\omega\))</span>
+                                        <span id="omega-val" class="text-emerald-600 font-bold">2 rad/s</span>
+                                    </label>
+                                    <input type="range" id="omega-slider" min="0.5" max="5" step="0.5" value="2" class="w-full accent-emerald-500">
+                                </div>
+                                
+                                <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 text-sm">
+                                    <p class="font-medium text-slate-700 mb-2">Hiển thị Vector:</p>
+                                    <label class="flex items-center space-x-2 cursor-pointer mb-1">
+                                        <input type="checkbox" id="show-v" checked class="rounded text-emerald-500 focus:ring-emerald-500">
+                                        <span class="text-emerald-700 font-medium">Vận tốc (v)</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 cursor-pointer">
+                                        <input type="checkbox" id="show-a" checked class="rounded text-rose-500 focus:ring-rose-500">
+                                        <span class="text-rose-700 font-medium">Gia tốc (a)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex gap-3">
+                            <button id="btn-play" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg font-medium transition shadow"><i class="fa-solid fa-pause mr-2"></i>Tạm dừng</button>
+                        </div>
+                    </div>
+
+                    <!-- Màn hình Canvas -->
+                    <div class="lg:col-span-2 relative">
+                        <canvas id="sim-canvas" width="800" height="350" class="shadow-lg border-2 border-slate-700"></canvas>
+                        
+                        <!-- Lớp phủ Realtime HUD -->
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur p-3 rounded-lg shadow border border-gray-200 text-xs font-mono w-48">
+                            <div class="flex justify-between text-blue-700 mb-1">
+                                <span>x:</span><span id="hud-x">0.00 cm</span>
+                            </div>
+                            <div class="flex justify-between text-emerald-700 mb-1">
+                                <span>v:</span><span id="hud-v">0.00 cm/s</span>
+                            </div>
+                            <div class="flex justify-between text-rose-700">
+                                <span>a:</span><span id="hud-a">0.00 cm/s²</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 bg-blue-50 p-3 rounded-lg text-sm text-blue-800">
+                            <strong>💡 Quan sát hiện tượng:</strong> Khi vật qua VTCB (giữa), Vector Vận tốc (Xanh lá) dài nhất, Vector Gia tốc (Đỏ) bằng 0. Khi vật ra tới Biên, Vector Vận tốc bằng 0, Vector Gia tốc dài nhất và luôn "kéo" vật quay lại VTCB.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="calculator" class="tab-content hidden animate-fade-in">
+            <div class="glass-panel rounded-2xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-amber-600 border-b-2 border-amber-100 pb-3 mb-6">
+                    🧮 3. MÁY TÍNH HỆ THỨC ĐỘC LẬP
+                </h2>
+                <p class="text-slate-600 mb-6 text-sm">Công cụ tự động giải quyết "Dạng 1: Xác định đại lượng dựa vào công thức". Cung cấp x, v và \(\omega\), hệ thống sẽ tìm Biên độ A và các cực trị.</p>
+                
+                <div class="grid md:grid-cols-5 gap-8">
+                    <!-- Form Nhập liệu -->
+                    <div class="md:col-span-2 bg-white p-5 rounded-xl border border-gray-200 shadow-sm h-fit">
+                        <h3 class="font-semibold text-gray-800 mb-4 border-b pb-2">Nhập Thông Số Đề Bài</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-xs font-medium text-gray-600">Tần số góc \(\omega\) (rad/s)</label>
+                                <input type="number" id="calc-omega" value="10" step="any" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-amber-500 focus:border-amber-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs font-medium text-blue-600">Li độ tại thời điểm t: \(x\) (cm)</label>
+                                <input type="number" id="calc-x" value="3" step="any" class="w-full mt-1 px-3 py-2 border border-blue-200 rounded-md focus:ring-blue-500 focus:border-blue-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs font-medium text-emerald-600">Vận tốc tại thời điểm t: \(v\) (cm/s)</label>
+                                <input type="number" id="calc-v" value="40" step="any" class="w-full mt-1 px-3 py-2 border border-emerald-200 rounded-md focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+                            </div>
+                            
+                            <button onclick="solveEquation()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-lg transition mt-4 shadow-md">
+                                <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Tính Toán & Giải Chi Tiết
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kết quả giải -->
+                    <div class="md:col-span-3 bg-amber-50/30 p-6 rounded-xl border border-amber-200 shadow-inner">
+                        <h3 class="font-semibold text-amber-800 mb-4 border-b border-amber-200 pb-2">Bài Giải Chi Tiết</h3>
+                        <div id="calc-result" class="text-sm text-slate-800 space-y-4">
+                            <!-- Placeholder -->
+                            <div class="text-center text-amber-600/50 mt-12">
+                                <i class="fa-solid fa-square-root-variable text-5xl mb-3"></i>
+                                <p>Nhấn nút "Tính Toán" để xem lời giải bằng LaTeX.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="practice" class="tab-content hidden animate-fade-in">
+            <div class="glass-panel rounded-2xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-purple-700 border-b-2 border-purple-100 pb-3 mb-6">
+                    📝 4. PHÒNG LUYỆN TẬP PHÂN HÓA
+                </h2>
+
+                <div class="space-y-4">
+                    <!-- Dạng 1: Áp dụng công thức -->
+                    <div class="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
+                        <button onclick="toggleAccordion('prac-1')" class="w-full px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 transition focus:outline-none">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-green-500 text-white text-[10px] uppercase font-bold px-2 py-1 rounded">Cấp 1: Thông hiểu</span>
+                                <span class="font-bold text-gray-800">Bài 1: Sử dụng Hệ thức độc lập</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300" id="icon-prac-1"></i>
+                        </button>
+                        <div id="prac-1" class="hidden px-6 py-5 border-t">
+                            <p class="mb-4 text-gray-700">Một vật dao động điều hòa, khi đi qua vị trí cân bằng thì tốc độ của nó là 20 cm/s. Khi vật có tốc độ là 10 cm/s thì gia tốc của nó có độ lớn là \(40\sqrt{3}\) cm/s². Tính biên độ dao động của vật.</p>
+                            
+                            <div class="bg-purple-50 p-4 rounded-xl">
+                                <h4 class="font-semibold text-purple-800 text-sm mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Gợi ý tư duy:</h4>
+                                <ul class="list-disc list-inside text-sm text-slate-700 mb-4 space-y-1">
+                                    <li>Tốc độ qua VTCB chính là \(v_{max} = \omega A\).</li>
+                                    <li>Sử dụng hệ thức độc lập giữa v và a (do v và a vuông pha): \(\frac{v^2}{v_{max}^2} + \frac{a^2}{a_{max}^2} = 1\)</li>
+                                </ul>
+                                <button onclick="document.getElementById('sol-1').classList.toggle('hidden')" class="text-sm font-semibold bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">Xem lời giải</button>
+                                
+                                <div id="sol-1" class="hidden mt-4 pt-4 border-t border-purple-200 text-sm text-slate-800 space-y-3">
+                                    <p>Tại VTCB: \(v_{max} = \omega A = 20\) cm/s (1)</p>
+                                    <p>Tại thời điểm t: \(v = 10\) cm/s, \(a = 40\sqrt{3}\) cm/s².</p>
+                                    <p>Áp dụng công thức độc lập với thời gian giữa v và a:</p>
+                                    <div class="latex-block">
+                                        \\[ \frac{v^2}{(\omega A)^2} + \frac{a^2}{(\omega^2 A)^2} = 1 \\]
+                                        \\[ \Leftrightarrow \frac{10^2}{20^2} + \frac{(40\sqrt{3})^2}{\omega^2 (\omega A)^2} = 1 \\]
+                                    </div>
+                                    <p>Thay \(\omega A = 20\) vào phương trình trên:</p>
+                                    <div class="latex-block">
+                                        \\[ \frac{1}{4} + \frac{4800}{\omega^2 \cdot 400} = 1 \Rightarrow \frac{12}{\omega^2} = \frac{3}{4} \Rightarrow \omega^2 = 16 \Rightarrow \omega = 4 \text{ (rad/s)} \\]
+                                    </div>
+                                    <p>Từ (1) suy ra Biên độ: \(A = \frac{v_{max}}{\omega} = \frac{20}{4} = 5\) cm.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dạng 2: Bài toán thời gian -->
+                    <div class="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
+                        <button onclick="toggleAccordion('prac-2')" class="w-full px-6 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 transition focus:outline-none">
+                            <div class="flex items-center gap-3">
+                                <span class="bg-amber-500 text-white text-[10px] uppercase font-bold px-2 py-1 rounded">Cấp 2: Vận dụng</span>
+                                <span class="font-bold text-gray-800">Bài 2: Bài toán thời gian - quãng đường</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300" id="icon-prac-2"></i>
+                        </button>
+                        <div id="prac-2" class="hidden px-6 py-5 border-t">
+                            <p class="mb-4 text-gray-700">Một chất điểm dao động điều hoà theo phương trình \(x = 10\cos(2\pi t + \frac{5\pi}{6})\) (cm). Tính quãng đường vật đi được trong khoảng thời gian từ t = 1s đến t = 2,5s.</p>
+                            
+                            <div class="bg-amber-50 p-4 rounded-xl">
+                                <h4 class="font-semibold text-amber-800 text-sm mb-2"><i class="fa-solid fa-comment-dots mr-2"></i>Gợi ý tư duy:</h4>
+                                <ul class="list-disc list-inside text-sm text-slate-700 mb-4 space-y-1">
+                                    <li>Tính chu kì \(T\). Tính độ dài khoảng thời gian \(\Delta t = t_2 - t_1\).</li>
+                                    <li>Chia \(\Delta t\) cho \(T\) xem được bao nhiêu chu kì. Cứ 1 chu kì vật đi được quãng đường là \(4A\). Nếu \(\Delta t = n\cdot T + \Delta t'\), quãng đường \(S = n\cdot 4A + S'\).</li>
+                                </ul>
+                                <button onclick="document.getElementById('sol-2').classList.toggle('hidden')" class="text-sm font-semibold bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">Xem lời giải</button>
+                                
+                                <div id="sol-2" class="hidden mt-4 pt-4 border-t border-amber-200 text-sm text-slate-800 space-y-3">
+                                    <p>Chu kì dao động: \(T = \frac{2\pi}{\omega} = \frac{2\pi}{2\pi} = 1\) (s).</p>
+                                    <p>Khoảng thời gian khảo sát: \(\Delta t = 2.5 - 1 = 1.5\) (s).</p>
+                                    <p>Lập tỉ số: \(\frac{\Delta t}{T} = 1.5 = 1 + \frac{1}{2}\) \(\Rightarrow \Delta t = T + \frac{T}{2}\)</p>
+                                    <p>Phân tích quãng đường:</p>
+                                    <ul class="list-disc list-inside pl-4">
+                                        <li>Trong thời gian 1 Chu kì (T), vật luôn đi được \(S_1 = 4A\).</li>
+                                        <li>Trong thời gian nửa Chu kì (T/2), vật luôn đi được \(S_2 = 2A\).</li>
+                                    </ul>
+                                    <p>Tổng quãng đường: \(S = S_1 + S_2 = 4A + 2A = 6A\).</p>
+                                    <p class="font-bold text-rose-600">Với \(A = 10\) cm \(\Rightarrow S = 6 \cdot 10 = 60\) cm.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz" class="tab-content hidden animate-fade-in">
+            <div class="glass-panel rounded-2xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-rose-700 border-b-2 border-rose-100 pb-3 mb-6">
+                    🎯 5. BÀI TỰ ĐÁNH GIÁ
+                </h2>
+
+                <form id="quiz-form" class="space-y-6">
+                    <!-- Câu 1 -->
+                    <div class="bg-white p-5 border border-gray-200 rounded-xl shadow-sm">
+                        <p class="font-medium text-gray-800 mb-4"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-[11px] uppercase tracking-wider mr-2 font-bold">Câu 1 [Nhận biết]</span>Trong dao động điều hòa, vận tốc của vật có độ lớn cực đại khi:</p>
+                        <div class="space-y-2 pl-2">
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q1" value="A" class="form-radio text-rose-600 h-4 w-4">
+                                <span>A. li độ có độ lớn cực đại.</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q1" value="B" class="form-radio text-rose-600 h-4 w-4">
+                                <span>B. gia tốc cực đại.</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q1" value="C" class="form-radio text-rose-600 h-4 w-4">
+                                <span>C. li độ bằng 0 (qua vị trí cân bằng).</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q1" value="D" class="form-radio text-rose-600 h-4 w-4">
+                                <span>D. lực kéo về đạt cực đại.</span>
+                            </label>
+                        </div>
+                        <div id="fb-q1" class="hidden mt-3 text-sm p-3 rounded-lg"></div>
+                    </div>
+
+                    <!-- Câu 2 -->
+                    <div class="bg-white p-5 border border-gray-200 rounded-xl shadow-sm">
+                        <p class="font-medium text-gray-800 mb-4"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-[11px] uppercase tracking-wider mr-2 font-bold">Câu 2 [Thông hiểu]</span>Chọn hệ thức đúng liên hệ giữa x, A, v, \(\omega\) trong dao động điều hòa:</p>
+                        <div class="space-y-2 pl-2">
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q2" value="A" class="form-radio text-rose-600 h-4 w-4">
+                                <span class="latex-block">A. \( v^2 = \omega^2(x^2 - A^2) \)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q2" value="B" class="form-radio text-rose-600 h-4 w-4">
+                                <span class="latex-block">B. \( v^2 = \omega^2(A^2 - x^2) \)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q2" value="C" class="form-radio text-rose-600 h-4 w-4">
+                                <span class="latex-block">C. \( x^2 = A^2 + \frac{v^2}{\omega^2} \)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q2" value="D" class="form-radio text-rose-600 h-4 w-4">
+                                <span class="latex-block">D. \( x^2 = v^2 + \frac{A^2}{\omega^2} \)</span>
+                            </label>
+                        </div>
+                        <div id="fb-q2" class="hidden mt-3 text-sm p-3 rounded-lg"></div>
+                    </div>
+
+                    <!-- Câu 3 -->
+                    <div class="bg-white p-5 border border-gray-200 rounded-xl shadow-sm">
+                        <p class="font-medium text-gray-800 mb-4"><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-[11px] uppercase tracking-wider mr-2 font-bold">Câu 3 [Vận dụng]</span>Một vật dao động điều hòa chu kỳ T. Gọi \(v_{max}\) và \(a_{max}\) tương ứng là vận tốc cực đại và gia tốc cực đại của vật. Hệ thức liên hệ đúng giữa \(v_{max}\) và \(a_{max}\) là:</p>
+                        <div class="space-y-2 pl-2">
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q3" value="A" class="form-radio text-rose-600 h-4 w-4">
+                                <span class="latex-block">A. \( a_{max} = v_{max}\frac{2\pi}{T} \)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q3" value="B" class="form-radio text-rose-600 h-4 w-4">
+                                <span class="latex-block">B. \( a_{max} = v_{max}\frac{T}{2\pi} \)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q3" value="C" class="form-radio text-rose-600 h-4 w-4">
+                                <span class="latex-block">C. \( a_{max} = v_{max}\frac{\pi}{T} \)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 cursor-pointer p-2 hover:bg-rose-50 rounded-lg transition">
+                                <input type="radio" name="q3" value="D" class="form-radio text-rose-600 h-4 w-4">
+                                <span class="latex-block">D. \( a_{max} = -v_{max}\frac{2\pi}{T} \)</span>
+                            </label>
+                        </div>
+                        <div id="fb-q3" class="hidden mt-3 text-sm p-3 rounded-lg"></div>
+                    </div>
+                    
+                    <div class="pt-6 flex items-center justify-between border-t border-gray-200">
+                        <button type="button" onclick="submitQuiz()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition transform active:scale-95">
+                            Nộp bài & Chấm điểm
+                        </button>
+                        <div id="quiz-score" class="text-xl font-bold text-rose-700 hidden bg-rose-50 px-4 py-2 rounded-lg border border-rose-100">
+                            Điểm: <span id="score-val">0</span>/3
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-emerald-950 text-emerald-200/60 py-6 text-center text-sm">
+        <p>Interactive Physics Lab Gem &copy; 2026. Thiết kế dành cho học sinh THPT.</p>
+    </footer>
+
+    <script>
+        // --- 0. Khởi tạo & Tab Navigation ---
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMath();
+            initSimulation();
+        });
+
+        function renderMath(element = document.body) {
+            renderMathInElement(element, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError : false
+            });
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.remove('hidden');
+            event.currentTarget.classList.add('active');
+        }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // --- 1. Logic Mô phỏng Canvas (Con lắc lò xo ngang) ---
+        const canvas = document.getElementById('sim-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let simReq;
+        let isPlaying = true;
+        let t = 0; // thời gian
+
+        // Parameters
+        let A = 100; // pixels (scaled from 10cm)
+        let w = 2; // rad/s
+
+        // UI elements
+        const sAmp = document.getElementById('amp-slider');
+        const sOmega = document.getElementById('omega-slider');
+        const cbV = document.getElementById('show-v');
+        const cbA = document.getElementById('show-a');
+
+        function initSimulation() {
+            sAmp.addEventListener('input', (e) => {
+                A = parseInt(e.target.value) * 10; // 1cm = 10px
+                document.getElementById('amp-val').innerText = e.target.value + ' cm';
+            });
+            sOmega.addEventListener('input', (e) => {
+                w = parseFloat(e.target.value);
+                document.getElementById('omega-val').innerText = w + ' rad/s';
+            });
+
+            document.getElementById('btn-play').addEventListener('click', (e) => {
+                isPlaying = !isPlaying;
+                const btn = e.currentTarget;
+                if(isPlaying) {
+                    btn.innerHTML = '<i class="fa-solid fa-pause mr-2"></i>Tạm dừng';
+                    btn.classList.replace('bg-rose-600', 'bg-emerald-600');
+                    lastTime = performance.now();
+                    simLoop(lastTime);
+                } else {
+                    btn.innerHTML = '<i class="fa-solid fa-play mr-2"></i>Tiếp tục';
+                    btn.classList.replace('bg-emerald-600', 'bg-rose-600');
+                    cancelAnimationFrame(simReq);
+                }
+            });
+
+            lastTime = performance.now();
+            simLoop(lastTime);
+        }
+
+        let lastTime = 0;
+        function simLoop(timestamp) {
+            if(!isPlaying) return;
+            const dt = (timestamp - lastTime) / 1000;
+            lastTime = timestamp;
+            t += dt;
+
+            drawFrame(t);
+            simReq = requestAnimationFrame(simLoop);
+        }
+
+        function drawFrame(time) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const originX = canvas.width / 2;
+            const originY = canvas.height / 2;
+
+            // Tính toán vật lý
+            // Phương trình x = A*cos(wt)
+            let x_real = (A/10) * Math.cos(w * time); // theo cm
+            let v_real = -w * (A/10) * Math.sin(w * time); // cm/s
+            let a_real = -w * w * (A/10) * Math.cos(w * time); // cm/s^2
+
+            // Tọa độ vẽ
+            let x_draw = originX + x_real * 10; // scale back to px
+
+            // Vẽ trục tọa độ
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, originY + 40);
+            ctx.lineTo(canvas.width - 50, originY + 40);
+            ctx.stroke();
+
+            // Vẽ mốc O, -A, A
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = "14px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("O", originX, originY + 60);
+            ctx.fillText("-A", originX - A, originY + 60);
+            ctx.fillText("A", originX + A, originY + 60);
+            
+            ctx.beginPath(); ctx.arc(originX, originY + 40, 3, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(originX - A, originY + 40, 3, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(originX + A, originY + 40, 3, 0, Math.PI*2); ctx.fill();
+
+            // Vẽ lò xo (zigzag)
+            ctx.beginPath();
+            ctx.moveTo(50, originY);
+            const springTurns = 15;
+            const springWidth = (x_draw - 20) - 50;
+            for(let i=0; i<=springTurns; i++) {
+                let pX = 50 + (springWidth / springTurns) * i;
+                let pY = originY + (i%2 === 0 ? 10 : -10);
+                if(i===0) pY = originY;
+                if(i===springTurns) {pY = originY; pX = x_draw - 20;}
+                ctx.lineTo(pX, pY);
+            }
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Vẽ tường
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(30, originY - 40, 20, 80);
+
+            // Vẽ vật (Khối vuông)
+            ctx.fillStyle = '#f59e0b'; // Amber
+            ctx.fillRect(x_draw - 20, originY - 20, 40, 40);
+            ctx.strokeStyle = '#b45309';
+            ctx.strokeRect(x_draw - 20, originY - 20, 40, 40);
+
+            // Vẽ Vector Vận tốc (Màu xanh ngọc)
+            if(cbV.checked && Math.abs(v_real) > 0.5) {
+                // Scale vector vẽ cho đẹp, không bị dài quá
+                let v_len = v_real * 5; 
+                drawArrow(ctx, x_draw, originY - 30, x_draw + v_len, originY - 30, '#10b981', 'v');
+            }
+
+            // Vẽ Vector Gia tốc (Màu đỏ)
+            if(cbA.checked && Math.abs(a_real) > 0.5) {
+                let a_len = a_real * 1.5; // scale
+                drawArrow(ctx, x_draw, originY + 25, x_draw + a_len, originY + 25, '#f43f5e', 'a');
+            }
+
+            // Update HUD
+            document.getElementById('hud-x').innerText = x_real.toFixed(2) + ' cm';
+            document.getElementById('hud-v').innerText = v_real.toFixed(2) + ' cm/s';
+            document.getElementById('hud-a').innerText = a_real.toFixed(2) + ' cm/s²';
+        }
+
+        function drawArrow(ctx, fromx, fromy, tox, toy, color, text) {
+            var headlen = 8;
+            var dx = tox - fromx;
+            var dy = toy - fromy;
+            var angle = Math.atan2(dy, dx);
+            
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 3;
+            
+            ctx.beginPath();
+            ctx.moveTo(fromx, fromy);
+            ctx.lineTo(tox, toy);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(tox, toy);
+            ctx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.fill();
+
+            // Text
+            ctx.font = "bold 14px Arial";
+            ctx.fillText(text, tox + (dx > 0 ? 5 : -15), toy - 5);
+        }
+
+        // --- 2. Logic Máy tính Hệ thức độc lập ---
+        function solveEquation() {
+            const wInput = parseFloat(document.getElementById('calc-omega').value);
+            const xInput = parseFloat(document.getElementById('calc-x').value);
+            const vInput = parseFloat(document.getElementById('calc-v').value);
+            const resDiv = document.getElementById('calc-result');
+
+            if (isNaN(wInput) || isNaN(xInput) || isNaN(vInput) || wInput <= 0) {
+                resDiv.innerHTML = '<p class="text-rose-600 font-bold">Vui lòng nhập số liệu hợp lệ (\(\\omega > 0\)).</p>';
+                return;
+            }
+
+            // Tính toán
+            const A2 = xInput*xInput + (vInput*vInput)/(wInput*wInput);
+            const A = Math.sqrt(A2);
+            const vmax = wInput * A;
+            const amax = wInput * wInput * A;
+
+            let html = `
+                <div class="space-y-4 animate-fade-in">
+                    <p class="text-gray-700">Áp dụng hệ thức độc lập thời gian giữa li độ \(x\) và vận tốc \(v\) (vuông pha):</p>
+                    
+                    <div class="latex-block bg-white p-3 border rounded-lg text-center">
+                        \\[ A^2 = x^2 + \\frac{v^2}{\\omega^2} \\]
+                    </div>
+                    
+                    <p class="text-gray-700">Thay số vào phương trình:</p>
+                    <div class="latex-block bg-white p-3 border rounded-lg text-center">
+                        \\[ A^2 = ${xInput}^2 + \\frac{${vInput}^2}{${wInput}^2} \\]
+                        \\[ A^2 = ${xInput*xInput} + ${vInput*vInput / (wInput*wInput)} = ${A2} \\]
+                        \\[ \\Rightarrow A = \\sqrt{${A2}} = ${A.toFixed(2)} \\text{ (cm)} \\]
+                    </div>
+
+                    <div class="bg-amber-100 p-4 rounded-lg border border-amber-200 mt-4">
+                        <h4 class="font-bold text-amber-900 border-b border-amber-300 pb-1 mb-2">Các Cực Trị Suy Ra:</h4>
+                        <ul class="space-y-2">
+                            <li><span class="font-semibold text-emerald-700">Tốc độ cực đại:</span> <span class="latex-block inline">\\( v_{max} = \\omega A = ${wInput} \\times ${A.toFixed(2)} = ${vmax.toFixed(2)} \\text{ (cm/s)} \\)</span></li>
+                            <li><span class="font-semibold text-rose-700">Gia tốc cực đại:</span> <span class="latex-block inline">\\( a_{max} = \\omega^2 A = ${wInput}^2 \\times ${A.toFixed(2)} = ${amax.toFixed(2)} \\text{ (cm/s}^2) \\)</span></li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            resDiv.innerHTML = html;
+            renderMath(resDiv);
+        }
+
+        // --- 3. Logic Quiz ---
+        const answers = { q1: 'C', q2: 'B', q3: 'A' };
+        const explanations = {
+            q1: 'Vận tốc có độ lớn cực đại $v_{max} = \\omega A$ khi vật đi qua vị trí cân bằng (li độ $x = 0$). Tại hai biên, vận tốc bằng 0.',
+            q2: 'Từ hệ thức $\\frac{x^2}{A^2} + \\frac{v^2}{(\\omega A)^2} = 1$, biến đổi ta được $v^2 = \\omega^2(A^2 - x^2)$.',
+            q3: 'Ta có $v_{max} = \\omega A$ và $a_{max} = \\omega^2 A$. Lập tỉ số: $\\frac{a_{max}}{v_{max}} = \\omega = \\frac{2\\pi}{T}$. Suy ra $a_{max} = v_{max}\\frac{2\\pi}{T}$.'
+        };
+
+        function submitQuiz() {
+            let score = 0;
+            const form = document.getElementById('quiz-form');
+            
+            for (let i = 1; i <= 3; i++) {
+                const qName = 'q' + i;
+                const selected = form.querySelector(`input[name="${qName}"]:checked`);
+                const fbDiv = document.getElementById(`fb-${qName}`);
+                
+                fbDiv.className = "mt-3 text-sm p-3 rounded-lg"; // reset classes
+                
+                if (!selected) {
+                    fbDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-2"></i>Bạn chưa chọn câu trả lời.';
+                    fbDiv.classList.add('bg-amber-100', 'text-amber-800');
+                    fbDiv.classList.remove('hidden');
+                    continue;
+                }
+
+                const userAns = selected.value;
+                const correctAns = answers[qName];
+
+                if (userAns === correctAns) {
+                    score++;
+                    fbDiv.innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i><strong>Đúng!</strong> ${explanations[qName]}`;
+                    fbDiv.classList.add('bg-green-100', 'text-green-800');
+                } else {
+                    fbDiv.innerHTML = `<i class="fa-solid fa-circle-xmark mr-2"></i><strong>Sai.</strong> Đáp án đúng là <strong>${correctAns}</strong>. ${explanations[qName]}`;
+                    fbDiv.classList.add('bg-rose-100', 'text-rose-800');
+                }
+                fbDiv.classList.remove('hidden');
+                renderMath(fbDiv);
+            }
+
+            const scoreDiv = document.getElementById('quiz-score');
+            document.getElementById('score-val').innerText = score;
+            scoreDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
