@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chủ Đề 2: Mô Tả Dao Động Điều Hòa - Vật Lí 11</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- KaTeX for formula rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81'
+            },
+            osc1: {
+              500: '#3b82f6',
+              600: '#2563eb'
+            },
+            osc2: {
+              500: '#10b981',
+              600: '#059669'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+    }
+    .custom-slider {
+      -webkit-appearance: none;
+      height: 6px;
+      border-radius: 4px;
+      background: #e2e8f0;
+      outline: none;
+    }
+    .custom-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #4f46e5;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: transform 0.1s;
+    }
+    .custom-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- Toast Notification Modal -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none bg-slate-900/95 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 text-sm font-medium border border-slate-700">
+    <span id="toastIcon" class="text-xl">💡</span>
+    <span id="toastMsg">Thông báo</span>
+  </div>
+
+  <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-600 to-sky-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+            <svg class="w-6 h-6 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Vật Lí 11 • Chuyên Đề 1</span>
+            <h1 class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">Chủ Đề 2: Mô Tả Dao Động Điều Hòa</h1>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation Bar -->
+        <nav class="hidden lg:flex items-center space-x-1 p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold">
+          <button onclick="switchTab('sim')" id="tab-btn-sim" class="tab-btn px-3 py-2 rounded-lg transition-all duration-200 bg-white text-brand-700 shadow-xs">
+            ⚡ Lab Sóng & Độ Lệch Pha
+          </button>
+          <button onclick="switchTab('theory')" id="tab-btn-theory" class="tab-btn px-3 py-2 rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900">
+            📖 Tóm Tắt Lý Thuyết
+          </button>
+          <button onclick="switchTab('calc')" id="tab-btn-calc" class="tab-btn px-3 py-2 rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900">
+            🧮 Máy Tính Dao Động
+          </button>
+          <button onclick="switchTab('games')" id="tab-btn-games" class="tab-btn px-3 py-2 rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900">
+            🧩 Điền Khuyết & Nối Cặp
+          </button>
+          <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="tab-btn px-3 py-2 rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900">
+            📝 Ngân Hàng Trắc Nghiệm
+          </button>
+          <button onclick="switchTab('essay')" id="tab-btn-essay" class="tab-btn px-3 py-2 rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900">
+            📈 Tự Luận & Đồ Thị
+          </button>
+        </nav>
+
+        <div class="flex items-center space-x-2">
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-brand-50 text-brand-700 border border-brand-200">
+            Chương trình GDPT 2018
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Bar -->
+    <div class="lg:hidden border-t border-slate-200 px-2 py-2 flex items-center justify-around bg-slate-50 text-[11px] font-bold overflow-x-auto">
+      <button onclick="switchTab('sim')" id="m-tab-btn-sim" class="m-tab-btn px-2.5 py-1.5 rounded-lg text-brand-700 bg-white shadow-xs whitespace-nowrap">⚡ Lab Ảo</button>
+      <button onclick="switchTab('theory')" id="m-tab-btn-theory" class="m-tab-btn px-2.5 py-1.5 rounded-lg text-slate-600 whitespace-nowrap">📖 Lý Thuyết</button>
+      <button onclick="switchTab('calc')" id="m-tab-btn-calc" class="m-tab-btn px-2.5 py-1.5 rounded-lg text-slate-600 whitespace-nowrap">🧮 Máy Tính</button>
+      <button onclick="switchTab('games')" id="m-tab-btn-games" class="m-tab-btn px-2.5 py-1.5 rounded-lg text-slate-600 whitespace-nowrap">🧩 Ghép Câu</button>
+      <button onclick="switchTab('quiz')" id="m-tab-btn-quiz" class="m-tab-btn px-2.5 py-1.5 rounded-lg text-slate-600 whitespace-nowrap">📝 Trắc Nghiệm</button>
+      <button onclick="switchTab('essay')" id="m-tab-btn-essay" class="m-tab-btn px-2.5 py-1.5 rounded-lg text-slate-600 whitespace-nowrap">📈 Đồ Thị</button>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ============================================================= -->
+    <!-- TAB 1: INTERACTIVE SIMULATION LAB: DUAL OSCILLATIONS & PHASE   -->
+    <!-- ============================================================= -->
+    <section id="tab-sim" class="space-y-6">
+      <!-- Welcome Hero Banner -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden border border-indigo-800/40">
+        <div class="relative z-10 max-w-3xl space-y-2">
+          <span class="px-3 py-1 bg-brand-500/20 text-brand-300 border border-brand-500/30 rounded-full text-xs font-bold uppercase tracking-wider">
+            Phòng Thí Nghiệm Sóng Ảo
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            Mô Phỏng Dao Động Kép & Độ Lệch Pha Cùng Chu Kì
+          </h2>
+          <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+            Quan sát trực tiếp sự tương quan giữa: Dao động của 2 con lắc lò xo $\leftrightarrow$ Hai vector quay Fresnel trên vòng tròn lượng giác $\leftrightarrow$ Hai đồ thị sóng li độ - thời gian $x_1(t), x_2(t)$.
+          </p>
+        </div>
+        <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Canvas Visualizer Section -->
+        <div class="lg:col-span-8 bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div class="flex items-center space-x-3">
+              <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+              <h3 class="font-bold text-slate-900 text-sm sm:text-base">Màn Hình Mô Phỏng Đa Chiều Thời Gian Thực</h3>
+            </div>
+            <!-- Quick Preset Phase Buttons -->
+            <div class="flex flex-wrap items-center gap-1.5 text-xs font-bold">
+              <button onclick="setPhasePreset('same')" class="px-2.5 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 transition">
+                🔗 Cùng Pha ($\Delta\varphi = 0$)
+              </button>
+              <button onclick="setPhasePreset('opposite')" class="px-2.5 py-1.5 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 transition">
+                ⚡ Ngược Pha ($\Delta\varphi = \pi$)
+              </button>
+              <button onclick="setPhasePreset('quadrature')" class="px-2.5 py-1.5 rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200 transition">
+                📐 Vuông Pha ($\Delta\varphi = \pi/2$)
+              </button>
+              <button onclick="setPhasePreset('quarter')" class="px-2.5 py-1.5 rounded-lg bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 transition">
+                ⏱️ Trễ $\Delta t = T/4$
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Simulation Canvas -->
+          <div class="relative w-full rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-inner flex flex-col">
+            <canvas id="simCanvas" class="w-full h-[400px] sm:h-[460px] block cursor-crosshair"></canvas>
+            
+            <!-- Realtime Metrics Floating Bar -->
+            <div class="absolute bottom-3 inset-x-3 bg-slate-950/80 backdrop-blur-md rounded-xl p-3 border border-slate-700/60 flex flex-wrap items-center justify-between text-xs text-white font-mono gap-2">
+              <div class="flex items-center space-x-4">
+                <div>
+                  <span class="text-blue-400 font-bold block text-[10px]">DAO ĐỘNG 1:</span>
+                  <span id="hud_x1" class="text-sm font-black text-blue-300">x₁ = +0.00 cm</span>
+                </div>
+                <div class="border-l border-slate-700 pl-4">
+                  <span class="text-emerald-400 font-bold block text-[10px]">DAO ĐỘNG 2:</span>
+                  <span id="hud_x2" class="text-sm font-black text-emerald-300">x₂ = +0.00 cm</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-slate-400 text-[10px] block">ĐỘ LỆCH PHA $\Delta\varphi = \varphi_1 - \varphi_2$:</span>
+                <span id="hud_deltaPhi" class="text-sm font-black text-amber-400">0.00 rad (0.00° / Đồng pha)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simulation Transport Controls -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+            <div class="flex items-center space-x-2">
+              <button id="btnPlayPause" onclick="togglePlayPause()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold transition flex items-center space-x-1.5 shadow-sm">
+                <span id="iconPlay">⏸️</span>
+                <span id="txtPlay">Tạm Dừng</span>
+              </button>
+              <button onclick="resetSimTime()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+                🔄 Về t = 0
+              </button>
+              <button onclick="toggleOsc2Visibility()" id="btnToggleOsc2" class="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold transition">
+                👁️ Bật/Tắt DĐ 2
+              </button>
+            </div>
+
+            <div class="flex items-center space-x-3 text-xs font-semibold text-slate-600">
+              <span>Tốc độ:</span>
+              <button onclick="setSimSpeed(0.5)" class="speed-btn px-2 py-1 rounded bg-slate-100 hover:bg-slate-200">0.5x</button>
+              <button onclick="setSimSpeed(1.0)" class="speed-btn px-2 py-1 rounded bg-brand-600 text-white">1.0x</button>
+              <button onclick="setSimSpeed(2.0)" class="speed-btn px-2 py-1 rounded bg-slate-100 hover:bg-slate-200">2.0x</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-5">
+          <div class="border-b border-slate-100 pb-3">
+            <h3 class="font-bold text-slate-900 text-sm flex items-center space-x-2">
+              <span class="text-base">🎛️</span>
+              <span>Bảng Điều Khiển Tham Số Dao Động</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">Tùy chỉnh $A_1, A_2, T, \varphi_1, \varphi_2$ để quan sát đồ thị biến đổi ngay lập tức.</p>
+          </div>
+
+          <!-- Common Parameter: Chu ki T & Tan so f -->
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
+            <div class="flex justify-between font-bold text-slate-800">
+              <span>Chu kì chung $T$:</span>
+              <span id="txtValT" class="text-brand-600 font-mono font-black">2.0 s</span>
+            </div>
+            <input type="range" id="sliderT" min="0.5" max="6.0" step="0.1" value="2.0" oninput="updateSimParams()" class="w-full custom-slider">
+            <div class="flex justify-between text-[11px] text-slate-500 font-mono">
+              <span>Tần số $f = 1/T$: <strong id="txtValF" class="text-slate-800">0.50 Hz</strong></span>
+              <span>Tần số góc $\omega$: <strong id="txtValOmega" class="text-slate-800">3.14 rad/s</strong></span>
+            </div>
+          </div>
+
+          <!-- Oscillator 1 Controls -->
+          <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200 space-y-3 text-xs">
+            <div class="flex items-center justify-between text-blue-900 font-bold">
+              <span class="flex items-center space-x-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                <span>Dao Động 1 (Màu Xanh Dương)</span>
+              </span>
+              <span id="txtValEq1" class="font-mono text-[11px] text-blue-700 font-semibold">x₁ = 10 cos(πt)</span>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 font-semibold mb-1">
+                <span>Biên độ $A_1$:</span>
+                <span id="txtValA1" class="font-mono font-bold text-blue-700">10 cm</span>
+              </div>
+              <input type="range" id="sliderA1" min="2" max="15" step="1" value="10" oninput="updateSimParams()" class="w-full custom-slider accent-blue-600">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 font-semibold mb-1">
+                <span>Pha ban đầu $\varphi_1$:</span>
+                <span id="txtValPhi1" class="font-mono font-bold text-blue-700">0 rad (0°)</span>
+              </div>
+              <input type="range" id="sliderPhi1" min="-3.1416" max="3.1416" step="0.08726" value="0" oninput="updateSimParams()" class="w-full custom-slider accent-blue-600">
+            </div>
+          </div>
+
+          <!-- Oscillator 2 Controls -->
+          <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-3 text-xs">
+            <div class="flex items-center justify-between text-emerald-900 font-bold">
+              <span class="flex items-center space-x-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                <span>Dao Động 2 (Màu Xanh Lá)</span>
+              </span>
+              <span id="txtValEq2" class="font-mono text-[11px] text-emerald-700 font-semibold">x₂ = 6 cos(πt)</span>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 font-semibold mb-1">
+                <span>Biên độ $A_2$:</span>
+                <span id="txtValA2" class="font-mono font-bold text-emerald-700">6 cm</span>
+              </div>
+              <input type="range" id="sliderA2" min="2" max="15" step="1" value="6" oninput="updateSimParams()" class="w-full custom-slider accent-emerald-600">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-700 font-semibold mb-1">
+                <span>Pha ban đầu $\varphi_2$:</span>
+                <span id="txtValPhi2" class="font-mono font-bold text-emerald-700">0 rad (0°)</span>
+              </div>
+              <input type="range" id="sliderPhi2" min="-3.1416" max="3.1416" step="0.08726" value="0" oninput="updateSimParams()" class="w-full custom-slider accent-emerald-600">
+            </div>
+          </div>
+
+          <!-- Summary Status Insight Box -->
+          <div id="phaseConclusionBox" class="p-3 rounded-xl bg-slate-900 text-white text-xs space-y-1 font-mono">
+            <span class="text-amber-400 font-bold block">💡 KẾT LUẬN QUAN HỆ PHA:</span>
+            <p id="phaseConclusionText" class="text-slate-300 text-[11px] leading-relaxed">
+              Hai dao động <strong>cùng pha</strong> ($\Delta\varphi = 0$). Hai vật luôn đi qua VTCB và đạt biên cùng thời điểm theo cùng hướng.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 2: THEORY SUMMARY & GOLDEN CORE CONCEPTS                  -->
+    <!-- ============================================================= -->
+    <section id="tab-theory" class="hidden space-y-6">
+      <div class="border-b border-slate-200 pb-4">
+        <span class="text-brand-600 font-bold text-xs uppercase tracking-wider">Kiến Thức Trọng Tâm</span>
+        <h2 class="text-2xl font-extrabold text-slate-900">1. Các Đại Lượng Đặc Trưng Của Dao Động Điều Hòa</h2>
+        <p class="text-slate-600 text-sm mt-1">Hệ thống công thức, định nghĩa và ý nghĩa vật lí chuẩn SGK Vật lí 11 mới.</p>
+      </div>
+
+      <!-- Core Formula Card -->
+      <div class="bg-gradient-to-r from-brand-900 via-indigo-900 to-slate-900 text-white rounded-3xl p-6 shadow-md space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <span class="text-xs uppercase font-bold text-indigo-300 tracking-wider">Phương trình dao động điều hòa tổng quát</span>
+          <span class="text-xs bg-brand-500/30 px-3 py-1 rounded-full font-mono text-brand-200">Đơn vị SI chuẩn</span>
+        </div>
+        <div class="text-center py-4 bg-white/5 rounded-2xl border border-white/10">
+          <div class="text-2xl sm:text-3xl font-black font-mono text-amber-300">
+            $$x = A \cos(\omega t + \varphi)$$
+          </div>
+        </div>
+        <p class="text-xs text-slate-300 text-center">
+          Trong dao động điều hòa của mỗi vật: $A, T, f$ và $\omega$ là những đại lượng <strong>không đổi</strong>, không phụ thuộc vào thời điểm quan sát.
+        </p>
+      </div>
+
+      <!-- Breakdown of 5 fundamental quantities -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-bold text-slate-900">1. Li độ ($x$)</span>
+            <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold font-mono">m hoặc cm</span>
+          </div>
+          <p class="text-slate-600 leading-relaxed">
+            Là độ dịch chuyển từ vị trí cân bằng (VTCB $x=0$) đến vị trí của vật tại thời điểm $t$. Li độ có thể nhận giá trị <strong>dương, âm hoặc bằng 0</strong>.
+          </p>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-bold text-slate-900">2. Biên độ ($A$)</span>
+            <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-bold font-mono">m hoặc cm</span>
+          </div>
+          <p class="text-slate-600 leading-relaxed">
+            Là độ dịch chuyển cực đại của vật tính từ VTCB. Biên độ <strong>luôn dương ($A > 0$)</strong>. Chiều dài quỹ đạo chuyển động là $L = 2A$.
+          </p>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-bold text-slate-900">3. Chu kì ($T$) & Tần số ($f$)</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold font-mono">s & Hz</span>
+          </div>
+          <p class="text-slate-600 leading-relaxed">
+            • <strong>Chu kì $T$:</strong> Khoảng thời gian để vật thực hiện được 1 dao động toàn phần.<br>
+            • <strong>Tần số $f = \frac{1}{T}$ (Hz):</strong> Số dao động vật thực hiện được trong $1\text{ s}$.
+          </p>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-bold text-slate-900">4. Tần số góc ($\omega$)</span>
+            <span class="px-2 py-0.5 rounded bg-purple-100 text-purple-800 font-bold font-mono">rad/s</span>
+          </div>
+          <p class="text-slate-600 leading-relaxed">
+            Mối liên hệ giữa các đại lượng:
+            $$\omega = \frac{2\pi}{T} = 2\pi f \iff T = \frac{2\pi}{\omega} \iff f = \frac{\omega}{2\pi}$$
+          </p>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-bold text-slate-900">5. Pha ban đầu ($\varphi$)</span>
+            <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold font-mono">rad</span>
+          </div>
+          <p class="text-slate-600 leading-relaxed">
+            Cho biết tại thời điểm bắt đầu quan sát ($t=0$), vật ở đâu và đi theo chiều nào. Theo quy ước chuẩn, $\varphi \in [-\pi; +\pi]\text{ rad}$.
+          </p>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-bold text-slate-900">6. Pha dao động ($\omega t + \varphi$)</span>
+            <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold font-mono">rad</span>
+          </div>
+          <p class="text-slate-600 leading-relaxed">
+            Là hàm bậc nhất theo thời gian $t$. Dùng để xác định <strong>trạng thái dao động</strong> (cả vị trí li độ $x$ và chiều chuyển động $v$) tại thời điểm $t$.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+        <h3 class="text-lg font-extrabold text-slate-900 flex items-center space-x-2">
+          <span class="text-xl">⚖️</span>
+          <span>2. Độ Lệch Pha Giữa Hai Dao Động Cùng Chu Kì ($\Delta\varphi$)</span>
+        </h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Xét hai dao động có cùng tần số góc: $x_1 = A_1 \cos(\omega t + \varphi_1)$ và $x_2 = A_2 \cos(\omega t + \varphi_2)$.<br>
+          Độ lệch pha luôn không đổi theo thời gian và bằng độ lệch pha ban đầu:
+          $$\Delta\varphi = (\omega t + \varphi_1) - (\omega t + \varphi_2) = \varphi_1 - \varphi_2$$
+        </p>
+
+        <!-- Phase relationship matrix -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <div class="p-3.5 rounded-xl border border-blue-200 bg-blue-50/60 space-y-1">
+            <span class="font-bold text-blue-900 text-sm block">1. Cùng (đồng) pha</span>
+            <p class="text-slate-700">• $\Delta\varphi = 2k\pi$ ($k \in \mathbb{Z}$)</p>
+            <p class="text-slate-700">• Lệch thời gian $\Delta t = k T$</p>
+            <p class="text-slate-700 font-semibold">• Cùng qua VTCB theo cùng 1 chiều.</p>
+          </div>
+
+          <div class="p-3.5 rounded-xl border border-rose-200 bg-rose-50/60 space-y-1">
+            <span class="font-bold text-rose-900 text-sm block">2. Ngược pha</span>
+            <p class="text-slate-700">• $\Delta\varphi = (2k+1)\pi$</p>
+            <p class="text-slate-700">• Lệch thời gian $\Delta t = (k + 0.5) T$</p>
+            <p class="text-slate-700 font-semibold">• Li độ đối dấu: $\frac{x_1}{A_1} = -\frac{x_2}{A_2}$.</p>
+          </div>
+
+          <div class="p-3.5 rounded-xl border border-amber-200 bg-amber-50/60 space-y-1">
+            <span class="font-bold text-amber-900 text-sm block">3. Vuông pha</span>
+            <p class="text-slate-700">• $\Delta\varphi = (2k+1)\frac{\pi}{2}$</p>
+            <p class="text-slate-700">• Lệch thời gian $\Delta t = \frac{T}{4}$</p>
+            <p class="text-slate-700 font-semibold">• Khi một vật ở biên thì vật kia qua VTCB.</p>
+          </div>
+
+          <div class="p-3.5 rounded-xl border border-purple-200 bg-purple-50/60 space-y-1">
+            <span class="font-bold text-purple-900 text-sm block">4. Lệch thời gian $\Delta t$</span>
+            <p class="text-slate-700">• Công thức vàng:</p>
+            <p class="font-mono text-purple-800 font-bold">$$\Delta\varphi = \omega \Delta t = \frac{2\pi \Delta t}{T}$$</p>
+            <p class="text-slate-700 font-semibold">• DĐ 1 đạt cực đại trước DĐ 2 $\implies$ DĐ 1 sớm pha.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 3: SMART OSCILLATION & PHASE CALCULATOR                   -->
+    <!-- ============================================================= -->
+    <section id="tab-calc" class="hidden space-y-6">
+      <div class="border-b border-slate-200 pb-4">
+        <span class="text-brand-600 font-bold text-xs uppercase tracking-wider">Bộ Công Cụ Tính Toán</span>
+        <h2 class="text-2xl font-extrabold text-slate-900">Máy Tính Thông Minh Thông Số Dao Động & Độ Lệch Pha</h2>
+        <p class="text-slate-600 text-sm mt-1">Nhập trực tiếp các thông số để tính chu kì, tần số, tần số góc, li độ tại $t$ và so sánh pha của hai dao động.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Input Panel -->
+        <div class="lg:col-span-6 bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+          <h3 class="font-bold text-slate-900 text-base">Nhập Phương Trình Dao Động</h3>
+          
+          <div class="space-y-3 text-xs">
+            <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 space-y-2">
+              <span class="font-bold text-blue-900 block">Dao Động 1: $x_1 = A_1 \cos(\omega t + \varphi_1)$</span>
+              <div class="grid grid-cols-3 gap-2">
+                <div>
+                  <label class="text-slate-600 block mb-1">Biên độ $A_1$ (cm):</label>
+                  <input type="number" id="calc_A1" value="10" step="0.5" class="w-full bg-white p-2 rounded-lg border border-slate-300 font-mono font-bold text-blue-700 focus:outline-none">
+                </div>
+                <div>
+                  <label class="text-slate-600 block mb-1">Tần số $f$ (Hz):</label>
+                  <input type="number" id="calc_f" value="2" step="0.1" class="w-full bg-white p-2 rounded-lg border border-slate-300 font-mono font-bold text-blue-700 focus:outline-none">
+                </div>
+                <div>
+                  <label class="text-slate-600 block mb-1">$\varphi_1$ (rad hoặc $\pi$):</label>
+                  <input type="text" id="calc_phi1" value="0" class="w-full bg-white p-2 rounded-lg border border-slate-300 font-mono font-bold text-blue-700 focus:outline-none" placeholder="vd: 0, pi/3, -pi/2">
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2">
+              <span class="font-bold text-emerald-900 block">Dao Động 2: $x_2 = A_2 \cos(\omega t + \varphi_2)$</span>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="text-slate-600 block mb-1">Biên độ $A_2$ (cm):</label>
+                  <input type="number" id="calc_A2" value="5" step="0.5" class="w-full bg-white p-2 rounded-lg border border-slate-300 font-mono font-bold text-emerald-700 focus:outline-none">
+                </div>
+                <div>
+                  <label class="text-slate-600 block mb-1">$\varphi_2$ (rad hoặc $\pi$):</label>
+                  <input type="text" id="calc_phi2" value="pi/2" class="w-full bg-white p-2 rounded-lg border border-slate-300 font-mono font-bold text-emerald-700 focus:outline-none" placeholder="vd: pi/2, -pi/4">
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+              <label class="font-bold text-slate-800 block">Thời điểm khảo sát $t$ (giây):</label>
+              <input type="number" id="calc_t" value="0.25" step="0.05" class="w-full bg-white p-2 rounded-lg border border-slate-300 font-mono font-bold text-brand-700 focus:outline-none">
+            </div>
+
+            <button onclick="computeOscParams()" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold transition shadow-sm">
+              🚀 Tính Toán & Phân Tích Độ Lệch Pha
+            </button>
+          </div>
+        </div>
+
+        <!-- Output Result Panel -->
+        <div class="lg:col-span-6 bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+          <h3 class="font-bold text-slate-900 text-base">Kết Quả Phân Tích Chi Tiết</h3>
+          
+          <div class="space-y-3 text-xs" id="calcOutputArea">
+            <div class="grid grid-cols-3 gap-2">
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="text-slate-500 block text-[11px]">Chu kì ($T$):</span>
+                <span id="out_T" class="text-base font-black text-brand-700 font-mono">0.50 s</span>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="text-slate-500 block text-[11px]">Tần số góc ($\omega$):</span>
+                <span id="out_omega" class="text-base font-black text-brand-700 font-mono">12.57 rad/s</span>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="text-slate-500 block text-[11px]">Quỹ đạo ($L_1$):</span>
+                <span id="out_L1" class="text-base font-black text-blue-600 font-mono">20 cm</span>
+              </div>
+            </div>
+
+            <div class="p-4 bg-slate-900 rounded-2xl text-white font-mono space-y-2">
+              <div class="text-amber-400 font-bold text-xs uppercase">Trạng thái tại thời điểm t:</div>
+              <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                <span>Pha dao động DĐ1:</span>
+                <span id="out_phase1" class="text-blue-300 font-bold">3.14 rad (π)</span>
+              </div>
+              <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                <span>Li độ $x_1(t)$:</span>
+                <span id="out_x1" class="text-blue-400 font-black text-sm">-10.00 cm</span>
+              </div>
+              <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                <span>Pha dao động DĐ2:</span>
+                <span id="out_phase2" class="text-emerald-300 font-bold">4.71 rad (1.5π)</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Li độ $x_2(t)$:</span>
+                <span id="out_x2" class="text-emerald-400 font-black text-sm">0.00 cm</span>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 space-y-1">
+              <span class="font-bold text-amber-900 block text-xs">Phân tích tương quan pha ($\Delta\varphi$):</span>
+              <p id="out_phaseRel" class="text-slate-700 leading-relaxed font-semibold">
+                $\Delta\varphi = -\pi/2\text{ rad} \implies$ Dao động 1 trễ pha hơn Dao động 2 một góc $\pi/2$ (hoặc Dao động 2 sớm pha hơn Dao động 1 một góc $\pi/2$, vuông pha).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 4: INTERACTIVE FILL-IN & MATCHING GAMES                  -->
+    <!-- ============================================================= -->
+    <section id="tab-games" class="hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between border-b border-slate-200 pb-4 gap-3">
+        <div>
+          <span class="text-brand-600 font-bold text-xs uppercase tracking-wider">Luyện Tập Tương Tác</span>
+          <h2 class="text-2xl font-extrabold text-slate-900">Bài Tập Tự Điền Khuyết & Nối Cặp Khái Niệm</h2>
+        </div>
+
+        <div class="flex space-x-1 p-1 bg-slate-100 rounded-xl text-xs font-bold">
+          <button onclick="switchGameMode('fill')" id="subtab-btn-fill" class="px-3.5 py-1.5 rounded-lg bg-white text-brand-700 shadow-xs">
+            ✍️ Điền Từ Khuyết (Câu 1)
+          </button>
+          <button onclick="switchGameMode('match')" id="subtab-btn-match" class="px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900">
+            🔗 Nối Kí Hiệu & Khái Niệm (Câu 2)
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Subtab 1: Fill in the Blank -->
+      <div id="game-fill-container" class="space-y-4">
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-slate-900 text-base">Câu 1: Điền khuyết các từ khóa thích hợp vào chỗ trống</h3>
+              <p class="text-xs text-slate-500 mt-0.5">Nhập câu trả lời vào các ô trống dưới đây và nhấn "Kiểm tra đáp án".</p>
+            </div>
+            <span class="text-xs font-bold px-3 py-1 bg-brand-50 text-brand-700 border border-brand-200 rounded-full">
+              Từ tài liệu chuẩn
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm text-slate-700">
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+              <span class="font-bold text-brand-600 mr-1">a.</span>
+              Li độ $x$ là <input type="text" id="fill_a" placeholder="..." class="px-2 py-1 bg-white border border-slate-300 rounded font-semibold text-brand-700 mx-1 w-32 focus:outline-brand-600 text-xs"> từ vị trí cân bằng đến vị trí của vật tại thời điểm $t$.
+              <span id="fb_fill_a" class="block mt-1 font-bold text-xs"></span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+              <span class="font-bold text-brand-600 mr-1">b.</span>
+              Biên độ $A$ là độ dịch chuyển <input type="text" id="fill_b1" placeholder="..." class="px-2 py-1 bg-white border border-slate-300 rounded font-semibold text-brand-700 mx-1 w-24 focus:outline-brand-600 text-xs"> của vật tính từ <input type="text" id="fill_b2" placeholder="..." class="px-2 py-1 bg-white border border-slate-300 rounded font-semibold text-brand-700 mx-1 w-32 focus:outline-brand-600 text-xs">.
+              <span id="fb_fill_b" class="block mt-1 font-bold text-xs"></span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+              <span class="font-bold text-brand-600 mr-1">c.</span>
+              Chu kì là <input type="text" id="fill_c" placeholder="..." class="px-2 py-1 bg-white border border-slate-300 rounded font-semibold text-brand-700 mx-1 w-36 focus:outline-brand-600 text-xs"> để vật thực hiện một dao động, kí hiệu là $T$.
+              <span id="fb_fill_c" class="block mt-1 font-bold text-xs"></span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+              <span class="font-bold text-brand-600 mr-1">d.</span>
+              Tần số là <input type="text" id="fill_d" placeholder="..." class="px-2 py-1 bg-white border border-slate-300 rounded font-semibold text-brand-700 mx-1 w-32 focus:outline-brand-600 text-xs"> mà vật thực hiện được trong một giây, kí hiệu là $f$.
+              <span id="fb_fill_d" class="block mt-1 font-bold text-xs"></span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+              <span class="font-bold text-brand-600 mr-1">e.</span>
+              Nếu $\varphi_1 > \varphi_2$ thì dao động 1 <input type="text" id="fill_e" placeholder="..." class="px-2 py-1 bg-white border border-slate-300 rounded font-semibold text-brand-700 mx-1 w-28 focus:outline-brand-600 text-xs"> hơn dao động 2.
+              <span id="fb_fill_e" class="block mt-1 font-bold text-xs"></span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+              <span class="font-bold text-brand-600 mr-1">f.</span>
+              Nếu $\varphi_1 < \varphi_2$ thì dao động 1 <input type="text" id="fill_f" placeholder="..." class="px-2 py-1 bg-white border border-slate-300 rounded font-semibold text-brand-700 mx-1 w-28 focus:outline-brand-600 text-xs"> hơn dao động 2.
+              <span id="fb_fill_f" class="block mt-1 font-bold text-xs"></span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+              <span class="font-bold text-brand-600 mr-1">g.</span>
+              Nếu $\varphi_1 = \varphi_2$ thì dao động 1 <input type="text" id="fill_g" placeholder="..." class="px-2 py-1 bg-white border border-slate-300 rounded font-semibold text-brand-700 mx-1 w-36 focus:outline-brand-600 text-xs"> với dao động 2.
+              <span id="fb_fill_g" class="block mt-1 font-bold text-xs"></span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+              <span class="font-bold text-brand-600 mr-1">h.</span>
+              Nếu <input type="text" id="fill_h" placeholder="..." class="px-2 py-1 bg-white border border-slate-300 rounded font-semibold text-brand-700 mx-1 w-36 focus:outline-brand-600 text-xs"> thì dao động 1 ngược pha với dao động 2.
+              <span id="fb_fill_h" class="block mt-1 font-bold text-xs"></span>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button onclick="checkFillAnswers()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-sm transition">
+              Kiểm Tra Toàn Bộ Điền Khuyết
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Subtab 2: Matching Game -->
+      <div id="game-match-container" class="hidden space-y-4">
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100">
+            <div>
+              <h3 class="font-bold text-slate-900 text-base">Câu 2: Hãy nối những kí hiệu tương ứng ở Cột A với khái niệm ở Cột B</h3>
+              <p class="text-xs text-slate-500 mt-0.5">Nhấp chọn 1 mục ở Cột A, sau đó nhấp chọn mục tương ứng ở Cột B.</p>
+            </div>
+            <div class="flex items-center space-x-3">
+              <span id="txtMatchProgress" class="text-xs font-bold px-3 py-1 bg-brand-50 text-brand-700 border border-brand-200 rounded-full">
+                Tiến độ: 0/4
+              </span>
+              <button onclick="resetMatchGame()" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold">
+                🔄 Làm lại
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Column A -->
+            <div class="space-y-3">
+              <span class="font-bold text-xs uppercase text-blue-700 tracking-wider block">CỘT A (KÍ HIỆU ĐẠI LƯỢNG)</span>
+              <div id="matchColA" class="space-y-2"></div>
+            </div>
+
+            <!-- Column B -->
+            <div class="space-y-3">
+              <span class="font-bold text-xs uppercase text-purple-700 tracking-wider block">CỘT B (KHÁI NIỆM & ĐƠN VỊ)</span>
+              <div id="matchColB" class="space-y-2"></div>
+            </div>
+          </div>
+
+          <div id="matchSuccessBadge" class="hidden p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-center font-bold text-xs">
+            🎉 Xuất sắc! Bạn đã ghép nối chính xác 100% các kí hiệu với khái niệm tương ứng!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 5: COMPREHENSIVE MULTIPLE CHOICE QUESTIONS DATABASE      -->
+    <!-- ============================================================= -->
+    <section id="tab-quiz" class="hidden space-y-6">
+      <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
+          <div>
+            <span class="text-brand-600 font-bold text-xs uppercase tracking-wider">Ngân Hàng Trắc Nghiệm Chuẩn Hóa</span>
+            <h3 class="font-extrabold text-slate-900 text-xl">45+ Câu Hỏi Trắc Nghiệm Theo Phân Mức Độ</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Trích xuất đầy đủ 100% các câu hỏi Nhận biết, Thông hiểu, Vận dụng Dạng 1 & Dạng 2 từ tài liệu.</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <select id="quizFilter" onchange="filterQuizCategory()" class="text-xs font-semibold px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none">
+              <option value="all">Tất cả câu hỏi</option>
+              <option value="nb">Nhận biết (Câu 1 - 11)</option>
+              <option value="th">Thông hiểu (Câu 12 - 19)</option>
+              <option value="vd1">Vận dụng Dạng 1 (Đại lượng đặc trưng)</option>
+              <option value="vd2">Vận dụng Dạng 2 (Độ lệch pha)</option>
+            </select>
+            <button onclick="gradeFullQuiz()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-sm transition">
+              Nộp Bài & Chấm Điểm
+            </button>
+          </div>
+        </div>
+
+        <!-- Score Header Result Banner -->
+        <div id="quizScoreBanner" class="hidden p-5 rounded-2xl bg-gradient-to-r from-brand-600 to-indigo-800 text-white flex items-center justify-between shadow-lg">
+          <div>
+            <span class="text-xs uppercase tracking-wider block opacity-90">Kết Quả Bài Làm Của Bạn</span>
+            <div class="text-2xl font-black">
+              Điểm: <span id="txtQuizScore">0/0</span> (<span id="txtQuizPercent">0%</span>)
+            </div>
+          </div>
+          <button onclick="resetFullQuizAnswers()" class="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-xl text-xs font-bold backdrop-blur">
+            Làm lại bài thi
+          </button>
+        </div>
+
+        <!-- Questions List Container -->
+        <div id="quizContainer" class="space-y-4"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 6: ESSAY QUESTIONS & GRAPH EXTRACTION CASES               -->
+    <!-- ============================================================= -->
+    <section id="tab-essay" class="hidden space-y-6">
+      <div class="border-b border-slate-200 pb-4">
+        <span class="text-brand-600 font-bold text-xs uppercase tracking-wider">Phân Dạng Tự Luận & Đồ Thị</span>
+        <h2 class="text-2xl font-extrabold text-slate-900">19 Bài Toán Tự Luận & Khai Thác Đồ Thị Thực Tế</h2>
+        <p class="text-slate-600 text-sm mt-1">Hướng dẫn giải chi tiết từng bước cho các bài tập Dạng 1 (Đại lượng đặc trưng) và Dạng 2 (Độ lệch pha giữa 2 dao động).</p>
+      </div>
+
+      <!-- Filter between Dạng 1 and Dạng 2 -->
+      <div class="flex space-x-2">
+        <button onclick="filterEssayType('all')" id="btnEssayAll" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-600 text-white shadow-xs">Tất cả 19 bài</button>
+        <button onclick="filterEssayType('d1')" id="btnEssayD1" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700">Dạng 1: Đại lượng đặc trưng (7 bài)</button>
+        <button onclick="filterEssayType('d2')" id="btnEssayD2" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700">Dạng 2: Độ lệch pha (12 bài)</button>
+      </div>
+
+      <div id="essayCardsContainer" class="space-y-4"></div>
+    </section>
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="font-bold text-slate-700">Chuyên Đề 1: Dao Động • Chủ Đề 2: Mô Tả Dao Động Điều Hòa</p>
+      <p class="mt-1">Biên soạn chuẩn theo phân phối chương trình Vật lí 11 • Tương thích mọi thiết bị di động và máy tính bảng.</p>
+    </div>
+  </footer>
+
+  <!-- ============================================================= -->
+  <!-- JAVASCRIPT LOGIC ENGINE                                       -->
+  <!-- ============================================================= -->
+  <script>
+    const state = {
+      isPlaying: true,
+      time: 0,
+      speed: 1.0,
+      showOsc2: true,
+      T: 2.0,
+      A1: 10,
+      phi1: 0,
+      A2: 6,
+      phi2: 0,
+      trail1: [],
+      trail2: []
+    };
+
+    /* Tab Switching Helper */
+    function switchTab(tabId) {
+      document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+      const activeSec = document.getElementById('tab-' + tabId);
+      if (activeSec) activeSec.classList.remove('hidden');
+
+      // Desktop nav button styling
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.className = "tab-btn px-3 py-2 rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900";
+      });
+      const activeBtn = document.getElementById('tab-btn-' + tabId);
+      if (activeBtn) activeBtn.className = "tab-btn px-3 py-2 rounded-lg transition-all duration-200 bg-white text-brand-700 shadow-xs";
+
+      // Mobile nav button styling
+      document.querySelectorAll('.m-tab-btn').forEach(btn => {
+        btn.className = "m-tab-btn px-2.5 py-1.5 rounded-lg text-slate-600 whitespace-nowrap";
+      });
+      const activeMBtn = document.getElementById('m-tab-btn-' + tabId);
+      if (activeMBtn) activeMBtn.className = "m-tab-btn px-2.5 py-1.5 rounded-lg text-brand-700 bg-white shadow-xs whitespace-nowrap";
+
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});
+      }
+    }
+
+    /* Toast Helper */
+    function showAppToast(msg, icon = "💡") {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.remove('opacity-0', 'translate-y-24', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-24', 'pointer-events-none');
+      }, 3000);
+    }
+
+    /* Clean Vietnamese Text Helper */
+    function cleanStr(s) {
+      return (s || '').toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeSimCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+
+    window.addEventListener('resize', resizeSimCanvas);
+
+    function togglePlayPause() {
+      state.isPlaying = !state.isPlaying;
+      document.getElementById('iconPlay').innerText = state.isPlaying ? "⏸️" : "▶️";
+      document.getElementById('txtPlay').innerText = state.isPlaying ? "Tạm Dừng" : "Tiếp Tục";
+      showAppToast(state.isPlaying ? "Đã tiếp tục mô phỏng" : "Đã tạm dừng mô phỏng", state.isPlaying ? "▶️" : "⏸️");
+    }
+
+    function resetSimTime() {
+      state.time = 0;
+      state.trail1 = [];
+      state.trail2 = [];
+      showAppToast("Đã đưa thời gian về t = 0s", "🔄");
+    }
+
+    function toggleOsc2Visibility() {
+      state.showOsc2 = !state.showOsc2;
+      document.getElementById('btnToggleOsc2').className = state.showOsc2 
+        ? "px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold transition"
+        : "px-3 py-2 bg-slate-100 text-slate-500 rounded-xl text-xs font-bold transition";
+      showAppToast(state.showOsc2 ? "Đã hiển thị Dao Động 2" : "Đã ẩn Dao Động 2", "👁️");
+    }
+
+    function setSimSpeed(s) {
+      state.speed = s;
+      document.querySelectorAll('.speed-btn').forEach(b => {
+        b.className = "speed-btn px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700";
+      });
+      event.target.className = "speed-btn px-2 py-1 rounded bg-brand-600 text-white font-bold";
+    }
+
+    /* Update parameters from Sliders */
+    function updateSimParams() {
+      state.T = parseFloat(document.getElementById('sliderT').value);
+      state.A1 = parseFloat(document.getElementById('sliderA1').value);
+      state.phi1 = parseFloat(document.getElementById('sliderPhi1').value);
+      state.A2 = parseFloat(document.getElementById('sliderA2').value);
+      state.phi2 = parseFloat(document.getElementById('sliderPhi2').value);
+
+      const f = 1 / state.T;
+      const omega = 2 * Math.PI / state.T;
+
+      document.getElementById('txtValT').innerText = `${state.T.toFixed(1)} s`;
+      document.getElementById('txtValF').innerText = `${f.toFixed(2)} Hz`;
+      document.getElementById('txtValOmega').innerText = `${omega.toFixed(2)} rad/s`;
+
+      document.getElementById('txtValA1').innerText = `${state.A1} cm`;
+      document.getElementById('txtValA2').innerText = `${state.A2} cm`;
+
+      const deg1 = Math.round(state.phi1 * 180 / Math.PI);
+      const deg2 = Math.round(state.phi2 * 180 / Math.PI);
+      document.getElementById('txtValPhi1').innerText = `${state.phi1.toFixed(2)} rad (${deg1}°)`;
+      document.getElementById('txtValPhi2').innerText = `${state.phi2.toFixed(2)} rad (${deg2}°)`;
+
+      document.getElementById('txtValEq1').innerText = `x₁ = ${state.A1}cos(${omega.toFixed(1)}t ${state.phi1 >= 0 ? '+' : ''}${state.phi1.toFixed(2)})`;
+      document.getElementById('txtValEq2').innerText = `x₂ = ${state.A2}cos(${omega.toFixed(1)}t ${state.phi2 >= 0 ? '+' : ''}${state.phi2.toFixed(2)})`;
+
+      updatePhaseSummary();
+    }
+
+    /* Phase Preset Helper */
+    function setPhasePreset(type) {
+      if (type === 'same') {
+        document.getElementById('sliderPhi1').value = 0;
+        document.getElementById('sliderPhi2').value = 0;
+      } else if (type === 'opposite') {
+        document.getElementById('sliderPhi1').value = 0;
+        document.getElementById('sliderPhi2').value = 3.14159;
+      } else if (type === 'quadrature') {
+        document.getElementById('sliderPhi1').value = 0;
+        document.getElementById('sliderPhi2').value = -1.5708;
+      } else if (type === 'quarter') {
+        document.getElementById('sliderPhi1').value = 1.5708;
+        document.getElementById('sliderPhi2').value = 0;
+      }
+      updateSimParams();
+      showAppToast("Đã áp dụng mẫu cấu hình độ lệch pha!", "🎯");
+    }
+
+    function updatePhaseSummary() {
+      let dPhi = state.phi1 - state.phi2;
+      // normalize to [-pi, pi]
+      while (dPhi > Math.PI) dPhi -= 2 * Math.PI;
+      while (dPhi < -Math.PI) dPhi += 2 * Math.PI;
+
+      const deg = Math.round(dPhi * 180 / Math.PI);
+      let desc = "";
+      if (Math.abs(dPhi) < 0.08) {
+        desc = "Đồng pha";
+      } else if (Math.abs(Math.abs(dPhi) - Math.PI) < 0.08) {
+        desc = "Ngược pha";
+      } else if (Math.abs(Math.abs(dPhi) - Math.PI / 2) < 0.08) {
+        desc = dPhi > 0 ? "DĐ 1 sớm pha π/2 so với DĐ 2 (Vuông pha)" : "DĐ 1 trễ pha π/2 so với DĐ 2 (Vuông pha)";
+      } else if (dPhi > 0) {
+        desc = `DĐ 1 sớm pha hơn DĐ 2 một góc ${dPhi.toFixed(2)} rad`;
+      } else {
+        desc = `DĐ 1 trễ pha hơn DĐ 2 một góc ${Math.abs(dPhi).toFixed(2)} rad`;
+      }
+
+      document.getElementById('hud_deltaPhi').innerText = `${dPhi.toFixed(2)} rad (${deg}° / ${desc})`;
+      
+      const pBox = document.getElementById('phaseConclusionText');
+      if (Math.abs(dPhi) < 0.08) {
+        pBox.innerHTML = `Hai dao động <strong>cùng pha</strong> ($\Delta\\varphi = 0$). Hai vật luôn cùng qua vị trí cân bằng theo cùng một hướng và đạt biên cùng lúc.`;
+      } else if (Math.abs(Math.abs(dPhi) - Math.PI) < 0.08) {
+        pBox.innerHTML = `Hai dao động <strong>ngược pha</strong> ($\Delta\\varphi = \\pi$). Khi vật 1 ở biên dương thì vật 2 ở biên âm; li độ luôn đối dấu nhau.`;
+      } else if (Math.abs(Math.abs(dPhi) - Math.PI / 2) < 0.08) {
+        pBox.innerHTML = `Hai dao động <strong>vuông pha</strong> ($\Delta\\varphi = \\pm\\pi/2$). Khi một vật đạt biên thì vật kia đang đi qua vị trí cân bằng.`;
+      } else {
+        const dt = (Math.abs(dPhi) / (2 * Math.PI) * state.T).toFixed(2);
+        pBox.innerHTML = `Hai dao động lệch pha $\\Delta\\varphi = ${dPhi.toFixed(2)}\\text{ rad}$, tương ứng độ lệch thời gian $\\Delta t = ${dt}\\text{ s}$.`;
+      }
+    }
+
+    let lastFrameTime = performance.now();
+
+    function renderSimulationFrame(currentTime) {
+      const dt = (currentTime - lastFrameTime) / 1000;
+      lastFrameTime = currentTime;
+
+      if (state.isPlaying) {
+        state.time += dt * state.speed;
+      }
+
+      const w = canvas.getBoundingClientRect().width;
+      const h = canvas.getBoundingClientRect().height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const omega = 2 * Math.PI / state.T;
+      const currentPhase1 = omega * state.time + state.phi1;
+      const currentPhase2 = omega * state.time + state.phi2;
+
+      const x1 = state.A1 * Math.cos(currentPhase1);
+      const x2 = state.A2 * Math.cos(currentPhase2);
+
+      document.getElementById('hud_x1').innerText = `x₁ = ${(x1 >= 0 ? '+' : '')}${x1.toFixed(2)} cm`;
+      document.getElementById('hud_x2').innerText = `x₂ = ${(x2 >= 0 ? '+' : '')}${x2.toFixed(2)} cm`;
+
+      // Split canvas layout:
+      // Left side: Phasor circle & Physical springs (30% width)
+      // Right side: Realtime Waveform x - t (70% width)
+      const dividerX = Math.min(w * 0.32, 240);
+
+      // --- Left Section: Background ---
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(0, 0, dividerX, h);
+
+      // Draw Phasor Circle (Circle of reference)
+      const circleCenterX = dividerX / 2;
+      const circleCenterY = 110;
+      const circleRadius = 65;
+
+      ctx.strokeStyle = "#334155";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(circleCenterX, circleCenterY, circleRadius, 0, 2 * Math.PI);
+      ctx.stroke();
+
+      // Axes inside circle
+      ctx.strokeStyle = "#475569";
+      ctx.beginPath();
+      ctx.moveTo(circleCenterX - circleRadius - 10, circleCenterY);
+      ctx.lineTo(circleCenterX + circleRadius + 10, circleCenterY);
+      ctx.moveTo(circleCenterX, circleCenterY - circleRadius - 10);
+      ctx.lineTo(circleCenterX, circleCenterY + circleRadius + 10);
+      ctx.stroke();
+
+      // Phasor 1 (Blue)
+      const p1X = circleCenterX + (x1 / 15) * circleRadius;
+      const p1Y = circleCenterY - (state.A1 * Math.sin(currentPhase1) / 15) * circleRadius;
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(circleCenterX, circleCenterY);
+      ctx.lineTo(p1X, p1Y);
+      ctx.stroke();
+      ctx.fillStyle = "#38bdf8";
+      ctx.beginPath();
+      ctx.arc(p1X, p1Y, 4, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Phasor 2 (Green)
+      if (state.showOsc2) {
+        const p2X = circleCenterX + (x2 / 15) * circleRadius;
+        const p2Y = circleCenterY - (state.A2 * Math.sin(currentPhase2) / 15) * circleRadius;
+        ctx.strokeStyle = "#34d399";
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(circleCenterX, circleCenterY);
+        ctx.lineTo(p2X, p2Y);
+        ctx.stroke();
+        ctx.fillStyle = "#34d399";
+        ctx.beginPath();
+        ctx.arc(p2X, p2Y, 4, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "10px sans-serif";
+      ctx.fillText("VÒNG TRÒN LƯỢNG GIÁC", 14, 25);
+
+      // Draw 2 Horizontal Mass-Spring Simulators
+      const springStartX = 25;
+      const springZeroX = circleCenterX;
+      const maxDisplacementPx = circleRadius;
+
+      // Spring 1
+      const mass1Y = 225;
+      ctx.fillStyle = "#38bdf8";
+      ctx.font = "bold 10px sans-serif";
+      ctx.fillText("Vật 1 (x₁):", 15, mass1Y - 14);
+
+      const mass1X = springZeroX + (x1 / 15) * maxDisplacementPx;
+      drawCoilSpring(springStartX, mass1Y, mass1X - 12, mass1Y, 12, "#64748b");
+      ctx.fillStyle = "#2563eb";
+      ctx.fillRect(mass1X - 12, mass1Y - 12, 24, 24);
+      ctx.strokeStyle = "#93c5fd";
+      ctx.strokeRect(mass1X - 12, mass1Y - 12, 24, 24);
+
+      // Spring 2
+      if (state.showOsc2) {
+        const mass2Y = 300;
+        ctx.fillStyle = "#34d399";
+        ctx.font = "bold 10px sans-serif";
+        ctx.fillText("Vật 2 (x₂):", 15, mass2Y - 14);
+
+        const mass2X = springZeroX + (x2 / 15) * maxDisplacementPx;
+        drawCoilSpring(springStartX, mass2Y, mass2X - 12, mass2Y, 12, "#64748b");
+        ctx.fillStyle = "#059669";
+        ctx.fillRect(mass2X - 12, mass2Y - 12, 24, 24);
+        ctx.strokeStyle = "#a7f3d0";
+        ctx.strokeRect(mass2X - 12, mass2Y - 12, 24, 24);
+      }
+
+      // Vertical separator line
+      ctx.strokeStyle = "#1e293b";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(dividerX, 0);
+      ctx.lineTo(dividerX, h);
+      ctx.stroke();
+
+      // --- Right Section: Realtime Waveform Graph (x - t) ---
+      const waveAreaLeft = dividerX + 20;
+      const waveAreaRight = w - 20;
+      const waveAreaWidth = waveAreaRight - waveAreaLeft;
+      const waveCenterY = h / 2 - 20;
+      const scaleY = (h * 0.32) / 15; // 15cm fits
+
+      // Graph Grid Lines
+      ctx.strokeStyle = "#1e293b";
+      ctx.lineWidth = 1;
+      for (let gridY = -15; gridY <= 15; gridY += 5) {
+        const y = waveCenterY - gridY * scaleY;
+        ctx.beginPath();
+        ctx.moveTo(waveAreaLeft, y);
+        ctx.lineTo(waveAreaRight, y);
+        ctx.stroke();
+      }
+
+      // Time Axis (t)
+      ctx.strokeStyle = "#475569";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(waveAreaLeft, waveCenterY);
+      ctx.lineTo(waveAreaRight + 10, waveCenterY);
+      ctx.stroke();
+
+      // Axis label
+      ctx.fillStyle = "#cbd5e1";
+      ctx.font = "bold 11px sans-serif";
+      ctx.fillText("t (s)", waveAreaRight + 2, waveCenterY + 14);
+      ctx.fillText("+A (cm)", waveAreaLeft - 5, waveCenterY - 15 * scaleY - 6);
+      ctx.fillText("-A (cm)", waveAreaLeft - 5, waveCenterY + 15 * scaleY + 14);
+      ctx.fillText("0", waveAreaLeft - 12, waveCenterY + 4);
+
+      // Display 2 full cycles in window
+      const timeWindow = 2.5 * state.T;
+      const pxPerSec = waveAreaWidth / timeWindow;
+
+      // Draw historical / prospective sine curves
+      // Waveform 1 (Blue)
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let px = 0; px <= waveAreaWidth; px += 2) {
+        const tSample = state.time + (px - waveAreaWidth * 0.25) / pxPerSec;
+        const xSample = state.A1 * Math.cos(omega * tSample + state.phi1);
+        const screenY = waveCenterY - xSample * scaleY;
+        if (px === 0) ctx.moveTo(waveAreaLeft + px, screenY);
+        else ctx.lineTo(waveAreaLeft + px, screenY);
+      }
+      ctx.stroke();
+
+      // Waveform 2 (Green)
+      if (state.showOsc2) {
+        ctx.strokeStyle = "#34d399";
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        for (let px = 0; px <= waveAreaWidth; px += 2) {
+          const tSample = state.time + (px - waveAreaWidth * 0.25) / pxPerSec;
+          const xSample = state.A2 * Math.cos(omega * tSample + state.phi2);
+          const screenY = waveCenterY - xSample * scaleY;
+          if (px === 0) ctx.moveTo(waveAreaLeft + px, screenY);
+          else ctx.lineTo(waveAreaLeft + px, screenY);
+        }
+        ctx.stroke();
+      }
+
+      // Marker line at Current Time t
+      const markerScreenX = waveAreaLeft + waveAreaWidth * 0.25;
+      ctx.strokeStyle = "#fbbf24";
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(markerScreenX, 20);
+      ctx.lineTo(markerScreenX, h - 50);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Point 1 marker
+      ctx.fillStyle = "#38bdf8";
+      ctx.beginPath();
+      ctx.arc(markerScreenX, waveCenterY - x1 * scaleY, 6, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Point 2 marker
+      if (state.showOsc2) {
+        ctx.fillStyle = "#34d399";
+        ctx.beginPath();
+        ctx.arc(markerScreenX, waveCenterY - x2 * scaleY, 6, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(renderSimulationFrame);
+    }
+
+    /* Spring Drawing Helper */
+    function drawCoilSpring(x1, y1, x2, y2, coils, strokeStyle) {
+      ctx.strokeStyle = strokeStyle;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      const dx = x2 - x1;
+      const step = dx / (coils * 2);
+      for (let i = 0; i < coils * 2; i++) {
+        const px = x1 + (i + 0.5) * step;
+        const py = y1 + (i % 2 === 0 ? -9 : 9);
+        ctx.lineTo(px, py);
+      }
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+
+    function parseMathExpr(str) {
+      let s = (str || '').trim().toLowerCase();
+      s = s.replace(/pi/g, Math.PI);
+      try {
+        // Safe evaluation for basic math expression
+        return Function(`'use strict'; return (${s})`)();
+      } catch (e) {
+        return 0;
+      }
+    }
+
+    function computeOscParams() {
+      const A1 = Math.abs(parseFloat(document.getElementById('calc_A1').value) || 10);
+      const f = Math.abs(parseFloat(document.getElementById('calc_f').value) || 2);
+      const phi1 = parseMathExpr(document.getElementById('calc_phi1').value);
+      const A2 = Math.abs(parseFloat(document.getElementById('calc_A2').value) || 5);
+      const phi2 = parseMathExpr(document.getElementById('calc_phi2').value);
+      const t = parseFloat(document.getElementById('calc_t').value) || 0;
+
+      const T = 1 / f;
+      const omega = 2 * Math.PI * f;
+
+      const phase1 = omega * t + phi1;
+      const phase2 = omega * t + phi2;
+
+      const x1 = A1 * Math.cos(phase1);
+      const x2 = A2 * Math.cos(phase2);
+
+      let dPhi = phi1 - phi2;
+      while (dPhi > Math.PI) dPhi -= 2 * Math.PI;
+      while (dPhi < -Math.PI) dPhi += 2 * Math.PI;
+
+      document.getElementById('out_T').innerText = `${T.toFixed(3)} s`;
+      document.getElementById('out_omega').innerText = `${omega.toFixed(2)} rad/s`;
+      document.getElementById('out_L1').innerText = `${(2 * A1).toFixed(1)} cm`;
+
+      document.getElementById('out_phase1').innerText = `${phase1.toFixed(2)} rad (${(phase1 / Math.PI).toFixed(2)}π)`;
+      document.getElementById('out_x1').innerText = `${x1.toFixed(2)} cm`;
+
+      document.getElementById('out_phase2').innerText = `${phase2.toFixed(2)} rad (${(phase2 / Math.PI).toFixed(2)}π)`;
+      document.getElementById('out_x2').innerText = `${x2.toFixed(2)} cm`;
+
+      let relText = "";
+      if (Math.abs(dPhi) < 0.01) {
+        relText = `$$\\Delta\\varphi = 0\\text{ rad} \\implies$$ Hai dao động <strong>cùng pha (đồng pha)</strong>.`;
+      } else if (Math.abs(Math.abs(dPhi) - Math.PI) < 0.01) {
+        relText = `$$\\Delta\\varphi = \\pi\\text{ rad} \\implies$$ Hai dao động <strong>ngược pha</strong>. Li độ hai vật luôn đối dấu nhau.`;
+      } else if (Math.abs(Math.abs(dPhi) - Math.PI / 2) < 0.01) {
+        relText = dPhi > 0 
+          ? `$$\\Delta\\varphi = +\\frac{\\pi}{2}\\text{ rad} \\implies$$ Dao động 1 <strong>sớm pha hơn</strong> dao động 2 một góc $\\frac{\\pi}{2}$ (Vuông pha).`
+          : `$$\\Delta\\varphi = -\\frac{\\pi}{2}\\text{ rad} \\implies$$ Dao động 1 <strong>trễ pha hơn</strong> dao động 2 một góc $\\frac{\\pi}{2}$ (Vuông pha).`;
+      } else if (dPhi > 0) {
+        relText = `$$\\Delta\\varphi = ${dPhi.toFixed(2)}\\text{ rad} \\implies$$ Dao động 1 <strong>sớm pha hơn</strong> dao động 2 một góc $${dPhi.toFixed(2)}\\text{ rad}$.`;
+      } else {
+        relText = `$$\\Delta\\varphi = ${dPhi.toFixed(2)}\\text{ rad} \\implies$$ Dao động 1 <strong>trễ pha hơn</strong> dao động 2 một góc $${Math.abs(dPhi).toFixed(2)}\\text{ rad}$.`;
+      }
+
+      document.getElementById('out_phaseRel').innerHTML = relText;
+
+      if (window.renderMathInElement) {
+        renderMathInElement(document.getElementById('calcOutputArea'), {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});
+      }
+
+      showAppToast("Đã hoàn tất tính toán thông số!", "🎯");
+    }
+
+    function checkFillAnswers() {
+      let score = 0;
+      const tests = [
+        { id: 'fill_a', fb: 'fb_fill_a', key: 'do dich chuyen', ans: 'độ dịch chuyển' },
+        { id: 'fill_b1', fb: 'fb_fill_b', key: 'cuc dai', ans: 'cực đại' },
+        { id: 'fill_b2', fb: 'fb_fill_b', key: 'vi tri can bang', ans: 'vị trí cân bằng' },
+        { id: 'fill_c', fb: 'fb_fill_c', key: 'khoang thoi gian', ans: 'khoảng thời gian' },
+        { id: 'fill_d', fb: 'fb_fill_d', key: 'so dao dong', ans: 'số dao động' },
+        { id: 'fill_e', fb: 'fb_fill_e', key: 'som pha', ans: 'sớm pha' },
+        { id: 'fill_f', fb: 'fb_fill_f', key: 'tre pha', ans: 'trễ pha' },
+        { id: 'fill_g', fb: 'fb_fill_g', key: 'cung pha', keyAlt: 'dong pha', ans: 'cùng (đồng) pha' },
+        { id: 'fill_h', fb: 'fb_fill_h', key: 'pi', ans: 'φ1 = φ2 ± π' }
+      ];
+
+      // Check individually
+      const valA = cleanStr(document.getElementById('fill_a').value);
+      if (valA.includes('do dich chuyen')) {
+        document.getElementById('fb_fill_a').innerText = "✓ Chính xác (độ dịch chuyển)";
+        document.getElementById('fb_fill_a').className = "block mt-1 font-bold text-xs text-emerald-600";
+        score++;
+      } else {
+        document.getElementById('fb_fill_a').innerText = "✗ Đáp án: độ dịch chuyển";
+        document.getElementById('fb_fill_a').className = "block mt-1 font-bold text-xs text-rose-500";
+      }
+
+      const valB1 = cleanStr(document.getElementById('fill_b1').value);
+      const valB2 = cleanStr(document.getElementById('fill_b2').value);
+      if (valB1.includes('cuc dai') && valB2.includes('vi tri can bang')) {
+        document.getElementById('fb_fill_b').innerText = "✓ Chính xác (cực đại - vị trí cân bằng)";
+        document.getElementById('fb_fill_b').className = "block mt-1 font-bold text-xs text-emerald-600";
+        score++;
+      } else {
+        document.getElementById('fb_fill_b').innerText = "✗ Đáp án: cực đại - vị trí cân bằng";
+        document.getElementById('fb_fill_b').className = "block mt-1 font-bold text-xs text-rose-500";
+      }
+
+      const valC = cleanStr(document.getElementById('fill_c').value);
+      if (valC.includes('khoang thoi gian')) {
+        document.getElementById('fb_fill_c').innerText = "✓ Chính xác (khoảng thời gian)";
+        document.getElementById('fb_fill_c').className = "block mt-1 font-bold text-xs text-emerald-600";
+        score++;
+      } else {
+        document.getElementById('fb_fill_c').innerText = "✗ Đáp án: khoảng thời gian";
+        document.getElementById('fb_fill_c').className = "block mt-1 font-bold text-xs text-rose-500";
+      }
+
+      const valD = cleanStr(document.getElementById('fill_d').value);
+      if (valD.includes('so dao dong')) {
+        document.getElementById('fb_fill_d').innerText = "✓ Chính xác (số dao động)";
+        document.getElementById('fb_fill_d').className = "block mt-1 font-bold text-xs text-emerald-600";
+        score++;
+      } else {
+        document.getElementById('fb_fill_d').innerText = "✗ Đáp án: số dao động";
+        document.getElementById('fb_fill_d').className = "block mt-1 font-bold text-xs text-rose-500";
+      }
+
+      const valE = cleanStr(document.getElementById('fill_e').value);
+      if (valE.includes('som pha') || valE.includes('som')) {
+        document.getElementById('fb_fill_e').innerText = "✓ Chính xác (sớm pha)";
+        document.getElementById('fb_fill_e').className = "block mt-1 font-bold text-xs text-emerald-600";
+        score++;
+      } else {
+        document.getElementById('fb_fill_e').innerText = "✗ Đáp án: sớm pha";
+        document.getElementById('fb_fill_e').className = "block mt-1 font-bold text-xs text-rose-500";
+      }
+
+      const valF = cleanStr(document.getElementById('fill_f').value);
+      if (valF.includes('tre pha') || valF.includes('tre') || valF.includes('cham')) {
+        document.getElementById('fb_fill_f').innerText = "✓ Chính xác (trễ pha)";
+        document.getElementById('fb_fill_f').className = "block mt-1 font-bold text-xs text-emerald-600";
+        score++;
+      } else {
+        document.getElementById('fb_fill_f').innerText = "✗ Đáp án: trễ pha";
+        document.getElementById('fb_fill_f').className = "block mt-1 font-bold text-xs text-rose-500";
+      }
+
+      const valG = cleanStr(document.getElementById('fill_g').value);
+      if (valG.includes('cung pha') || valG.includes('dong pha')) {
+        document.getElementById('fb_fill_g').innerText = "✓ Chính xác (cùng (đồng) pha)";
+        document.getElementById('fb_fill_g').className = "block mt-1 font-bold text-xs text-emerald-600";
+        score++;
+      } else {
+        document.getElementById('fb_fill_g').innerText = "✗ Đáp án: cùng (đồng) pha";
+        document.getElementById('fb_fill_g').className = "block mt-1 font-bold text-xs text-rose-500";
+      }
+
+      const valH = cleanStr(document.getElementById('fill_h').value);
+      if (valH.includes('pi') || valH.includes('180')) {
+        document.getElementById('fb_fill_h').innerText = "✓ Chính xác (φ1 = φ2 ± π)";
+        document.getElementById('fb_fill_h').className = "block mt-1 font-bold text-xs text-emerald-600";
+        score++;
+      } else {
+        document.getElementById('fb_fill_h').innerText = "✗ Đáp án: φ1 = φ2 ± π";
+        document.getElementById('fb_fill_h').className = "block mt-1 font-bold text-xs text-rose-500";
+      }
+
+      showAppToast(`Bạn làm đúng ${score}/8 câu điền từ!`, score >= 6 ? "🎉" : "📝");
+    }
+
+    function switchGameMode(mode) {
+      if (mode === 'fill') {
+        document.getElementById('game-fill-container').classList.remove('hidden');
+        document.getElementById('game-match-container').classList.add('hidden');
+        document.getElementById('subtab-btn-fill').className = "px-3.5 py-1.5 rounded-lg bg-white text-brand-700 shadow-xs";
+        document.getElementById('subtab-btn-match').className = "px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900";
+      } else {
+        document.getElementById('game-fill-container').classList.add('hidden');
+        document.getElementById('game-match-container').classList.remove('hidden');
+        document.getElementById('subtab-btn-fill').className = "px-3.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900";
+        document.getElementById('subtab-btn-match').className = "px-3.5 py-1.5 rounded-lg bg-white text-brand-700 shadow-xs";
+        renderMatchGame();
+      }
+    }
+
+    const matchData = {
+      colA: [
+        { id: '1', label: "(1) T" },
+        { id: '2', label: "(2) f" },
+        { id: '3', label: "(3) ω" },
+        { id: '4', label: "(4) (ωt + φ)" }
+      ],
+      colB: [
+        { id: 'c', label: "(c) Chu kì dao động (s)" },
+        { id: 'a', label: "(a) Tần số dao động (Hz)" },
+        { id: 'd', label: "(d) Tần số góc (rad/s)" },
+        { id: 'b', label: "(b) Pha dao động (rad)" }
+      ],
+      pairs: { '1': 'c', '2': 'a', '3': 'd', '4': 'b' }
+    };
+
+    let selectedMatchA = null;
+    let userMatchedPairs = {};
+
+    function renderMatchGame() {
+      const containerA = document.getElementById('matchColA');
+      const containerB = document.getElementById('matchColB');
+      containerA.innerHTML = '';
+      containerB.innerHTML = '';
+      userMatchedPairs = {};
+      selectedMatchA = null;
+      document.getElementById('matchSuccessBadge').classList.add('hidden');
+      document.getElementById('txtMatchProgress').innerText = "Tiến độ: 0/4";
+
+      matchData.colA.forEach(item => {
+        const btn = document.createElement('button');
+        btn.id = `mBtnA_${item.id}`;
+        btn.className = "w-full p-3 text-left rounded-xl border-2 border-slate-200 hover:border-brand-500 bg-slate-50 transition text-xs font-bold text-slate-800";
+        btn.innerHTML = `<span class="text-base mr-2 text-brand-600">🔹</span> ${item.label}`;
+        btn.onclick = () => selectMatchA(item.id);
+        containerA.appendChild(btn);
+      });
+
+      // Shuffle Col B
+      const shuffledB = [...matchData.colB].sort(() => Math.random() - 0.5);
+      shuffledB.forEach(item => {
+        const btn = document.createElement('button');
+        btn.id = `mBtnB_${item.id}`;
+        btn.className = "w-full p-3 text-left rounded-xl border-2 border-slate-200 hover:border-purple-500 bg-slate-50 transition text-xs font-medium text-slate-700";
+        btn.innerHTML = `<span class="text-base mr-2 text-purple-600">🔸</span> ${item.label}`;
+        btn.onclick = () => selectMatchB(item.id);
+        containerB.appendChild(btn);
+      });
+    }
+
+    function selectMatchA(id) {
+      if (userMatchedPairs[id]) return;
+      selectedMatchA = id;
+      document.querySelectorAll('#matchColA button').forEach(b => {
+        const itemId = b.id.replace('mBtnA_', '');
+        if (!userMatchedPairs[itemId]) {
+          b.className = "w-full p-3 text-left rounded-xl border-2 border-slate-200 bg-slate-50 text-xs font-bold text-slate-800";
+        }
+      });
+      const b = document.getElementById(`mBtnA_${id}`);
+      if (b) b.className = "w-full p-3 text-left rounded-xl border-2 border-brand-600 bg-brand-50 text-brand-900 text-xs font-bold shadow-xs";
+    }
+
+    function selectMatchB(letter) {
+      if (!selectedMatchA) {
+        showAppToast("Hãy nhấp chọn 1 kí hiệu ở Cột A trước!", "ℹ️");
+        return;
+      }
+
+      if (matchData.pairs[selectedMatchA] === letter) {
+        userMatchedPairs[selectedMatchA] = letter;
+        const btnA = document.getElementById(`mBtnA_${selectedMatchA}`);
+        const btnB = document.getElementById(`mBtnB_${letter}`);
+        btnA.className = "w-full p-3 text-left rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-bold text-xs";
+        btnB.className = "w-full p-3 text-left rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-bold text-xs";
+        btnA.disabled = true;
+        btnB.disabled = true;
+        showAppToast(`Ghép nối chính xác cặp (${selectedMatchA} - ${letter})!`, "🎯");
+      } else {
+        showAppToast("Cặp ghép chưa đúng, hãy thử lại nhé!", "❌");
+      }
+
+      selectedMatchA = null;
+      document.querySelectorAll('#matchColA button').forEach(b => {
+        const itemId = b.id.replace('mBtnA_', '');
+        if (!userMatchedPairs[itemId]) {
+          b.className = "w-full p-3 text-left rounded-xl border-2 border-slate-200 bg-slate-50 text-xs font-bold text-slate-800";
+        }
+      });
+
+      const count = Object.keys(userMatchedPairs).length;
+      document.getElementById('txtMatchProgress').innerText = `Tiến độ: ${count}/4`;
+      if (count === 4) {
+        document.getElementById('matchSuccessBadge').classList.remove('hidden');
+      }
+    }
+
+    function resetMatchGame() {
+      renderMatchGame();
+      showAppToast("Đã đặt lại trò chơi nối cột", "🔄");
+    }
+
+    const quizDB = [
+      // Nhận biết (1 - 11)
+      { id: 1, cat: 'nb', q: "Đại lượng nào dưới đây đặc trưng cho độ lệch về thời gian giữa hai dao động điều hòa cùng chu kì?", options: ["A. Li độ", "B. Pha", "C. Pha ban đầu", "D. Độ lệch pha"], correct: 3, exp: "Độ lệch pha giữa hai dao động cùng chu kì luôn bằng độ lệch thời gian nhân với tần số góc: $\\Delta\\varphi = \\omega \\Delta t$." },
+      { id: 2, cat: 'nb', q: "Biên độ của hệ dao động điều hòa phụ thuộc yếu tố nào?", options: ["A. Cách kích thích cho vật dao động", "B. Cách chọn trục tọa độ", "C. Cách chọn gốc thời gian", "D. Cấu tạo của hệ"], correct: 0, exp: "Biên độ $A$ phụ thuộc vào năng lượng kích thích ban đầu truyền cho vật." },
+      { id: 3, cat: 'nb', q: "Pha của dao động được dùng để xác định:", options: ["A. Biên độ dao động", "B. Tần số dao động", "C. Trạng thái dao động", "D. Chu kỳ dao động"], correct: 2, exp: "Pha dao động $(\\omega t + \\varphi)$ xác định vị trí và chiều chuyển động (trạng thái dao động) của vật ở thời điểm $t$." },
+      { id: 4, cat: 'nb', q: "Chu kì dao động là:", options: ["A. Số dao động toàn phần vật thực hiện được trong 1s", "B. Khoảng thời gian để vật đi từ bên này sang bên kia quỹ đạo chuyển động", "C. Khoảng thời gian ngắn nhất để vật trở lại vị trí ban đầu", "D. Khoảng thời gian ngắn nhất để vật trở lại trạng thái ban đầu"], correct: 3, exp: "Chu kì là khoảng thời gian để vật thực hiện một dao động toàn phần (trở lại trạng thái cũ theo hướng cũ)." },
+      { id: 5, cat: 'nb', q: "Trong phương trình dao động điều hoà $x = A\\cos(\\omega t + \\varphi)$, các đại lượng $\\omega$, $\\varphi$ và $(\\omega t + \\varphi)$ là những đại lượng trung gian giúp ta xác định:", options: ["A. Tần số và pha ban đầu", "B. Tần số và trạng thái dao động", "C. Biên độ và trạng thái dao động", "D. Li độ và pha ban đầu"], correct: 1, exp: "$\\omega$ giúp xác định tần số $f = \\omega/2\\pi$, $(\\omega t + \\varphi)$ xác định trạng thái dao động." },
+      { id: 6, cat: 'nb', q: "Vật dđđh theo trục Ox. Phát biểu nào sau đây đúng?", options: ["A. Quỹ đạo chuyển động của vật là một đoạn thẳng", "B. Lực kéo về tác dụng vào vật không đổi", "C. Quỹ đạo chuyển động của vật là một đường hình cos", "D. Li độ của vật tỉ lệ với thời gian dao động"], correct: 0, exp: "Quỹ đạo chuyển động của vật dao động điều hòa là một đoạn thẳng có độ dài $L = 2A$." },
+      { id: 7, cat: 'nb', q: "Trong dđđh, đại lượng nào sau đây không có giá trị âm?", options: ["A. Pha dao động", "B. Pha ban đầu", "C. Li độ", "D. Biên độ"], correct: 3, exp: "Biên độ $A$ là độ dịch chuyển cực đại nên $A > 0$, không bao giờ có giá trị âm." },
+      { id: 8, cat: 'nb', q: "Trong phương trình dđđh $x = A\\cos(\\omega t + \\varphi)$. Mét (m) là thứ nguyên (đơn vị) của đại lượng:", options: ["A. Biên độ A", "B. Tần số góc ω", "C. Pha (ωt + φ)", "D. Chu kì T"], correct: 0, exp: "Biên độ $A$ và li độ $x$ có đơn vị là mét (m) hoặc xentimét (cm)." },
+      { id: 9, cat: 'nb', q: "Trong phương trình dđđh $x = A\\cos(\\omega t + \\varphi)$, radian trên giây (rad/s) là thứ nguyên của đại lượng:", options: ["A. Biên độ A", "B. Tần số góc ω", "C. Pha (ωt + φ)", "D. Chu kì T"], correct: 1, exp: "$\\omega$ là tần số góc, đơn vị rad/s." },
+      { id: 10, cat: 'nb', q: "Trong phương trình dđđh $x = A\\cos(\\omega t + \\varphi)$, radian (rad) là thứ nguyên của đại lượng:", options: ["A. Biên độ A", "B. Tần số góc ω", "C. Pha (ωt + φ)", "D. Chu kì T"], correct: 2, exp: "Pha dao động $(\\omega t + \\varphi)$ và pha ban đầu $\\varphi$ có đơn vị là radian (rad)." },
+      { id: 11, cat: 'nb', q: "Công thức nào sau đây biểu diễn sự liên hệ giữa tần số góc $\\omega$, tần số $f$ và chu kì $T$?", options: ["A. $\\omega = 2\\pi f = \\frac{2\\pi}{T}$", "B. $\\frac{\\omega}{2\\pi} = \\pi f = \\frac{1}{T}$", "C. $T = \\frac{\\omega}{2\\pi} = \\frac{1}{f}$", "D. $\\omega = 2\\pi T = \\frac{2\\pi}{f}$"], correct: 0, exp: "$\\omega = 2\\pi f = \\frac{2\\pi}{T}$ là công thức chuẩn." },
+
+      // Thông hiểu (12 - 19)
+      { id: 12, cat: 'th', q: "Pha ban đầu của vật dao động điều hoà phụ thuộc vào:", options: ["A. Đặc tính của hệ dao động", "B. Biên độ của vật dao động", "C. Gốc thời gian và chiều dương của hệ toạ độ", "D. Khối lượng của vật"], correct: 2, exp: "Pha ban đầu $\\varphi$ cho biết vị trí và chiều chuyển động tại $t=0$, phụ thuộc vào cách chọn gốc thời gian và chiều dương." },
+      { id: 13, cat: 'th', q: "Chọn phát biểu sai khi nói về dao động điều hòa:", options: ["A. Dao động tuần hoàn là dao động mà trạng thái lặp lại như cũ sau những khoảng thời gian bằng nhau", "B. Dao động là sự chuyển động có giới hạn quanh một vị trí cân bằng", "C. Pha ban đầu chỉ xác định vị trí của vật mà không xác định chiều chuyển động", "D. Dđđh được coi như hình chiếu của chuyển động tròn đều xuống một đường kính"], correct: 2, exp: "Phát biểu C sai vì pha ban đầu xác định cả vị trí và chiều chuyển động của vật lúc $t=0$." },
+      { id: 14, cat: 'th', q: "Phương trình của vật dđ điều hoà có dạng $x = A\\cos(\\omega t + \\varphi)$. Chọn phát biểu sai:", options: ["A. Tần số góc ω tuỳ thuộc vào đặc điểm của hệ", "B. Biên độ A tuỳ thuộc vào cách kích thích", "C. Pha ban đầu φ chỉ tuỳ thuộc vào gốc thời gian", "D. Biên độ A không phụ thuộc vào gốc thời gian"], correct: 2, exp: "Phát biểu C sai vì $\\varphi$ phụ thuộc cả gốc thời gian và chiều dương của trục tọa độ." },
+      { id: 15, cat: 'th', q: "Khi thay đổi cách kích thích ban đầu để vật dao động thì đại lượng nào sau đây thay đổi?", options: ["A. Tần số và biên độ", "B. Pha ban đầu và biên độ", "C. Tần số góc và chu kì", "D. Tần số và pha ban đầu"], correct: 1, exp: "Cách kích thích quyết định biên độ $A$ và trạng thái ban đầu (pha ban đầu $\\varphi$)." },
+      { id: 16, cat: 'th', q: "Một vật dđđh với phương trình $x = A\\cos\\omega t$. Nếu chọn gốc toạ độ O tại VTCB thì gốc thời gian $t = 0$ là lúc vật:", options: ["A. Ở vị trí li độ cực đại thuộc phần dương trục Ox ($x = +A$)", "B. Qua VTCB ngược chiều dương", "C. Ở vị trí biên âm ($x = -A$)", "D. Qua VTCB theo chiều dương"], correct: 0, exp: "Tại $t=0$, $\\cos(0) = 1 \\implies x = +A$ (vật ở biên dương)." },
+      { id: 17, cat: 'th', q: "Một vật dđđh, trong mỗi chu kỳ dao động vật đi qua VTCB bao nhiêu lần?", options: ["A. 1 lần", "B. 4 lần", "C. 3 lần", "D. 2 lần"], correct: 3, exp: "Mỗi chu kì vật qua VTCB 2 lần (1 lần theo chiều dương, 1 lần theo chiều âm)." },
+      { id: 18, cat: 'th', q: "Một vật dđđh với phương trình $x = A\\cos(\\omega t + \\varphi)$ với $A, \\omega, \\varphi$ là hằng số thì pha của dao động:", options: ["A. Không đổi theo thời gian", "B. Biến thiên điều hòa theo thời gian", "C. Là hàm bậc nhất của thời gian", "D. Là hàm bậc hai của thời gian"], correct: 2, exp: "Pha dao động là $(\\omega t + \\varphi)$, là hàm bậc nhất đối với thời gian $t$." },
+      { id: 19, cat: 'th', q: "Đồ thị biểu diễn hai dao động điều hòa cùng tần số, cùng biên độ A như hình vẽ. Hai dao động này luôn:", options: ["A. Có li độ đối nhau", "B. Cùng qua VTCB theo cùng một hướng", "C. Có độ lệch pha là 2π", "D. Có biên độ dao động tổng hợp là 2A"], correct: 0, svg: 'opp_two_waves', exp: "Đồ thị cho thấy một đường đạt cực đại thì đường kia đạt cực tiểu, hai dao động ngược pha $\\implies x_1 = -x_2$ (li độ luôn đối nhau)." },
+
+      // Vận dụng Dạng 1 (Đại lượng đặc trưng)
+      { id: 20, cat: 'vd1', q: "Một chất điểm dao động điều hoà có chu kì $T = 1\\text{ s}$. Tần số góc $\\omega$ của dao động là:", options: ["A. $\\pi\\text{ rad/s}$", "B. $2\\pi\\text{ rad/s}$", "C. $1\\text{ rad/s}$", "D. $2\\text{ rad/s}$"], correct: 1, exp: "$\\omega = \\frac{2\\pi}{T} = \\frac{2\\pi}{1} = 2\\pi\\text{ rad/s}$." },
+      { id: 21, cat: 'vd1', q: "Một chất điểm dao động điều hoà có tần số góc $\\omega = 10\\pi\\text{ rad/s}$. Tần số của dao động là:", options: ["A. $5\\text{ Hz}$", "B. $10\\text{ Hz}$", "C. $20\\text{ Hz}$", "D. $5\\pi\\text{ Hz}$"], correct: 0, exp: "$f = \\frac{\\omega}{2\\pi} = \\frac{10\\pi}{2\\pi} = 5\\text{ Hz}$." },
+      { id: 22, cat: 'vd1', q: "Một chất điểm dđđh trong thời gian 1 phút thực hiện được 30 dao động. Chu kì dao động của vật là:", options: ["A. $2\\text{ s}$", "B. $30\\text{ s}$", "C. $0,5\\text{ s}$", "D. $1\\text{ s}$"], correct: 0, exp: "$T = \\frac{\\Delta t}{N} = \\frac{60\\text{ s}}{30} = 2\\text{ s}$." },
+      { id: 23, cat: 'vd1', q: "Một chất điểm dđđh có phương trình $x = 4\\cos(10\\pi t + \\pi/3)\\text{ cm}$. Chu kì dao động của vật là:", options: ["A. $4\\text{ s}$", "B. $0,2\\text{ s}$", "C. $5\\text{ s}$", "D. $0,5\\text{ s}$"], correct: 1, exp: "$T = \\frac{2\\pi}{\\omega} = \\frac{2\\pi}{10\\pi} = 0,2\\text{ s}$." },
+      { id: 24, cat: 'vd1', q: "Một vật nhỏ dao động theo một quỹ đạo thẳng dài $12\\text{ cm}$. Dao động này có biên độ là:", options: ["A. $12\\text{ cm}$", "B. $24\\text{ cm}$", "C. $6\\text{ cm}$", "D. $3\\text{ cm}$"], correct: 2, exp: "Chiều dài quỹ đạo $L = 2A = 12\\text{ cm} \\implies A = 6\\text{ cm}$." },
+      { id: 25, cat: 'vd1', q: "Một chất điểm dao động điều hòa với $x = 2\\cos(2\\pi t + \\pi/2)\\text{ cm}$. Tại thời điểm $t = 1/4\\text{ s}$, chất điểm có li độ:", options: ["A. $3\\text{ cm}$", "B. $-2\\text{ cm}$", "C. $2\\text{ cm}$", "D. $0\\text{ cm}$"], correct: 1, exp: "Tại $t = 0,25\\text{ s}$, pha $= 2\\pi(0,25) + \\pi/2 = \\pi\\text{ rad} \\implies x = 2\\cos(\\pi) = -2\\text{ cm}$." },
+      { id: 26, cat: 'vd1', q: "Một con lắc lò xo trong $20\\text{ s}$ thực hiện được $50$ dao động. Chu kì dao động là:", options: ["A. $4\\text{ s}$", "B. $0,4\\text{ s}$", "C. $2,5\\text{ s}$", "D. $5\\pi\\text{ s}$"], correct: 1, exp: "$T = \\frac{20}{50} = 0,4\\text{ s}$." },
+      { id: 27, cat: 'vd1', q: "Một vật dđđh trên trục Ox có đồ thị li độ theo thời gian như hình vẽ. Tần số và biên độ là:", options: ["A. $2\\text{ Hz}; 10\\text{ cm}$", "B. $2\\text{ Hz}; 20\\text{ cm}$", "C. $1\\text{ Hz}; 10\\text{ cm}$", "D. $1\\text{ Hz}; 20\\text{ cm}$"], correct: 2, svg: 'graph_05_halfT', exp: "Từ đồ thị ta thấy nửa chu kì $T/2 = 0,5\\text{ s} \\implies T = 1\\text{ s} \\implies f = 1\\text{ Hz}$; đỉnh đồ thị là $A = 10\\text{ cm}$." },
+      { id: 28, cat: 'vd1', q: "Đồ thị dao động điều hòa bên dưới có đoạn PR trên trục thời gian biểu thị:", options: ["A. Hai lần chu kì", "B. Hai điểm cùng pha", "C. Một chu kì", "D. Một phần hai chu kì (T/2)"], correct: 3, svg: 'pr_segment', exp: "Điểm P là vị trí biên dương, điểm R là vị trí biên âm kế tiếp $\\implies$ khoảng thời gian giữa 2 biên liên tiếp là $T/2$." },
+      { id: 29, cat: 'vd1', q: "Đồ thị li độ theo thời gian như hình vẽ có biên độ $A = 4\\text{ cm}$. Kết luận nào sau đây sai?", options: ["A. $A = 4\\text{ cm}$", "B. $T = 0,5\\text{ s}$", "C. $\\omega = 2\\pi\\text{ rad/s}$", "D. $f = 1\\text{ Hz}$"], correct: 1, svg: 'graph_A4_T1', exp: "Từ đáy biên âm đến đỉnh biên dương là $t = 0,5\\text{ s} = T/2 \\implies T = 1\\text{ s}$, nên câu B ($T = 0,5\\text{ s}$) là sai!" },
+
+      // Vận dụng Dạng 2 (Độ lệch pha & Đồ thị nâng cao)
+      { id: 30, cat: 'vd2', q: "Hai dđđh có $x_1 = 5\\cos(10\\pi t - \\pi/6)$ và $x_2 = 4\\cos(10\\pi t + \\pi/3)$. Hai dao động này:", options: ["A. Có cùng tần số 10Hz", "B. Lệch pha nhau π/6 rad", "C. Lệch pha nhau π/2 rad (vuông pha)", "D. Có cùng chu kì 0,5s"], correct: 2, exp: "$\\Delta\\varphi = \\pi/3 - (-\\pi/6) = \\pi/2\\text{ rad} \\implies$ vuông pha nhau." },
+      { id: 31, cat: 'vd2', q: "Cho 2 dao động cùng phương: $x_1 = 10\\cos(100\\pi t - 0,5\\pi)$ và $x_2 = 10\\cos(100\\pi t + 0,5\\pi)$. Độ lệch pha là:", options: ["A. $0$", "B. $0,25\\pi$", "C. $\\pi$", "D. $0,5\\pi$"], correct: 2, exp: "$\\Delta\\varphi = |0,5\\pi - (-0,5\\pi)| = \\pi\\text{ rad} \\implies$ ngược pha nhau." },
+      { id: 32, cat: 'vd2', q: "Một vật dao động điều hoà theo $x = 6\\cos(\\omega t + \\pi/2)\\text{ cm}$. Độ biến thiên góc pha trong 1 chu kỳ là:", options: ["A. $0,5\\pi\\text{ rad}$", "B. $2\\pi\\text{ rad}$", "C. $2,5\\pi\\text{ rad}$", "D. $\\pi\\text{ rad}$"], correct: 1, exp: "Trong 1 chu kì $T$, pha dao động tăng thêm một lượng $\\omega T = 2\\pi\\text{ rad}$." },
+      { id: 33, cat: 'vd2', q: "Đồ thị biểu diễn hai dao động điều hòa cùng phương cùng tần số như hình vẽ. Nhìn vào đồ thị ta kết luận:", options: ["A. Hai dao động cùng pha", "B. Dao động 1 sớm pha hơn dao động 2", "C. Dao động 1 trễ pha hơn dao động 2 một góc π/2", "D. Hai dao động ngược pha"], correct: 1, svg: 'two_wave_d1_leads_d2', exp: "Tại $t=0$, dao động 1 đạt cực đại trước dao động 2 một khoảng $\\Delta t = T/4 \\implies$ DĐ 1 sớm pha hơn DĐ 2 một góc $\\pi/2$." },
+      { id: 34, cat: 'vd2', q: "Đồ thị biểu diễn sự phụ thuộc giữa $x_1$ vào $x_2$ là một đoạn thẳng đi qua gốc tọa độ nghiêng góc phần tư I và III. Hai dao động này:", options: ["A. Ngược pha", "B. Vuông pha", "C. Lệch pha π/4", "D. Cùng pha"], correct: 3, svg: 'lissajous_line', exp: "Đồ thị $x_1 = k \\cdot x_2$ với $k > 0$ là đoạn thẳng qua gốc $O \\implies$ hai dao động cùng pha." },
+      { id: 35, cat: 'vd2', q: "Đồ thị biểu diễn sự phụ thuộc của pha dao động vào thời gian là đường thẳng $\\Phi(t) = \\pi + \\pi t$. Li độ của vật tại $t = 1\\text{ s}$ có biên độ $4\\text{ cm}$ là:", options: ["A. $2\\text{ cm}$", "B. $4\\text{ cm}$", "C. $1\\text{ cm}$", "D. $-4\\text{ cm}$"], correct: 1, svg: 'phase_time_line', exp: "Tại $t = 1\\text{ s}$, pha $\\Phi = \\pi + \\pi(1) = 2\\pi \\implies x = 4\\cos(2\\pi) = 4\\text{ cm}$." }
+    ];
+
+    let userQuizAnswers = {};
+
+    function getSvgIllustration(type) {
+      if (type === 'opp_two_waves') {
+        return `
+          <div class="py-2 flex justify-center">
+            <svg viewBox="0 0 320 120" class="w-72 h-28 bg-slate-900 rounded-xl">
+              <line x1="20" y1="60" x2="300" y2="60" stroke="#64748b" stroke-width="1.5"/>
+              <line x1="40" y1="10" x2="40" y2="110" stroke="#64748b" stroke-width="1.5"/>
+              <path d="M 40 20 Q 80 20 105 60 T 170 60 T 235 60 T 300 60" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+              <path d="M 40 100 Q 80 100 105 60 T 170 60 T 235 60 T 300 60" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="4,3"/>
+              <text x="30" y="24" fill="#ef4444" font-size="10" font-weight="bold">+A</text>
+              <text x="25" y="104" fill="#3b82f6" font-size="10" font-weight="bold">-A</text>
+              <text x="305" y="64" fill="#94a3b8" font-size="10">t</text>
+            </svg>
+          </div>
+        `;
+      } else if (type === 'graph_05_halfT') {
+        return `
+          <div class="py-2 flex justify-center">
+            <svg viewBox="0 0 320 120" class="w-72 h-28 bg-slate-900 rounded-xl">
+              <line x1="20" y1="60" x2="300" y2="60" stroke="#64748b" stroke-width="1.5"/>
+              <line x1="40" y1="10" x2="40" y2="110" stroke="#64748b" stroke-width="1.5"/>
+              <path d="M 40 60 Q 80 15 120 60 T 200 60 T 280 60" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+              <circle cx="120" cy="60" r="3" fill="#fbbf24"/>
+              <text x="115" y="78" fill="#fbbf24" font-size="10" font-weight="bold">0,5</text>
+              <text x="20" y="24" fill="#38bdf8" font-size="10" font-weight="bold">10</text>
+              <text x="16" y="104" fill="#38bdf8" font-size="10" font-weight="bold">-10</text>
+            </svg>
+          </div>
+        `;
+      } else if (type === 'pr_segment') {
+        return `
+          <div class="py-2 flex justify-center">
+            <svg viewBox="0 0 320 120" class="w-72 h-28 bg-slate-900 rounded-xl">
+              <line x1="20" y1="60" x2="300" y2="60" stroke="#64748b" stroke-width="1.5"/>
+              <line x1="40" y1="10" x2="40" y2="110" stroke="#64748b" stroke-width="1.5"/>
+              <path d="M 40 40 Q 75 15 100 20 T 160 100 T 220 20" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
+              <line x1="90" y1="20" x2="90" y2="60" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,3"/>
+              <line x1="170" y1="100" x2="170" y2="60" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,3"/>
+              <circle cx="90" cy="60" r="3" fill="#fbbf24"/>
+              <circle cx="170" cy="60" r="3" fill="#fbbf24"/>
+              <text x="86" y="75" fill="#fbbf24" font-size="10" font-weight="bold">P</text>
+              <text x="166" y="75" fill="#fbbf24" font-size="10" font-weight="bold">R</text>
+            </svg>
+          </div>
+        `;
+      } else if (type === 'graph_A4_T1') {
+        return `
+          <div class="py-2 flex justify-center">
+            <svg viewBox="0 0 320 120" class="w-72 h-28 bg-slate-900 rounded-xl">
+              <line x1="20" y1="60" x2="300" y2="60" stroke="#64748b" stroke-width="1.5"/>
+              <line x1="40" y1="10" x2="40" y2="110" stroke="#64748b" stroke-width="1.5"/>
+              <path d="M 40 100 Q 80 60 120 20 T 200 100 T 280 20" fill="none" stroke="#60a5fa" stroke-width="2.5"/>
+              <circle cx="120" cy="20" r="3" fill="#fbbf24"/>
+              <text x="110" y="75" fill="#fbbf24" font-size="10" font-weight="bold">0,5</text>
+              <text x="24" y="24" fill="#60a5fa" font-size="10" font-weight="bold">4</text>
+              <text x="18" y="104" fill="#60a5fa" font-size="10" font-weight="bold">-4</text>
+            </svg>
+          </div>
+        `;
+      } else if (type === 'lissajous_line') {
+        return `
+          <div class="py-2 flex justify-center">
+            <svg viewBox="0 0 200 130" class="w-56 h-36 bg-slate-900 rounded-xl">
+              <line x1="20" y1="65" x2="180" y2="65" stroke="#64748b" stroke-width="1.5"/>
+              <line x1="100" y1="10" x2="100" y2="120" stroke="#64748b" stroke-width="1.5"/>
+              <line x1="30" y1="110" x2="170" y2="20" stroke="#34d399" stroke-width="3"/>
+              <text x="182" y="68" fill="#94a3b8" font-size="9">x₂</text>
+              <text x="104" y="18" fill="#94a3b8" font-size="9">x₁</text>
+            </svg>
+          </div>
+        `;
+      } else if (type === 'phase_time_line') {
+        return `
+          <div class="py-2 flex justify-center">
+            <svg viewBox="0 0 240 120" class="w-64 h-32 bg-slate-900 rounded-xl">
+              <line x1="30" y1="100" x2="220" y2="100" stroke="#64748b" stroke-width="1.5"/>
+              <line x1="30" y1="15" x2="30" y2="100" stroke="#64748b" stroke-width="1.5"/>
+              <line x1="30" y1="80" x2="200" y2="20" stroke="#38bdf8" stroke-width="2.5"/>
+              <text x="15" y="83" fill="#38bdf8" font-size="9">π</text>
+              <text x="10" y="52" fill="#38bdf8" font-size="9">2π</text>
+              <text x="110" y="112" fill="#fbbf24" font-size="9">t = 1</text>
+            </svg>
+          </div>
+        `;
+      } else if (type === 'two_wave_d1_leads_d2') {
+        return `
+          <div class="py-2 flex justify-center">
+            <svg viewBox="0 0 320 120" class="w-72 h-28 bg-slate-900 rounded-xl">
+              <line x1="20" y1="60" x2="300" y2="60" stroke="#64748b" stroke-width="1.5"/>
+              <line x1="40" y1="10" x2="40" y2="110" stroke="#64748b" stroke-width="1.5"/>
+              <path d="M 40 20 Q 80 60 110 60 T 170 60 T 240 60" fill="none" stroke="#22c55e" stroke-width="2.5"/>
+              <path d="M 40 60 Q 60 90 90 90 T 150 30 T 210 90" fill="none" stroke="#3b82f6" stroke-width="2"/>
+              <text x="250" y="30" fill="#22c55e" font-size="9 font-bold">(1)</text>
+              <text x="250" y="90" fill="#3b82f6" font-size="9 font-bold">(2)</text>
+            </svg>
+          </div>
+        `;
+      }
+      return '';
+    }
+
+    function renderQuizList(filter = 'all') {
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = '';
+
+      const list = filter === 'all' ? quizDB : quizDB.filter(q => q.cat === filter);
+
+      list.forEach(item => {
+        const card = document.createElement('div');
+        card.id = `qCard_${item.id}`;
+        card.className = "p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white shadow-xs space-y-3";
+
+        let catBadge = "bg-slate-100 text-slate-700";
+        let catText = "Nhận biết";
+        if (item.cat === 'th') { catBadge = "bg-blue-100 text-blue-800"; catText = "Thông hiểu"; }
+        if (item.cat === 'vd1') { catBadge = "bg-emerald-100 text-emerald-800"; catText = "Vận dụng D1"; }
+        if (item.cat === 'vd2') { catBadge = "bg-purple-100 text-purple-800"; catText = "Vận dụng D2"; }
+
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <span class="font-bold text-slate-900 text-xs sm:text-sm leading-snug">
+              <span class="text-brand-600 mr-1 font-mono">Câu ${item.id}:</span> ${item.q}
+            </span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${catBadge} whitespace-nowrap ml-2">${catText}</span>
+          </div>
+
+          ${item.svg ? getSvgIllustration(item.svg) : ''}
+
+          <div class="space-y-2 pt-1 text-xs">
+            ${item.options.map((opt, optIdx) => `
+              <label class="flex items-center p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                <input type="radio" name="quiz_opt_${item.id}" value="${optIdx}" onchange="saveQuizAnswer(${item.id}, ${optIdx})" class="w-4 h-4 text-brand-600 accent-brand-600 mr-2.5" ${userQuizAnswers[item.id] === optIdx ? 'checked' : ''}>
+                <span class="text-slate-700 font-medium">${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+
+          <div id="qExplain_${item.id}" class="hidden p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600">
+            <strong class="text-brand-700">💡 Giải thích chi tiết:</strong> ${item.exp}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      if (window.renderMathInElement) {
+        renderMathInElement(container, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});
+      }
+    }
+
+    function filterQuizCategory() {
+      const cat = document.getElementById('quizFilter').value;
+      renderQuizList(cat);
+    }
+
+    function saveQuizAnswer(qId, idx) {
+      userQuizAnswers[qId] = idx;
+    }
+
+    function gradeFullQuiz() {
+      let score = 0;
+      const total = quizDB.length;
+
+      quizDB.forEach(item => {
+        const card = document.getElementById(`qCard_${item.id}`);
+        const exp = document.getElementById(`qExplain_${item.id}`);
+        const ans = userQuizAnswers[item.id];
+
+        if (card) {
+          if (ans === item.correct) {
+            score++;
+            card.classList.remove('border-slate-200', 'border-rose-300');
+            card.classList.add('border-emerald-400', 'bg-emerald-50/20');
+          } else {
+            card.classList.remove('border-slate-200', 'border-emerald-400');
+            card.classList.add('border-rose-300', 'bg-rose-50/20');
+          }
+        }
+        if (exp) exp.classList.remove('hidden');
+      });
+
+      const banner = document.getElementById('quizScoreBanner');
+      banner.classList.remove('hidden');
+      document.getElementById('txtQuizScore').innerText = `${score}/${total}`;
+      const pct = Math.round((score / total) * 100);
+      document.getElementById('txtQuizPercent').innerText = `${pct}%`;
+
+      showAppToast(`Hoàn tất chấm điểm: ${score}/${total} (${pct}%)`, score >= 28 ? "🏆" : "📈");
+    }
+
+    function resetFullQuizAnswers() {
+      userQuizAnswers = {};
+      document.getElementById('quizScoreBanner').classList.add('hidden');
+      renderQuizList(document.getElementById('quizFilter').value);
+      showAppToast("Đã đặt lại bài làm trắc nghiệm!", "🔄");
+    }
+
+    const essayDB = [
+      // Dạng 1: Đại lượng đặc trưng (7 bài)
+      {
+        id: 1, type: 'd1', title: "Bài 1: Cánh ong mật đập cánh 300 Hz",
+        prompt: "Một con ong mật đang bay tại chỗ trong không trung, đập cánh với tần số khoảng 300Hz. Xác định số dao động mà cánh ong mật thực hiện trong 1s và chu kì dao động của cánh ong.",
+        sol: `• <strong>Số dao động thực hiện trong 1s:</strong> Theo định nghĩa của tần số, số dao động trong $1\\text{ s}$ là $N = f = 300\\text{ lần}$.<br>• <strong>Chu kì dao động của cánh ong:</strong><br>$$T = \\frac{1}{f} = \\frac{1}{300} \\approx 3,33 \\times 10^{-3}\\text{ s} = 3,33\\text{ ms}.$$`
+      },
+      {
+        id: 2, type: 'd1', title: "Bài 2: Đồ thị dao động điều hòa (Hình 2.1)",
+        prompt: "Quan sát đồ thị dao động điều hòa ở Hình 2.1. Xác định: a) Biên độ, chu kì, tần số; b) Thời điểm vật có li độ x = 0; c) Tần số góc.",
+        sol: `a) <strong>Biên độ:</strong> Đỉnh đồ thị $A = 0,2\\text{ m} = 20\\text{ cm}$.<br><strong>Chu kì:</strong> Thời gian thực hiện 1 hình sin hoàn chỉnh là $T = 0,4\\text{ s}$.<br><strong>Tần số:</strong> $f = \\frac{1}{T} = \\frac{1}{0,4} = 2,5\\text{ Hz}$.<br>b) <strong>Thời điểm vật có li độ x = 0:</strong> Đồ thị cắt trục hoành tại các điểm $t = 0\\text{ s}; 0,2\\text{ s}; 0,4\\text{ s}; 0,6\\text{ s}; \\dots$ (tổng quát: $t = 0,2k\\text{ s}$ với $k \\in \\mathbb{N}$).<br>c) <strong>Tần số góc:</strong> $\\omega = \\frac{2\\pi}{T} = \\frac{2\\pi}{0,4} = 5\\pi \\approx 15,7\\text{ rad/s}$.`
+      },
+      {
+        id: 3, type: 'd1', title: "Bài 3: Trạng thái ban đầu từ đồ thị (Hình 2.2/2.3)",
+        prompt: "Hình 2.3 là dao động điều hòa của một con lắc. Xác định: a) Vị trí và hướng di chuyển của con lắc tại t = 0; b) Pha ban đầu của dao động.",
+        sol: `a) Tại thời điểm ban đầu ($t=0$): Vật ở vị trí biên âm $x = -A$, sau đó li độ tăng dần hướng về vị trí cân bằng, tức là vật <strong>bắt đầu chuyển động theo chiều dương</strong>.<br>b) Ta có: $x(0) = A\\cos\\varphi = -A \\implies \\cos\\varphi = -1 \\implies \\varphi = \\pi\\text{ rad}$ (hoặc $-\\pi\\text{ rad}$).`
+      },
+      {
+        id: 4, type: 'd1', title: "Bài 4: Đồ thị li độ mili-giây (Hình 1.1)",
+        prompt: "Xác định biên độ, chu kì và tần số của dao động có đồ thị li độ - thời gian trong Hình 1.1 (trục t tính bằng ms).",
+        sol: `• <strong>Biên độ:</strong> $A = 10\\text{ cm}$.<br>• <strong>Chu kì:</strong> Một chu kì trọn vẹn từ $t=0$ đến khi lặp lại trạng thái ban đầu là $T = 120\\text{ ms} = 0,12\\text{ s}$.<br>• <strong>Tần số:</strong> $f = \\frac{1}{T} = \\frac{1}{0,12} = \\frac{25}{3} \\approx 8,33\\text{ Hz}$.`
+      },
+      {
+        id: 5, type: 'd1', title: "Bài 5: Viết phương trình và vẽ đồ thị (A=10cm, f=5Hz)",
+        prompt: "Một vật dao động điều hòa có A = 10cm, f = 5Hz. Tại t = 0 vật ở vị trí li độ cực đại dương. a) Xác định T, ω, φ; b) Viết PTDĐ và mô tả đồ thị.",
+        sol: `a) $T = \\frac{1}{f} = \\frac{1}{5} = 0,2\\text{ s}$; $\\omega = 2\\pi f = 10\\pi\\text{ rad/s}$.<br>Tại $t=0$, $x = +A \\implies \\cos\\varphi = 1 \\implies \\varphi = 0\\text{ rad}$.<br>b) Phương trình: $x = 10\\cos(10\\pi t)\\text{ cm}$.<br>Đồ thị xuất phát từ đỉnh $(0; 10)$, qua VTCB ở $t = T/4 = 0,05\\text{ s}$, đạt cực tiểu ở $t = T/2 = 0,1\\text{ s}$.`
+      },
+      {
+        id: 6, type: 'd1', title: "Bài 6: Con lắc đơn có biên độ 40cm (Hình 1.3)",
+        prompt: "Đồ thị dao động điều hòa xuất phát từ A = 40cm. Xác định: a) Vị trí ban đầu và hướng; b) A, T, f; c) Pha ban đầu; d) Các thời điểm x = 0 và x = -40cm.",
+        sol: `a) Tại $t=0$: Vật ở biên dương $x = +A = 40\\text{ cm}$, đi theo chiều âm hướng về VTCB.<br>b) $A = 40\\text{ cm}$. Từ đỉnh biên dương đến biên âm ở $t = 2,0\\text{ s} = T/2 \\implies T = 4,0\\text{ s} \\implies f = 0,25\\text{ Hz}$.<br>c) Ban đầu $x=A \\implies \\varphi = 0\\text{ rad}$.<br>d) $x = 0$ tại $t = 1\\text{ s}; 3\\text{ s}; \\dots$ ($t = 1 + 2k\\text{ s}$); $x = -40\\text{ cm}$ tại $t = 2\\text{ s}; 6\\text{ s}; \\dots$ ($t = 2 + 4k\\text{ s}$).`
+      },
+      {
+        id: 7, type: 'd1', title: "Bài 7: Độ dịch chuyển so với vị trí ban đầu (Hình 2.2 CTST)",
+        prompt: "Một vật dao động có đồ thị li độ - thời gian. Xác định li độ tại t1, t2, t3 và độ dịch chuyển so với ban đầu x0 = 0.",
+        sol: `a) $A = 0,2\\text{ cm}$; $T = 0,4\\text{ s} \\implies f = 2,5\\text{ Hz}$; $\\omega = 5\\pi\\text{ rad/s}$.<br>b) Tại $t_1 = 0,2\\text{ s}$: $x_1 = 0\\text{ cm}$; tại $t_2 = 0,3\\text{ s}$: $x_2 = -0,2\\text{ cm}$; tại $t_3 = 0,4\\text{ s}$: $x_3 = 0\\text{ cm}$.<br>c) Độ dịch chuyển $d = x - x_0$ (với $x_0 = 0$ lúc $t=0$):<br>• $d_1 = x_1 - x_0 = 0\\text{ cm}$.<br>• $d_2 = x_2 - x_0 = -0,2\\text{ cm}$.<br>• $d_3 = x_3 - x_0 = 0\\text{ cm}$.`
+      },
+
+      // Dạng 2: Độ lệch pha giữa 2 dao động (12 bài)
+      {
+        id: 8, type: 'd2', title: "Bài 1 (D2): Chứng minh độ lệch pha bằng độ lệch pha ban đầu",
+        prompt: "Hãy chứng minh rằng độ lệch pha giữa 2 dao động cùng chu kì luôn bằng độ lệch pha ban đầu.",
+        sol: `Phương trình 2 dao động cùng tần số góc $\\omega$:<br>$$x_1 = A_1\\cos(\\omega t + \\varphi_1), \\quad x_2 = A_2\\cos(\\omega t + \\varphi_2)$$<br>Độ lệch pha tại thời điểm $t$ bất kì:<br>$$\\Delta\\Phi(t) = (\\omega t + \\varphi_1) - (\\omega t + \\varphi_2) = \\varphi_1 - \\varphi_2 = \\Delta\\varphi = \\text{const}.$$<br>$\\implies$ Độ lệch pha giữa hai dao động cùng chu kì luôn không đổi theo thời gian và bằng độ lệch pha ban đầu.`
+      },
+      {
+        id: 9, type: 'd2', title: "Bài 2 (D2): Hai con lắc đơn lệch nhau T/4 (Hình 2.3)",
+        prompt: "Hai con lắc 1 và 2 dao động điều hòa tại cùng thời điểm quan sát. Con lắc 1 ở biên, con lắc 2 ở VTCB cùng đi sang trái. Con lắc nào sớm pha hơn và sớm hơn bao nhiêu?",
+        sol: `• Con lắc 1: Ban đầu ở vị trí biên dương $x_1 = A$, đi về phía trái.<br>• Con lắc 2: Ban đầu ở VTCB $x_2 = 0$, cũng đi về phía trái.<br>Để đi từ biên dương đến VTCB, con lắc 1 cần mất thời gian $\\Delta t = T/4$. Như vậy, con lắc 2 đã đi trước con lắc 1 một khoảng thời gian $\\Delta t = T/4$.<br>$\\implies$ <strong>Con lắc 2 sớm pha hơn con lắc 1</strong> một góc: $$\\Delta\\varphi = \\omega \\Delta t = \\frac{2\\pi}{T} \\cdot \\frac{T}{4} = \\frac{\\pi}{2}\\text{ rad}.$$`
+      },
+      {
+        id: 10, type: 'd2', title: "Bài 3 (D2): Viết phương trình con lắc thứ hai lệch thời gian T/4",
+        prompt: "Con lắc 1: x1 = 5cos(10πt - π/2) cm. Con lắc 2 cùng A, f nhưng lệch thời gian T/4 so với con lắc 1. Viết PTDĐ con lắc 2.",
+        sol: `Lệch thời gian $\\Delta t = T/4 \\implies$ Độ lệch pha $\\Delta\\varphi = \\frac{2\\pi}{T} \\cdot \\frac{T}{4} = \\frac{\\pi}{2}\\text{ rad}$.<br>• Trường hợp 1 (DĐ 2 sớm pha hơn DĐ 1):<br>$$\\varphi_2 = \\varphi_1 + \\frac{\\pi}{2} = -\\frac{\\pi}{2} + \\frac{\\pi}{2} = 0 \\implies x_2 = 5\\cos(10\\pi t)\\text{ cm}.$$<br>• Trường hợp 2 (DĐ 2 trễ pha hơn DĐ 1):<br>$$\\varphi_2 = \\varphi_1 - \\frac{\\pi}{2} = -\\frac{\\pi}{2} - \\frac{\\pi}{2} = -\\pi\\text{ rad} \\implies x_2 = 5\\cos(10\\pi t - \\pi)\\text{ cm}.$$`
+      },
+      {
+        id: 11, type: 'd2', title: "Bài 4 (D2): Viết phương trình con lắc thứ hai có biên độ bằng quỹ đạo",
+        prompt: "Con lắc 1: x1 = 5cos(10πt - π/6) cm. Con lắc 2 cùng f, có biên độ bằng chiều dài quỹ đạo con lắc 1 và sớm pha π/2. Viết PTDĐ con lắc 2.",
+        sol: `• Tần số góc: $\\omega_2 = \\omega_1 = 10\\pi\\text{ rad/s}$.<br>• Chiều dài quỹ đạo con lắc 1 là $L_1 = 2A_1 = 2 \\times 5 = 10\\text{ cm} \\implies A_2 = 10\\text{ cm}$.<br>• Con lắc 2 sớm pha hơn con lắc 1 góc $\\pi/2$:<br>$$\\varphi_2 = \\varphi_1 + \\frac{\\pi}{2} = -\\frac{\\pi}{6} + \\frac{\\pi}{2} = \\frac{\\pi}{3}\\text{ rad}.$$<br>Phương trình dao động: $$x_2 = 10\\cos\\left(10\\pi t + \\frac{\\pi}{3}\\right)\\text{ cm}.$$`
+      },
+      {
+        id: 12, type: 'd2', title: "Bài 5 (D2): Xác định pha tại vị trí 3 và 4 (Hình 1.13)",
+        prompt: "Đồ thị xuất phát từ vị trí 1 (biên dương A). Điểm 2 ở VTCB, điểm 3 ở biên âm -A, điểm 4 ở VTCB đi lên. Xác định pha tại vị trí 3 và 4.",
+        sol: `• Vị trí 1: $t_1 = 0$, vật ở biên dương $\\implies \\varphi = 0$.<br>• Vị trí 3: Vật ở biên âm $x_3 = -A$, pha dao động là $\\Phi_3 = \\pi\\text{ rad}$ (tương ứng $t = T/2$).<br>• Vị trí 4: Vật qua VTCB theo chiều dương, sau vị trí 1 một khoảng thời gian $\\Delta t = \\frac{3T}{4}$, pha dao động là $\\Phi_4 = \\frac{3\\pi}{2}\\text{ rad}$ (hoặc $-\\frac{\\pi}{2}\\text{ rad}$).`
+      },
+      {
+        id: 13, type: 'd2', title: "Bài 6 (D2): Mô tả trạng thái tại t3 và t4 (Hình 1.14)",
+        prompt: "Mô tả trạng thái của hai vật dao động ở thời điểm t3 và t4 trong đồ thị Hình 1.14. Hai dao động này như thế nào về pha?",
+        sol: `• Tại $t_3$: Cả hai vật 1 và 2 đều đang đi qua vị trí cân bằng theo chiều âm.<br>• Tại $t_4$: Cả hai vật 1 và 2 đều đang ở vị trí biên âm và chuẩn bị đổi chiều chuyển động theo chiều dương.<br>$\\implies$ Vì tại mọi thời điểm hai vật đều cùng trạng thái chuyển động nên <strong>hai dao động này cùng pha (đồng pha)</strong>.`
+      },
+      {
+        id: 14, type: 'd2', title: "Bài 7 (D2): Xác định độ lệch pha hai dao động ngược pha (Hình 1.6)",
+        prompt: "Đồ thị biểu diễn hai dao động ngược pha. Dựa vào đồ thị, xác định độ lệch pha của hai dao động này.",
+        sol: `Trên đồ thị, khi một đường đạt cực đại dương thì đường kia đạt cực tiểu âm. Hai đỉnh tương ứng lệch nhau một khoảng thời gian $\\Delta t = T/2$.<br>Độ lệch pha: $$\\Delta\\varphi = \\omega \\Delta t = \\frac{2\\pi}{T} \\cdot \\frac{T}{2} = \\pi\\text{ rad}.$$`
+      },
+      {
+        id: 15, type: 'd2', title: "Bài 8 (D2): Hai dao động ngược pha A=10cm, T=1s (Hình 1.8 CTST)",
+        prompt: "Xác định A, T, f, ω của mỗi vật và độ lệch pha của hai dao động được thể hiện trong Hình 1.8.",
+        sol: `• Dao động 1: $A_1 = 10\\text{ cm}, T_1 = 1,0\\text{ s} \\implies f_1 = 1\\text{ Hz}, \\omega_1 = 2\\pi\\text{ rad/s}$.<br>• Dao động 2: $A_2 = 10\\text{ cm}, T_2 = 1,0\\text{ s} \\implies f_2 = 1\\text{ Hz}, \\omega_2 = 2\\pi\\text{ rad/s}$.<br>• Hai dao động lệch nhau khoảng thời gian $\\Delta t = 0,5\\text{ s} = T/2$.<br>Độ lệch pha: $$\\Delta\\varphi = \\frac{2\\pi \\Delta t}{T} = \\frac{2\\pi \\times 0,5}{1} = \\pi\\text{ rad} \\quad (\\text{Ngược pha}).$$`
+      },
+      {
+        id: 16, type: 'd2', title: "Bài 9 (D2): Đồ thị SGK Cánh Diều T = 20s, lệch 2,5s (Hình 1.17)",
+        prompt: "Xác định độ lệch pha của hai dao động có cùng chu kì trong đồ thị li độ - thời gian ở Hình 1.17 (T = 20s).",
+        sol: `• Chu kì dao động của hai vật: $T = 20\\text{ s}$.<br>• Độ lệch thời gian của hai đỉnh tương ứng cùng trạng thái: $\\Delta t = 2,5\\text{ s}$.<br>• Độ lệch pha giữa hai dao động:<br>$$\\Delta\\varphi = \\frac{2\\pi \\Delta t}{T} = \\frac{2\\pi \\times 2,5}{20} = \\frac{\\pi}{4}\\text{ rad}.$$`
+      },
+      {
+        id: 17, type: 'd2', title: "Bài 10 (D2): Hai cách kích thích lệch nhau 0,5s (Hình 1.4)",
+        prompt: "Đồ thị biểu diễn một vật được kích thích theo hai cách a và b. Cách a xuất phát từ 0, cách b xuất phát từ 20cm. T = 2s. Xác định độ lệch pha.",
+        sol: `• Chu kì dao động là $T = 2,0\\text{ s}$.<br>• Dao động (b) đạt đỉnh cực đại ở $t = 0\\text{ s}$, trong khi dao động (a) đạt đỉnh cực đại ở $t = 0,5\\text{ s}$.<br>• Độ trễ thời gian giữa hai cách: $\\Delta t = 0,5\\text{ s} = T/4$.<br>Độ lệch pha: $$\\Delta\\varphi = \\frac{2\\pi \\Delta t}{T} = \\frac{2\\pi \\times 0,5}{2} = \\frac{\\pi}{2}\\text{ rad} \\quad (\\text{Vuông pha}).$$`
+      },
+      {
+        id: 18, type: 'd2', title: "Bài 11 (D2): Hai vật A và B lệch nhau 15ms (Hình 4.4)",
+        prompt: "Xác định li độ của B khi A cực đại và ngược lại; cho biết vật nào cực đại trước và độ lệch pha nếu chu kì T = 60ms.",
+        sol: `a) Khi vật A đạt cực đại thì vật B đang ở vị trí cân bằng ($x_B = 0$). Ngược lại khi vật B cực đại thì vật A ở vị trí cân bằng ($x_A = 0$).<br>b) Vật A đạt cực đại ở $t_A = 15\\text{ ms}$, vật B đạt cực đại ở $t_B = 30\\text{ ms} \\implies$ <strong>Vật A đạt li độ cực đại trước vật B</strong>.<br>c) Độ lệch thời gian: $\\Delta t = 30 - 15 = 15\\text{ ms} = T/4$.<br>Độ lệch pha giữa vật A và vật B: $$\\Delta\\varphi = \\frac{2\\pi \\Delta t}{T} = \\frac{2\\pi \\times 15}{60} = \\frac{\\pi}{2}\\text{ rad}.$$`
+      },
+      {
+        id: 19, type: 'd2', title: "Bài 12 (D2): Hai chất điểm x1 và x2 (Bài 1.10 SBT KNTT)",
+        prompt: "Đồ thị li độ theo thời gian của x1 và x2. Xác định biên độ và pha ban đầu của mỗi dao động.",
+        sol: `Từ đồ thị:<br>• Dao động 2: Biên độ $A_2 = 5\\text{ cm}$. Tại $t=0$, $x_2 = -5\\text{ cm} = -A_2 \\implies \\varphi_2 = \\pi\\text{ rad}$.<br>• Dao động 1: Biên độ $A_1 = 10\\text{ cm}$. Dao động 1 sớm hơn dao động 2 một khoảng $\\Delta t = T/4 \\implies \\Delta\\varphi = \\pi/2\\text{ rad}$.<br>$\\implies \\varphi_1 = \\varphi_2 + \\pi/2 = \\pi + \\pi/2 = 3\\pi/2\\text{ rad}$.<br>Theo quy ước $\\varphi \\in [-\\pi; \\pi]$, ta có: $$\\varphi_1 = \\frac{3\\pi}{2} - 2\\pi = -\\frac{\\pi}{2}\\text{ rad}.$$`
+      }
+    ];
+
+    function renderEssayList(filter = 'all') {
+      const container = document.getElementById('essayCardsContainer');
+      container.innerHTML = '';
+
+      const list = filter === 'all' ? essayDB : essayDB.filter(e => e.type === filter);
+
+      list.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-3";
+
+        const badgeText = item.type === 'd1' ? "Dạng 1: Đặc trưng DĐ" : "Dạng 2: Độ lệch pha";
+        const badgeClass = item.type === 'd1' ? "bg-emerald-100 text-emerald-800" : "bg-purple-100 text-purple-800";
+
+        div.innerHTML = `
+          <div class="flex justify-between items-start">
+            <h3 class="font-bold text-slate-900 text-xs sm:text-sm">
+              <span class="text-brand-600 mr-1 font-mono">${item.title}</span>
+            </h3>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeClass} whitespace-nowrap ml-2">${badgeText}</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed font-medium">${item.prompt}</p>
+          <button onclick="toggleEssaySol('sol_essay_${item.id}')" class="text-xs font-bold text-brand-600 hover:text-brand-800 flex items-center space-x-1">
+            <span>👁️ Xem hướng dẫn giải chi tiết</span>
+          </button>
+          <div id="sol_essay_${item.id}" class="hidden p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 space-y-1.5 leading-relaxed font-sans">
+            ${item.sol}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      if (window.renderMathInElement) {
+        renderMathInElement(container, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});
+      }
+    }
+
+    function toggleEssaySol(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.toggle('hidden');
+        if (!el.classList.contains('hidden') && window.renderMathInElement) {
+          renderMathInElement(el, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});
+        }
+      }
+    }
+
+    function filterEssayType(type) {
+      document.getElementById('btnEssayAll').className = type === 'all' ? "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-600 text-white shadow-xs" : "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700";
+      document.getElementById('btnEssayD1').className = type === 'd1' ? "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-600 text-white shadow-xs" : "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700";
+      document.getElementById('btnEssayD2').className = type === 'd2' ? "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-600 text-white shadow-xs" : "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700";
+      renderEssayList(type);
+    }
+
+    window.addEventListener('load', () => {
+      resizeSimCanvas();
+      updateSimParams();
+      renderQuizList();
+      renderMatchGame();
+      renderEssayList();
+      computeOscParams();
+      requestAnimationFrame(renderSimulationFrame);
+    });
+  </script>
+</body>
+</html>
