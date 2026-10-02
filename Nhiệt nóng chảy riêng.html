@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chủ đề 5: Nhiệt Nóng Chảy Riêng - Vật Lý 12</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- SweetAlert2 (Thay thế alert/confirm) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af', // blue-800
+                        secondary: '#3b82f6', // blue-500
+                        accent: '#0ea5e9', // sky-500
+                        dark: '#1e293b', // slate-800
+                        light: '#f8fafc', // slate-50
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #334155; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .tab-btn.active { border-bottom: 3px solid #1e40af; color: #1e40af; font-weight: 600; background-color: #eff6ff; }
+        
+        /* Math display styling */
+        .katex-display { overflow-x: auto; overflow-y: hidden; padding-top: 0.5em; padding-bottom: 0.5em; }
+
+        /* Sim CSS */
+        .ice-cube {
+            transition: all 0.5s ease-in-out;
+            background: linear-gradient(135deg, #a5f3fc 0%, #38bdf8 100%);
+            box-shadow: inset -5px -5px 15px rgba(0,0,0,0.1), 5px 5px 15px rgba(0,0,0,0.1);
+        }
+        .puddle {
+            background: rgba(56, 189, 248, 0.7);
+            border-radius: 50%;
+            transition: all 0.5s ease-in-out;
+            filter: blur(2px);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="bg-primary text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-fire-flame-curved text-3xl text-orange-400"></i>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold uppercase tracking-wide">Chủ đề 5: Nhiệt Nóng Chảy Riêng</h1>
+                    <p class="text-sm text-blue-200">Bản quyền bài giảng © 2026 - Thầy Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab Navigation -->
+        <div class="bg-white text-slate-600 shadow-inner overflow-x-auto">
+            <div class="max-w-7xl mx-auto flex whitespace-nowrap" id="tabNav">
+                <button onclick="switchTab('tab1')" class="tab-btn active px-6 py-3 hover:bg-slate-50 transition-colors"><i class="fa-solid fa-book-open mr-2"></i>Cốt lõi Lý thuyết</button>
+                <button onclick="switchTab('tab2')" class="tab-btn px-6 py-3 hover:bg-slate-50 transition-colors"><i class="fa-solid fa-flask mr-2"></i>Mô phỏng (Sim Lab)</button>
+                <button onclick="switchTab('tab3')" class="tab-btn px-6 py-3 hover:bg-slate-50 transition-colors"><i class="fa-solid fa-calculator mr-2"></i>Máy tính Vật lý</button>
+                <button onclick="switchTab('tab4')" class="tab-btn px-6 py-3 hover:bg-slate-50 transition-colors"><i class="fa-solid fa-pen-to-square mr-2"></i>Phòng luyện tập</button>
+                <button onclick="switchTab('tab5')" class="tab-btn px-6 py-3 hover:bg-slate-50 transition-colors"><i class="fa-solid fa-list-check mr-2"></i>Tự đánh giá</button>
+                <button onclick="switchTab('tab6')" class="tab-btn px-6 py-3 hover:bg-slate-50 transition-colors"><i class="fa-solid fa-toolbox mr-2"></i>Tiện ích Lớp học</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-8 sm:px-6 lg:px-8">
+        
+        <!-- TAB 1: LÝ THUYẾT -->
+        <section id="tab1" class="tab-content active">
+            <h2 class="text-2xl font-bold text-dark mb-6 border-l-4 border-primary pl-4">📖 CỐT LÕI LÝ THUYẾT & BẢN CHẤT VẬT LÝ</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Khái niệm -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-semibold text-primary mb-3"><i class="fa-solid fa-lightbulb mr-2 text-yellow-500"></i>1. Khái niệm then chốt</h3>
+                    <p class="mb-3 text-justify">
+                        Sự nóng chảy là quá trình chuyển từ thể rắn sang thể lỏng của các chất. Đối với chất rắn kết tinh, quá trình này xảy ra ở một nhiệt độ xác định gọi là <strong>nhiệt độ nóng chảy</strong>. 
+                    </p>
+                    <p class="text-justify bg-blue-50 p-4 rounded-lg border-l-4 border-secondary text-dark italic">
+                        <strong>Nhiệt nóng chảy riêng</strong> của một chất là nhiệt lượng cần cung cấp để làm cho một đơn vị khối lượng chất đó nóng chảy hoàn toàn ở nhiệt độ nóng chảy mà không làm thay đổi nhiệt độ.
+                    </p>
+                </div>
+
+                <!-- Bẫy lý thuyết -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-semibold text-red-600 mb-3"><i class="fa-solid fa-triangle-exclamation mr-2"></i>2. Bẫy lý thuyết thường gặp</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-slate-700">
+                        <li><span class="font-semibold text-dark">Nhiệt độ thay đổi khi nóng chảy?</span> SAI. Trong suốt quá trình nóng chảy của chất rắn kết tinh, nhiệt độ của hệ <strong>không đổi</strong>. Năng lượng lúc này dùng để phá vỡ cấu trúc tinh thể.</li>
+                        <li><span class="font-semibold text-dark">Nhầm lẫn đơn vị:</span> Nhiệt nóng chảy riêng có đơn vị là \( \text{J/kg} \), khác với Nhiệt dung riêng có đơn vị là \( \text{J/(kg.K)} \).</li>
+                        <li><span class="font-semibold text-dark">Chất vô định hình:</span> Thủy tinh, nhựa đường... <strong>không có</strong> nhiệt độ nóng chảy xác định, nên không áp dụng khái niệm này một cách khắt khe như tinh thể.</li>
+                    </ul>
+                </div>
+
+                <!-- Công thức -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 md:col-span-2">
+                    <h3 class="text-lg font-semibold text-primary mb-4"><i class="fa-solid fa-square-root-variable mr-2"></i>3. Hệ thống công thức cốt lõi</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700">
+                                    <th class="p-3 border border-slate-300">Đại lượng</th>
+                                    <th class="p-3 border border-slate-300">Công thức</th>
+                                    <th class="p-3 border border-slate-300">Giải thích chi tiết & Đơn vị SI chuẩn</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-3 border border-slate-300 font-semibold">Nhiệt lượng nóng chảy</td>
+                                    <td class="p-3 border border-slate-300 text-center text-xl text-primary">\[ Q = \lambda \cdot m \]</td>
+                                    <td class="p-3 border border-slate-300">
+                                        <ul class="space-y-1">
+                                            <li>\( Q \): Nhiệt lượng cần cung cấp, đơn vị \( \text{J} \) (Jun).</li>
+                                            <li>\( \lambda \): Nhiệt nóng chảy riêng, đơn vị \( \text{J/kg} \).</li>
+                                            <li>\( m \): Khối lượng vật chất, đơn vị \( \text{kg} \).</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr class="bg-slate-50">
+                                    <td class="p-3 border border-slate-300 font-semibold">Định luật Joule - Lenz<br><span class="text-sm font-normal text-slate-500">(Dùng trong Thí nghiệm)</span></td>
+                                    <td class="p-3 border border-slate-300 text-center text-xl text-primary">\[ Q = \mathcal{P} \cdot \Delta t \]</td>
+                                    <td class="p-3 border border-slate-300">
+                                        <ul class="space-y-1">
+                                            <li>\( \mathcal{P} \): Công suất tỏa nhiệt của thiết bị đun, đơn vị \( \text{W} \).</li>
+                                            <li>\( \Delta t \): Thời gian đun, đơn vị \( \text{s} \).</li>
+                                            <li><em>Bản chất:</em> Biến đổi điện năng thành nhiệt năng cung cấp cho quá trình nóng chảy.</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800 mb-2">Giá trị tham khảo (\( \lambda \)):</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-center">
+                            <div class="p-2 bg-white rounded border shadow-sm">Nước đá (0°C)<br><span class="font-bold text-primary">\( 3,34 \cdot 10^5 \text{ J/kg} \)</span></div>
+                            <div class="p-2 bg-white rounded border shadow-sm">Sắt (1535°C)<br><span class="font-bold text-primary">\( 2,77 \cdot 10^5 \text{ J/kg} \)</span></div>
+                            <div class="p-2 bg-white rounded border shadow-sm">Đồng (1084°C)<br><span class="font-bold text-primary">\( 1,80 \cdot 10^5 \text{ J/kg} \)</span></div>
+                            <div class="p-2 bg-white rounded border shadow-sm">Chì (327°C)<br><span class="font-bold text-primary">\( 0,25 \cdot 10^5 \text{ J/kg} \)</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: MÔ PHỎNG -->
+        <section id="tab2" class="tab-content">
+            <h2 class="text-2xl font-bold text-dark mb-6 border-l-4 border-secondary pl-4">🔬 MÔ PHỎNG TƯƠNG TÁC: ĐUN CHẢY NƯỚC ĐÁ</h2>
+            <p class="mb-4 text-slate-600">Thí nghiệm ảo mô phỏng quá trình dùng lò sưởi điện để nung chảy khối nước đá ở 0°C. Hãy thay đổi khối lượng và công suất để quan sát thời gian và sự biến đổi.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Controls -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="font-semibold text-lg mb-4 text-dark"><i class="fa-solid fa-sliders mr-2"></i>Bảng điều khiển</h3>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Khối lượng nước đá (\( m \)): <span id="massVal" class="font-bold text-secondary">1.0</span> kg</label>
+                        <input type="range" id="simMass" min="0.1" max="5.0" step="0.1" value="1.0" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                        <div class="flex justify-between text-xs text-slate-400 mt-1"><span>0.1 kg</span><span>5.0 kg</span></div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Công suất lò đun (\( \mathcal{P} \)): <span id="powerVal" class="font-bold text-red-500">1000</span> W</label>
+                        <input type="range" id="simPower" min="500" max="5000" step="100" value="1000" class="w-full h-2 bg-red-200 rounded-lg appearance-none cursor-pointer accent-red-500">
+                        <div class="flex justify-between text-xs text-slate-400 mt-1"><span>500 W</span><span>5000 W</span></div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded border mb-4">
+                        <p class="text-sm text-slate-600 mb-2">Thông số vật liệu (Nước đá):</p>
+                        <p class="font-mono text-sm text-primary">\( \lambda = 334,000 \text{ J/kg} \)</p>
+                    </div>
+
+                    <button id="btnStartSim" onclick="startSimulation()" class="w-full bg-primary hover:bg-blue-900 text-white font-bold py-3 px-4 rounded-lg transition-all shadow-md active:scale-95">
+                        <i class="fa-solid fa-play mr-2"></i> Bắt đầu Đun
+                    </button>
+                </div>
+
+                <!-- Simulation Visual -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center justify-center min-h-[300px] relative overflow-hidden">
+                    <h3 class="absolute top-4 left-4 font-semibold text-slate-500">Khu vực thí nghiệm</h3>
+                    
+                    <!-- Heater -->
+                    <div class="absolute bottom-4 w-3/4 h-6 bg-slate-800 rounded-md flex items-center justify-evenly">
+                        <div id="heaterCoil1" class="w-1/4 h-2 bg-slate-600 rounded transition-colors duration-500"></div>
+                        <div id="heaterCoil2" class="w-1/4 h-2 bg-slate-600 rounded transition-colors duration-500"></div>
+                        <div id="heaterCoil3" class="w-1/4 h-2 bg-slate-600 rounded transition-colors duration-500"></div>
+                    </div>
+
+                    <!-- Ice/Water container -->
+                    <div class="relative w-48 h-48 border-b-4 border-l-4 border-r-4 border-slate-300 rounded-b-lg flex items-end justify-center mb-10 overflow-hidden bg-slate-50">
+                        <!-- Water Puddle -->
+                        <div id="simPuddle" class="puddle absolute bottom-0 w-full h-0"></div>
+                        <!-- Ice Cube -->
+                        <div id="simIce" class="ice-cube w-32 h-32 absolute bottom-0 rounded-md border border-white/50 backdrop-blur-sm flex items-center justify-center">
+                            <i class="fa-regular fa-snowflake text-white/70 text-4xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outputs & Graph -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h3 class="font-semibold text-lg mb-4 text-dark"><i class="fa-solid fa-chart-line mr-2"></i>Kết quả & Đồ thị</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 text-center">
+                            <span class="block text-xs text-slate-500 uppercase font-semibold">Đã truyền (Q)</span>
+                            <span id="outHeat" class="text-xl font-bold text-primary">0</span> <span class="text-sm">kJ</span>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded-lg border border-green-100 text-center">
+                            <span class="block text-xs text-slate-500 uppercase font-semibold">Thời gian (t)</span>
+                            <span id="outTime" class="text-xl font-bold text-green-600">0</span> <span class="text-sm">s</span>
+                        </div>
+                    </div>
+
+                    <div class="w-full h-48 relative">
+                        <canvas id="simChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-slate-400 mt-2">Đồ thị Nhiệt độ (°C) theo Thời gian (s)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: MÁY TÍNH -->
+        <section id="tab3" class="tab-content">
+            <h2 class="text-2xl font-bold text-dark mb-6 border-l-4 border-accent pl-4">🧮 MÁY TÍNH THAM SỐ VẬT LÝ</h2>
+            <p class="mb-6 text-slate-600">Nhập 2 trong 3 đại lượng đã biết, bỏ trống đại lượng cần tìm. Hệ thống sẽ tự động giải chi tiết.</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Form nhập -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Chọn chất liệu (Để gợi ý \( \lambda \)):</label>
+                        <select id="calcMaterial" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none" onchange="autoFillLambda()">
+                            <option value="">-- Tự nhập --</option>
+                            <option value="334000">Nước đá (3.34 × 10⁵ J/kg)</option>
+                            <option value="277000">Sắt (2.77 × 10⁵ J/kg)</option>
+                            <option value="180000">Đồng (1.80 × 10⁵ J/kg)</option>
+                            <option value="25000">Chì (0.25 × 10⁵ J/kg)</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nhiệt lượng \( Q \) (J):</label>
+                            <input type="number" id="calcQ" placeholder="Để trống nếu cần tìm" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nhiệt nóng chảy riêng \( \lambda \) (J/kg):</label>
+                            <input type="number" id="calcLambda" placeholder="Để trống nếu cần tìm" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Khối lượng \( m \) (kg):</label>
+                            <input type="number" id="calcM" placeholder="Để trống nếu cần tìm" step="0.01" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                        </div>
+                    </div>
+
+                    <button onclick="calculateFormula()" class="mt-6 w-full bg-dark hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-gears"></i> Giải Bài Toán
+                    </button>
+                    <button onclick="clearCalculator()" class="mt-2 w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
+                        Làm mới
+                    </button>
+                </div>
+
+                <!-- Lời giải -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 min-h-[300px]">
+                    <h3 class="font-semibold text-lg mb-4 text-primary border-b pb-2">Bảng biến đổi chi tiết</h3>
+                    <div id="calcSolution" class="text-slate-800 text-lg space-y-4">
+                        <p class="text-slate-400 italic text-sm">Hãy nhập dữ kiện và bấm "Giải Bài Toán" để xem các bước biến đổi công thức.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: LUYỆN TẬP -->
+        <section id="tab4" class="tab-content">
+            <h2 class="text-2xl font-bold text-dark mb-6 border-l-4 border-green-500 pl-4">📝 PHÒNG LUYỆN TẬP PHÂN HÓA</h2>
+            
+            <div class="space-y-6">
+                <!-- Cấp độ 1 -->
+                <div class="bg-white rounded-xl shadow-sm border border-green-200 overflow-hidden">
+                    <div class="bg-green-50 p-4 border-b border-green-200 flex justify-between items-center cursor-pointer" onclick="toggleSolution('sol1')">
+                        <h3 class="font-bold text-green-800"><i class="fa-solid fa-leaf mr-2"></i>Cấp độ 1: Nhận biết - Thông hiểu</h3>
+                        <i class="fa-solid fa-chevron-down text-green-600 transition-transform" id="icon-sol1"></i>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 font-medium text-slate-800">
+                            <strong>Bài toán:</strong> Tính nhiệt lượng \( Q \) cần cung cấp để làm nóng chảy hoàn toàn 500g nước đá ở \( 0^{\circ}\text{C} \). Biết nhiệt nóng chảy riêng của nước đá là \( 3,34 \cdot 10^5 \text{ J/kg} \).
+                        </p>
+                        <button onclick="toggleSolution('sol1')" class="bg-green-100 hover:bg-green-200 text-green-700 px-4 py-2 rounded text-sm font-semibold transition-colors">
+                            <i class="fa-regular fa-eye mr-1"></i> Xem lời giải
+                        </button>
+                        
+                        <div id="sol1" class="hidden mt-4 p-4 bg-slate-50 border-l-4 border-green-500 rounded">
+                            <h4 class="font-semibold text-dark mb-2">Tóm tắt:</h4>
+                            <p>\( m = 500 \text{ g} = 0,5 \text{ kg} \)</p>
+                            <p>\( \lambda = 3,34 \cdot 10^5 \text{ J/kg} \)</p>
+                            <p>\( Q = ? \)</p>
+                            <hr class="my-3 border-slate-200">
+                            <h4 class="font-semibold text-dark mb-2">Giải:</h4>
+                            <p>Nhiệt lượng cần cung cấp để làm nóng chảy hoàn toàn lượng nước đá ở nhiệt độ nóng chảy là:</p>
+                            <div class="my-2">
+                                \[ Q = \lambda \cdot m = 3,34 \cdot 10^5 \cdot 0,5 = 1,67 \cdot 10^5 \text{ J} \]
+                            </div>
+                            <p>Vậy cần cung cấp \( 167 \text{ kJ} \).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cấp độ 2 -->
+                <div class="bg-white rounded-xl shadow-sm border border-yellow-200 overflow-hidden">
+                    <div class="bg-yellow-50 p-4 border-b border-yellow-200 flex justify-between items-center cursor-pointer" onclick="toggleSolution('sol2')">
+                        <h3 class="font-bold text-yellow-800"><i class="fa-solid fa-fire mr-2"></i>Cấp độ 2: Vận dụng</h3>
+                        <i class="fa-solid fa-chevron-down text-yellow-600 transition-transform" id="icon-sol2"></i>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 font-medium text-slate-800">
+                            <strong>Bài toán:</strong> Cần bao nhiêu thời gian \( t \) (tính bằng giây) để làm nóng chảy hoàn toàn 2kg đồng có nhiệt độ ban đầu là \( 1084^{\circ}\text{C} \) (đúng bằng nhiệt độ nóng chảy), trong một lò nung điện có công suất \( \mathcal{P} = 20000 \text{ W} \). Biết chỉ có 50% năng lượng tiêu thụ của lò được dùng vào việc làm nóng chảy đồng. Nhiệt nóng chảy riêng của đồng là \( 1,80 \cdot 10^5 \text{ J/kg} \).
+                        </p>
+                        <button onclick="toggleSolution('sol2')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-4 py-2 rounded text-sm font-semibold transition-colors">
+                            <i class="fa-regular fa-eye mr-1"></i> Xem lời giải
+                        </button>
+                        
+                        <div id="sol2" class="hidden mt-4 p-4 bg-slate-50 border-l-4 border-yellow-500 rounded">
+                            <h4 class="font-semibold text-dark mb-2">Tóm tắt:</h4>
+                            <p>\( m = 2 \text{ kg} \); \( \lambda = 1,80 \cdot 10^5 \text{ J/kg} \)</p>
+                            <p>\( \mathcal{P}_{tp} = 20000 \text{ W} \); Hiệu suất \( H = 50\% = 0,5 \)</p>
+                            <hr class="my-3 border-slate-200">
+                            <h4 class="font-semibold text-dark mb-2">Giải:</h4>
+                            <p>Nhiệt lượng cần cung cấp để làm nóng chảy hoàn toàn 2kg đồng là:</p>
+                            <div>\[ Q = \lambda \cdot m = 1,80 \cdot 10^5 \cdot 2 = 3,6 \cdot 10^5 \text{ J} \]</div>
+                            <p class="mt-2">Công suất có ích của lò nung dùng để làm nóng chảy là:</p>
+                            <div>\[ \mathcal{P}_{ci} = H \cdot \mathcal{P}_{tp} = 0,5 \cdot 20000 = 10000 \text{ W} \]</div>
+                            <p class="mt-2">Thời gian cần thiết để đun là:</p>
+                            <div>\[ t = \frac{Q}{\mathcal{P}_{ci}} = \frac{3,6 \cdot 10^5}{10000} = 36 \text{ s} \]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cấp độ 3 -->
+                <div class="bg-white rounded-xl shadow-sm border border-red-200 overflow-hidden">
+                    <div class="bg-red-50 p-4 border-b border-red-200 flex justify-between items-center cursor-pointer" onclick="toggleSolution('sol3')">
+                        <h3 class="font-bold text-red-800"><i class="fa-solid fa-brain mr-2"></i>Cấp độ 3: Vận dụng cao (Thực tiễn / Năng lực số)</h3>
+                        <i class="fa-solid fa-chevron-down text-red-600 transition-transform" id="icon-sol3"></i>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 font-medium text-slate-800">
+                            <strong>Bài toán:</strong> Một hệ thống AI Server tạo ra nhiệt lượng không đổi là \( 5 \text{ kW} \). Do sự cố mất điện, hệ thống làm mát chính ngưng hoạt động. Các kĩ sư sử dụng một thùng chứa nước đá ở \( 0^{\circ}\text{C} \) để hấp thụ toàn bộ nhiệt lượng này nhằm giữ server không bị quá nhiệt. Biết nhiệt nóng chảy riêng của nước đá là \( 3,34 \cdot 10^5 \text{ J/kg} \). Tính khối lượng nước đá tối thiểu cần chuẩn bị để hệ thống có thể hoạt động an toàn trong 1 giờ chờ khôi phục điện.
+                        </p>
+                        <button onclick="toggleSolution('sol3')" class="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded text-sm font-semibold transition-colors">
+                            <i class="fa-regular fa-eye mr-1"></i> Xem lời giải & Đánh giá năng lực số
+                        </button>
+                        
+                        <div id="sol3" class="hidden mt-4 p-4 bg-slate-50 border-l-4 border-red-500 rounded">
+                            <h4 class="font-semibold text-dark mb-2">Tư duy hệ thống:</h4>
+                            <p>Tổng nhiệt lượng Server sinh ra trong 1 giờ phải được nước đá hấp thụ để nóng chảy hoàn toàn thành nước ở 0°C (bỏ qua nhiệt lượng làm tăng nhiệt độ của nước sau khi tan).</p>
+                            <hr class="my-3 border-slate-200">
+                            <h4 class="font-semibold text-dark mb-2">Giải:</h4>
+                            <p>Đổi đơn vị: \( \mathcal{P} = 5 \text{ kW} = 5000 \text{ W} \), \( t = 1 \text{ giờ} = 3600 \text{ s} \).</p>
+                            <p>Tổng nhiệt lượng sinh ra trong 1 giờ là:</p>
+                            <div>\[ Q = \mathcal{P} \cdot t = 5000 \cdot 3600 = 18 \cdot 10^6 \text{ J} \]</div>
+                            <p class="mt-2">Khối lượng nước đá tối thiểu cần dùng:</p>
+                            <div>\[ m = \frac{Q}{\lambda} = \frac{18 \cdot 10^6}{3,34 \cdot 10^5} \approx 53,89 \text{ kg} \]</div>
+                            <p class="mt-2 italic text-sm text-slate-600">Gợi ý AI: Trong thực tế, cần kết hợp cảm biến IoT (Internet of Things) để đo đạc sự rò rỉ nhiệt ra môi trường xung quanh nhằm tính toán bù trừ sai số.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: QUIZ -->
+        <section id="tab5" class="tab-content">
+            <h2 class="text-2xl font-bold text-dark mb-6 border-l-4 border-purple-500 pl-4">🎯 BÀI TỰ ĐÁNH GIÁ (TRẮC NGHIỆM)</h2>
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-slate-200">
+                <form id="quizForm" onsubmit="submitQuiz(event)">
+                    
+                    <!-- Q1 -->
+                    <div class="mb-8 quiz-q" id="q1-container">
+                        <p class="font-semibold text-lg text-slate-800 mb-3">Câu 1: Gọi \( Q \) là nhiệt lượng cần truyền cho vật, \( m \) là khối lượng của vật (kg) để nóng chảy ở nhiệt độ xác định. Tỉ số \( \frac{Q}{m} \) gọi là:</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q1" value="A" class="w-4 h-4 text-purple-600"> A. nhiệt dung riêng của chất làm nên vật</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q1" value="B" class="w-4 h-4 text-purple-600"> B. nhiệt nóng chảy riêng của chất làm nên vật</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q1" value="C" class="w-4 h-4 text-purple-600"> C. trọng lượng riêng của vật</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q1" value="D" class="w-4 h-4 text-purple-600"> D. khối lượng riêng của vật</label>
+                        </div>
+                        <div class="q-solution hidden mt-3 p-3 bg-purple-50 text-purple-800 text-sm rounded border border-purple-100">
+                            <strong>Giải thích:</strong> Theo công thức \( Q = \lambda \cdot m \Rightarrow \lambda = \frac{Q}{m} \). Đại lượng \( \lambda \) chính là nhiệt nóng chảy riêng. Đáp án B.
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="mb-8 quiz-q" id="q2-container">
+                        <p class="font-semibold text-lg text-slate-800 mb-3">Câu 2: Điều nào sau đây là SAI khi nói về nhiệt nóng chảy?</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q2" value="A" class="w-4 h-4 text-purple-600"> A. Nhiệt nóng chảy của vật rắn là nhiệt lượng cung cấp cho vật trong quá trình nóng chảy.</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q2" value="B" class="w-4 h-4 text-purple-600"> B. Nhiệt nóng chảy có đơn vị là Jun (\( \text{J} \)).</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q2" value="C" class="w-4 h-4 text-purple-600"> C. Các vật có khối lượng bằng nhau thì luôn có nhiệt nóng chảy như nhau.</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q2" value="D" class="w-4 h-4 text-purple-600"> D. Nhiệt nóng chảy tỉ lệ thuận với khối lượng của vật rắn.</label>
+                        </div>
+                        <div class="q-solution hidden mt-3 p-3 bg-purple-50 text-purple-800 text-sm rounded border border-purple-100">
+                            <strong>Giải thích:</strong> Nhiệt nóng chảy \( Q = \lambda \cdot m \). Nếu khối lượng bằng nhau nhưng <strong>chất liệu khác nhau</strong> (khác \( \lambda \)) thì nhiệt nóng chảy \( Q \) sẽ khác nhau. Do đó C sai.
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="mb-8 quiz-q" id="q3-container">
+                        <p class="font-semibold text-lg text-slate-800 mb-3">Câu 3: Cần nhiệt lượng bao nhiêu để làm nóng chảy hoàn toàn 1kg chì ở \( 327^{\circ}\text{C} \)? Biết nhiệt nóng chảy riêng của chì là \( 0,25 \cdot 10^5 \text{ J/kg} \).</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q3" value="A" class="w-4 h-4 text-purple-600"> A. \( 0,25 \cdot 10^5 \text{ J} \)</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q3" value="B" class="w-4 h-4 text-purple-600"> B. \( 2,5 \cdot 10^5 \text{ J} \)</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q3" value="C" class="w-4 h-4 text-purple-600"> C. \( 25 \text{ J} \)</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q3" value="D" class="w-4 h-4 text-purple-600"> D. \( 250 \cdot 10^5 \text{ J} \)</label>
+                        </div>
+                        <div class="q-solution hidden mt-3 p-3 bg-purple-50 text-purple-800 text-sm rounded border border-purple-100">
+                            <strong>Giải thích:</strong> Vì \( m = 1 \text{ kg} \), nên \( Q = \lambda \cdot m = 0,25 \cdot 10^5 \cdot 1 = 0,25 \cdot 10^5 \text{ J} \). Đáp án A.
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="mb-8 quiz-q" id="q4-container">
+                        <p class="font-semibold text-lg text-slate-800 mb-3">Câu 4: Khi vật rắn kết tinh đang nóng chảy, nhiệt độ của nó sẽ:</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q4" value="A" class="w-4 h-4 text-purple-600"> A. Tăng dần</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q4" value="B" class="w-4 h-4 text-purple-600"> B. Giảm dần</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q4" value="C" class="w-4 h-4 text-purple-600"> C. Không đổi</label>
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition"><input type="radio" name="q4" value="D" class="w-4 h-4 text-purple-600"> D. Biến thiên hình sin</label>
+                        </div>
+                        <div class="q-solution hidden mt-3 p-3 bg-purple-50 text-purple-800 text-sm rounded border border-purple-100">
+                            <strong>Giải thích:</strong> Trong suốt quá trình chuyển thể từ rắn sang lỏng của chất rắn kết tinh, nhiệt độ giữ ở mức cố định (nhiệt độ nóng chảy) dù vẫn tiếp tục cung cấp nhiệt lượng. Đáp án C.
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full md:w-auto px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg shadow-md transition-colors text-lg">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Nộp Bài & Xem Kết Quả
+                    </button>
+                    
+                    <div id="quizResult" class="mt-6 text-xl font-bold hidden"></div>
+                </form>
+            </div>
+        </section>
+
+        <!-- TAB 6: TOOLS -->
+        <section id="tab6" class="tab-content">
+            <h2 class="text-2xl font-bold text-dark mb-6 border-l-4 border-orange-500 pl-4">🛠️ TIỆN ÍCH LỚP HỌC</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- TIMER -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center">
+                    <h3 class="font-bold text-lg text-slate-700 mb-4"><i class="fa-solid fa-stopwatch text-orange-500 mr-2"></i>Đồng hồ đếm ngược</h3>
+                    
+                    <div class="relative w-64 h-64 mb-6">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#e2e8f0" stroke-width="8"></circle>
+                            <circle id="timerCircle" cx="50" cy="50" r="45" fill="none" stroke="#f97316" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="0" class="transition-all duration-1000 ease-linear"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span id="timerText" class="text-5xl font-mono font-bold text-slate-800">00:00</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 w-full mb-4">
+                        <input type="number" id="timeInput" min="1" max="60" placeholder="Phút" class="w-full p-2 border border-slate-300 rounded text-center font-bold">
+                        <button onclick="setTimer(1)" class="px-3 bg-slate-100 rounded hover:bg-slate-200 font-medium">+1m</button>
+                        <button onclick="setTimer(5)" class="px-3 bg-slate-100 rounded hover:bg-slate-200 font-medium">+5m</button>
+                    </div>
+
+                    <div class="flex gap-3 w-full">
+                        <button id="btnTimerToggle" onclick="toggleTimer()" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition-colors">Bắt đầu</button>
+                        <button onclick="resetTimer()" class="px-6 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-lg transition-colors"><i class="fa-solid fa-rotate-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- LUCKY WHEEL -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center">
+                    <h3 class="font-bold text-lg text-slate-700 mb-4"><i class="fa-solid fa-dharmachakra text-rose-500 mr-2"></i>Vòng quay gọi tên</h3>
+                    
+                    <div class="relative w-64 h-64 mb-6">
+                        <canvas id="wheelCanvas" width="256" height="256" class="w-full h-full rounded-full shadow-lg border-4 border-white"></canvas>
+                        <!-- Pointer -->
+                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 text-rose-600 text-3xl z-10 filter drop-shadow-md">
+                            <i class="fa-solid fa-location-pin fa-flip-vertical"></i>
+                        </div>
+                    </div>
+
+                    <textarea id="wheelNames" rows="3" class="w-full p-3 border border-slate-300 rounded-lg text-sm mb-4 outline-none focus:ring-2 focus:ring-rose-500" placeholder="Nhập tên học sinh cách nhau bởi dấu phẩy...">Tổ 1, Tổ 2, Tổ 3, Tổ 4, Lớp Trưởng, Lớp Phó</textarea>
+
+                    <button onclick="spinWheel()" id="btnSpin" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-lg transition-colors shadow-md active:scale-95">
+                        <i class="fa-solid fa-arrows-rotate mr-2"></i> Quay Ngẫu Nhiên
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-medium text-lg text-white mb-2">Chuyên đề Vật Lý 12 - Nhiệt nóng chảy riêng</p>
+            <p>Bản quyền bài giảng © 2026 - Thầy Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</p>
+        </div>
+    </footer>
+
+    <!-- JS Logic -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        // Khởi tạo KaTeX
+        document.addEventListener("DOMContentLoaded", function() {
+            renderAllMath();
+            initWheel();
+        });
+
+        function renderAllMath() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "\\[", right: "\\]", display: true},
+                    {left: "\\(", right: "\\)", display: false}
+                ],
+                throwOnError: false
+            });
+        }
+
+        // Tab Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Simulation Logic
+        let simInterval;
+        function startSimulation() {
+            const m = parseFloat(document.getElementById('simMass').value);
+            const P = parseFloat(document.getElementById('simPower').value);
+            const lambda = 334000;
+            const totalQ = lambda * m; // Joules
+            const totalTime = totalQ / P; // seconds
+
+            let currentTime = 0;
+            let currentQ = 0;
+
+            const btn = document.getElementById('btnStartSim');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Đang đun...';
+            btn.classList.replace('bg-primary', 'bg-slate-400');
+
+            // UI Elements
+            const ice = document.getElementById('simIce');
+            const puddle = document.getElementById('simPuddle');
+            const heatOut = document.getElementById('outHeat');
+            const timeOut = document.getElementById('outTime');
+            const coils = [document.getElementById('heaterCoil1'), document.getElementById('heaterCoil2'), document.getElementById('heaterCoil3')];
+            
+            coils.forEach(c => c.classList.replace('bg-slate-600', 'bg-orange-500'));
+            
+            // Reset Chart
+            initChart(totalTime);
+            
+            // Reset Animation states
+            ice.style.transform = 'scale(1)';
+            ice.style.opacity = '1';
+            puddle.style.height = '0px';
+
+            clearInterval(simInterval);
+            let lastUpdate = Date.now();
+
+            simInterval = setInterval(() => {
+                const now = Date.now();
+                const dt = (now - lastUpdate) / 1000; // actual elapsed time in seconds, but we speed it up for sim
+                lastUpdate = now;
+                
+                // Speed up factor so we don't wait hours. Let's make the animation take max 10 real seconds.
+                const speedFactor = totalTime / 10; 
+                currentTime += dt * speedFactor;
+                
+                if (currentTime >= totalTime) {
+                    currentTime = totalTime;
+                    clearInterval(simInterval);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-play mr-2"></i> Bắt đầu lại';
+                    btn.classList.replace('bg-slate-400', 'bg-primary');
+                    coils.forEach(c => c.classList.replace('bg-orange-500', 'bg-slate-600'));
+                    
+                    Swal.fire({
+                        title: 'Nóng chảy hoàn toàn!',
+                        text: `Đã dùng ${Math.round((totalQ/1000)*10)/10} kJ trong ${Math.round(totalTime)} giây.`,
+                        icon: 'success',
+                        confirmButtonColor: '#1e40af'
+                    });
+                }
+
+                currentQ = P * currentTime;
+                
+                // Update text
+                heatOut.innerText = (currentQ / 1000).toFixed(1);
+                timeOut.innerText = Math.round(currentTime);
+
+                // Update visual
+                const progress = currentTime / totalTime;
+                ice.style.transform = `scale(${1 - progress * 0.9}) translateY(${progress * 50}px)`;
+                ice.style.opacity = 1 - progress;
+                puddle.style.height = `${progress * 40}px`;
+
+                // Update Chart
+                updateChart(currentTime, 0); // temp is 0 during melting
+
+            }, 50);
+        }
+
+        // Live input updates
+        document.getElementById('simMass').addEventListener('input', (e) => document.getElementById('massVal').innerText = e.target.value);
+        document.getElementById('simPower').addEventListener('input', (e) => document.getElementById('powerVal').innerText = e.target.value);
+
+        let simChartObj = null;
+        function initChart(maxT) {
+            const ctx = document.getElementById('simChart').getContext('2d');
+            if(simChartObj) simChartObj.destroy();
+            simChartObj = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Nhiệt độ (°C)',
+                        data: [],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        fill: true,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: 'Thời gian (s)' }, max: maxT },
+                        y: { title: { display: true, text: 'Nhiệt độ (°C)' }, min: -5, max: 10 }
+                    },
+                    animation: false
+                }
+            });
+        }
+        function updateChart(time, temp) {
+            if(!simChartObj) return;
+            simChartObj.data.labels.push(Math.round(time));
+            simChartObj.data.datasets[0].data.push(temp);
+            // keep array smallish
+            if(simChartObj.data.labels.length > 50) {
+                simChartObj.data.labels.shift();
+                simChartObj.data.datasets[0].data.shift();
+            }
+            simChartObj.update();
+        }
+
+        // Calculator Logic
+        function autoFillLambda() {
+            const val = document.getElementById('calcMaterial').value;
+            if(val) document.getElementById('calcLambda').value = val;
+        }
+
+        function calculateFormula() {
+            const Qstr = document.getElementById('calcQ').value;
+            const Lstr = document.getElementById('calcLambda').value;
+            const Mstr = document.getElementById('calcM').value;
+
+            const solDiv = document.getElementById('calcSolution');
+
+            let countBlank = 0;
+            if(!Qstr) countBlank++;
+            if(!Lstr) countBlank++;
+            if(!Mstr) countBlank++;
+
+            if(countBlank !== 1) {
+                Swal.fire('Lỗi', 'Vui lòng nhập đúng 2 giá trị và để trống 1 giá trị cần tìm.', 'warning');
+                return;
+            }
+
+            let resultHtml = "";
+
+            if(!Qstr) {
+                const L = parseFloat(Lstr);
+                const m = parseFloat(Mstr);
+                const Q = L * m;
+                resultHtml = `
+                    <div class="text-blue-800">
+                        <p>Ta có công thức: \\( Q = \\lambda \\cdot m \\)</p>
+                        <p class="my-2">Thay số: \\( Q = ${L} \\cdot ${m} \\)</p>
+                        <p class="font-bold text-xl">\\( \\Rightarrow Q = ${Q} \\text{ J} \\)</p>
+                    </div>
+                `;
+            } else if (!Lstr) {
+                const Q = parseFloat(Qstr);
+                const m = parseFloat(Mstr);
+                const L = Q / m;
+                resultHtml = `
+                    <div class="text-green-800">
+                        <p>Từ công thức: \\( Q = \\lambda \\cdot m \\)</p>
+                        <p class="my-2">Suy ra: \\( \\lambda = \\frac{Q}{m} \\)</p>
+                        <p class="my-2">Thay số: \\( \\lambda = \\frac{${Q}}{${m}} \\)</p>
+                        <p class="font-bold text-xl">\\( \\Rightarrow \\lambda = ${L} \\text{ J/kg} \\)</p>
+                    </div>
+                `;
+            } else if (!Mstr) {
+                const Q = parseFloat(Qstr);
+                const L = parseFloat(Lstr);
+                const m = Q / L;
+                resultHtml = `
+                    <div class="text-orange-800">
+                        <p>Từ công thức: \\( Q = \\lambda \\cdot m \\)</p>
+                        <p class="my-2">Suy ra: \\( m = \\frac{Q}{\\lambda} \\)</p>
+                        <p class="my-2">Thay số: \\( m = \\frac{${Q}}{${L}} \\)</p>
+                        <p class="font-bold text-xl">\\( \\Rightarrow m = ${m.toFixed(4)} \\text{ kg} \\)</p>
+                    </div>
+                `;
+            }
+
+            solDiv.innerHTML = resultHtml;
+            renderMathInElement(solDiv, {
+                delimiters: [
+                    {left: "\\[", right: "\\]", display: true},
+                    {left: "\\(", right: "\\)", display: false}
+                ]
+            });
+        }
+
+        function clearCalculator() {
+            document.getElementById('calcQ').value = '';
+            document.getElementById('calcLambda').value = '';
+            document.getElementById('calcM').value = '';
+            document.getElementById('calcMaterial').value = '';
+            document.getElementById('calcSolution').innerHTML = '<p class="text-slate-400 italic text-sm">Hãy nhập dữ kiện và bấm "Giải Bài Toán" để xem các bước biến đổi công thức.</p>';
+        }
+
+        // Practice Logic
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.style.transform = "rotate(180deg)";
+            } else {
+                el.classList.add('hidden');
+                icon.style.transform = "rotate(0deg)";
+            }
+        }
+
+        // Quiz Logic
+        const answers = { q1: 'B', q2: 'C', q3: 'A', q4: 'C' };
+        function submitQuiz(e) {
+            e.preventDefault();
+            const form = document.getElementById('quizForm');
+            let score = 0;
+            
+            for(let i=1; i<=4; i++) {
+                const selected = form.querySelector(`input[name="q${i}"]:checked`);
+                const container = document.getElementById(`q${i}-container`);
+                const solution = container.querySelector('.q-solution');
+                
+                // Show solution
+                solution.classList.remove('hidden');
+
+                // Clear previous colors
+                container.classList.remove('border-red-500', 'bg-red-50', 'border-green-500', 'bg-green-50');
+                
+                if(selected && selected.value === answers[`q${i}`]) {
+                    score++;
+                    container.classList.add('border-green-500', 'bg-green-50');
+                } else {
+                    container.classList.add('border-red-500', 'bg-red-50');
+                }
+            }
+
+            const resDiv = document.getElementById('quizResult');
+            resDiv.classList.remove('hidden');
+            resDiv.innerHTML = `Bạn đạt <span class="${score > 2 ? 'text-green-600' : 'text-red-600'} text-3xl">${score}/4</span> điểm!`;
+            
+            if (score === 4) {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            }
+
+            // re-render math inside solutions
+            renderMathInElement(form, {
+                delimiters: [
+                    {left: "\\[", right: "\\]", display: true},
+                    {left: "\\(", right: "\\)", display: false}
+                ]
+            });
+        }
+
+        // Timer Logic
+        let timerInterval;
+        let totalSeconds = 0;
+        let remainingSeconds = 0;
+        let isTimerRunning = false;
+
+        function setTimer(minutes) {
+            document.getElementById('timeInput').value = minutes;
+            updateTimerDisplay(minutes * 60);
+        }
+
+        function updateTimerDisplay(seconds) {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            document.getElementById('timerText').innerText = `${m}:${s}`;
+            
+            if(totalSeconds > 0) {
+                const dashoffset = 283 - (seconds / totalSeconds) * 283;
+                document.getElementById('timerCircle').style.strokeDashoffset = dashoffset;
+            } else {
+                document.getElementById('timerCircle').style.strokeDashoffset = 0;
+            }
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('btnTimerToggle');
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                btn.innerText = "Tiếp tục";
+                btn.classList.replace('bg-orange-600', 'bg-orange-500');
+            } else {
+                const inputVal = parseFloat(document.getElementById('timeInput').value);
+                if (!totalSeconds && inputVal > 0) {
+                    totalSeconds = inputVal * 60;
+                    remainingSeconds = totalSeconds;
+                }
+                
+                if (remainingSeconds <= 0) return;
+
+                isTimerRunning = true;
+                btn.innerText = "Tạm dừng";
+                btn.classList.replace('bg-orange-500', 'bg-orange-600');
+
+                timerInterval = setInterval(() => {
+                    remainingSeconds--;
+                    updateTimerDisplay(remainingSeconds);
+                    
+                    if (remainingSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        isTimerRunning = false;
+                        btn.innerText = "Bắt đầu";
+                        btn.classList.replace('bg-orange-600', 'bg-orange-500');
+                        totalSeconds = 0;
+                        Swal.fire('Hết giờ!', 'Thời gian thảo luận đã kết thúc.', 'info');
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            totalSeconds = 0;
+            remainingSeconds = 0;
+            document.getElementById('timeInput').value = '';
+            updateTimerDisplay(0);
+            const btn = document.getElementById('btnTimerToggle');
+            btn.innerText = "Bắt đầu";
+            btn.classList.replace('bg-orange-600', 'bg-orange-500');
+        }
+
+        // Wheel Logic
+        const wheelCanvas = document.getElementById('wheelCanvas');
+        const ctx = wheelCanvas.getContext('2d');
+        let names = [];
+        let currentAngle = 0;
+        let isSpinning = false;
+        
+        const colors = ['#f43f5e', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#06b6d4', '#ec4899', '#64748b'];
+
+        function initWheel() {
+            parseNames();
+            drawWheel();
+        }
+
+        function parseNames() {
+            const raw = document.getElementById('wheelNames').value;
+            names = raw.split(',').map(n => n.trim()).filter(n => n !== '');
+            if(names.length === 0) names = ['Trống'];
+        }
+
+        document.getElementById('wheelNames').addEventListener('input', () => {
+            if(!isSpinning) { parseNames(); drawWheel(); }
+        });
+
+        function drawWheel() {
+            const cx = wheelCanvas.width / 2;
+            const cy = wheelCanvas.height / 2;
+            const r = cx;
+            const arc = (Math.PI * 2) / names.length;
+
+            ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+
+            for (let i = 0; i < names.length; i++) {
+                const angle = currentAngle + i * arc;
+                ctx.beginPath();
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, angle, angle + arc);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(angle + arc / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#fff";
+                ctx.font = "bold 16px Inter";
+                ctx.fillText(names[i], r - 20, 5);
+                ctx.restore();
+            }
+        }
+
+        function spinWheel() {
+            if (isSpinning || names.length <= 1) return;
+            isSpinning = true;
+            
+            const spinBtn = document.getElementById('btnSpin');
+            spinBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const spinTimeTotal = 3000 + Math.random() * 2000;
+            const spinStart = Date.now();
+            // Random target angle (many full rotations + random offset)
+            const targetAngle = currentAngle + (Math.PI * 10) + Math.random() * Math.PI * 2;
+
+            function animate() {
+                const now = Date.now();
+                const elapsed = now - spinStart;
+                
+                if (elapsed >= spinTimeTotal) {
+                    isSpinning = false;
+                    currentAngle = targetAngle % (Math.PI * 2);
+                    drawWheel();
+                    spinBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    
+                    // Determine winner (pointer is at top -> angle 3*PI/2)
+                    // The winning segment is the one where (3*PI/2 - currentAngle) falls
+                    const arc = (Math.PI * 2) / names.length;
+                    // Adjust pointer angle relative to wheel rotation
+                    let pointerAngle = Math.PI * 1.5 - currentAngle; 
+                    while (pointerAngle < 0) pointerAngle += Math.PI * 2;
+                    const winningIndex = Math.floor(pointerAngle / arc) % names.length;
+                    
+                    Swal.fire({
+                        title: 'Xin chúc mừng!',
+                        text: `${names[winningIndex]} đã được chọn!`,
+                        icon: 'success',
+                        confirmButtonText: 'Tuyệt vời',
+                        confirmButtonColor: '#f43f5e'
+                    });
+                    confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+                    return;
+                }
+
+                // Easing out function (easeOutCubic)
+                const t = elapsed / spinTimeTotal;
+                const easeOut = 1 - Math.pow(1 - t, 3);
+                currentAngle = currentAngle + (targetAngle - currentAngle) * (easeOut - (1 - Math.pow(1 - (elapsed - 16)/spinTimeTotal, 3))); // Delta angle
+                
+                drawWheel();
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+    </script>
+</body>
+</html>
