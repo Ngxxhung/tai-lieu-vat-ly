@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chủ đề 6: Áp suất khí theo mô hình động học</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- KaTeX cho công thức Toán/Vật lý -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #1e3a8a; /* Blue 900 */
+            --secondary: #3b82f6; /* Blue 500 */
+            --bg-gray: #f3f4f6;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-gray); }
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        .tab-btn.active { border-bottom: 4px solid var(--secondary); color: var(--primary); font-weight: bold; background-color: #e0e7ff; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Canvas Simulation Styles */
+        #sim-canvas { background: linear-gradient(to bottom, #0f172a, #1e293b); border: 4px solid #475569; border-radius: 8px; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+        
+        /* Progress Timer */
+        .timer-circle { transition: stroke-dashoffset 1s linear; }
+        
+        /* Lucky Wheel */
+        #wheel-canvas { transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
+        .wheel-pointer { clip-path: polygon(100% 50%, 0 0, 0 100%); }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-blue-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 text-center">
+            <h1 class="text-2xl md:text-3xl font-bold uppercase tracking-wider text-yellow-300">
+                Chủ đề 6: Áp suất khí theo mô hình động học
+            </h1>
+            <p class="text-sm md:text-base mt-2 opacity-90">
+                © 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+            </p>
+        </div>
+        
+        <!-- Navigation Tabs -->
+        <nav class="flex overflow-x-auto bg-white text-gray-600 shadow-inner no-scrollbar">
+            <button class="tab-btn active flex-1 min-w-[150px] py-3 px-2 text-sm md:text-base hover:bg-blue-50 transition" onclick="openTab('tab1')">
+                <i class="fa-solid fa-book-open mr-2"></i> 1. Lý Thuyết
+            </button>
+            <button class="tab-btn flex-1 min-w-[150px] py-3 px-2 text-sm md:text-base hover:bg-blue-50 transition" onclick="openTab('tab2')">
+                <i class="fa-solid fa-flask mr-2"></i> 2. Mô Phỏng
+            </button>
+            <button class="tab-btn flex-1 min-w-[150px] py-3 px-2 text-sm md:text-base hover:bg-blue-50 transition" onclick="openTab('tab3')">
+                <i class="fa-solid fa-calculator mr-2"></i> 3. Máy Tính
+            </button>
+            <button class="tab-btn flex-1 min-w-[150px] py-3 px-2 text-sm md:text-base hover:bg-blue-50 transition" onclick="openTab('tab4')">
+                <i class="fa-solid fa-pen-to-square mr-2"></i> 4. Luyện Tập
+            </button>
+            <button class="tab-btn flex-1 min-w-[150px] py-3 px-2 text-sm md:text-base hover:bg-blue-50 transition" onclick="openTab('tab5')">
+                <i class="fa-solid fa-clipboard-check mr-2"></i> 5. Đánh Giá
+            </button>
+            <button class="tab-btn flex-1 min-w-[150px] py-3 px-2 text-sm md:text-base hover:bg-blue-50 transition" onclick="openTab('tab6')">
+                <i class="fa-solid fa-toolbox mr-2"></i> 6. Tiện Ích
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
+
+        <!-- TAB 1: LÝ THUYẾT -->
+        <section id="tab1" class="tab-content active">
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500 mb-6">
+                <h2 class="text-2xl font-bold text-blue-900 mb-4"><i class="fa-solid fa-lightbulb text-yellow-500 mr-2"></i> 1. Tác dụng của một phân tử khí lên thành bình</h2>
+                <p class="mb-4 text-justify">Xét một phân tử khối lượng \(m\) chuyển động với vận tốc \(\vec{v}\) đến đập đàn hồi vào thành bình. Bỏ qua tương tác giữa các phân tử, độ biến thiên động lượng của phân tử do va chạm là:</p>
+                <div class="bg-blue-50 p-4 rounded-lg overflow-x-auto text-center mb-4 text-lg">
+                    \[ \Delta\vec{p} = -m\vec{v} - (+m\vec{v}) \quad \Rightarrow \quad |\Delta\vec{p}| = 2m|\vec{v}| \]
+                </div>
+                <p class="mb-2">Áp suất do một phân tử tác dụng lên thành bình có thể tích \(V\):</p>
+                <div class="bg-blue-50 p-4 rounded-lg overflow-x-auto text-center text-lg">
+                    \[ p_m = \frac{m}{V}v^2 \]
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500 mb-6">
+                <h2 class="text-2xl font-bold text-blue-900 mb-4"><i class="fa-solid fa-cube text-green-500 mr-2"></i> 2. Áp suất của N phân tử khí và Mật độ</h2>
+                <p class="mb-4 text-justify">Với \(N\) phân tử chuyển động hỗn loạn, tốc độ không đều nhau, ta sử dụng trung bình của các bình phương tốc độ \(\overline{v^2}\). Áp suất tổng cộng tác dụng lên thành bình:</p>
+                <div class="overflow-x-auto rounded-lg border border-gray-200 mb-4">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hệ thức cốt lõi</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ý nghĩa các đại lượng & Đơn vị SI</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-lg">\[ p = \frac{1}{3} \frac{N}{V} m \overline{v^2} \]</td>
+                                <td class="px-6 py-4">
+                                    <ul class="list-disc pl-4 space-y-1 text-sm">
+                                        <li>\(p\): Áp suất của khí \(\mathrm{(Pa)}\) hoặc \(\mathrm{(N/m^2)}\)</li>
+                                        <li>\(N\): Số lượng phân tử khí</li>
+                                        <li>\(V\): Thể tích bình chứa \(\mathrm{(m^3)}\)</li>
+                                        <li>\(m\): Khối lượng một phân tử \(\mathrm{(kg)}\)</li>
+                                        <li>\(\overline{v^2}\): Trung bình các bình phương tốc độ \(\mathrm{(m^2/s^2)}\)</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-lg">\[ p = \frac{1}{3} \rho \overline{v^2} = \frac{1}{3} \mu m \overline{v^2} \]</td>
+                                <td class="px-6 py-4">
+                                    <ul class="list-disc pl-4 space-y-1 text-sm">
+                                        <li>\(\rho = \frac{Nm}{V}\): Khối lượng riêng của khí \(\mathrm{(kg/m^3)}\)</li>
+                                        <li>\(\mu = \frac{N}{V}\): Mật độ phân tử \(\mathrm{(hạt/m^3)}\)</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-red-500 mb-6">
+                <h2 class="text-2xl font-bold text-blue-900 mb-4"><i class="fa-solid fa-temperature-three-quarters text-red-500 mr-2"></i> 3. Động năng phân tử & Nhiệt độ</h2>
+                <p class="mb-4">Liên hệ giữa động năng tịnh tiến trung bình và nhiệt độ tuyệt đối:</p>
+                <div class="bg-red-50 p-4 rounded-lg overflow-x-auto text-center text-xl mb-4 font-semibold text-red-800 border border-red-100">
+                    \[ \overline{E_{\text{đ}}} = \frac{m\overline{v^2}}{2} = \frac{3}{2}kT \]
+                </div>
+                <p class="mb-2"><i class="fa-solid fa-check text-green-500"></i> \(k = 1,38 \cdot 10^{-23} \mathrm{\ J/K}\) (Hằng số Boltzmann).</p>
+                <p class="mb-2"><i class="fa-solid fa-check text-green-500"></i> \(T\): Nhiệt độ tuyệt đối \(\mathrm{(K)}\) (\(T = t(^{\circ}\mathrm{C}) + 273\)).</p>
+                <p class="mb-4"><i class="fa-solid fa-check text-green-500"></i> Kết hợp lại ta có công thức áp suất qua động năng: <span class="font-bold text-blue-700">\[ p = \frac{2}{3} \mu \overline{E_{\text{đ}}} \]</span></p>
+                
+                <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-300 mt-6">
+                    <h3 class="font-bold text-yellow-800 mb-2"><i class="fa-solid fa-triangle-exclamation"></i> Bẫy lý thuyết thường gặp:</h3>
+                    <ul class="list-disc pl-6 space-y-2 text-yellow-900 text-sm">
+                        <li><strong>Nhầm lẫn nhiệt độ:</strong> Các khí khác bản chất (ví dụ \(O_2\) và \(H_2\)) nếu ở <strong>cùng nhiệt độ \(T\)</strong> thì động năng trung bình \(\overline{E_{\text{đ}}}\) là <strong>bằng nhau</strong>. Tuy nhiên, do khối lượng \(m\) khác nhau nên vận tốc căn quân phương \(\sqrt{\overline{v^2}}\) sẽ khác nhau (khí nhẹ chuyển động nhanh hơn).</li>
+                        <li><strong>Quên đơn vị SI:</strong> Công thức năng lượng yêu cầu khối lượng \(m\) tính bằng \(\mathrm{kg}\) (thường cho \(\mathrm{g}\) hoặc \(\mathrm{amu}\)). Nhiệt độ bắt buộc dùng Kelvin (\(\mathrm{K}\)).</li>
+                        <li><strong>Động lượng biến thiên:</strong> Trong va chạm đàn hồi trực diện, \(\Delta\vec{p} = 2m\vec{v}\), nhiều học sinh nhầm thành \(0\) hoặc \(m\vec{v}\).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: MÔ PHỎNG TƯƠNG TÁC -->
+        <section id="tab2" class="tab-content">
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-2xl font-bold text-blue-900 mb-4"><i class="fa-solid fa-microscope text-blue-500 mr-2"></i> Simulation Lab: Khí Lý Tưởng</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2">
+                        <canvas id="sim-canvas" width="600" height="400" class="w-full h-auto"></canvas>
+                        <p class="text-center text-sm text-gray-500 mt-2"><i class="fa-solid fa-circle-info"></i> Các hạt chuyển động nhiệt trong một bình chứa hai chiều.</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h3 class="font-bold text-lg mb-4 border-b pb-2">Bảng Điều Khiển</h3>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Nhiệt độ tuyệt đối (T): <span id="val-temp" class="text-red-500">300 K</span></label>
+                            <input type="range" id="slider-temp" min="50" max="1000" value="300" class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Số lượng phân tử (N): <span id="val-num" class="text-blue-500">100</span></label>
+                            <input type="range" id="slider-num" min="10" max="300" value="100" class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer">
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Thể tích bình (V): <span id="val-vol" class="text-green-500">100%</span></label>
+                            <input type="range" id="slider-vol" min="40" max="100" value="100" class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        
+                        <div class="bg-white p-3 rounded border border-blue-200 shadow-inner">
+                            <h4 class="font-bold text-sm text-blue-900 mb-2">Đầu ra (Thông số vĩ mô)</h4>
+                            <div class="text-sm space-y-2">
+                                <div class="flex justify-between"><span>Động năng \(\overline{E_{\text{đ}}}\):</span> <span id="out-ke" class="font-bold text-red-600">--</span></div>
+                                <div class="flex justify-between"><span>Vận tốc rms:</span> <span id="out-vel" class="font-bold text-purple-600">--</span></div>
+                                <div class="flex justify-between border-t pt-2 mt-2"><span>Áp suất \(p\):</span> <span id="out-pres" class="font-bold text-blue-700 text-lg">--</span></div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-xs text-gray-600 italic bg-yellow-50 p-2 rounded">
+                            <strong>Hướng dẫn:</strong> "Thử và sai". Kéo thanh trượt Nhiệt độ lên, quan sát màu sắc hạt (động năng) và áp suất thay đổi như thế nào? Cố định T, giảm V (thể tích) thì p thay đổi ra sao?
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: MÁY TÍNH -->
+        <section id="tab3" class="tab-content">
+            <div class="bg-white rounded-xl shadow-md p-6 max-w-3xl mx-auto">
+                <h2 class="text-2xl font-bold text-blue-900 mb-4 text-center"><i class="fa-solid fa-laptop-code text-indigo-500 mr-2"></i> Máy Tính Động Học Phân Tử</h2>
+                <p class="text-sm text-center text-gray-500 mb-6">Nhập các giá trị đã biết để tính toán đại lượng còn lại. Để trống ô cần tìm.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700">Số phân tử \(N\) (hạt)</label>
+                        <input type="number" id="calc-n" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Ví dụ: 1e23">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700">Thể tích \(V\) \(\mathrm{(m^3)}\)</label>
+                        <input type="number" id="calc-v" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Ví dụ: 0.1">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700">Khối lượng 1 hạt \(m\) \(\mathrm{(kg)}\)</label>
+                        <input type="number" id="calc-m" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Ví dụ: 3.35e-26">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700">Nhiệt độ \(T\) \(\mathrm{(K)}\)</label>
+                        <input type="number" id="calc-t" class="mt-1 block w-full border border-gray-300 rounded-md p-2" placeholder="Ví dụ: 300">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700">Áp suất \(p\) \(\mathrm{(Pa)}\)</label>
+                        <input type="number" id="calc-p" class="mt-1 block w-full border border-gray-300 rounded-md p-2 bg-yellow-50" placeholder="Để trống nếu cần tính">
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button onclick="calculatePhysics()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition transform hover:scale-105 shadow-md">
+                        <i class="fa-solid fa-gears mr-2"></i> Tự Động Tính
+                    </button>
+                    <button onclick="clearCalc()" class="ml-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition">
+                        Xóa
+                    </button>
+                </div>
+
+                <div id="calc-result-container" class="hidden mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <h3 class="text-lg font-bold text-blue-900 mb-2 border-b border-blue-200 pb-2">Bước giải chi tiết:</h3>
+                    <div id="calc-result-math" class="text-lg text-gray-800 leading-relaxed overflow-x-auto">
+                        <!-- Math injected here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: LUYỆN TẬP -->
+        <section id="tab4" class="tab-content">
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-2xl font-bold text-blue-900 mb-6"><i class="fa-solid fa-dumbbell text-gray-600 mr-2"></i> Phòng Luyện Tập Phân Hóa</h2>
+                
+                <!-- Cấp độ 1 -->
+                <div class="mb-8 border border-green-200 rounded-lg overflow-hidden">
+                    <div class="bg-green-100 px-4 py-3 flex justify-between items-center cursor-pointer" onclick="toggleSolution('sol1')">
+                        <h3 class="font-bold text-green-800">Cấp độ 1 (Nhận biết - Thông hiểu)</h3>
+                        <i class="fa-solid fa-chevron-down text-green-600 transition-transform duration-300" id="icon-sol1"></i>
+                    </div>
+                    <div class="p-4">
+                        <p class="mb-4"><strong>Bài toán:</strong> Động năng tịnh tiến trung bình của phân tử khí Hydrogen ở nhiệt độ \(27^{\circ}\mathrm{C}\) có giá trị là bao nhiêu Joule? Cho biết hằng số Boltzmann \(k = 1,38 \cdot 10^{-23} \mathrm{\ J/K}\).</p>
+                        <button onclick="toggleSolution('sol1')" class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-gray-700">Ẩn/Hiện Lời giải</button>
+                        
+                        <div id="sol1" class="hidden mt-4 bg-gray-50 p-4 rounded border-l-4 border-green-400">
+                            <p class="font-semibold text-gray-700 mb-2">Gợi ý tư duy:</p>
+                            <ul class="list-disc pl-5 mb-4 text-sm text-gray-600">
+                                <li>Đổi nhiệt độ từ độ C sang Kelvin: \(T = t + 273\).</li>
+                                <li>Áp dụng công thức cốt lõi: \(\overline{E_{\text{đ}}} = \frac{3}{2}kT\).</li>
+                            </ul>
+                            <p class="font-semibold text-gray-700 mb-2">Giải chi tiết:</p>
+                            <div>
+                                \[ T = 27 + 273 = 300 \mathrm{\ K} \]
+                                \[ \overline{E_{\text{đ}}} = \frac{3}{2} \cdot 1,38 \cdot 10^{-23} \cdot 300 = 6,21 \cdot 10^{-21} \mathrm{\ J} \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cấp độ 2 -->
+                <div class="mb-8 border border-yellow-200 rounded-lg overflow-hidden">
+                    <div class="bg-yellow-100 px-4 py-3 flex justify-between items-center cursor-pointer" onclick="toggleSolution('sol2')">
+                        <h3 class="font-bold text-yellow-800">Cấp độ 2 (Vận dụng)</h3>
+                        <i class="fa-solid fa-chevron-down text-yellow-600 transition-transform duration-300" id="icon-sol2"></i>
+                    </div>
+                    <div class="p-4">
+                        <p class="mb-4"><strong>Bài toán:</strong> Xét khối khí chứa trong một bình kín. Mật độ động năng phân tử (tổng động năng tịnh tiến trung bình của các phân tử khí trong \(1\mathrm{m^3}\)) có giá trị \(10^{-4} \mathrm{\ J/m^3}\). Tính áp suất của khí trong bình.</p>
+                        <button onclick="toggleSolution('sol2')" class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-gray-700">Ẩn/Hiện Lời giải</button>
+                        
+                        <div id="sol2" class="hidden mt-4 bg-gray-50 p-4 rounded border-l-4 border-yellow-400">
+                            <p class="font-semibold text-gray-700 mb-2">Gợi ý tư duy:</p>
+                            <ul class="list-disc pl-5 mb-4 text-sm text-gray-600">
+                                <li>Mật độ động năng phân tử là gì? Là tích của mật độ phân tử \(\mu = \frac{N}{V}\) và động năng trung bình 1 phân tử \(\overline{E_{\text{đ}}}\).</li>
+                                <li>Như vậy bài toán đã cho trực tiếp cụm \(\mu \cdot \overline{E_{\text{đ}}} = 10^{-4}\).</li>
+                                <li>Dùng liên hệ áp suất và động năng.</li>
+                            </ul>
+                            <p class="font-semibold text-gray-700 mb-2">Giải chi tiết:</p>
+                            <div>
+                                \[ \text{Mật độ động năng} = \mu \overline{E_{\text{đ}}} = 10^{-4} \mathrm{\ J/m^3} \]
+                                \[ p = \frac{2}{3}\mu \overline{E_{\text{đ}}} = \frac{2}{3} \cdot 10^{-4} \approx 6,67 \cdot 10^{-5} \mathrm{\ Pa} \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cấp độ 3 -->
+                <div class="border border-red-200 rounded-lg overflow-hidden">
+                    <div class="bg-red-100 px-4 py-3 flex justify-between items-center cursor-pointer" onclick="toggleSolution('sol3')">
+                        <h3 class="font-bold text-red-800">Cấp độ 3 (Vận dụng cao - Thực tiễn)</h3>
+                        <i class="fa-solid fa-chevron-down text-red-600 transition-transform duration-300" id="icon-sol3"></i>
+                    </div>
+                    <div class="p-4">
+                        <p class="mb-4"><strong>Bài toán:</strong> Một chiếc xe tải chạy qua sa mạc Atacama. Chuyến đi bắt đầu vào sáng sớm khi nhiệt độ lốp xe là \(5^{\circ}\mathrm{C}\). Đến trưa, do ma sát và thời tiết, nhiệt độ lốp xe tăng lên đến \(45^{\circ}\mathrm{C}\). Giả sử thể tích lốp xe không đổi. Tính độ tăng động năng tịnh tiến trung bình của một phân tử khí trong lốp do sự gia tăng nhiệt độ này.</p>
+                        <button onclick="toggleSolution('sol3')" class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded text-gray-700">Ẩn/Hiện Lời giải</button>
+                        
+                        <div id="sol3" class="hidden mt-4 bg-gray-50 p-4 rounded border-l-4 border-red-400">
+                            <p class="font-semibold text-gray-700 mb-2">Gợi ý tư duy:</p>
+                            <ul class="list-disc pl-5 mb-4 text-sm text-gray-600">
+                                <li>Độ tăng động năng phân tử chỉ phụ thuộc vào độ tăng nhiệt độ.</li>
+                                <li>\(\Delta\overline{E_{\text{đ}}} = \overline{E_{\text{đ2}}} - \overline{E_{\text{đ1}}} = \frac{3}{2}k(T_2 - T_1)\).</li>
+                                <li>Lưu ý: Độ tăng nhiệt độ \(\Delta T\) theo Kelvin bằng chính độ tăng \(\Delta t\) theo độ C.</li>
+                            </ul>
+                            <p class="font-semibold text-gray-700 mb-2">Giải chi tiết:</p>
+                            <div>
+                                \[ \Delta T = 45 - 5 = 40 \mathrm{\ K} \]
+                                \[ \Delta\overline{E_{\text{đ}}} = \frac{3}{2} k \Delta T = \frac{3}{2} \cdot 1,38 \cdot 10^{-23} \cdot 40 \]
+                                \[ \Delta\overline{E_{\text{đ}}} = 8,28 \cdot 10^{-22} \mathrm{\ J} \approx 0,83 \cdot 10^{-21} \mathrm{\ J} \]
+                                <p class="mt-2 text-sm italic text-gray-600">Nhận xét Năng lực số/Thực tiễn: Áp suất lốp xe tăng tỉ lệ thuận với động năng này. Tài xế đi sa mạc cần giảm bớt áp suất lốp trước khi khởi hành để tránh nổ lốp vào buổi trưa.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 5: ĐÁNH GIÁ -->
+        <section id="tab5" class="tab-content">
+            <div class="bg-white rounded-xl shadow-md p-6 max-w-4xl mx-auto">
+                <h2 class="text-2xl font-bold text-blue-900 mb-6"><i class="fa-solid fa-list-check text-indigo-500 mr-2"></i> Bài Tự Đánh Giá (Quiz)</h2>
+                
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Quiz questions generated by JS -->
+                </div>
+
+                <div class="mt-8 text-center border-t pt-6">
+                    <button onclick="submitQuiz()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition transform hover:scale-105 text-lg">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Nộp Bài & Xem Kết Quả
+                    </button>
+                    <p id="quiz-score" class="mt-4 text-2xl font-bold text-blue-800 hidden"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: TIỆN ÍCH LỚP HỌC -->
+        <section id="tab6" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Timer -->
+                <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-6"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i> Visual Timer</h2>
+                    
+                    <div class="relative w-64 h-64 mb-6">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" stroke-width="8"></circle>
+                            <circle id="timer-progress" class="timer-circle" cx="50" cy="50" r="45" fill="none" stroke="#3b82f6" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="0" stroke-linecap="round"></circle>
+                        </svg>
+                        <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                            <span id="timer-display" class="text-5xl font-mono font-bold text-gray-800">05:00</span>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-2 mb-4">
+                        <button onclick="setTimer(1)" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm font-bold">1m</button>
+                        <button onclick="setTimer(3)" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm font-bold">3m</button>
+                        <button onclick="setTimer(5)" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm font-bold">5m</button>
+                        <button onclick="setTimer(10)" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm font-bold">10m</button>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <button id="btn-start-timer" onclick="toggleTimer()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow">Bắt đầu</button>
+                        <button onclick="resetTimer()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded shadow">Đặt lại</button>
+                    </div>
+                </div>
+
+                <!-- Lucky Wheel -->
+                <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center overflow-hidden">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-4"><i class="fa-solid fa-dharmachakra text-purple-500 mr-2"></i> Vòng Quay Gọi Tên</h2>
+                    
+                    <div class="relative w-64 h-64 mb-6">
+                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 z-10 text-3xl text-red-600">
+                            <i class="fa-solid fa-caret-down drop-shadow-md"></i>
+                        </div>
+                        <canvas id="wheel-canvas" width="300" height="300" class="w-full h-full rounded-full shadow-lg border-4 border-gray-200"></canvas>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full border-4 border-gray-300 shadow-inner"></div>
+                    </div>
+
+                    <button id="btn-spin" onclick="spinWheel()" class="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition active:scale-95 text-lg w-full max-w-[200px]">
+                        QUAY NGAY!
+                    </button>
+                    <div id="wheel-result" class="mt-4 text-xl font-bold text-red-600 h-8"></div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">Ứng dụng Tương tác Vật lý HTML5 - Chương trình GDPT 2018</p>
+            <p class="text-gray-400 text-sm">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript (All Logic) -->
+    <script>
+        // --- 0. Khởi tạo KaTeX ---
+        document.addEventListener("DOMContentLoaded", function() {
+            renderAllMath();
+            initSimulation();
+            initQuiz();
+            drawWheel();
+        });
+
+        function renderAllMath() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        }
+
+        // --- 1. Tab Navigation ---
+        function openTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // --- 2. Simulation Logic ---
+        const simCanvas = document.getElementById('sim-canvas');
+        const ctx = simCanvas.getContext('2d');
+        let particles = [];
+        let simLoop;
+        
+        // DOM Elements
+        const sTemp = document.getElementById('slider-temp');
+        const sNum = document.getElementById('slider-num');
+        const sVol = document.getElementById('slider-vol');
+        
+        const outKe = document.getElementById('out-ke');
+        const outVel = document.getElementById('out-vel');
+        const outPres = document.getElementById('out-pres');
+
+        function initSimulation() {
+            createParticles();
+            if(!simLoop) simLoop = requestAnimationFrame(updateSimulation);
+        }
+
+        function createParticles() {
+            particles = [];
+            let N = parseInt(sNum.value);
+            for(let i=0; i<N; i++) {
+                particles.push({
+                    x: Math.random() * (simCanvas.width - 20) + 10,
+                    y: Math.random() * (simCanvas.height - 20) + 10,
+                    vx: (Math.random() - 0.5),
+                    vy: (Math.random() - 0.5),
+                    radius: 3
+                });
+            }
+        }
+
+        // Tái tạo hạt khi đổi thanh trượt N
+        sNum.addEventListener('input', (e) => {
+            document.getElementById('val-num').innerText = e.target.value;
+            createParticles();
+        });
+        
+        sTemp.addEventListener('input', (e) => {
+            document.getElementById('val-temp').innerText = e.target.value + ' K';
+        });
+
+        sVol.addEventListener('input', (e) => {
+            document.getElementById('val-vol').innerText = e.target.value + '%';
+        });
+
+        function updateSimulation() {
+            let T = parseFloat(sTemp.value);
+            let N = parseInt(sNum.value);
+            let VolPercent = parseFloat(sVol.value) / 100;
+            
+            // "Thể tích" hiển thị bằng cách giới hạn ranh giới canvas
+            let activeWidth = simCanvas.width * VolPercent;
+            
+            // Hệ số tốc độ phụ thuộc T
+            let speedMult = Math.sqrt(T) / 5;
+            
+            // Clear
+            ctx.clearRect(0, 0, simCanvas.width, simCanvas.height);
+            
+            // Vẽ hộp giới hạn thể tích
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.fillRect(0, 0, activeWidth, simCanvas.height);
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(activeWidth, 0);
+            ctx.lineTo(activeWidth, simCanvas.height);
+            ctx.stroke();
+
+            // Cập nhật hạt
+            let colorFactor = Math.min(255, Math.floor((T - 50) / 950 * 255));
+            ctx.fillStyle = `rgb(${colorFactor + 100}, ${150 - colorFactor/2}, ${255 - colorFactor})`;
+
+            for(let p of particles) {
+                // Di chuyển
+                let dx = p.vx * speedMult;
+                let dy = p.vy * speedMult;
+                p.x += dx;
+                p.y += dy;
+
+                // Va chạm tường
+                if(p.x - p.radius < 0) { p.x = p.radius; p.vx *= -1; }
+                if(p.x + p.radius > activeWidth) { p.x = activeWidth - p.radius; p.vx *= -1; }
+                if(p.y - p.radius < 0) { p.y = p.radius; p.vy *= -1; }
+                if(p.y + p.radius > simCanvas.height) { p.y = simCanvas.height - p.radius; p.vy *= -1; }
+
+                // Vẽ hạt
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Update Outputs Math (Pseudo-values for demo relation)
+            // Ed ~ T
+            let k = 1.38; // scale to e-23
+            let Ed = (1.5 * k * T).toFixed(1);
+            let v_rms = Math.sqrt(3 * k * T / 3.35).toFixed(1); // giả sử M = const
+            let p_val = ((N * T) / (VolPercent * 100)).toFixed(1);
+
+            outKe.innerHTML = `\\( ${Ed} \\cdot 10^{-23} \\mathrm{\\ J} \\)`;
+            outVel.innerHTML = `\\( ${v_rms} \\cdot 10^2 \\mathrm{\\ m/s} \\)`;
+            outPres.innerHTML = `\\( ${p_val} \\mathrm{\\ atm} \\)`;
+
+            // Rerender math carefully (debounced to avoid performance hit, or just inject plain HTML if too fast)
+            // For 60FPS simulation, calling KaTeX every frame is bad. We use innerHTML with span styling instead.
+            outKe.innerHTML = `${Ed} &times; 10<sup>-23</sup> J`;
+            outVel.innerHTML = `${v_rms} &times; 10<sup>2</sup> m/s`;
+            outPres.innerHTML = `${p_val} atm`;
+
+            requestAnimationFrame(updateSimulation);
+        }
+
+        // --- 3. Calculator Logic ---
+        function calculatePhysics() {
+            let nStr = document.getElementById('calc-n').value;
+            let vStr = document.getElementById('calc-v').value;
+            let mStr = document.getElementById('calc-m').value;
+            let tStr = document.getElementById('calc-t').value;
+            let pStr = document.getElementById('calc-p').value;
+
+            let resultDiv = document.getElementById('calc-result-container');
+            let mathDiv = document.getElementById('calc-result-math');
+            resultDiv.classList.remove('hidden');
+
+            const k = 1.38e-23;
+            let mathString = "";
+
+            if (!pStr && nStr && vStr && mStr && tStr) {
+                // Tính Áp suất
+                let N = parseFloat(nStr);
+                let V = parseFloat(vStr);
+                let m = parseFloat(mStr);
+                let T = parseFloat(tStr);
+
+                let Ed = 1.5 * k * T;
+                let v2 = (3 * k * T) / m;
+                let p = (1/3) * (N/V) * m * v2;
+
+                mathString = `
+                    <p class="mb-2"><b>1. Tính động năng trung bình:</b></p>
+                    \\[ \\overline{E_{\\text{đ}}} = \\frac{3}{2}kT = \\frac{3}{2} \\cdot 1,38 \\cdot 10^{-23} \\cdot ${T} = ${Ed.toExponential(3)} \\mathrm{\\ J} \\]
+                    <p class="mb-2 mt-4"><b>2. Tính trung bình bình phương tốc độ:</b></p>
+                    \\[ \\overline{v^2} = \\frac{3kT}{m} = \\frac{3 \\cdot 1,38 \\cdot 10^{-23} \\cdot ${T}}{${m.toExponential(2)}} = ${v2.toExponential(3)} \\mathrm{\\ m^2/s^2} \\]
+                    <p class="mb-2 mt-4"><b>3. Tính áp suất khí:</b></p>
+                    \\[ p = \\frac{1}{3}\\frac{N}{V}m\\overline{v^2} = \\frac{1}{3} \\cdot \\frac{${N.toExponential(2)}}{${V}} \\cdot ${m.toExponential(2)} \\cdot ${v2.toExponential(3)} \\]
+                    \\[ p = ${p.toExponential(3)} \\mathrm{\\ Pa} \\]
+                `;
+                document.getElementById('calc-p').value = p.toExponential(3);
+            } else {
+                mathString = `<p class="text-red-500">Vui lòng nhập đủ N, V, m, T và để trống ô Áp suất p để tính toán.</p>`;
+            }
+
+            mathDiv.innerHTML = mathString;
+            renderMathInElement(mathDiv, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        }
+
+        function clearCalc() {
+            document.querySelectorAll('#tab3 input').forEach(input => input.value = '');
+            document.getElementById('calc-result-container').classList.add('hidden');
+        }
+
+        // --- 4. Luyện tập Logic ---
+        function toggleSolution(id) {
+            const sol = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if(sol.classList.contains('hidden')) {
+                sol.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+                renderMathInElement(sol, {
+                    delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}],
+                    throwOnError: false
+                });
+            } else {
+                sol.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // --- 5. Trắc nghiệm Logic ---
+        const quizData = [
+            {
+                q: "Động năng trung bình của phân tử khí có mối liên hệ như thế nào với nhiệt độ tuyệt đối?",
+                opts: [
+                    "Tỉ lệ nghịch với nhiệt độ tuyệt đối.",
+                    "Tỉ lệ thuận với bình phương nhiệt độ tuyệt đối.",
+                    "Không tỉ lệ với nhiệt độ tuyệt đối.",
+                    "Tỉ lệ thuận với nhiệt độ tuyệt đối."
+                ],
+                correct: 3,
+                exp: "Theo công thức \\( \\overline{E_{\\text{đ}}} = \\frac{3}{2}kT \\), động năng trung bình của phân tử tỉ lệ thuận với nhiệt độ tuyệt đối \(T\)."
+            },
+            {
+                q: "Hằng số Boltzmann \(k\) có giá trị bằng:",
+                opts: [
+                    "\\( 1,38 \\cdot 10^{-23} \\mathrm{\\ J/K} \\)",
+                    "\\( 1,38 \\cdot 10^{23} \\mathrm{\\ J/K} \\)",
+                    "\\( 8,31 \\mathrm{\\ J/(mol \\cdot K)} \\)",
+                    "\\( 6,02 \\cdot 10^{23} \\mathrm{\\ mol^{-1}} \\)"
+                ],
+                correct: 0,
+                exp: "Hằng số Boltzmann \(k = 1,38 \\cdot 10^{-23} \\mathrm{\\ J/K}\\). Các phương án khác là hằng số khí lý tưởng \(R\) hoặc hằng số Avogadro \(N_A\)."
+            },
+            {
+                q: "Hệ thức đúng của áp suất chất khí theo mô hình động học phân tử là:",
+                opts: [
+                    "\\[ p = \\frac{3}{2} \\mu \\overline{E_{\\text{đ}}} \\]",
+                    "\\[ p = \\frac{2}{3} \\mu \\overline{E_{\\text{đ}}} \\]",
+                    "\\[ p = \\mu \\overline{E_{\\text{đ}}} \\]",
+                    "\\[ p = \\frac{1}{3} \\mu \\overline{E_{\\text{đ}}} \\]"
+                ],
+                correct: 1,
+                exp: "Áp suất liên hệ với động năng trung bình qua hệ thức: \\( p = \\frac{2}{3}\\mu \\overline{E_{\\text{đ}}} \\), với \\( \\mu \\) là mật độ phân tử."
+            },
+            {
+                q: "Ở nhiệt độ nào căn bậc hai của trung bình bình phương tốc độ phân tử khí Oxygen (\\(O_2\\)) đạt tốc độ vũ trụ cấp I (\\(7,9 \\mathrm{\\ km/s}\\))? Biết khối lượng mol của \\(O_2\\) là \\(32 \\mathrm{\\ g/mol}\\).",
+                opts: [
+                    "\\( 7,5 \\cdot 10^4 \\mathrm{\\ K} \\)",
+                    "\\( 5,2 \\cdot 10^4 \\mathrm{\\ K} \\)",
+                    "\\( 1,8 \\cdot 10^4 \\mathrm{\\ K} \\)",
+                    "\\( 8,0 \\cdot 10^4 \\mathrm{\\ K} \\)"
+                ],
+                correct: 3,
+                exp: "Đổi \\( v = 7,9 \\mathrm{\\ km/s} = 7900 \\mathrm{\\ m/s} \\); \\( M = 32 \\cdot 10^{-3} \\mathrm{\\ kg/mol} \\).<br> Ta có: \\( \\overline{v^2} = \\frac{3RT}{M} \\Rightarrow T = \\frac{v^2 \\cdot M}{3R} = \\frac{7900^2 \\cdot 32 \\cdot 10^{-3}}{3 \\cdot 8,31} \\approx 8,0 \\cdot 10^4 \\mathrm{\\ K} \\)."
+            }
+        ];
+
+        function initQuiz() {
+            const container = document.getElementById('quiz-container');
+            let html = '';
+            quizData.forEach((item, index) => {
+                html += `
+                    <div class="quiz-item border border-gray-200 rounded-lg p-5">
+                        <p class="font-bold text-gray-800 mb-4 text-lg">Câu ${index + 1}: ${item.q}</p>
+                        <div class="space-y-2">
+                `;
+                item.opts.forEach((opt, optIndex) => {
+                    html += `
+                        <label class="flex items-center space-x-3 p-3 rounded-lg border border-gray-100 hover:bg-blue-50 cursor-pointer transition">
+                            <input type="radio" name="q${index}" value="${optIndex}" class="form-radio h-5 w-5 text-blue-600">
+                            <span class="text-gray-700">${opt}</span>
+                        </label>
+                    `;
+                });
+                html += `
+                        </div>
+                        <div id="exp${index}" class="hidden mt-4 p-4 bg-blue-50 text-blue-900 rounded-lg border-l-4 border-blue-500">
+                            <strong>Giải thích:</strong> ${item.exp}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            quizData.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const expDiv = document.getElementById(`exp${index}`);
+                
+                if (selected) {
+                    if (parseInt(selected.value) === item.correct) {
+                        score++;
+                        selected.parentElement.classList.add('bg-green-100', 'border-green-400');
+                    } else {
+                        selected.parentElement.classList.add('bg-red-100', 'border-red-400');
+                        // Highlight correct answer
+                        document.querySelector(`input[name="q${index}"][value="${item.correct}"]`).parentElement.classList.add('bg-green-100', 'border-green-400');
+                    }
+                } else {
+                    document.querySelector(`input[name="q${index}"][value="${item.correct}"]`).parentElement.classList.add('bg-green-100', 'border-green-400');
+                }
+                
+                // Hiển thị giải thích
+                expDiv.classList.remove('hidden');
+            });
+
+            // Re-render toán sau khi show giải thích
+            renderMathInElement(document.getElementById('quiz-container'), {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+
+            const scoreDisplay = document.getElementById('quiz-score');
+            scoreDisplay.innerHTML = `Bạn đạt <span class="text-green-600">${score}/${quizData.length}</span> điểm!`;
+            scoreDisplay.classList.remove('hidden');
+        }
+
+        // --- 6. Tiện ích Lớp học ---
+        // Timer
+        let timerInterval;
+        let totalSeconds = 300; // 5 mins
+        let remainingSeconds = 300;
+        let isRunning = false;
+
+        const timerDisplay = document.getElementById('timer-display');
+        const timerCircle = document.getElementById('timer-progress');
+        const btnStart = document.getElementById('btn-start-timer');
+
+        function updateTimerDisplay() {
+            const m = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+            const s = (remainingSeconds % 60).toString().padStart(2, '0');
+            timerDisplay.innerText = `${m}:${s}`;
+            
+            // Cập nhật vòng tròn (chu vi vòng tròn r=45 là ~283)
+            const strokeOffset = 283 - (remainingSeconds / totalSeconds) * 283;
+            timerCircle.style.strokeDashoffset = strokeOffset;
+
+            // Đổi màu nếu sắp hết giờ
+            if(remainingSeconds < 60) {
+                timerCircle.setAttribute('stroke', '#ef4444');
+                if(remainingSeconds % 2 === 0 && remainingSeconds < 10) {
+                    timerDisplay.classList.add('text-red-500');
+                } else {
+                    timerDisplay.classList.remove('text-red-500');
+                }
+            } else {
+                timerCircle.setAttribute('stroke', '#3b82f6');
+                timerDisplay.classList.remove('text-red-500');
+            }
+        }
+
+        function setTimer(minutes) {
+            clearInterval(timerInterval);
+            isRunning = false;
+            btnStart.innerText = "Bắt đầu";
+            totalSeconds = minutes * 60;
+            remainingSeconds = totalSeconds;
+            updateTimerDisplay();
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                btnStart.innerText = "Tiếp tục";
+            } else {
+                if (remainingSeconds === 0) return;
+                btnStart.innerText = "Tạm dừng";
+                timerInterval = setInterval(() => {
+                    remainingSeconds--;
+                    updateTimerDisplay();
+                    if (remainingSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        btnStart.innerText = "Hết giờ!";
+                        isRunning = false;
+                    }
+                }, 1000);
+            }
+            isRunning = !isRunning;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            btnStart.innerText = "Bắt đầu";
+            remainingSeconds = totalSeconds;
+            updateTimerDisplay();
+        }
+        updateTimerDisplay();
+
+        // Lucky Wheel
+        const wCanvas = document.getElementById('wheel-canvas');
+        const wCtx = wCanvas.getContext('2d');
+        const sectors = ["Tổ 1", "Tổ 2", "Tổ 3", "Tổ 4"];
+        const colors = ["#fca5a5", "#93c5fd", "#fcd34d", "#86efac"];
+        let currentAngle = 0;
+
+        function drawWheel() {
+            const arc = Math.PI / (sectors.length / 2);
+            wCtx.clearRect(0, 0, wCanvas.width, wCanvas.height);
+            
+            for (let i = 0; i < sectors.length; i++) {
+                const angle = i * arc;
+                wCtx.beginPath();
+                wCtx.fillStyle = colors[i];
+                wCtx.moveTo(150, 150);
+                wCtx.arc(150, 150, 150, angle, angle + arc);
+                wCtx.lineTo(150, 150);
+                wCtx.fill();
+                wCtx.stroke();
+                
+                // Text
+                wCtx.save();
+                wCtx.translate(150, 150);
+                wCtx.rotate(angle + arc / 2);
+                wCtx.textAlign = "right";
+                wCtx.fillStyle = "#1f2937";
+                wCtx.font = "bold 24px sans-serif";
+                wCtx.fillText(sectors[i], 120, 10);
+                wCtx.restore();
+            }
+        }
+
+        function spinWheel() {
+            if(wCanvas.style.transition) {
+                wCanvas.style.transition = "";
+                wCanvas.style.transform = `rotate(${currentAngle % 360}deg)`;
+                // force reflow
+                void wCanvas.offsetWidth;
+            }
+
+            const spins = Math.floor(Math.random() * 5) + 5; // 5 to 9 spins
+            const degrees = Math.floor(Math.random() * 360);
+            currentAngle += (spins * 360) + degrees;
+            
+            document.getElementById('wheel-result').innerText = "";
+            document.getElementById('btn-spin').disabled = true;
+
+            wCanvas.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
+            wCanvas.style.transform = `rotate(${currentAngle}deg)`;
+
+            setTimeout(() => {
+                // Tính toán tổ trúng thưởng. (Lưu ý offset mũi tên ở góc 270 độ, top-center)
+                const actualDeg = currentAngle % 360;
+                // Mũi tên nằm ở top (-90 độ so với hệ tọa độ canvas, vẽ từ phải sang)
+                const winAngle = (360 - actualDeg + 270) % 360;
+                const index = Math.floor(winAngle / (360 / sectors.length));
+                
+                document.getElementById('wheel-result').innerHTML = `🎉 Xin chúc mừng: <span class="text-blue-700">${sectors[index]}</span> ! 🎉`;
+                document.getElementById('btn-spin').disabled = false;
+            }, 4000);
+        }
+
+    </script>
+</body>
+</html>
