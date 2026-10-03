@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chủ đề 1: Từ Trường - Cảm ứng từ</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-tab.active {
+            border-bottom-width: 4px;
+            border-color: #2563eb;
+            color: #2563eb;
+            font-weight: 600;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .math-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: #0f172a; /* Nền tối cho mô phỏng không gian */
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.1);
+        }
+        #simCanvas2D {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .axes-legend {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: #333;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center">
+            <h1 class="text-2xl md:text-3xl font-bold text-blue-700 uppercase tracking-wide">
+                Chủ đề 1: Từ Trường
+            </h1>
+            <p class="text-sm text-gray-500 mt-1 font-medium">
+                © 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+            </p>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="flex overflow-x-auto border-b border-gray-200 hide-scrollbar bg-white">
+            <div class="max-w-7xl mx-auto flex w-full">
+                <button onclick="openTab('tab1')" class="nav-tab active min-w-max flex-1 py-3 px-4 text-sm md:text-base text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+                    <i class="fa-solid fa-book-open mr-2"></i>Lý Thuyết
+                </button>
+                <button onclick="openTab('tab2')" class="nav-tab min-w-max flex-1 py-3 px-4 text-sm md:text-base text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+                    <i class="fa-solid fa-vector-square mr-2"></i>Mô Phỏng 2D
+                </button>
+                <button onclick="openTab('tab3')" class="nav-tab min-w-max flex-1 py-3 px-4 text-sm md:text-base text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+                    <i class="fa-solid fa-calculator mr-2"></i>Máy Tính
+                </button>
+                <button onclick="openTab('tab4')" class="nav-tab min-w-max flex-1 py-3 px-4 text-sm md:text-base text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+                    <i class="fa-solid fa-pen-to-square mr-2"></i>Luyện Tập
+                </button>
+                <button onclick="openTab('tab5')" class="nav-tab min-w-max flex-1 py-3 px-4 text-sm md:text-base text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+                    <i class="fa-solid fa-list-check mr-2"></i>Đánh Giá
+                </button>
+                <button onclick="openTab('tab6')" class="nav-tab min-w-max flex-1 py-3 px-4 text-sm md:text-base text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+                    <i class="fa-solid fa-toolbox mr-2"></i>Tiện Ích
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <!-- TAB 1: LÝ THUYẾT -->
+        <section id="tab1" class="tab-content active">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-blue-200 pb-2">📖 Cốt Lõi Lý Thuyết & Bản Chất Vật Lý</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Cảm ứng từ -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="text-xl font-bold text-blue-700 mb-4"><i class="fa-solid fa-magnet mr-2"></i>1. Khái niệm Từ trường & Đường sức từ</h3>
+                    <ul class="list-disc pl-5 mb-4 text-gray-700 space-y-2">
+                        <li><strong>Từ trường:</strong> Là dạng vật chất tồn tại xung quanh hạt mang điện chuyển động (dòng điện, nam châm). Tính chất cơ bản là tác dụng <strong>lực từ</strong> lên nam châm hay dòng điện khác đặt trong nó.</li>
+                        <li><strong>Cảm ứng từ \(\vec{B}\):</strong> Là đại lượng vectơ đặc trưng cho từ trường về mặt tác dụng lực. Đơn vị là Tesla \(\text{ (T)}\).</li>
+                        <li><strong>Đường sức từ:</strong> Là những đường vẽ trong không gian sao cho tiếp tuyến tại mỗi điểm trùng với phương của vectơ \(\vec{B}\) tại đó. Chiều tuân theo quy tắc nhất định (Vào Nam - Ra Bắc đối với nam châm).</li>
+                    </ul>
+                </div>
+
+                <!-- Các công thức -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="text-xl font-bold text-blue-700 mb-4"><i class="fa-solid fa-square-root-variable mr-2"></i>2. Cảm ứng từ của dòng điện hình dạng đặc biệt</h3>
+                    
+                    <div class="math-box">
+                        <p class="font-bold text-gray-800 mb-1">a. Dòng điện thẳng dài vô hạn:</p>
+                        \[ B = 2 \cdot 10^{-7} \frac{I}{r} \]
+                        <p class="text-sm mt-1 text-gray-600">Quy tắc nắm tay phải: Ngón cái choãi dọc theo dây chỉ chiều \(\vec{I}\), chiều khum các ngón tay là chiều đường sức từ \(\vec{B}\).</p>
+                    </div>
+                    
+                    <div class="math-box">
+                        <p class="font-bold text-gray-800 mb-1">b. Dòng điện tròn tâm O (gồm \(N\) vòng):</p>
+                        \[ B = 2\pi \cdot 10^{-7} N \frac{I}{R} \]
+                        <p class="text-sm mt-1 text-gray-600">Với \( R \) là bán kính vòng dây \(\text{ (m)}\).</p>
+                    </div>
+
+                    <div class="math-box">
+                        <p class="font-bold text-gray-800 mb-1">c. Ống dây hình trụ dài:</p>
+                        \[ B = 4\pi \cdot 10^{-7} \frac{N}{l} I = 4\pi \cdot 10^{-7} n I \]
+                        <p class="text-sm mt-1 text-gray-600">Với \( n = \frac{N}{l} \) là số vòng dây trên mỗi mét chiều dài \(\text{ (vòng/m)}\).</p>
+                    </div>
+                </div>
+                
+                <!-- Bẫy lý thuyết -->
+                <div class="bg-red-50 p-6 rounded-xl shadow-sm border border-red-100 lg:col-span-2">
+                    <h3 class="text-xl font-bold text-red-600 mb-4"><i class="fa-solid fa-triangle-exclamation mr-2"></i>3. Bẫy lý thuyết & Sai lầm thường gặp</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-lg border border-red-200 shadow-sm">
+                            <h4 class="font-bold text-gray-800 mb-2">Từ trường tĩnh điện</h4>
+                            <p class="text-sm text-gray-600">Hạt mang điện <strong>đứng yên</strong> CHỈ tạo ra điện trường, KHÔNG tạo ra từ trường. Từ trường chỉ sinh ra khi hạt mang điện <strong>chuyển động</strong>.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-red-200 shadow-sm">
+                            <h4 class="font-bold text-gray-800 mb-2">Đường sức từ bị hở</h4>
+                            <p class="text-sm text-gray-600">Khác với đường sức điện (hở), các đường sức từ luôn là những <strong>đường cong khép kín</strong> hoặc vô hạn ở hai đầu. Từ trường là trường xoáy.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-red-200 shadow-sm">
+                            <h4 class="font-bold text-gray-800 mb-2">Lẫn lộn Nắm tay / Bàn tay</h4>
+                            <p class="text-sm text-gray-600">Nhớ kỹ: <strong>Nắm tay phải</strong> dùng để tìm chiều đường sức từ (từ trường sinh ra). <strong>Bàn tay trái</strong> dùng để tìm chiều lực từ (lực tác dụng).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- TAB 2: MÔ PHỎNG 2D -->
+        <section id="tab2" class="tab-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-blue-200 pb-2">🌌 Lab 2D: Từ trường của dòng điện thẳng dài</h2>
+            
+            <div class="flex flex-col lg:flex-row gap-6">
+                <!-- Controls -->
+                <div class="w-full lg:w-1/3 bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col gap-5">
+                    <h3 class="text-lg font-bold text-gray-800 border-b pb-2"><i class="fa-solid fa-sliders mr-2"></i>Bảng Điều Khiển</h3>
+                    
+                    <div>
+                        <label class="flex justify-between text-sm font-medium text-gray-700 mb-2">
+                            <span>Cường độ dòng điện \(\vec{I}\) (A)</span>
+                            <span id="sim-val-I" class="font-bold text-blue-600">10 A</span>
+                        </label>
+                        <input type="range" id="sim-I" min="-20" max="20" value="10" step="1" class="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer">
+                        <p class="text-xs text-gray-500 mt-1">Dấu (+) biểu diễn dòng điện đi ra, dấu (-) đi vào mặt phẳng.</p>
+                    </div>
+                    
+                    <div>
+                        <label class="flex justify-between text-sm font-medium text-gray-700 mb-2">
+                            <span>Khoảng cách khảo sát \(r\) (cm)</span>
+                            <span id="sim-val-r" class="font-bold text-green-600">5 cm</span>
+                        </label>
+                        <input type="range" id="sim-r" min="1" max="10" value="5" step="0.5" class="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mt-auto">
+                        <h4 class="font-bold text-gray-800 text-sm mb-2"><i class="fa-solid fa-square-poll-vertical mr-2"></i>Đo lường (Cảm ứng từ \(B\))</h4>
+                        <p class="text-sm text-gray-600">Tại bán kính \(r\): \( B = 2 \cdot 10^{-7} \frac{|I|}{r} \)</p>
+                        <p class="text-3xl font-black text-purple-700 mt-2" id="sim-val-B">4.0 × 10⁻⁵ T</p>
+                    </div>
+                    
+                    <p class="text-xs text-gray-500 italic"><i class="fa-solid fa-eye mr-1"></i>Quan sát mặt cắt ngang của dây dẫn. Chiều của từ trường tuân theo quy tắc nắm tay phải.</p>
+                </div>
+                
+                <!-- 2D Canvas -->
+                <div class="w-full lg:w-2/3">
+                    <div class="canvas-container relative" id="canvas-wrapper">
+                        <canvas id="simCanvas2D"></canvas>
+                        <div class="axes-legend">
+                            <p class="font-bold border-b border-gray-300 pb-1 mb-1">Ký hiệu</p>
+                            <p class="flex items-center gap-2 text-white"><span class="w-4 h-4 rounded-full bg-yellow-400 flex items-center justify-center text-black text-[10px] font-bold">.</span> Dòng điện đi ra (+)</p>
+                            <p class="flex items-center gap-2 text-white"><span class="w-4 h-4 rounded-full bg-yellow-400 flex items-center justify-center text-black text-[10px] font-bold">×</span> Dòng điện đi vào (-)</p>
+                            <p class="flex items-center gap-2 text-white"><span class="w-4 h-1 bg-blue-400 inline-block"></span> Đường sức từ</p>
+                            <p class="flex items-center gap-2 text-white"><span class="w-4 h-1 bg-red-500 inline-block"></span> Vectơ \(\vec{B}\)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: MÁY TÍNH -->
+        <section id="tab3" class="tab-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-blue-200 pb-2">🧮 Máy Tính Tham Số: Dòng Điện Thẳng Dài</h2>
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
+                <p class="text-gray-600 mb-4">Phương trình: \( B = 2 \cdot 10^{-7} \frac{I}{r} \). Nhập 2 giá trị đã biết, để trống <strong>1 ô cần tìm</strong>.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Cảm ứng từ B (T)</label>
+                        <input type="number" id="calc-B" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="VD: 0.000004">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Dòng điện I (A)</label>
+                        <input type="number" id="calc-I" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="VD: 10">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Khoảng cách r (m)</label>
+                        <input type="number" id="calc-r" class="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Chú ý đơn vị mét">
+                    </div>
+                </div>
+                
+                <div class="flex gap-4">
+                    <button onclick="calculateB()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors shadow">
+                        <i class="fa-solid fa-calculator mr-2"></i>Tính Toán
+                    </button>
+                    <button onclick="resetCalculator()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition-colors">
+                        Làm lại
+                    </button>
+                </div>
+            </div>
+
+            <!-- Kết quả -->
+            <div id="calc-result" class="hidden bg-green-50 border border-green-200 rounded-xl p-6 shadow-sm">
+                <h3 class="font-bold text-green-800 mb-3 text-lg">Biến đổi chi tiết:</h3>
+                <div id="calc-steps" class="text-lg overflow-x-auto text-gray-800"></div>
+            </div>
+            
+            <div id="calc-error" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mt-4 rounded">
+                <p class="font-bold">Lỗi nhập liệu</p>
+                <p>Vui lòng nhập đúng 2 giá trị và để trống 1 giá trị cần tính.</p>
+            </div>
+        </section>
+
+        <!-- TAB 4: LUYỆN TẬP -->
+        <section id="tab4" class="tab-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-blue-200 pb-2">📝 Phòng Luyện Tập Phân Hóa</h2>
+            
+            <div class="space-y-6">
+                <!-- Bài 1 -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-blue-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center cursor-pointer" onclick="toggleAccordion('prac1')">
+                        <h3 class="font-bold text-blue-800 text-lg">Cấp độ 1: Nhận biết - Dòng điện thẳng</h3>
+                        <i class="fa-solid fa-chevron-down transform transition-transform" id="icon-prac1"></i>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 text-gray-800 font-medium"><strong>Bài toán:</strong> Cho dòng điện cường độ \( I = 5 \text{ A} \) chạy trong dây dẫn thẳng dài vô hạn. Tính độ lớn cảm ứng từ tại điểm M cách dây dẫn một khoảng \( 10 \text{ cm} \).</p>
+                        
+                        <div id="prac1" class="hidden mt-4 space-y-4">
+                            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                <h4 class="font-bold text-yellow-800 mb-1"><i class="fa-solid fa-lightbulb mr-2"></i>Gợi ý</h4>
+                                <p class="text-sm text-yellow-900">Bắt buộc phải đổi khoảng cách \( r \) từ cm sang mét (SI). Sau đó áp dụng trực tiếp công thức của dây dẫn thẳng dài.</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h4 class="font-bold text-green-800 mb-2"><i class="fa-solid fa-check-double mr-2"></i>Lời giải</h4>
+                                <p>Ta có: \( I = 5 \text{ A} \), \( r = 10 \text{ cm} = 0,1 \text{ m} \).</p>
+                                <p>Độ lớn cảm ứng từ tại M là:</p>
+                                \[ B = 2 \cdot 10^{-7} \frac{I}{r} \]
+                                \[ B = 2 \cdot 10^{-7} \frac{5}{0,1} = 10^{-5} \text{ T} \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bài 2 -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-orange-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center cursor-pointer" onclick="toggleAccordion('prac2')">
+                        <h3 class="font-bold text-orange-800 text-lg">Cấp độ 2: Vận dụng - Dòng điện tròn</h3>
+                        <i class="fa-solid fa-chevron-down transform transition-transform" id="icon-prac2"></i>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 text-gray-800 font-medium"><strong>Bài toán:</strong> Một khung dây tròn bán kính \( R = 4 \text{ cm} \) gồm \( 10 \) vòng dây. Dòng điện chạy trong mỗi vòng có cường độ \( 0,3 \text{ A} \). Tính cảm ứng từ tại tâm của khung dây.</p>
+                        
+                        <div id="prac2" class="hidden mt-4 space-y-4">
+                            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                <h4 class="font-bold text-yellow-800 mb-1"><i class="fa-solid fa-lightbulb mr-2"></i>Gợi ý</h4>
+                                <p class="text-sm text-yellow-900">Áp dụng công thức tính B tại tâm khung dây tròn. Vì có \( N \) vòng dây xếp sít nhau nên từ trường tổng cộng gấp \( N \) lần từ trường của 1 vòng dây.</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h4 class="font-bold text-green-800 mb-2"><i class="fa-solid fa-check-double mr-2"></i>Lời giải</h4>
+                                <p>Ta có: \( R = 4 \text{ cm} = 0,04 \text{ m} \), \( N = 10 \), \( I = 0,3 \text{ A} \).</p>
+                                <p>Cảm ứng từ tại tâm khung dây là:</p>
+                                \[ B = 2\pi \cdot 10^{-7} N \frac{I}{R} \]
+                                \[ B = 2\pi \cdot 10^{-7} \cdot 10 \cdot \frac{0,3}{0,04} \approx 4,71 \cdot 10^{-5} \text{ T} \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bài 3 -->
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="bg-purple-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center cursor-pointer" onclick="toggleAccordion('prac3')">
+                        <h3 class="font-bold text-purple-800 text-lg">Cấp độ 3: Vận dụng cao - Nguyên lý chồng chất</h3>
+                        <i class="fa-solid fa-chevron-down transform transition-transform" id="icon-prac3"></i>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 text-gray-800 font-medium"><strong>Bài toán:</strong> Hai dây dẫn thẳng dài song song cách nhau \( 40 \text{ cm} \) trong không khí. Dây 1 mang dòng điện \( I_1 = 3 \text{ A} \), dây 2 mang dòng điện \( I_2 = 1,5 \text{ A} \) chạy cùng chiều nhau. Tìm vị trí điểm M tại đó cảm ứng từ tổng hợp bằng không (\(\vec{B} = 0\)).</p>
+                        
+                        <div id="prac3" class="hidden mt-4 space-y-4">
+                            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                <h4 class="font-bold text-yellow-800 mb-1"><i class="fa-solid fa-lightbulb mr-2"></i>Gợi ý</h4>
+                                <p class="text-sm text-yellow-900">Để \(\vec{B}_M = \vec{B}_1 + \vec{B}_2 = \vec{0}\) thì \(\vec{B}_1\) và \(\vec{B}_2\) phải ngược chiều và cùng độ lớn. Do \( I_1, I_2 \) cùng chiều, điểm M phải nằm <strong>trong</strong> khoảng giữa hai dây. Gọi khoảng cách từ M đến \( I_1 \) là \( x \), thiết lập phương trình \( B_1 = B_2 \).</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h4 class="font-bold text-green-800 mb-2"><i class="fa-solid fa-check-double mr-2"></i>Lời giải</h4>
+                                <p>Giả sử M cách dây 1 đoạn \( r_1 = x \), cách dây 2 đoạn \( r_2 = 0,4 - x \) (\(0 < x < 0,4\)).</p>
+                                <p>Để \( B_1 = B_2 \):</p>
+                                \[ 2 \cdot 10^{-7} \frac{I_1}{r_1} = 2 \cdot 10^{-7} \frac{I_2}{r_2} \implies \frac{I_1}{x} = \frac{I_2}{0,4 - x} \]
+                                \[ \frac{3}{x} = \frac{1,5}{0,4 - x} \implies 3(0,4 - x) = 1,5x \implies 1,2 - 3x = 1,5x \]
+                                \[ 4,5x = 1,2 \implies x = \frac{1,2}{4,5} = \frac{4}{15} \text{ m} \approx 26,67 \text{ cm} \]
+                                <p>Vậy điểm M nằm trên đường thẳng nối hai dây, ở giữa hai dây và cách dây \( I_1 \) một đoạn \( 26,67 \text{ cm} \).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: ĐÁNH GIÁ -->
+        <section id="tab5" class="tab-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-blue-200 pb-2">🎯 Trắc Nghiệm Tự Đánh Giá</h2>
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100" id="quiz-container">
+                <!-- Q1 -->
+                <div class="mb-8 quiz-question">
+                    <p class="font-bold text-gray-800 mb-3">Câu 1: Xung quanh vật nào sau đây KHÔNG có từ trường?</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q1" value="A" class="form-radio text-blue-600 h-4 w-4"> <span>A. Dòng điện không đổi.</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q1" value="B" class="form-radio text-blue-600 h-4 w-4"> <span>B. Hạt mang điện chuyển động.</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q1" value="C" class="form-radio text-blue-600 h-4 w-4"> <span>C. Hạt mang điện đứng yên.</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q1" value="D" class="form-radio text-blue-600 h-4 w-4"> <span>D. Nam châm hình chữ U.</span></label>
+                    </div>
+                    <div class="explanation hidden mt-3 p-3 bg-blue-50 border-l-4 border-blue-500 text-sm text-gray-700"></div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="mb-8 quiz-question">
+                    <p class="font-bold text-gray-800 mb-3">Câu 2: Công thức tính độ lớn cảm ứng từ tại tâm của vòng dây tròn bán kính \( R \) mang dòng điện \( I \) là:</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q2" value="A" class="form-radio text-blue-600 h-4 w-4"> <span>A. \( B = 2 \cdot 10^{-7} \frac{I}{R} \)</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q2" value="B" class="form-radio text-blue-600 h-4 w-4"> <span>B. \( B = 2\pi \cdot 10^{-7} \frac{I}{R} \)</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q2" value="C" class="form-radio text-blue-600 h-4 w-4"> <span>C. \( B = 4\pi \cdot 10^{-7} \frac{I}{R} \)</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q2" value="D" class="form-radio text-blue-600 h-4 w-4"> <span>D. \( B = 2\pi \cdot 10^{-7} I \cdot R \)</span></label>
+                    </div>
+                    <div class="explanation hidden mt-3 p-3 bg-blue-50 border-l-4 border-blue-500 text-sm text-gray-700"></div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="mb-8 quiz-question">
+                    <p class="font-bold text-gray-800 mb-3">Câu 3: Một đoạn dây dẫn thẳng dài mang dòng điện \( 2 \text{ A} \). Cảm ứng từ tại điểm cách dây \( 20 \text{ cm} \) có độ lớn là:</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q3" value="A" class="form-radio text-blue-600 h-4 w-4"> <span>A. \( 2 \cdot 10^{-6} \text{ T} \)</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q3" value="B" class="form-radio text-blue-600 h-4 w-4"> <span>B. \( 2 \cdot 10^{-5} \text{ T} \)</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q3" value="C" class="form-radio text-blue-600 h-4 w-4"> <span>C. \( 5 \cdot 10^{-6} \text{ T} \)</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q3" value="D" class="form-radio text-blue-600 h-4 w-4"> <span>D. \( 4 \cdot 10^{-7} \text{ T} \)</span></label>
+                    </div>
+                    <div class="explanation hidden mt-3 p-3 bg-blue-50 border-l-4 border-blue-500 text-sm text-gray-700"></div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="mb-6 quiz-question">
+                    <p class="font-bold text-gray-800 mb-3">Câu 4: Đường sức từ của dòng điện thẳng dài vô hạn có dạng là:</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q4" value="A" class="form-radio text-blue-600 h-4 w-4"> <span>A. Những đường thẳng song song với dòng điện.</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q4" value="B" class="form-radio text-blue-600 h-4 w-4"> <span>B. Những đường thẳng vuông góc với dòng điện.</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q4" value="C" class="form-radio text-blue-600 h-4 w-4"> <span>C. Những vòng tròn đồng tâm, nằm trong mặt phẳng vuông góc với dòng điện.</span></label>
+                        <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-gray-50 border border-transparent"><input type="radio" name="q4" value="D" class="form-radio text-blue-600 h-4 w-4"> <span>D. Những đường cong khép kín bất kỳ bao quanh dòng điện.</span></label>
+                    </div>
+                    <div class="explanation hidden mt-3 p-3 bg-blue-50 border-l-4 border-blue-500 text-sm text-gray-700"></div>
+                </div>
+
+                <div class="border-t border-gray-200 pt-6 flex items-center justify-between">
+                    <p id="quiz-score" class="font-bold text-lg text-indigo-700 hidden">Kết quả: 0/4</p>
+                    <button onclick="submitQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-8 rounded-lg transition-colors ml-auto shadow">Nộp bài</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: TIỆN ÍCH LỚP HỌC -->
+        <section id="tab6" class="tab-content">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-blue-200 pb-2">🛠️ Tiện Ích Lớp Học</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Đồng hồ đếm ngược -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 w-full text-center">Đồng Hồ Đếm Ngược</h3>
+                    
+                    <div class="relative w-48 h-48 mb-6">
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#e2e8f0" stroke-width="8"></circle>
+                            <circle id="timer-progress" cx="50" cy="50" r="45" fill="none" stroke="#3b82f6" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="0" class="transition-all duration-1000 linear"></circle>
+                        </svg>
+                        <div class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
+                            <span id="timer-display" class="text-4xl font-bold text-gray-800 font-mono">03:00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-2 mb-4">
+                        <button onclick="setTimer(60)" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded text-sm font-medium">1 Phút</button>
+                        <button onclick="setTimer(180)" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded text-sm font-medium">3 Phút</button>
+                        <button onclick="setTimer(300)" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded text-sm font-medium">5 Phút</button>
+                    </div>
+                    
+                    <div class="flex space-x-4 w-full justify-center">
+                        <button id="btn-timer-start" onclick="startTimer()" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition">Bắt đầu</button>
+                        <button id="btn-timer-pause" onclick="pauseTimer()" class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition">Tạm dừng</button>
+                        <button onclick="resetTimer()" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition">Khôi phục</button>
+                    </div>
+                </div>
+
+                <!-- Vòng quay may mắn -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Vòng Quay Gọi Tên</h3>
+                    
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="w-full md:w-1/2 flex flex-col">
+                            <label class="text-sm font-medium text-gray-700 mb-1">Danh sách học sinh (Mỗi dòng 1 tên):</label>
+                            <textarea id="wheel-names" class="flex-grow w-full p-2 border border-gray-300 rounded resize-none focus:ring-blue-500 focus:border-blue-500 text-sm" rows="8">Tổ 1
+Tổ 2
+Tổ 3
+Tổ 4</textarea>
+                            <button onclick="updateWheel()" class="mt-2 bg-blue-100 text-blue-700 hover:bg-blue-200 font-medium py-1 px-3 rounded text-sm">Cập nhật vòng quay</button>
+                        </div>
+                        
+                        <div class="w-full md:w-1/2 flex flex-col items-center justify-center relative">
+                            <div class="relative w-48 h-48">
+                                <canvas id="wheelCanvas" width="200" height="200" class="w-full h-full rounded-full shadow-md"></canvas>
+                                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                    <i class="fa-solid fa-location-pin text-3xl text-red-600"></i>
+                                </div>
+                            </div>
+                            <button onclick="spinWheel()" id="spin-btn" class="mt-6 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105">QUAY!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-medium">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</p>
+            <p class="text-gray-400 text-sm mt-2">Dự án Chuyên đề Vật lý 12 - Ứng dụng EdTech tương tác</p>
+        </div>
+    </footer>
+
+    <!-- Modal cho thông báo -->
+    <div id="custom-modal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-[100]">
+        <div class="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full transform scale-95 transition-transform duration-200" id="modal-content">
+            <h3 class="text-xl font-bold text-gray-900 mb-2" id="modal-title">Thông báo</h3>
+            <p class="text-gray-600 mb-6" id="modal-text">Nội dung</p>
+            <button onclick="closeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Đóng</button>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. ĐIỀU HƯỚNG TAB ---
+        function openTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            
+            if(tabId === 'tab2') {
+                setTimeout(resize2DCanvas, 50); // Fix lỗi kích thước canvas khi tab bị ẩn
+            }
+        }
+
+        function toggleAccordion(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                el.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        function showModal(title, text) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerHTML = text;
+            const modal = document.getElementById('custom-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('modal-content').classList.remove('scale-95');
+                document.getElementById('modal-content').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('custom-modal');
+            document.getElementById('modal-content').classList.remove('scale-100');
+            document.getElementById('modal-content').classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        // Render KaTeX
+        function renderPhysicsMath(elementId = null) {
+            const config = {
+                delimiters: [
+                    {left: "\\[", right: "\\]", display: true},
+                    {left: "\\(", right: "\\)", display: false}
+                ],
+                throwOnError: false
+            };
+            if (elementId) {
+                renderMathInElement(document.getElementById(elementId), config);
+            } else {
+                renderMathInElement(document.body, config);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderPhysicsMath();
+            init2D();
+            updateWheel();
+        });
+
+        // --- 2. MÔ PHỎNG 2D (CANVAS API) ---
+        let simCtx, simCanvas, animationId;
+        let simParams = { I: 10, r: 5 }; // r tính bằng cm hiển thị, m trong tính toán
+        let time = 0;
+
+        function init2D() {
+            const canvasWrapper = document.getElementById('canvas-wrapper');
+            simCanvas = document.getElementById('simCanvas2D');
+            simCtx = simCanvas.getContext('2d');
+            
+            // Xử lý độ phân giải cao
+            const dpr = window.devicePixelRatio || 1;
+            simCanvas.width = canvasWrapper.clientWidth * dpr;
+            simCanvas.height = canvasWrapper.clientHeight * dpr;
+            simCtx.scale(dpr, dpr);
+            simCanvas.style.width = canvasWrapper.clientWidth + 'px';
+            simCanvas.style.height = canvasWrapper.clientHeight + 'px';
+
+            // Event listeners
+            document.getElementById('sim-I').addEventListener('input', update2DParams);
+            document.getElementById('sim-r').addEventListener('input', update2DParams);
+            window.addEventListener('resize', resize2DCanvas);
+
+            update2DParams();
+            animate2D();
+        }
+
+        function update2DParams() {
+            simParams.I = parseInt(document.getElementById('sim-I').value);
+            simParams.r = parseFloat(document.getElementById('sim-r').value);
+            
+            document.getElementById('sim-val-I').innerText = simParams.I + " A";
+            document.getElementById('sim-val-r').innerText = simParams.r + " cm";
+
+            // Tính B
+            const r_meters = simParams.r / 100;
+            const B_mag = 2e-7 * Math.abs(simParams.I) / r_meters;
+            
+            // Format scientific notation
+            if(B_mag === 0) {
+                document.getElementById('sim-val-B').innerText = "0 T";
+            } else {
+                const exp = Math.floor(Math.log10(B_mag));
+                const coeff = (B_mag / Math.pow(10, exp)).toFixed(1);
+                let disp = `${coeff} × 10`;
+                if(exp == -4) disp += '⁻⁴';
+                if(exp == -5) disp += '⁻⁵';
+                if(exp == -6) disp += '⁻⁶';
+                if(exp == -7) disp += '⁻⁷';
+                if(exp == -8) disp += '⁻⁸';
+                document.getElementById('sim-val-B').innerText = disp + " T";
+            }
+        }
+
+        function resize2DCanvas() {
+            if(!simCanvas) return;
+            const canvasWrapper = document.getElementById('canvas-wrapper');
+            const dpr = window.devicePixelRatio || 1;
+            simCanvas.width = canvasWrapper.clientWidth * dpr;
+            simCanvas.height = canvasWrapper.clientHeight * dpr;
+            simCtx.scale(dpr, dpr);
+            simCanvas.style.width = canvasWrapper.clientWidth + 'px';
+            simCanvas.style.height = canvasWrapper.clientHeight + 'px';
+        }
+
+        function drawArrow(ctx, x, y, angle, length, color) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(length, 0);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Arrowhead
+            ctx.beginPath();
+            ctx.moveTo(length, 0);
+            ctx.lineTo(length - 8, -4);
+            ctx.lineTo(length - 8, 4);
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function animate2D() {
+            animationId = requestAnimationFrame(animate2D);
+            if (!simCtx) return;
+            
+            // Do đã scale dpr, cw và ch dùng cho logic là clientWidth/clientHeight
+            const cw = simCanvas.clientWidth;
+            const ch = simCanvas.clientHeight;
+            const cx = cw / 2;
+            const cy = ch / 2;
+            
+            simCtx.clearRect(0, 0, cw, ch);
+            
+            // Vẽ lưới nền mờ
+            simCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            simCtx.lineWidth = 1;
+            for(let i = 0; i < cw; i += 20) { simCtx.beginPath(); simCtx.moveTo(i, 0); simCtx.lineTo(i, ch); simCtx.stroke(); }
+            for(let i = 0; i < ch; i += 20) { simCtx.beginPath(); simCtx.moveTo(0, i); simCtx.lineTo(cw, i); simCtx.stroke(); }
+
+            const I = simParams.I;
+            const r_cm = simParams.r;
+            const scale = 20; // 1cm = 20px
+            const R_px = r_cm * scale;
+
+            // Góc quay cho animation
+            time += 0.02 * (I > 0 ? -1 : 1);
+
+            // 1. Vẽ từ trường (Đường sức từ dạng vòng tròn)
+            if (I !== 0) {
+                const numCircles = 8;
+                simCtx.strokeStyle = '#60a5fa'; // Blue-400
+                simCtx.lineWidth = 1.5;
+                
+                for(let i = 1; i <= numCircles; i++) {
+                    const radius = i * scale * 1.2;
+                    simCtx.beginPath();
+                    simCtx.arc(cx, cy, radius, 0, Math.PI * 2);
+                    simCtx.stroke();
+                    
+                    // Vẽ các mũi tên chạy trên đường sức từ
+                    const numArrows = 4;
+                    for(let j = 0; j < numArrows; j++) {
+                        // Tính góc vị trí mũi tên
+                        let baseAngle = (j / numArrows) * Math.PI * 2 + time * (4/i);
+                        // Chiều mũi tên vuông góc với bán kính
+                        let arrowAngle = baseAngle + (I > 0 ? -Math.PI/2 : Math.PI/2);
+                        
+                        let px = cx + Math.cos(baseAngle) * radius;
+                        let py = cy + Math.sin(baseAngle) * radius;
+                        
+                        drawArrow(simCtx, px, py, arrowAngle, 10, '#60a5fa');
+                    }
+                }
+            }
+
+            // 2. Vẽ điểm M tại bán kính r đang khảo sát
+            simCtx.beginPath();
+            simCtx.moveTo(cx, cy);
+            simCtx.lineTo(cx + R_px, cy);
+            simCtx.strokeStyle = '#4ade80'; // Green
+            simCtx.lineWidth = 2;
+            simCtx.setLineDash([5, 5]);
+            simCtx.stroke();
+            simCtx.setLineDash([]);
+
+            simCtx.beginPath();
+            simCtx.arc(cx + R_px, cy, 6, 0, Math.PI*2);
+            simCtx.fillStyle = '#ef4444';
+            simCtx.fill();
+            simCtx.strokeStyle = '#fff';
+            simCtx.lineWidth = 1;
+            simCtx.stroke();
+
+            // Vẽ Vectơ B tại M
+            if (I !== 0) {
+                // Độ dài vectơ mô phỏng tương đối theo cường độ B
+                const bLength = 20 + (Math.abs(I) / r_cm) * 10; 
+                // Vuông góc với bán kính nối từ tâm
+                const bAngle = I > 0 ? -Math.PI/2 : Math.PI/2;
+                drawArrow(simCtx, cx + R_px, cy, bAngle, bLength, '#ef4444');
+                
+                simCtx.fillStyle = '#ef4444';
+                simCtx.font = "bold 16px Inter";
+                simCtx.fillText("B", cx + R_px + 10, cy + (I > 0 ? -bLength/2 : bLength/2));
+            }
+            
+            simCtx.fillStyle = '#4ade80';
+            simCtx.font = "italic 14px Inter";
+            simCtx.fillText("r = " + r_cm + "cm", cx + R_px / 2 - 20, cy - 10);
+
+            // 3. Vẽ dây dẫn ở tâm (cắt ngang)
+            simCtx.beginPath();
+            simCtx.arc(cx, cy, 14, 0, Math.PI * 2);
+            simCtx.fillStyle = '#facc15'; // Yellow
+            simCtx.fill();
+            simCtx.strokeStyle = '#ca8a04';
+            simCtx.lineWidth = 2;
+            simCtx.stroke();
+
+            // Ký hiệu chiều dòng điện
+            simCtx.fillStyle = '#000';
+            simCtx.strokeStyle = '#000';
+            simCtx.lineWidth = 2.5;
+            if (I > 0) {
+                // Dòng điện đi ra -> Dấu chấm
+                simCtx.beginPath();
+                simCtx.arc(cx, cy, 4, 0, Math.PI * 2);
+                simCtx.fill();
+            } else if (I < 0) {
+                // Dòng điện đi vào -> Dấu cộng/nhân
+                simCtx.beginPath();
+                simCtx.moveTo(cx - 6, cy - 6);
+                simCtx.lineTo(cx + 6, cy + 6);
+                simCtx.moveTo(cx + 6, cy - 6);
+                simCtx.lineTo(cx - 6, cy + 6);
+                simCtx.stroke();
+            }
+        }
+
+        // --- 3. MÁY TÍNH ---
+        function calculateB() {
+            const vB = document.getElementById('calc-B').value;
+            const vI = document.getElementById('calc-I').value;
+            const vR = document.getElementById('calc-r').value;
+
+            let emptyCount = 0;
+            let target = '';
+            
+            if(vB === '') { emptyCount++; target = 'B'; }
+            if(vI === '') { emptyCount++; target = 'I'; }
+            if(vR === '') { emptyCount++; target = 'r'; }
+
+            const errBox = document.getElementById('calc-error');
+            const resBox = document.getElementById('calc-result');
+            const stepsDiv = document.getElementById('calc-steps');
+
+            if (emptyCount !== 1) {
+                errBox.classList.remove('hidden');
+                resBox.classList.add('hidden');
+                return;
+            }
+            
+            errBox.classList.add('hidden');
+            resBox.classList.remove('hidden');
+
+            let steps = '';
+            let result = 0;
+
+            if (target === 'B') {
+                const I = parseFloat(vI);
+                const r = parseFloat(vR);
+                if(r === 0) { steps = "Lỗi: Khoảng cách r không thể bằng 0."; } else {
+                    result = 2e-7 * I / r;
+                    steps = `Ta có công thức cảm ứng từ của dòng điện thẳng dài: \\[ B = 2 \cdot 10^{-7} \\frac{I}{r} \\]
+                             Thay số: \\[ B = 2 \cdot 10^{-7} \\frac{${I}}{${r}} \\]
+                             Kết quả: \\[ B = ${result.toExponential(4)} \\text{ (T)} \\]`;
+                    document.getElementById('calc-B').value = result;
+                }
+            } 
+            else if (target === 'I') {
+                const B = parseFloat(vB);
+                const r = parseFloat(vR);
+                result = B * r / 2e-7;
+                steps = `Từ công thức: \\[ B = 2 \cdot 10^{-7} \\frac{I}{r} \\implies I = \\frac{B \cdot r}{2 \cdot 10^{-7}} \\]
+                         Thay số: \\[ I = \\frac{${B} \cdot ${r}}{2 \cdot 10^{-7}} \\]
+                         Kết quả: \\[ I = ${result.toFixed(4)} \\text{ (A)} \\]`;
+                document.getElementById('calc-I').value = result.toFixed(4);
+            }
+            else if (target === 'r') {
+                const B = parseFloat(vB);
+                const I = parseFloat(vI);
+                if(B === 0) { steps = "Lỗi: B phải khác 0 để tìm r."; } else {
+                    result = 2e-7 * I / B;
+                    steps = `Từ công thức: \\[ B = 2 \cdot 10^{-7} \\frac{I}{r} \\implies r = \\frac{2 \cdot 10^{-7} \cdot I}{B} \\]
+                             Thay số: \\[ r = \\frac{2 \cdot 10^{-7} \cdot ${I}}{${B}} \\]
+                             Kết quả: \\[ r = ${result.toFixed(4)} \\text{ (m)} \\]`;
+                    document.getElementById('calc-r').value = result.toFixed(4);
+                }
+            }
+
+            stepsDiv.innerHTML = steps;
+            renderPhysicsMath('calc-result');
+        }
+
+        function resetCalculator() {
+            document.getElementById('calc-B').value = '';
+            document.getElementById('calc-I').value = '';
+            document.getElementById('calc-r').value = '';
+            document.getElementById('calc-result').classList.add('hidden');
+            document.getElementById('calc-error').classList.add('hidden');
+        }
+
+        // --- 4. TRẮC NGHIỆM ---
+        const quizData = [
+            {
+                qName: 'q1',
+                correct: 'C',
+                explain: `Theo lý thuyết, từ trường chỉ được sinh ra xung quanh các điện tích <strong>chuyển động</strong>. Hạt mang điện đứng yên chỉ sinh ra điện trường, không sinh ra từ trường.`
+            },
+            {
+                qName: 'q2',
+                correct: 'B',
+                explain: `Công thức cảm ứng từ tại tâm dòng điện tròn bán kính \( R \) là: \\[ B = 2\pi \cdot 10^{-7} \frac{I}{R} \\]`
+            },
+            {
+                qName: 'q3',
+                correct: 'A',
+                explain: `Áp dụng công thức dòng điện thẳng: \\[ B = 2 \cdot 10^{-7} \frac{I}{r} \\] <br> Đổi \( r = 20 \text{ cm} = 0,2 \text{ m} \).<br> \\[ B = 2 \cdot 10^{-7} \frac{2}{0,2} = 2 \cdot 10^{-6} \text{ (T)} \\]`
+            },
+            {
+                qName: 'q4',
+                correct: 'C',
+                explain: `Đường sức từ của dòng điện thẳng dài là những vòng tròn đồng tâm, nằm trong mặt phẳng vuông góc với dòng điện, tâm nằm trên dây dẫn.`
+            }
+        ];
+
+        function submitQuiz() {
+            let score = 0;
+            const qBlocks = document.querySelectorAll('.quiz-question');
+            
+            quizData.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="${q.qName}"]:checked`);
+                const block = qBlocks[index];
+                const explainDiv = block.querySelector('.explanation');
+                
+                block.querySelectorAll('label').forEach(lbl => {
+                    lbl.classList.remove('bg-green-100', 'border-green-500', 'bg-red-100', 'border-red-500');
+                });
+
+                if (selected) {
+                    const lbl = selected.parentElement;
+                    if (selected.value === q.correct) {
+                        score++;
+                        lbl.classList.add('bg-green-100', 'border-green-500');
+                    } else {
+                        lbl.classList.add('bg-red-100', 'border-red-500');
+                        block.querySelector(`input[value="${q.correct}"]`).parentElement.classList.add('bg-green-100', 'border-green-500');
+                    }
+                } else {
+                    block.querySelector(`input[value="${q.correct}"]`).parentElement.classList.add('bg-green-100', 'border-green-500');
+                }
+
+                explainDiv.innerHTML = q.explain;
+                explainDiv.classList.remove('hidden');
+            });
+
+            const scoreEl = document.getElementById('quiz-score');
+            scoreEl.innerText = `Kết quả: ${score}/4`;
+            scoreEl.classList.remove('hidden');
+            
+            renderPhysicsMath('quiz-container');
+        }
+
+        // --- 5. TOOLS (Timer & Wheel) ---
+        let timerInterval;
+        let timeLeft = 180;
+        let totalTime = 180;
+        let isTimerRunning = false;
+
+        const timerDisplay = document.getElementById('timer-display');
+        const timerProgress = document.getElementById('timer-progress');
+        const btnTimerStart = document.getElementById('btn-timer-start');
+
+        function updateTimerUI() {
+            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            timerDisplay.innerText = `${m}:${s}`;
+            
+            const fraction = timeLeft / totalTime;
+            const offset = 283 - (fraction * 283);
+            timerProgress.style.strokeDashoffset = offset;
+            
+            if(timeLeft <= 10) {
+                timerProgress.setAttribute('stroke', '#ef4444');
+                timerDisplay.classList.add('text-red-600');
+            } else {
+                timerProgress.setAttribute('stroke', '#3b82f6');
+                timerDisplay.classList.remove('text-red-600');
+            }
+        }
+
+        function setTimer(seconds) {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timeLeft = seconds;
+            totalTime = seconds;
+            updateTimerUI();
+        }
+
+        function startTimer() {
+            if (isTimerRunning || timeLeft === 0) return;
+            isTimerRunning = true;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerUI();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    isTimerRunning = false;
+                    showModal("HẾT GIỜ!", "Thời gian hoạt động đã kết thúc.");
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+        }
+
+        function resetTimer() {
+            setTimer(totalTime);
+        }
+
+        // Vòng quay
+        const wheelCanvas = document.getElementById('wheelCanvas');
+        const wCtx = wheelCanvas.getContext('2d');
+        let wheelNames = [];
+        let currentAngle = 0;
+        let spinSpeed = 0;
+        let isSpinning = false;
+        let spinReq;
+
+        const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
+
+        function updateWheel() {
+            const raw = document.getElementById('wheel-names').value;
+            wheelNames = raw.split('\n').map(n => n.trim()).filter(n => n);
+            if (wheelNames.length === 0) wheelNames = ['Trống'];
+            drawWheel();
+        }
+
+        function drawWheel() {
+            const cw = wheelCanvas.width;
+            const ch = wheelCanvas.height;
+            const radius = cw / 2;
+            const sliceAngle = (2 * Math.PI) / wheelNames.length;
+
+            wCtx.clearRect(0, 0, cw, ch);
+            wCtx.translate(radius, radius);
+            wCtx.rotate(currentAngle);
+
+            for (let i = 0; i < wheelNames.length; i++) {
+                wCtx.beginPath();
+                wCtx.moveTo(0, 0);
+                wCtx.arc(0, 0, radius, i * sliceAngle, (i + 1) * sliceAngle);
+                wCtx.fillStyle = colors[i % colors.length];
+                wCtx.fill();
+                wCtx.lineWidth = 1;
+                wCtx.strokeStyle = "#fff";
+                wCtx.stroke();
+
+                wCtx.save();
+                wCtx.rotate(i * sliceAngle + sliceAngle / 2);
+                wCtx.textAlign = "right";
+                wCtx.fillStyle = "#fff";
+                wCtx.font = "bold 14px Inter";
+                wCtx.fillText(wheelNames[i].substring(0, 10), radius - 10, 5);
+                wCtx.restore();
+            }
+
+            wCtx.rotate(-currentAngle);
+            wCtx.translate(-radius, -radius);
+        }
+
+        function spinWheel() {
+            if (isSpinning || wheelNames.length === 0) return;
+            isSpinning = true;
+            spinSpeed = Math.random() * 0.2 + 0.3; 
+            animateWheel();
+        }
+
+        function animateWheel() {
+            currentAngle += spinSpeed;
+            spinSpeed *= 0.985; 
+            
+            drawWheel();
+
+            if (spinSpeed < 0.002) {
+                isSpinning = false;
+                cancelAnimationFrame(spinReq);
+                declareWinner();
+            } else {
+                spinReq = requestAnimationFrame(animateWheel);
+            }
+        }
+
+        function declareWinner() {
+            let normalizedAngle = currentAngle % (2 * Math.PI);
+            let pointerAngle = (Math.PI * 1.5 - normalizedAngle + 2 * Math.PI) % (2 * Math.PI);
+            let sliceAngle = (2 * Math.PI) / wheelNames.length;
+            
+            let winnerIndex = Math.floor(pointerAngle / sliceAngle);
+            showModal("🎉 CHÚC MỪNG!", `<p class="text-xl text-center text-blue-600 font-bold">${wheelNames[winnerIndex]}</p><p class="text-center mt-2">Xin mời lên bảng thực hiện nhiệm vụ!</p>`);
+        }
+    </script>
+</body>
+</html>
