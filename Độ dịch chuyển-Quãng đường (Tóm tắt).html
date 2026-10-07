@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 7: Đồ thị độ dịch chuyển - thời gian - Thầy Nguyễn Xuân Hùng</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- KaTeX cho công thức Toán/Vật lý -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #0284c7; /* Sky 600 */
+            --primary-hover: #0369a1; /* Sky 700 */
+            --bg-color: #f8fafc;
+            --text-main: #1e293b;
+            --car1-color: #ef4444; /* Red */
+            --car2-color: #3b82f6; /* Blue */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Tùy chỉnh thanh cuộn */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Tabs styling */
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        
+        .tab-btn {
+            white-space: nowrap;
+            transition: all 0.2s;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-btn.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .sub-tab-content { display: none; animation: slideIn 0.3s ease-in-out; }
+        .sub-tab-content.active { display: block; }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Khung Canvas */
+        .canvas-wrapper {
+            position: relative;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        canvas { display: block; width: 100%; height: 100%; }
+
+        /* Custom Modal */
+        #custom-modal {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center; align-items: center;
+        }
+        #custom-modal.active { display: flex; }
+
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none; width: 100%; background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%;
+            background: var(--primary); cursor: pointer; margin-top: -6px; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 4px; cursor: pointer; background: #cbd5e1; border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="bg-gradient-to-r from-sky-700 to-blue-800 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6 text-center">
+            <h1 class="text-2xl md:text-4xl font-bold mb-2 tracking-tight">BÀI 7: ĐỒ THỊ ĐỘ DỊCH CHUYỂN – THỜI GIAN</h1>
+            <p class="text-sm md:text-base text-sky-100 font-medium">Biên soạn: Thầy Nguyễn Xuân Hùng - Trường THPT Hoàng Hoa Thám</p>
+        </div>
+        
+        <div class="bg-white text-gray-600 shadow-inner overflow-x-auto">
+            <div class="container mx-auto px-2 flex sm:justify-center" id="main-tabs">
+                <button class="tab-btn active px-4 py-3 text-sm md:text-base hover:text-sky-600 focus:outline-none" data-target="tab-theory">Lý thuyết</button>
+                <button class="tab-btn px-4 py-3 text-sm md:text-base hover:text-sky-600 focus:outline-none" data-target="tab-simulation">Mô phỏng</button>
+                <button class="tab-btn px-4 py-3 text-sm md:text-base hover:text-sky-600 focus:outline-none" data-target="tab-calculator">Máy tính</button>
+                <button class="tab-btn px-4 py-3 text-sm md:text-base hover:text-sky-600 focus:outline-none" data-target="tab-practice">Luyện tập</button>
+                <button class="tab-btn px-4 py-3 text-sm md:text-base hover:text-sky-600 focus:outline-none" data-target="tab-quiz">Tự đánh giá</button>
+                <button class="tab-btn px-4 py-3 text-sm md:text-base hover:text-sky-600 focus:outline-none" data-target="tab-tools">Tiện ích</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-6 max-w-6xl">
+        
+        <section id="tab-theory" class="tab-content active">
+            <div class="bg-white rounded-xl shadow-md p-4 md:p-6">
+                <!-- Sub-tabs Menu -->
+                <div class="flex flex-wrap gap-2 mb-6 border-b pb-2">
+                    <button class="sub-tab-btn px-3 py-1.5 bg-sky-100 text-sky-700 rounded-lg text-sm font-semibold transition-colors active-sub" data-target="sub-1">1. Quỹ đạo & Chuyển động</button>
+                    <button class="sub-tab-btn px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-sky-50 hover:text-sky-600 rounded-lg text-sm font-semibold transition-colors" data-target="sub-2">2. Đồ thị $d-t$</button>
+                    <button class="sub-tab-btn px-3 py-1.5 bg-gray-100 text-gray-600 hover:bg-sky-50 hover:text-sky-600 rounded-lg text-sm font-semibold transition-colors" data-target="sub-3">3. Phân tích đồ thị</button>
+                </div>
+
+                <!-- Sub-tab 1 -->
+                <div id="sub-1" class="sub-tab-content active">
+                    <h2 class="text-xl font-bold text-sky-800 mb-4">I. Chuyển động thẳng</h2>
+                    <div class="space-y-4 text-gray-700">
+                        <div class="bg-sky-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-sky-800 mb-2">1. Quỹ đạo & Chuyển động thẳng đều</h3>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li><strong>Quỹ đạo:</strong> Tập hợp tất cả vị trí của một vật chuyển động theo thời gian trong không gian.</li>
+                                <li><strong>Chuyển động thẳng:</strong> Quỹ đạo là đường thẳng.</li>
+                                <li><strong>Chuyển động thẳng đều:</strong> Quỹ đạo là đường thẳng và có tốc độ không thay đổi theo thời gian.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="border-l-4 border-yellow-400 bg-yellow-50 p-4 rounded-r-lg">
+                            <h3 class="font-bold text-yellow-800 mb-2">Lưu ý quan trọng:</h3>
+                            <p>Khi vật chuyển động thẳng <strong>không đổi chiều</strong>:</p>
+                            <ul class="list-disc pl-5 mb-2">
+                                <li>Quãng đường ($s$) và độ dịch chuyển ($d$) có độ lớn như nhau.</li>
+                                <li>Tốc độ và vận tốc ($v$) có độ lớn như nhau.</li>
+                            </ul>
+                            <p>Khi vật chuyển động thẳng <strong>đổi chiều</strong> (đang đi chiều dương quay lại chiều âm):</p>
+                            <ul class="list-disc pl-5">
+                                <li>Quãng đường vẫn tăng (giá trị dương).</li>
+                                <li>Độ dịch chuyển có thể giảm (giá trị âm nếu qua gốc).</li>
+                                <li>Vận tốc có giá trị âm ($v < 0$).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-tab 2 -->
+                <div id="sub-2" class="sub-tab-content">
+                    <h2 class="text-xl font-bold text-sky-800 mb-4">II. Đồ thị độ dịch chuyển – thời gian ($d-t$)</h2>
+                    <p class="mb-4 text-gray-700">Phương trình chuyển động thẳng đều: $$ d = d_0 + v \cdot t $$</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border rounded-lg p-4">
+                            <h3 class="font-bold text-center mb-4">1. Xuất phát từ gốc toạ độ ($d_0 = 0$)</h3>
+                            <div class="flex justify-around items-center">
+                                <div class="text-center">
+                                    <p class="text-sm font-semibold mb-2">Theo chiều dương ($v > 0$)</p>
+                                    <svg width="120" height="120" viewBox="0 0 120 120">
+                                        <line x1="10" y1="110" x2="110" y2="110" stroke="black" stroke-width="2"/> <!-- t-axis -->
+                                        <line x1="10" y1="10" x2="10" y2="110" stroke="black" stroke-width="2"/> <!-- d-axis -->
+                                        <line x1="10" y1="110" x2="90" y2="30" stroke="#3b82f6" stroke-width="3"/> <!-- graph -->
+                                        <text x="110" y="120" font-size="12">t</text>
+                                        <text x="0" y="10" font-size="12">d</text>
+                                        <text x="0" y="120" font-size="12">O</text>
+                                    </svg>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm font-semibold mb-2">Theo chiều âm ($v < 0$)</p>
+                                    <svg width="120" height="120" viewBox="0 0 120 120">
+                                        <line x1="10" y1="50" x2="110" y2="50" stroke="black" stroke-width="2"/> <!-- t-axis -->
+                                        <line x1="10" y1="10" x2="10" y2="110" stroke="black" stroke-width="2"/> <!-- d-axis -->
+                                        <line x1="10" y1="50" x2="80" y2="110" stroke="#ef4444" stroke-width="3"/> <!-- graph -->
+                                        <text x="110" y="65" font-size="12">t</text>
+                                        <text x="0" y="10" font-size="12">d</text>
+                                        <text x="0" y="45" font-size="12">O</text>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border rounded-lg p-4">
+                            <h3 class="font-bold text-center mb-4">2. Cách gốc toạ độ 1 đoạn $d_0 \neq 0$</h3>
+                            <div class="flex justify-around items-center">
+                                <div class="text-center">
+                                    <p class="text-sm font-semibold mb-2">Chiều dương ($v > 0, d_0 > 0$)</p>
+                                    <svg width="120" height="120" viewBox="0 0 120 120">
+                                        <line x1="10" y1="110" x2="110" y2="110" stroke="black" stroke-width="2"/>
+                                        <line x1="10" y1="10" x2="10" y2="110" stroke="black" stroke-width="2"/>
+                                        <line x1="10" y1="70" x2="80" y2="10" stroke="#3b82f6" stroke-width="3"/>
+                                        <text x="110" y="120" font-size="12">t</text><text x="0" y="10" font-size="12">d</text>
+                                        <text x="15" y="80" font-size="10">d₀</text>
+                                    </svg>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm font-semibold mb-2">Chiều âm ($v < 0, d_0 > 0$)</p>
+                                    <svg width="120" height="120" viewBox="0 0 120 120">
+                                        <line x1="10" y1="90" x2="110" y2="90" stroke="black" stroke-width="2"/>
+                                        <line x1="10" y1="10" x2="10" y2="110" stroke="black" stroke-width="2"/>
+                                        <line x1="10" y1="20" x2="90" y2="110" stroke="#ef4444" stroke-width="3"/>
+                                        <text x="110" y="105" font-size="12">t</text><text x="0" y="10" font-size="12">d</text>
+                                        <text x="15" y="30" font-size="10">d₀</text>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-tab 3 -->
+                <div id="sub-3" class="sub-tab-content">
+                    <h2 class="text-xl font-bold text-sky-800 mb-4">III. Đặc điểm và Phân tích đồ thị</h2>
+                    <ul class="list-disc pl-5 space-y-3 text-gray-700">
+                        <li>Đồ thị là một đường thẳng (hàm số bậc nhất của thời gian).</li>
+                        <li>Độ dốc (hệ số góc) của đồ thị chính là <strong>vận tốc</strong> của vật:
+                            <div class="bg-gray-100 p-2 my-2 rounded inline-block">$$ v = \frac{\Delta d}{\Delta t} = \frac{d_2 - d_1}{t_2 - t_1} $$</div>
+                        </li>
+                        <li>Độ dốc càng lớn $\rightarrow$ Vật chuyển động càng nhanh.</li>
+                        <li>Đường thẳng nằm ngang (song song trục Ot) $\rightarrow$ Vật <strong>đứng yên</strong> ($v = 0$).</li>
+                        <li>Giao điểm của 2 đồ thị $\rightarrow$ Vị trí và thời điểm hai vật <strong>gặp nhau</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-simulation" class="tab-content">
+            <div class="bg-white rounded-xl shadow-md p-4 md:p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Mô phỏng chuyển động 2 vật & Vẽ đồ thị $d-t$</h2>
+                <p class="text-gray-600 mb-6 text-sm">Điều chỉnh tọa độ ban đầu ($d_0$) và vận tốc ($v$) của 2 xe, sau đó nhấn "Bắt đầu". Đồ thị sẽ được vẽ theo thời gian thực.</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Bảng điều khiển -->
+                    <div class="lg:col-span-1 bg-gray-50 p-4 rounded-lg border flex flex-col justify-between">
+                        <div>
+                            <!-- Xe 1 -->
+                            <div class="mb-4 pb-4 border-b border-gray-200">
+                                <h3 class="font-bold text-red-600 mb-2 flex items-center"><span class="w-3 h-3 rounded-full bg-red-500 mr-2"></span> Xe 1 (Đỏ)</h3>
+                                <div class="mb-2">
+                                    <label class="text-sm font-semibold flex justify-between">
+                                        <span>$d_{01}$ (m):</span> <span id="val-d1">0</span>
+                                    </label>
+                                    <input type="range" id="slider-d1" min="-50" max="50" value="0" step="5">
+                                </div>
+                                <div>
+                                    <label class="text-sm font-semibold flex justify-between">
+                                        <span>$v_1$ (m/s):</span> <span id="val-v1">10</span>
+                                    </label>
+                                    <input type="range" id="slider-v1" min="-20" max="30" value="10" step="2">
+                                </div>
+                            </div>
+                            
+                            <!-- Xe 2 -->
+                            <div class="mb-6">
+                                <h3 class="font-bold text-blue-600 mb-2 flex items-center"><span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span> Xe 2 (Xanh)</h3>
+                                <div class="mb-2">
+                                    <label class="text-sm font-semibold flex justify-between">
+                                        <span>$d_{02}$ (m):</span> <span id="val-d2">40</span>
+                                    </label>
+                                    <input type="range" id="slider-d2" min="-50" max="100" value="40" step="5">
+                                </div>
+                                <div>
+                                    <label class="text-sm font-semibold flex justify-between">
+                                        <span>$v_2$ (m/s):</span> <span id="val-v2">-5</span>
+                                    </label>
+                                    <input type="range" id="slider-v2" min="-30" max="20" value="-5" step="2">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex flex-col gap-2">
+                            <button id="btn-sim-start" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded shadow">BẮT ĐẦU</button>
+                            <div class="flex gap-2">
+                                <button id="btn-sim-pause" class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 rounded shadow" disabled>TẠM DỪNG</button>
+                                <button id="btn-sim-reset" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 rounded shadow">ĐẶT LẠI</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Canvases -->
+                    <div class="lg:col-span-3 flex flex-col gap-4">
+                        <!-- Canvas 1: Đường đi thực tế -->
+                        <div class="relative bg-gray-100 rounded-lg p-2 border">
+                            <p class="text-xs font-semibold text-gray-500 absolute top-2 left-2 z-10">Mô phỏng vật lý (Trục d)</p>
+                            <div class="canvas-wrapper h-32 bg-white">
+                                <canvas id="roadCanvas"></canvas>
+                            </div>
+                            <div class="text-center mt-1 font-mono font-bold text-gray-700">Thời gian $t = $ <span id="sim-time">0.0</span> s</div>
+                        </div>
+
+                        <!-- Canvas 2: Đồ thị d-t -->
+                        <div class="relative bg-gray-100 rounded-lg p-2 border flex-grow">
+                            <p class="text-xs font-semibold text-gray-500 absolute top-2 left-2 z-10">Đồ thị độ dịch chuyển - thời gian</p>
+                            <div class="canvas-wrapper h-64 bg-white">
+                                <canvas id="graphCanvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-calculator" class="tab-content">
+            <div class="bg-white rounded-xl shadow-md p-4 md:p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    Máy Tính Bài Toán 2 Xe Gặp Nhau
+                </h2>
+                <p class="text-sm text-gray-600 mb-6">Nhập thông số 2 chuyển động thẳng đều xuất phát cùng lúc. Máy sẽ lập phương trình và tìm vị trí gặp nhau.</p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Form nhập liệu -->
+                    <div class="lg:col-span-1 bg-sky-50 p-5 rounded-lg border border-sky-100">
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-bold text-red-600 border-b pb-1 mb-2">Vật 1</h4>
+                                <div class="flex items-center mb-2">
+                                    <label class="w-24 font-semibold text-gray-700">$d_{01}$ (km):</label>
+                                    <input type="number" id="calc-d1" step="any" class="flex-1 border rounded px-3 py-1.5 outline-none focus:ring-2 focus:ring-sky-500" placeholder="VD: 0">
+                                </div>
+                                <div class="flex items-center">
+                                    <label class="w-24 font-semibold text-gray-700">$v_1$ (km/h):</label>
+                                    <input type="number" id="calc-v1" step="any" class="flex-1 border rounded px-3 py-1.5 outline-none focus:ring-2 focus:ring-sky-500" placeholder="VD: 60">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-bold text-blue-600 border-b pb-1 mb-2 mt-4">Vật 2</h4>
+                                <div class="flex items-center mb-2">
+                                    <label class="w-24 font-semibold text-gray-700">$d_{02}$ (km):</label>
+                                    <input type="number" id="calc-d2" step="any" class="flex-1 border rounded px-3 py-1.5 outline-none focus:ring-2 focus:ring-sky-500" placeholder="VD: 100">
+                                </div>
+                                <div class="flex items-center">
+                                    <label class="w-24 font-semibold text-gray-700">$v_2$ (km/h):</label>
+                                    <input type="number" id="calc-v2" step="any" class="flex-1 border rounded px-3 py-1.5 outline-none focus:ring-2 focus:ring-sky-500" placeholder="VD: -40">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button id="btn-calculate" class="w-full mt-6 bg-gradient-to-r from-sky-600 to-blue-700 hover:from-sky-700 hover:to-blue-800 text-white font-bold py-2.5 px-4 rounded shadow transition-all">Lập PT & Giải</button>
+                    </div>
+
+                    <!-- Khu vực Hiển thị bước giải -->
+                    <div class="lg:col-span-2">
+                        <div id="calc-result" class="bg-white border border-gray-200 rounded-lg p-6 min-h-[300px] shadow-sm hidden">
+                            <h3 class="font-bold text-lg text-gray-800 mb-4 border-b pb-2">Các Bước Giải Chi Tiết:</h3>
+                            <div id="math-steps" class="space-y-4 text-gray-800 text-lg">
+                                <!-- Kết quả LaTeX sẽ render vào đây -->
+                            </div>
+                        </div>
+                        
+                        <div id="calc-placeholder" class="bg-gray-50 border border-dashed border-gray-300 rounded-lg p-6 min-h-[300px] flex flex-col items-center justify-center text-gray-400">
+                            <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                            <p>Nhập dữ kiện bài toán để xem lời giải.</p>
+                            <p class="text-sm mt-2 text-center max-w-sm">Chú ý: Nếu 2 xe ngược chiều, vận tốc một xe phải mang dấu âm (VD: -40).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-practice" class="tab-content">
+            <div class="bg-white rounded-xl shadow-md p-4 md:p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Bài Tập Tự Luận</h2>
+                
+                <div class="space-y-4">
+                    <!-- Bài 1 -->
+                    <div class="border rounded-lg overflow-hidden">
+                        <div class="bg-gray-50 p-4 font-medium text-gray-800 leading-relaxed">
+                            <strong>Bài 1:</strong> Bạn An bơi dọc theo chiều dài 50m của bể bơi từ Đông sang Tây mất 20s rồi bơi ngược lại từ Tây về Đông mất 25s. Chọn gốc tọa độ trùng vị trí xuất phát, chiều dương hướng từ Đông sang Tây. <br>Tính quãng đường, độ dịch chuyển, tốc độ trung bình, vận tốc trung bình trong cả quá trình bơi.
+                        </div>
+                        <button class="toggle-sol w-full text-left px-4 py-2 bg-sky-100 text-sky-800 hover:bg-sky-200 transition-colors focus:outline-none flex justify-between items-center font-semibold">
+                            <span>Xem lời giải chi tiết</span>
+                            <span class="text-xl leading-none">+</span>
+                        </button>
+                        <div class="solution-content hidden p-4 bg-white border-t space-y-2 text-gray-700">
+                            <p>Trong cả quá trình bơi (đi và về):</p>
+                            <p>Quãng đường bơi được là: $s = 50 + 50 = 100 \text{ (m)}$</p>
+                            <p>Vì vật bơi về vị trí xuất phát nên độ dịch chuyển là: $d = 0$</p>
+                            <p>Tổng thời gian: $t = 20 + 25 = 45 \text{ (s)}$</p>
+                            <p>Tốc độ trung bình là: $v_{tb} = \frac{s}{t} = \frac{100}{45} \approx 2,22 \text{ (m/s)}$</p>
+                            <p>Vận tốc trung bình là: $v = \frac{d}{t} = \frac{0}{45} = 0 \text{ (m/s)}$</p>
+                        </div>
+                    </div>
+
+                    <!-- Bài 2 -->
+                    <div class="border rounded-lg overflow-hidden">
+                        <div class="bg-gray-50 p-4 font-medium text-gray-800 leading-relaxed">
+                            <strong>Bài 2:</strong> Cùng một lúc tại hai điểm A và B cách nhau 10km có hai ôtô chạy cùng chiều trên đoạn đường thẳng từ A đến B. Vận tốc của ôtô chạy từ A là 54km/h và của ôtô chạy từ B là 48km/h. Chọn A làm mốc, thời điểm xuất phát làm mốc thời gian, chiều từ A đến B làm chiều dương.<br>
+                            a) Viết phương trình độ dịch chuyển của hai xe.<br>
+                            b) Xác định thời điểm và vị trí hai xe gặp nhau.
+                        </div>
+                        <button class="toggle-sol w-full text-left px-4 py-2 bg-sky-100 text-sky-800 hover:bg-sky-200 transition-colors focus:outline-none flex justify-between items-center font-semibold">
+                            <span>Xem lời giải chi tiết</span>
+                            <span class="text-xl leading-none">+</span>
+                        </button>
+                        <div class="solution-content hidden p-4 bg-white border-t space-y-2 text-gray-700">
+                            <p>a) Phương trình độ dịch chuyển ($d = d_0 + vt$):</p>
+                            <p>Xe A: $d_A = 0 + 54t = 54t \text{ (km)}$</p>
+                            <p>Xe B (xuất phát từ B cách A 10km): $d_B = 10 + 48t \text{ (km)}$</p>
+                            <p>b) Khi hai xe gặp nhau: $d_A = d_B$</p>
+                            <p>$\Rightarrow 54t = 10 + 48t \Rightarrow 6t = 10 \Rightarrow t = \frac{5}{3} \text{ (giờ)} = 1 \text{ giờ } 40 \text{ phút}$</p>
+                            <p>Vị trí gặp nhau: $d = 54 \cdot \frac{5}{3} = 90 \text{ (km)}$ (Cách A 90km).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-quiz" class="tab-content">
+            <div class="bg-white rounded-xl shadow-md p-4 md:p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Trắc nghiệm nhanh</h2>
+                <p class="text-gray-600 mb-6 text-sm border-b pb-4">Chọn đáp án đúng nhất, sau đó bấm "Chấm điểm".</p>
+
+                <form id="quiz-form" class="space-y-6">
+                    <!-- Q1 -->
+                    <div class="quiz-item" data-answer="D">
+                        <p class="font-semibold text-gray-800 mb-3">Câu 1: Trong các phương trình chuyển động thẳng đều sau đây, phương trình nào biểu diễn chuyển động không xuất phát từ gốc toạ độ và ban đầu hướng về gốc toạ độ?</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q1" value="A" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">A. $d = 15 + 40t$</span>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q1" value="B" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">B. $d = 80 - 30t$</span>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q1" value="C" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">C. $d = -60t$</span>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q1" value="D" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">D. $d = -20 - 20t$</span>
+                            </label>
+                        </div>
+                        <div class="feedback hidden mt-2 text-sm font-medium"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="quiz-item" data-answer="A">
+                        <p class="font-semibold text-gray-800 mb-3">Câu 2: Trong chuyển động thẳng, quãng đường đi được và độ dịch chuyển có độ lớn bằng nhau khi nào?</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q2" value="A" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">A. Vật chuyển động theo quỹ đạo thẳng và không đổi chiều.</span>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q2" value="B" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">B. Vật chuyển động thẳng đều.</span>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q2" value="C" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">C. Vật chuyển động theo quỹ đạo thẳng và đổi chiều.</span>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q2" value="D" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">D. Không bao giờ bằng nhau.</span>
+                            </label>
+                        </div>
+                        <div class="feedback hidden mt-2 text-sm font-medium"></div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="quiz-item" data-answer="B">
+                        <p class="font-semibold text-gray-800 mb-3">Câu 3: Đồ thị độ dịch chuyển – thời gian của một chất điểm chuyển động thẳng đều có dạng:</p>
+                        <div class="space-y-2">
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q3" value="A" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">A. Song song với trục tọa độ Ot.</span>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q3" value="B" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">B. Đường thẳng xiên góc (có thể không đi qua gốc toạ độ).</span>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q3" value="C" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">C. Một đường cong Parabol.</span>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-sky-50 cursor-pointer transition">
+                                <input type="radio" name="q3" value="D" class="form-radio h-4 w-4 text-sky-600"> <span class="ml-2">D. Đường thẳng vuông góc với trục Ot.</span>
+                            </label>
+                        </div>
+                        <div class="feedback hidden mt-2 text-sm font-medium"></div>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-6 border-t pt-4">
+                        <button type="button" id="btn-submit-quiz" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-6 rounded shadow transition-colors">Chấm điểm</button>
+                        <div id="quiz-score" class="text-xl font-bold text-sky-800 hidden">Điểm: <span>0</span>/3</div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="tab-tools" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Đồng hồ đếm ngược -->
+                <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2 w-full text-center">Đồng hồ đếm ngược</h2>
+                    
+                    <div class="relative w-48 h-48 mb-6 mt-4">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <!-- Background circle -->
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#e2e8f0" stroke-width="8" />
+                            <!-- Progress circle -->
+                            <circle id="timer-progress" cx="50" cy="50" r="45" fill="none" stroke="#0284c7" stroke-width="8" style="transition: stroke-dashoffset 1s linear; transform: rotate(-90deg); transform-origin: 50% 50%;" stroke-dasharray="283" stroke-dashoffset="0" stroke-linecap="round" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span id="timer-display" class="text-4xl font-mono font-bold text-gray-700">00:00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-wrap gap-2 justify-center mb-4">
+                        <button class="timer-preset bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded text-sm font-semibold" data-time="60">1 Phút</button>
+                        <button class="timer-preset bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded text-sm font-semibold" data-time="180">3 Phút</button>
+                        <button class="timer-preset bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded text-sm font-semibold" data-time="300">5 Phút</button>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button id="btn-timer-start" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow">Bắt đầu</button>
+                        <button id="btn-timer-reset" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded shadow">Dừng / Hủy</button>
+                    </div>
+                </div>
+
+                <!-- Vòng quay may mắn -->
+                <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-center">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2 w-full text-center">Gọi tên ngẫu nhiên</h2>
+                    
+                    <div class="relative w-64 h-64 mb-4">
+                        <!-- Pointer -->
+                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 z-10">
+                            <svg width="24" height="30" viewBox="0 0 24 30" fill="none"><path d="M12 30L0 0H24L12 30Z" fill="#ef4444"/></svg>
+                        </div>
+                        <canvas id="wheelCanvas" width="256" height="256" class="rounded-full shadow-lg border-4 border-white"></canvas>
+                    </div>
+
+                    <div class="w-full flex flex-col gap-2">
+                        <input type="text" id="wheel-names" placeholder="Nhập tên (cách nhau bởi dấu phẩy)" class="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-sky-500 outline-none" value="Tổ 1, Tổ 2, Tổ 3, Tổ 4">
+                        <button id="btn-wheel-spin" class="w-full bg-gradient-to-r from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600 text-white font-bold py-2 rounded shadow transition-all">QUAY!</button>
+                    </div>
+                    <div id="wheel-result" class="mt-4 text-xl font-bold text-red-600 h-8"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-gray-300 py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">© Bản quyền nội dung & thiết kế: Thầy Nguyễn Xuân Hùng | Trường THPT Hoàng Hoa Thám | Nền tảng học tập Vật lý tương tác</p>
+        </div>
+    </footer>
+
+    <!-- Custom Modal (Alert thay thế) -->
+    <div id="custom-modal">
+        <div class="bg-white rounded-lg p-6 max-w-sm w-full mx-4 shadow-2xl text-center transform scale-95 transition-transform" id="modal-content">
+            <h3 class="text-lg font-bold text-gray-900 mb-2" id="modal-title">Thông báo</h3>
+            <p class="text-gray-600 mb-6" id="modal-message">Nội dung</p>
+            <button class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded" onclick="closeModal()">Đóng</button>
+        </div>
+    </div>
+
+    <!-- JS Logic -->
+    <script>
+        function showModal(title, message) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            const modal = document.getElementById('custom-modal');
+            modal.classList.add('active');
+            setTimeout(() => document.getElementById('modal-content').classList.replace('scale-95', 'scale-100'), 10);
+        }
+        function closeModal() {
+            document.getElementById('modal-content').classList.replace('scale-100', 'scale-95');
+            setTimeout(() => document.getElementById('custom-modal').classList.remove('active'), 200);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError: false
+            });
+            initWheel();
+            resizeCanvases();
+        });
+
+        // Tabs Logic
+        document.querySelectorAll('#main-tabs .tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('#main-tabs .tab-btn').forEach(b => {
+                    b.classList.remove('active', 'text-sky-600', 'font-semibold');
+                    b.style.borderBottomColor = 'transparent';
+                });
+                
+                e.target.classList.add('active');
+                e.target.style.borderBottomColor = 'var(--primary)';
+
+                const targetId = e.target.getAttribute('data-target');
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(targetId).classList.add('active');
+
+                if(targetId === 'tab-tools') initWheel();
+                if(targetId === 'tab-simulation') {
+                    resizeCanvases();
+                    if(!isSimRunning && simTime === 0) drawSimFrame();
+                }
+            });
+        });
+
+        // Sub-tabs Logic
+        document.querySelectorAll('.sub-tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const parent = btn.closest('.bg-white');
+                parent.querySelectorAll('.sub-tab-btn').forEach(b => {
+                    b.classList.remove('bg-sky-100', 'text-sky-700');
+                    b.classList.add('bg-gray-100', 'text-gray-600');
+                });
+                btn.classList.remove('bg-gray-100', 'text-gray-600');
+                btn.classList.add('bg-sky-100', 'text-sky-700');
+
+                const targetId = btn.getAttribute('data-target');
+                parent.querySelectorAll('.sub-tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // Accordion Luyện tập
+        document.querySelectorAll('.toggle-sol').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('span:last-child');
+                if (content.classList.contains('hidden')) {
+                    content.classList.remove('hidden');
+                    icon.textContent = '-';
+                    renderMathInElement(content, { delimiters: [{left: '$', right: '$', display: false}]});
+                } else {
+                    content.classList.add('hidden');
+                    icon.textContent = '+';
+                }
+            });
+        });
+
+        const roadCanvas = document.getElementById('roadCanvas');
+        const ctxRoad = roadCanvas.getContext('2d');
+        const graphCanvas = document.getElementById('graphCanvas');
+        const ctxGraph = graphCanvas.getContext('2d');
+
+        let simReq;
+        let isSimRunning = false;
+        let simTime = 0; // seconds
+        let lastTimestamp = 0;
+
+        // Cấu hình vật lý & đồ họa
+        const X_MIN = -50, X_MAX = 100; // domain toạ độ d thực tế
+        const T_MAX = 10; // Giới hạn hiển thị trục t trên đồ thị
+
+        function getSimParams() {
+            return {
+                d1: parseFloat(document.getElementById('slider-d1').value),
+                v1: parseFloat(document.getElementById('slider-v1').value),
+                d2: parseFloat(document.getElementById('slider-d2').value),
+                v2: parseFloat(document.getElementById('slider-v2').value)
+            };
+        }
+
+        // Cập nhật text giá trị slider
+        ['d1','v1','d2','v2'].forEach(id => {
+            document.getElementById(`slider-${id}`).addEventListener('input', function() {
+                document.getElementById(`val-${id}`).innerText = this.value;
+                if(!isSimRunning && simTime === 0) drawSimFrame(); // Preview
+            });
+        });
+
+        function resizeCanvases() {
+            [roadCanvas, graphCanvas].forEach(cvs => {
+                const rect = cvs.parentElement.getBoundingClientRect();
+                cvs.width = rect.width;
+                cvs.height = rect.height;
+            });
+            if(!isSimRunning) drawSimFrame();
+        }
+        window.addEventListener('resize', resizeCanvases);
+
+        // Map hệ tọa độ vật lý sang pixel
+        function mapX(d, width) {
+            // Map từ [X_MIN, X_MAX] sang [20, width-20]
+            const range = X_MAX - X_MIN;
+            return 20 + ((d - X_MIN) / range) * (width - 40);
+        }
+        function mapT(t, width) {
+            return 40 + (t / T_MAX) * (width - 60);
+        }
+        function mapYGraph(d, height) {
+            // Map d sang trục Y đồ thị (đảo ngược y)
+            const range = X_MAX - X_MIN;
+            return height - 20 - ((d - X_MIN) / range) * (height - 40);
+        }
+
+        function drawRoad(d1, d2) {
+            ctxRoad.clearRect(0, 0, roadCanvas.width, roadCanvas.height);
+            const w = roadCanvas.width, h = roadCanvas.height;
+            
+            // Vẽ trục d
+            ctxRoad.beginPath();
+            ctxRoad.moveTo(10, h/2); ctxRoad.lineTo(w - 10, h/2);
+            ctxRoad.strokeStyle = '#94a3b8'; ctxRoad.lineWidth = 2; ctxRoad.stroke();
+
+            // Vẽ gốc toạ độ O (d=0)
+            const xO = mapX(0, w);
+            ctxRoad.beginPath(); ctxRoad.moveTo(xO, h/2 - 10); ctxRoad.lineTo(xO, h/2 + 10);
+            ctxRoad.strokeStyle = '#000'; ctxRoad.stroke();
+            ctxRoad.fillStyle = '#000'; ctxRoad.font = '14px Inter';
+            ctxRoad.textAlign = 'center'; ctxRoad.fillText('O', xO, h/2 + 25);
+
+            // Vẽ xe 1 (Đỏ) trên trục
+            const x1 = mapX(d1, w);
+            ctxRoad.fillStyle = '#ef4444';
+            ctxRoad.fillRect(x1 - 10, h/2 - 25, 20, 15);
+            ctxRoad.fillText('1', x1, h/2 - 30);
+
+            // Vẽ xe 2 (Xanh) dưới trục
+            const x2 = mapX(d2, w);
+            ctxRoad.fillStyle = '#3b82f6';
+            ctxRoad.fillRect(x2 - 10, h/2 + 10, 20, 15);
+            ctxRoad.fillText('2', x2, h/2 + 40);
+        }
+
+        function drawGraph(p, t) {
+            ctxGraph.clearRect(0, 0, graphCanvas.width, graphCanvas.height);
+            const w = graphCanvas.width, h = graphCanvas.height;
+
+            // Hệ trục
+            ctxGraph.strokeStyle = '#000'; ctxGraph.lineWidth = 1;
+            ctxGraph.beginPath();
+            // Trục d (đứng)
+            const yO = mapYGraph(0, h);
+            ctxGraph.moveTo(40, 10); ctxGraph.lineTo(40, h - 10);
+            // Trục t (ngang)
+            ctxGraph.moveTo(10, yO); ctxGraph.lineTo(w - 10, yO);
+            ctxGraph.stroke();
+            
+            ctxGraph.fillStyle = '#000'; ctxGraph.font = '12px Inter';
+            ctxGraph.fillText('d(m)', 45, 15);
+            ctxGraph.fillText('t(s)', w - 25, yO - 5);
+            ctxGraph.fillText('O', 25, yO + 15);
+
+            // Vẽ các đường đồ thị từ 0 đến t hiện tại
+            ctxGraph.lineWidth = 2;
+            
+            // Đường xe 1
+            ctxGraph.beginPath();
+            ctxGraph.strokeStyle = '#ef4444';
+            ctxGraph.moveTo(mapT(0, w), mapYGraph(p.d1, h));
+            ctxGraph.lineTo(mapT(t, w), mapYGraph(p.d1 + p.v1 * t, h));
+            ctxGraph.stroke();
+
+            // Đường xe 2
+            ctxGraph.beginPath();
+            ctxGraph.strokeStyle = '#3b82f6';
+            ctxGraph.moveTo(mapT(0, w), mapYGraph(p.d2, h));
+            ctxGraph.lineTo(mapT(t, w), mapYGraph(p.d2 + p.v2 * t, h));
+            ctxGraph.stroke();
+
+            // Chấm điểm hiện tại
+            ctxGraph.fillStyle = '#ef4444';
+            ctxGraph.beginPath(); ctxGraph.arc(mapT(t, w), mapYGraph(p.d1 + p.v1*t, h), 4, 0, Math.PI*2); ctxGraph.fill();
+            ctxGraph.fillStyle = '#3b82f6';
+            ctxGraph.beginPath(); ctxGraph.arc(mapT(t, w), mapYGraph(p.d2 + p.v2*t, h), 4, 0, Math.PI*2); ctxGraph.fill();
+        }
+
+        function drawSimFrame() {
+            const p = getSimParams();
+            const currD1 = p.d1 + p.v1 * simTime;
+            const currD2 = p.d2 + p.v2 * simTime;
+            
+            document.getElementById('sim-time').innerText = simTime.toFixed(1);
+            drawRoad(currD1, currD2);
+            drawGraph(p, simTime);
+        }
+
+        function simLoop(timestamp) {
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            const dt = (timestamp - lastTimestamp) / 1000; // seconds
+            lastTimestamp = timestamp;
+
+            simTime += dt;
+
+            // Giới hạn thời gian chạy (chạy đến hết trục đồ thị hoặc ra khỏi map)
+            if (simTime > T_MAX) {
+                simTime = T_MAX;
+                document.getElementById('btn-sim-pause').click(); // Auto pause
+            }
+
+            drawSimFrame();
+
+            if (isSimRunning) {
+                simReq = requestAnimationFrame(simLoop);
+            }
+        }
+
+        document.getElementById('btn-sim-start').addEventListener('click', () => {
+            if(isSimRunning) return;
+            isSimRunning = true;
+            lastTimestamp = 0;
+            document.getElementById('btn-sim-pause').disabled = false;
+            document.getElementById('btn-sim-start').disabled = true;
+            simReq = requestAnimationFrame(simLoop);
+        });
+
+        document.getElementById('btn-sim-pause').addEventListener('click', () => {
+            isSimRunning = false;
+            cancelAnimationFrame(simReq);
+            document.getElementById('btn-sim-start').disabled = false;
+            document.getElementById('btn-sim-pause').disabled = true;
+            document.getElementById('btn-sim-start').innerText = "TIẾP TỤC";
+        });
+
+        document.getElementById('btn-sim-reset').addEventListener('click', () => {
+            isSimRunning = false;
+            cancelAnimationFrame(simReq);
+            simTime = 0;
+            document.getElementById('btn-sim-start').disabled = false;
+            document.getElementById('btn-sim-pause').disabled = true;
+            document.getElementById('btn-sim-start').innerText = "BẮT ĐẦU";
+            drawSimFrame();
+        });
+
+
+        document.getElementById('btn-calculate').addEventListener('click', () => {
+            const d1 = parseFloat(document.getElementById('calc-d1').value);
+            const v1 = parseFloat(document.getElementById('calc-v1').value);
+            const d2 = parseFloat(document.getElementById('calc-d2').value);
+            const v2 = parseFloat(document.getElementById('calc-v2').value);
+
+            if (isNaN(d1) || isNaN(v1) || isNaN(d2) || isNaN(v2)) {
+                showModal("Lỗi nhập liệu", "Vui lòng nhập đầy đủ các thông số.");
+                return;
+            }
+
+            document.getElementById('calc-placeholder').classList.add('hidden');
+            document.getElementById('calc-result').classList.remove('hidden');
+            const stepBox = document.getElementById('math-steps');
+
+            let tex = `<p class="font-semibold">Phương trình chuyển động của hai vật:</p>`;
+            tex += `$$ d_1 = d_{01} + v_1 t = ${d1} ${v1 >= 0 ? '+' : ''} ${v1}t $$`;
+            tex += `$$ d_2 = d_{02} + v_2 t = ${d2} ${v2 >= 0 ? '+' : ''} ${v2}t $$`;
+
+            tex += `<p class="font-semibold mt-4">Khi hai xe gặp nhau: $d_1 = d_2$</p>`;
+            tex += `$$ ${d1} ${v1 >= 0 ? '+' : ''} ${v1}t = ${d2} ${v2 >= 0 ? '+' : ''} ${v2}t $$`;
+            
+            const delta_v = v1 - v2;
+            const delta_d = d2 - d1;
+
+            if (delta_v === 0) {
+                if (delta_d === 0) {
+                    tex += `<p class="text-green-600 font-bold mt-2">Hai xe trùng nhau từ ban đầu và đi cùng vận tốc, chúng luôn gặp nhau!</p>`;
+                } else {
+                    tex += `<p class="text-red-600 font-bold mt-2">Hai xe chạy song song (cùng vận tốc) nhưng khác điểm xuất phát. Chùng không bao giờ gặp nhau!</p>`;
+                }
+            } else {
+                tex += `$$ (${v1} - (${v2}))t = ${d2} - (${d1}) $$`;
+                tex += `$$ ${delta_v}t = ${delta_d} $$`;
+                const t = delta_d / delta_v;
+                
+                if (t < 0) {
+                    tex += `$$ t = ${t.toFixed(3)} \\text{ (giờ)} $$`;
+                    tex += `<p class="text-red-600 font-bold mt-2">Thời gian âm ($t < 0$). Hai xe đi xa nhau dần, chúng sẽ không gặp nhau trong tương lai!</p>`;
+                } else {
+                    tex += `$$ t = \\frac{${delta_d}}{${delta_v}} = ${t.toFixed(3)} \\text{ (giờ)} $$`;
+                    const pos = d1 + v1 * t;
+                    tex += `<p class="font-semibold mt-4">Thay $t$ vào phương trình $d_1$ để tìm vị trí:</p>`;
+                    tex += `$$ d = ${d1} + (${v1}) \\cdot ${t.toFixed(3)} = ${pos.toFixed(2)} \\text{ (km)} $$`;
+                    
+                    tex += `<div class="bg-blue-100 border border-blue-300 p-4 rounded mt-4 text-center">
+                                <span class="font-bold text-blue-900">KẾT LUẬN:</span><br>
+                                Hai xe gặp nhau sau <strong>${t.toFixed(3)} giờ</strong> tại vị trí cách mốc <strong>${pos.toFixed(2)} km</strong>.
+                            </div>`;
+                }
+            }
+
+            stepBox.innerHTML = tex;
+            renderMathInElement(stepBox, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});
+        });
+
+        document.getElementById('btn-submit-quiz').addEventListener('click', () => {
+            let score = 0;
+            const items = document.querySelectorAll('.quiz-item');
+            
+            items.forEach(item => {
+                const correctAns = item.getAttribute('data-answer');
+                const selected = item.querySelector('input[type="radio"]:checked');
+                const feedback = item.querySelector('.feedback');
+                
+                feedback.classList.remove('hidden', 'text-green-600', 'text-red-600');
+                
+                if (selected) {
+                    if (selected.value === correctAns) {
+                        score++;
+                        feedback.innerHTML = '✓ <strong>Chính xác!</strong>';
+                        feedback.classList.add('text-green-600', 'block');
+                        item.classList.add('bg-green-50', 'border-green-200');
+                    } else {
+                        feedback.innerHTML = `✗ <strong>Sai.</strong> Đáp án đúng là: ${correctAns}`;
+                        feedback.classList.add('text-red-600', 'block');
+                        item.classList.add('bg-red-50', 'border-red-200');
+                    }
+                } else {
+                    feedback.textContent = '⚠ Bạn chưa chọn đáp án.';
+                    feedback.classList.add('text-yellow-600', 'block');
+                }
+            });
+
+            const scoreDiv = document.getElementById('quiz-score');
+            scoreDiv.classList.remove('hidden');
+            scoreDiv.querySelector('span').textContent = score;
+        });
+
+        // Đồng hồ
+        let timerInterval;
+        let totalTime = 60;
+        let timeLeft = totalTime;
+        const circle = document.getElementById('timer-progress');
+        const circumference = 283;
+        
+        document.querySelectorAll('.timer-preset').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                clearInterval(timerInterval);
+                totalTime = parseInt(e.target.getAttribute('data-time'));
+                timeLeft = totalTime;
+                updateTimerDisplay();
+                circle.style.strokeDashoffset = 0;
+                document.getElementById('btn-timer-start').disabled = false;
+            });
+        });
+
+        function updateTimerDisplay() {
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = `${m}:${s}`;
+        }
+
+        document.getElementById('btn-timer-start').addEventListener('click', function() {
+            if(timeLeft <= 0) return;
+            this.disabled = true;
+            
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                circle.style.strokeDashoffset = circumference - (timeLeft / totalTime) * circumference;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showModal("Hết giờ", "Đã hết thời gian làm bài!");
+                    this.disabled = false;
+                }
+            }, 1000);
+        });
+
+        document.getElementById('btn-timer-reset').addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timeLeft = totalTime;
+            updateTimerDisplay();
+            circle.style.strokeDashoffset = 0;
+            document.getElementById('btn-timer-start').disabled = false;
+        });
+
+        // Vòng quay
+        const wheelCanvas = document.getElementById('wheelCanvas');
+        const ctxW = wheelCanvas.getContext('2d');
+        let currentAngle = 0;
+        let isSpinning = false;
+        let spinReq;
+        const colors = ['#f87171', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#f472b6', '#38bdf8', '#4ade80'];
+
+        function initWheel() {
+            const names = document.getElementById('wheel-names').value.split(',').map(n => n.trim()).filter(n => n);
+            drawWheel(names);
+        }
+
+        function drawWheel(names) {
+            const numSlices = names.length;
+            if(numSlices === 0) return;
+            const sliceAngle = (2 * Math.PI) / numSlices;
+            const radius = wheelCanvas.width / 2;
+
+            ctxW.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+
+            for (let i = 0; i < numSlices; i++) {
+                const startAngle = currentAngle + i * sliceAngle;
+                const endAngle = startAngle + sliceAngle;
+
+                ctxW.beginPath();
+                ctxW.moveTo(radius, radius);
+                ctxW.arc(radius, radius, radius, startAngle, endAngle);
+                ctxW.fillStyle = colors[i % colors.length];
+                ctxW.fill();
+                ctxW.stroke();
+                
+                ctxW.save();
+                ctxW.translate(radius, radius);
+                ctxW.rotate(startAngle + sliceAngle / 2);
+                ctxW.textAlign = "right";
+                ctxW.fillStyle = "#fff";
+                ctxW.font = "bold 14px Inter";
+                let text = names[i];
+                if(text.length > 10) text = text.substring(0, 10) + '..';
+                ctxW.fillText(text, radius - 15, 5);
+                ctxW.restore();
+            }
+        }
+
+        document.getElementById('btn-wheel-spin').addEventListener('click', () => {
+            if (isSpinning) return;
+            const names = document.getElementById('wheel-names').value.split(',').map(n => n.trim()).filter(n => n);
+            if(names.length < 2) { showModal("Lỗi", "Vui lòng nhập ít nhất 2 tên."); return; }
+
+            isSpinning = true;
+            document.getElementById('wheel-result').innerText = "";
+            
+            let spinSpeed = Math.random() * 0.2 + 0.3;
+            const friction = 0.992;
+            
+            function spin() {
+                currentAngle += spinSpeed;
+                drawWheel(names);
+                spinSpeed *= friction;
+                
+                if (spinSpeed > 0.002) {
+                    spinReq = requestAnimationFrame(spin);
+                } else {
+                    isSpinning = false;
+                    cancelAnimationFrame(spinReq);
+                    
+                    const sliceAngle = (2 * Math.PI) / names.length;
+                    let normalizedCurrent = currentAngle % (2 * Math.PI);
+                    let pointerAngle = 1.5 * Math.PI; // Mũi tên ở 270 độ
+                    let adjustedAngle = pointerAngle - normalizedCurrent;
+                    if (adjustedAngle < 0) adjustedAngle += 2 * Math.PI;
+                    
+                    const winningIndex = Math.floor(adjustedAngle / sliceAngle);
+                    document.getElementById('wheel-result').innerText = "🎉 Trúng: " + names[winningIndex];
+                }
+            }
+            spin();
+        });
+
+        document.getElementById('wheel-names').addEventListener('input', initWheel);
+    </script>
+</body>
+</html>
