@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vật Lý 12 - Chủ Đề 6: Áp Suất Khí Theo Mô Hình Động Học Phân Tử</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --secondary: #475569;
+            --bg-main: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --border: #cbd5e1;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-bottom: 4px solid var(--accent);
+        }
+
+        header h1 {
+            font-size: 1.65rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        header .subtitle {
+            font-size: 1rem;
+            color: #bae6fd;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .copyright-banner {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(4px);
+            padding: 0.35rem 1rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fef08a;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        /* NAVIGATION TABS */
+        .nav-container {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .nav-tabs {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            padding: 0.5rem 1rem;
+            gap: 0.4rem;
+        }
+
+        .tab-btn {
+            padding: 0.65rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--secondary);
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.88rem;
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .tab-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.35);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            flex: 1;
+            max-width: 1280px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.25rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CARDS & LAYOUTS */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        /* BOXES */
+        .highlight-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: #fef2f2;
+            border-left: 4px solid var(--danger);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        .tip-box {
+            background: #fffbeb;
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        /* TABLES */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        th {
+            background: #f1f5f9;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        /* SIMULATION LAB */
+        .sim-layout {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 920px) {
+            .sim-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .canvas-wrapper {
+            background: #0f172a;
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            background: #1e293b;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .control-group {
+            margin-bottom: 1.15rem;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.35rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .stat-val {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-top: 0.2rem;
+        }
+
+        /* BUTTONS & INPUTS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.65rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover { background: var(--primary-dark); }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+        .btn-secondary:hover { background: #cbd5e1; }
+
+        .btn-accent {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-accent:hover { background: #d97706; }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            font-size: 0.92rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.65rem 0.85rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        /* PRACTICE & QUIZ */
+        .level-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .level-1 { background: #dcfce7; color: #166534; }
+        .level-2 { background: #fef3c7; color: #92400e; }
+        .level-3 { background: #fee2e2; color: #991b1b; }
+
+        .hidden-box {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px dashed var(--secondary);
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 0.6rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .quiz-option:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .quiz-option input[type="radio"] {
+            transform: scale(1.2);
+            accent-color: var(--primary);
+        }
+
+        /* CLASSROOM TOOLS */
+        .timer-display {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .blink-alarm {
+            animation: blinkRed 0.6s infinite alternate;
+        }
+
+        @keyframes blinkRed {
+            from { background-color: #ffffff; }
+            to { background-color: #fecaca; }
+        }
+
+        /* MODAL POPUP */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 1rem;
+        }
+
+        .modal-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* FOOTER */
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 1.25rem;
+            font-size: 0.9rem;
+            margin-top: auto;
+            border-top: 3px solid var(--primary);
+        }
+
+        footer strong {
+            color: #fef08a;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <h1>CHỦ ĐỀ 6: ÁP SUẤT KHÍ THEO MÔ HÌNH ĐỘNG HỌC PHÂN TỬ</h1>
+        <div class="subtitle">Quan hệ giữa động năng phân tử và nhiệt độ — Vật Lý 12 (Chương II: Khí Lí Tưởng)</div>
+        <div class="copyright-banner">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+    </header>
+
+    <!-- NAVIGATION BAR (8 Interactive Tabs including split Simulation 3A & 3B) -->
+    <div class="nav-container">
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('tab1')">🚀 1. Khởi động</button>
+            <button class="tab-btn" onclick="switchTab('tab2')">📖 2. Cốt lõi Lý thuyết</button>
+            <button class="tab-btn" onclick="switchTab('tab3a')">🔬 3A. Mô phỏng Va chạm & Áp suất</button>
+            <button class="tab-btn" onclick="switchTab('tab3b')">🌡️ 3B. Mô phỏng Động năng & Khí trộn</button>
+            <button class="tab-btn" onclick="switchTab('tab4')">🧮 4. Máy tính Vật lý</button>
+            <button class="tab-btn" onclick="switchTab('tab5')">📝 5. Luyện tập Phân hóa</button>
+            <button class="tab-btn" onclick="switchTab('tab6')">🎯 6. Bài Tự đánh giá</button>
+            <button class="tab-btn" onclick="switchTab('tab7')">🛠️ 7. Tiện ích Lớp học</button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main>
+
+        <!-- ==================== TAB 1: KHỞI ĐỘNG & THỰC TIỄN ==================== -->
+        <section id="tab1" class="tab-content active">
+            <div class="card">
+                <div class="card-title">🚀 Tình huống thực tiễn & Mâu thuẫn nhận thức</div>
+                <p>Trong đời sống và kỹ thuật, chúng ta luôn cảm nhận được <strong>áp suất chất khí</strong> (lốp xe căng cứng, bình nén khí, khí quyển). Nhưng ở cấp độ vi mô, các phân tử khí có kích thước vô cùng nhỏ bé và nằm cách xa nhau. Vậy làm thế nào hàng tỉ tỉ hạt siêu vi mô ấy lại tạo ra áp lực khổng lồ lên thành bình?</p>
+
+                <div class="grid-3" style="margin-top: 1.25rem;">
+                    <div class="card" style="margin-bottom:0; background: #f8fafc;">
+                        <h3 style="color: var(--primary-dark); font-size: 1.05rem; margin-bottom: 0.5rem;">🏜️ 1. Xe tải vượt sa mạc Safari</h3>
+                        <p style="font-size: 0.92rem;">Một chiếc xe tải bắt đầu hành trình vượt sa mạc vào sáng sớm khi nhiệt độ là \( 3,0\text{ }^\circ\text{C} \). Đến giữa trưa, nhiệt độ tăng vọt lên \( 42\text{ }^\circ\text{C} \). Dù không bơm thêm khí, lốp xe lại căng cứng và áp suất tăng mạnh. Điều gì đã thay đổi ở chuyển động của từng phân tử khí bên trong lốp?</p>
+                    </div>
+
+                    <div class="card" style="margin-bottom:0; background: #f8fafc;">
+                        <h3 style="color: var(--primary-dark); font-size: 1.05rem; margin-bottom: 0.5rem;">⚖️ 2. Nghịch lý Hai bình khí</h3>
+                        <p style="font-size: 0.92rem;">Hai bình kín có cùng thể tích \( V \), ở cùng nhiệt độ \( T \), chứa hai loại khí lí tưởng có tổng khối lượng bằng nhau nhưng phân tử khí ở bình 1 nặng gấp đôi phân tử khí ở bình 2 (\( m_1 = 2m_2 \)). Bình nào chịu áp suất lớn hơn?</p>
+                    </div>
+
+                    <div class="card" style="margin-bottom:0; background: #f8fafc;">
+                        <h3 style="color: var(--primary-dark); font-size: 1.05rem; margin-bottom: 0.5rem;">🌬️ 3. Hỗn hợp Không khí quanh ta</h3>
+                        <p style="font-size: 0.92rem;">Không khí trong phòng gồm các phân tử Nitrogen (\( \text{N}_2 \)), Oxygen (\( \text{O}_2 \)) và Carbon dioxide (\( \text{CO}_2 \)) có khối lượng khác nhau nhưng chung một nhiệt độ. Liệu chúng có chuyển động với cùng tốc độ trung bình hay không?</p>
+                    </div>
+                </div>
+
+                <div class="tip-box" style="margin-top: 1.5rem;">
+                    <strong>❓ Câu hỏi định hướng nghiên cứu bài học:</strong>
+                    <ul style="margin-left: 1.25rem; margin-top: 0.5rem;">
+                        <li>Khi một phân tử khí khối lượng \( m \) bay với tốc độ \( v \) đến đập vuông góc và đàn hồi vào thành bình, độ biến thiên động lượng \( |\Delta \vec{p}| \) của nó bằng \( mv \) hay \( 2mv \)?</li>
+                        <li>Áp suất khí \( p \) liên hệ định lượng như thế nào với mật độ phân tử \( \mu \) và động năng tịnh tiến trung bình \( \bar{E}_{d} \)?</li>
+                        <li>Tại sao các nhà vật lý lại khẳng định: <em>"Nhiệt độ tuyệt đối \( T \) chính là thước đo động năng trung bình của phân tử theo một đơn vị khác"</em>?</li>
+                    </ul>
+                </div>
+
+                <div style="margin-top: 1rem;">
+                    <button class="btn btn-primary" onclick="toggleElement('warmup-ans')">💡 Khám phá Giải đáp Nhanh</button>
+                    <div id="warmup-ans" class="hidden-box">
+                        <p><strong>1. Lốp xe trên sa mạc:</strong> Khi nhiệt độ tăng từ \( 276\text{ K} \) lên \( 315\text{ K} \), động năng tịnh tiến trung bình \( \bar{E}_{d} = \frac{3}{2}kT \) của mỗi phân tử tăng thêm \( \Delta \bar{E}_{d} \approx 8,07 \cdot 10^{-22}\text{ J} \), làm các phân tử va đập vào thành lốp mạnh hơn và dồn dập hơn, gây tăng áp suất.</p>
+                        <p style="margin-top:0.5rem;"><strong>2. Hai bình khí:</strong> Theo công thức \( p = \frac{2}{3}\mu \bar{E}_{d} = \frac{2}{3}\frac{N}{V}\bar{E}_{d} \). Nếu cùng tổng khối lượng \( M_{\text{tổng}} \) mà \( m_1 = 2m_2 \) thì số phân tử \( N_1 = \frac{1}{2}N_2 \), suy ra áp suất bình 1 chỉ bằng <strong>một nửa</strong> bình 2! (Lưu ý phân biệt khi cùng số phân tử \( N \) và khi cùng khối lượng khí).</p>
+                        <p style="margin-top:0.5rem;"><strong>3. Hỗn hợp không khí:</strong> Vì cùng nhiệt độ \( T \) nên cả ba khí \( \text{N}_2, \text{O}_2, \text{CO}_2 \) có <strong>cùng động năng trung bình</strong> \( \bar{E}_{d} \). Tuy nhiên do khối lượng mol \( M_{\text{CO}_2} (44) > M_{\text{O}_2} (32) > M_{\text{N}_2} (28) \) nên trung bình bình phương tốc độ sắp xếp tăng dần là: \( \overline{v^2}_{\text{CO}_2} < \overline{v^2}_{\text{O}_2} < \overline{v^2}_{\text{N}_2} \).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: CỐT LÕI LÝ THUYẾT ==================== -->
+        <section id="tab2" class="tab-content">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-title">1. Áp suất khí theo mô hình động học phân tử</div>
+                    <p><strong>a) Tác dụng của một phân tử khí lên thành bình:</strong></p>
+                    <p>Xét \( N \) phân tử khí chứa trong bình lập phương cạnh \( l \) (thể tích \( V = l^3 \)) trong hệ tọa độ \( Oxyz \). Một phân tử khối lượng \( m \) chuyển động thẳng đều song song trục \( Ox \) với vận tốc \( \vec{v} \) đến va chạm hoàn toàn đàn hồi với thành bình \( ABCD \) rồi bật ngược lại với cùng tốc độ \( v \).</p>
+                    <div class="highlight-box">
+                        <ul>
+                            <li>Độ biến thiên động lượng của phân tử do va chạm với thành bình:
+                                \[ |\Delta \vec{p}| = |-mv - (+mv)| = |-2mv| = 2mv \]
+                            </li>
+                            <li>Khoảng thời gian giữa hai va chạm liên tiếp lên cùng thành bình \( ABCD \): \( \Delta t = \frac{2l}{v} \).</li>
+                            <li>Độ lớn lực trung bình phân tử tác dụng lên thành bình: \( F = \frac{|\Delta \vec{p}|}{\Delta t} = \frac{mv^2}{l} \).</li>
+                            <li>Áp suất của 1 phân tử lên thành bình (diện tích \( S = l^2 \)):
+                                \[ p_{m} = \frac{F}{l^2} = \frac{m}{V}v^2 \]
+                            </li>
+                        </ul>
+                    </div>
+
+                    <p><strong>b) Tác dụng của \( N \) phân tử khí lên thành bình:</strong></p>
+                    <p>Vì các phân tử chuyển động hỗn loạn không có phương ưu tiên nên trung bình có \( \frac{N}{3} \) phân tử chuyển động dọc theo mỗi trục tọa độ. Gọi \( \overline{v^2} = \frac{v_1^2 + v_2^2 + \dots + v_N^2}{N} \) là trung bình của các bình phương tốc độ.</p>
+                    <div class="highlight-box">
+                        \[ p = \frac{N}{3}\bar{p}_{m} = \frac{1}{3}\frac{Nm}{V}\overline{v^2} = \frac{1}{3}\rho \overline{v^2} = \frac{1}{3}\mu m \overline{v^2} = \frac{2}{3}\mu \bar{E}_{d} \]
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">2. Quan hệ giữa động năng phân tử và nhiệt độ</div>
+                    <p>Kết hợp phương trình Clapeyron \( pV = nRT \) (với \( n = \frac{N}{N_{A}} \)) và công thức áp suất \( pV = \frac{2}{3}N\bar{E}_{d} \), ta thu được hệ thức liên hệ giữa động năng tịnh tiến trung bình của phân tử và nhiệt độ tuyệt đối \( T \):</p>
+                    <div class="highlight-box" style="text-align: center; font-size: 1.15rem;">
+                        \[ \bar{E}_{d} = \frac{1}{2}m\overline{v^2} = \frac{3}{2}\frac{R}{N_{A}}T = \frac{3}{2}kT \]
+                    </div>
+                    <p>Trong đó hằng số Boltzmann \( k \) là hằng số khí đặc trưng cho 1 phân tử:</p>
+                    \[ k = \frac{R}{N_{A}} \approx \frac{8,31}{6,02 \cdot 10^{23}} \approx 1,38 \cdot 10^{-23}\text{ J/K} \]
+
+                    <p style="margin-top: 0.75rem;"><strong>Hệ quả vật lý quan trọng:</strong></p>
+                    <ul style="margin-left: 1.25rem;">
+                        <li>Động năng tịnh tiến trung bình \( \bar{E}_{d} \) <strong>tỉ lệ thuận</strong> với nhiệt độ tuyệt đối \( T \).</li>
+                        <li>Các khí có bản chất khác nhau, khối lượng khác nhau nhưng ở <strong>cùng nhiệt độ</strong> thì động năng tịnh tiến trung bình của các phân tử <strong>bằng nhau</strong>.</li>
+                        <li>Nhiệt độ tuyệt đối \( T \) là số đo động năng trung bình của phân tử theo một đơn vị khác.</li>
+                        <li><strong>Tốc độ căn quân phương</strong> (root-mean-square speed):
+                            \[ v_{\text{rms}} = \sqrt{\overline{v^2}} = \sqrt{\frac{3kT}{m}} = \sqrt{\frac{3RT}{M}} \]
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📊 Bảng Hệ thống Ký hiệu, Công thức và Đơn vị Chuẩn SI</div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ký hiệu</th>
+                                <th>Tên đại lượng & Ý nghĩa vật lý</th>
+                                <th>Công thức liên hệ</th>
+                                <th>Đơn vị chuẩn (SI)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>\( p \)</td>
+                                <td>Áp suất chất khí tác dụng lên thành bình</td>
+                                <td>\( p = \frac{1}{3}\mu m\overline{v^2} = \frac{2}{3}\mu \bar{E}_{d} = \mu kT \)</td>
+                                <td>\( \text{Pa} \text{ (N/m}^2\text{)} \)</td>
+                            </tr>
+                            <tr>
+                                <td>\( \mu \)</td>
+                                <td>Mật độ phân tử khí (số phân tử trên 1 đơn vị thể tích)</td>
+                                <td>\( \mu = \frac{N}{V} = \frac{p}{kT} \)</td>
+                                <td>\( \text{m}^{-3} \text{ (phân tử/m}^3\text{)} \)</td>
+                            </tr>
+                            <tr>
+                                <td>\( \bar{E}_{d} \)</td>
+                                <td>Động năng tịnh tiến trung bình của 1 phân tử khí</td>
+                                <td>\( \bar{E}_{d} = \frac{1}{2}m\overline{v^2} = \frac{3}{2}kT \)</td>
+                                <td>\( \text{J} \)</td>
+                            </tr>
+                            <tr>
+                                <td>\( \overline{v^2} \)</td>
+                                <td>Trung bình của bình phương tốc độ phân tử</td>
+                                <td>\( \overline{v^2} = \frac{3kT}{m} = \frac{3RT}{M} = \frac{3p}{\rho} \)</td>
+                                <td>\( \text{m}^2\text{/s}^2 \)</td>
+                            </tr>
+                            <tr>
+                                <td>\( \sqrt{\overline{v^2}} \)</td>
+                                <td>Căn bậc hai của trung bình bình phương tốc độ (tốc độ căn quân phương)</td>
+                                <td>\( \sqrt{\overline{v^2}} = \sqrt{\frac{3RT}{M}} \)</td>
+                                <td>\( \text{m/s} \)</td>
+                            </tr>
+                            <tr>
+                                <td>\( \rho \)</td>
+                                <td>Khối lượng riêng của chất khí</td>
+                                <td>\( \rho = \frac{Nm}{V} = \mu m = \frac{pM}{RT} \)</td>
+                                <td>\( \text{kg/m}^3 \)</td>
+                            </tr>
+                            <tr>
+                                <td>\( k \)</td>
+                                <td>Hằng số Boltzmann</td>
+                                <td>\( k = \frac{R}{N_{A}} \approx 1,38 \cdot 10^{-23} \)</td>
+                                <td>\( \text{J/K} \)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">⚠️ Các "Bẫy Lý Thuyết" Học Sinh Thường Gặp</div>
+                <div class="grid-2">
+                    <div class="warning-box" style="margin:0;">
+                        <strong>❌ Bẫy 1: Nhầm độ biến thiên động lượng va chạm là \( mv \) hoặc \( 0 \)</strong>
+                        <p style="font-size: 0.92rem; margin-top: 0.3rem;">Động lượng là đại lượng vector \( \vec{p} = m\vec{v} \). Khi va chạm đàn hồi vuông góc với thành bình, phân tử đổi chiều chuyển động từ \( +mv \) sang \( -mv \), nên độ biến thiên có độ lớn là \( |\Delta p| = |-mv - mv| = 2mv \), không phải bằng \( 0 \) hay \( mv \).</p>
+                    </div>
+                    <div class="warning-box" style="margin:0;">
+                        <strong>❌ Bẫy 2: Quên đổi nhiệt độ sang Kelvin (\( \text{K} \)) hoặc khối lượng mol sang \( \text{kg/mol} \)</strong>
+                        <p style="font-size: 0.92rem; margin-top: 0.3rem;">Mọi công thức \( \bar{E}_{d} = \frac{3}{2}kT \) và \( \sqrt{\overline{v^2}} = \sqrt{\frac{3RT}{M}} \) bắt buộc dùng \( T(\text{K}) = t(^\circ\text{C}) + 273 \) và khối lượng mol \( M \) phải đổi ra \( \text{kg/mol} \) (ví dụ \( M_{\text{O}_2} = 32\text{ g/mol} = 32 \cdot 10^{-3}\text{ kg/mol} \)).</p>
+                    </div>
+                    <div class="warning-box" style="margin:0;">
+                        <strong>❌ Bẫy 3: Nhầm giữa "Tốc độ từng phân tử" và "Tốc độ thống kê"</strong>
+                        <p style="font-size: 0.92rem; margin-top: 0.3rem;">Khi nhiệt độ tăng, <strong>tốc độ căn quân phương</strong> \( \sqrt{\overline{v^2}} \) của tập hợp phân tử tăng lên, chứ không phải mọi phân tử trong bình có tốc độ bằng nhau hay mọi phân tử đều tăng tốc như nhau tại cùng một thời điểm.</p>
+                    </div>
+                    <div class="warning-box" style="margin:0;">
+                        <strong>❌ Bẫy 4: Nhầm hệ số \( \frac{1}{3} \) và \( \frac{2}{3} \) trong công thức áp suất</strong>
+                        <p style="font-size: 0.92rem; margin-top: 0.3rem;">Hãy nhớ: vì \( \bar{E}_{d} = \frac{1}{2}m\overline{v^2} \Rightarrow m\overline{v^2} = 2\bar{E}_{d} \). Do đó khi viết theo \( m\overline{v^2} \) thì hệ số là \( \frac{1}{3} \) (\( p = \frac{1}{3}\mu m\overline{v^2} \)), còn khi viết theo \( \bar{E}_{d} \) thì hệ số là \( \frac{2}{3} \) (\( p = \frac{2}{3}\mu \bar{E}_{d} \)).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3A: MÔ PHỎNG VA CHẠM & ÁP SUẤT ==================== -->
+        <section id="tab3a" class="tab-content">
+            <div class="card">
+                <div class="card-title">🔬 Thí nghiệm ảo 3A: Cơ chế vi mô gây Áp suất khí lên thành bình</div>
+                <div class="tip-box" style="margin-top:0;">
+                    <strong>🎯 Hướng dẫn thao tác ("Thử và Sai"):</strong>
+                    Hãy điều chỉnh thanh trượt <strong>Nhiệt độ \( T \)</strong> tăng gấp 4 lần (ví dụ từ \( 200\text{ K} \) lên \( 800\text{ K} \)) trong khi giữ nguyên thể tích \( V \) và số hạt \( N \). Quan sát xem <strong>tốc độ căn quân phương \( \sqrt{\overline{v^2}} \)</strong> tăng mấy lần và <strong>áp suất \( p \)</strong> tăng mấy lần? Giải thích tại sao!
+                </div>
+
+                <div class="sim-layout">
+                    <div class="canvas-wrapper">
+                        <canvas id="sim3aCanvas" width="600" height="400"></canvas>
+                        <div style="color:#94a3b8; font-size:0.82rem; margin-top:0.5rem;">
+                            Các chấm sáng đỏ trên vách phải biểu thị xung lực \( \vec{F}\Delta t = \Delta \vec{p} \) khi phân tử va chạm đàn hồi vào thành bình.
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="card" style="margin-bottom: 1rem; padding: 1.2rem;">
+                            <h3 style="font-size:1rem; margin-bottom:0.8rem; color:var(--primary-dark);">🎛️ Tham số điều khiển (Inputs)</h3>
+
+                            <div class="control-group">
+                                <label>
+                                    <span>Số phân tử đại diện (\( N_{\text{mô phỏng}} \)):</span>
+                                    <span id="val3a-N">60 hạt</span>
+                                </label>
+                                <input type="range" id="slider3a-N" min="20" max="150" step="10" value="60" oninput="updateSim3A()">
+                            </div>
+
+                            <div class="control-group">
+                                <label>
+                                    <span>Nhiệt độ tuyệt đối (\( T \)):</span>
+                                    <span id="val3a-T">300 K (27 °C)</span>
+                                </label>
+                                <input type="range" id="slider3a-T" min="100" max="1200" step="50" value="300" oninput="updateSim3A()">
+                            </div>
+
+                            <div class="control-group">
+                                <label>
+                                    <span>Thể tích bình chứa (\( V \) - Vị trí Pít-tông):</span>
+                                    <span id="val3a-V">10,0 Lít</span>
+                                </label>
+                                <input type="range" id="slider3a-V" min="4" max="12" step="0.5" value="10" oninput="updateSim3A()">
+                            </div>
+
+                            <div class="control-group">
+                                <label>
+                                    <span>Loại khí lí tưởng (Khối lượng mol \( M \)):</span>
+                                </label>
+                                <select id="select3a-gas" class="form-control" onchange="updateSim3A()">
+                                    <option value="2">Khí Hydrogen (\(\text{H}_2\) - \(M = 2\text{ g/mol}\))</option>
+                                    <option value="4">Khí Helium (\(\text{He}\) - \(M = 4\text{ g/mol}\))</option>
+                                    <option value="28" selected>Khí Nitrogen (\(\text{N}_2\) - \(M = 28\text{ g/mol}\))</option>
+                                    <option value="32">Khí Oxygen (\(\text{O}_2\) - \(M = 32\text{ g/mol}\))</option>
+                                    <option value="44">Khí Carbon dioxide (\(\text{CO}_2\) - \(M = 44\text{ g/mol}\))</option>
+                                </select>
+                            </div>
+
+                            <div style="display:flex; gap:0.5rem;">
+                                <button class="btn btn-primary" onclick="togglePause3A()" id="btnPause3A" style="flex:1;">⏸️ Tạm dừng</button>
+                                <button class="btn btn-secondary" onclick="resetSim3A()">🔄 Đặt lại</button>
+                            </div>
+                        </div>
+
+                        <div class="card" style="margin-bottom:0; padding: 1.2rem;">
+                            <h3 style="font-size:1rem; margin-bottom:0.5rem; color:var(--primary-dark);">📈 Đầu ra Thời gian thực (Real-time Outputs)</h3>
+                            <div class="stat-grid">
+                                <div class="stat-item">
+                                    <div class="stat-label">Mật độ phân tử \(\mu\)</div>
+                                    <div class="stat-val" id="out3a-mu">\(6,00 \cdot 10^{24}\text{ m}^{-3}\)</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Động năng TB \(\bar{E}_{d}\)</div>
+                                    <div class="stat-val" id="out3a-Ed">\(6,21 \cdot 10^{-21}\text{ J}\)</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Tốc độ \(\sqrt{\overline{v^2}}\)</div>
+                                    <div class="stat-val" id="out3a-vrms">\(517\text{ m/s}\)</div>
+                                </div>
+                                <div class="stat-item" style="background:#e0f2fe; border-color:#38bdf8;">
+                                    <div class="stat-label" style="color:#0369a1;">Áp suất khí \(p\)</div>
+                                    <div class="stat-val" id="out3a-p" style="color:#0284c7;">\(24,8\text{ kPa}\)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3B: MÔ PHỎNG ĐỘNG NĂNG & HỖN HỢP KHÍ ==================== -->
+        <section id="tab3b" class="tab-content">
+            <div class="card">
+                <div class="card-title">🌡️ Thí nghiệm ảo 3B: So sánh Động năng & Tốc độ của Hỗn hợp Khí (\(\text{N}_2, \text{O}_2, \text{CO}_2\)) ở cùng Nhiệt độ</div>
+                <div class="tip-box" style="margin-top:0;">
+                    <strong>🎯 Khám phá bản chất vật lý:</strong>
+                    Trong cùng một căn phòng ở nhiệt độ \( T \), ba loại phân tử khí \(\text{N}_2\) (\(M=28\text{ g/mol}\)), \(\text{O}_2\) (\(M=32\text{ g/mol}\)) và \(\text{CO}_2\) (\(M=44\text{ g/mol}\)) cùng chuyển động hỗn loạn. Hãy kéo thanh trượt <strong>Nhiệt độ \( T \)</strong> và quan sát biểu đồ cột bên phải: Đại lượng nào của 3 khí luôn <strong>bằng nhau</strong>, và đại lượng nào luôn <strong>khác nhau</strong>?
+                </div>
+
+                <div class="sim-layout">
+                    <div class="canvas-wrapper">
+                        <canvas id="sim3bCanvas" width="600" height="390"></canvas>
+                        <div style="display:flex; justify-content:center; gap:1.5rem; color:#e2e8f0; font-size:0.85rem; margin-top:0.5rem;">
+                            <span>🔵 <strong>\(\text{N}_2\)</strong> (\(M=28\text{ g/mol}\))</span>
+                            <span>🟢 <strong>\(\text{O}_2\)</strong> (\(M=32\text{ g/mol}\))</span>
+                            <span>🟠 <strong>\(\text{CO}_2\)</strong> (\(M=44\text{ g/mol}\))</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="card" style="margin-bottom:1rem; padding:1.2rem;">
+                            <h3 style="font-size:1rem; margin-bottom:0.8rem; color:var(--primary-dark);">🎛️ Điều khiển Nhiệt độ Hỗn hợp Khí</h3>
+                            <div class="control-group">
+                                <label>
+                                    <span>Nhiệt độ tuyệt đối (\( T \)):</span>
+                                    <span id="val3b-T">300 K (27 °C)</span>
+                                </label>
+                                <input type="range" id="slider3b-T" min="150" max="1000" step="25" value="300" oninput="updateSim3B()">
+                            </div>
+
+                            <div id="sim3b-bars" style="margin-top:1rem;">
+                                <!-- Dynamic Comparison Bars -->
+                            </div>
+                        </div>
+
+                        <div class="card" style="margin-bottom:0; padding:1.2rem;">
+                            <h3 style="font-size:1rem; margin-bottom:0.5rem; color:var(--primary-dark);">📌 Kết luận định lượng tại \( T = \) <span id="lbl3b-T">300 K</span></h3>
+                            <ul style="font-size:0.9rem; margin-left:1.2rem;">
+                                <li><strong>Động năng trung bình (\(\bar{E}_{d} = \frac{3}{2}kT\)):</strong> Cả 3 khí đều bằng <strong id="out3b-Ed" style="color:var(--primary-dark);">\(6,21 \cdot 10^{-21}\text{ J}\)</strong>.</li>
+                                <li><strong>Tốc độ căn quân phương (\(\sqrt{\overline{v^2}} = \sqrt{\frac{3RT}{M}}\)):</strong>
+                                    <br>• Khí \(\text{N}_2\): <strong id="out3b-vN2" style="color:#0284c7;">517 m/s</strong> (Nhẹ nhất \(\rightarrow\) Nhanh nhất)
+                                    <br>• Khí \(\text{O}_2\): <strong id="out3b-vO2" style="color:#10b981;">483 m/s</strong>
+                                    <br>• Khí \(\text{CO}_2\): <strong id="out3b-vCO2" style="color:#f59e0b;">412 m/s</strong> (Nặng nhất \(\rightarrow\) Chậm nhất)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: MÁY TÍNH THAM SỐ VẬT LÝ ==================== -->
+        <section id="tab4" class="tab-content">
+            <div class="card">
+                <div class="card-title">🧮 Máy tính Tham số Động học Phân tử Khí (Giải chi tiết từng bước bằng KaTeX)</div>
+                <p style="margin-bottom:1rem;">Chọn chế độ công thức, nhập các đại lượng đã biết và <strong>bỏ trống duy nhất 1 ô cần tìm</strong>, sau đó bấm <strong>"Tính toán & Giải chi tiết"</strong>.</p>
+
+                <div class="grid-2">
+                    <div class="card" style="margin-bottom:0; background:#f8fafc;">
+                        <h3 style="font-size:1.05rem; color:var(--primary-dark); margin-bottom:1rem;">1️⃣ Hệ thức Áp suất, Mật độ & Động năng: \( p = \frac{2}{3}\mu \bar{E}_{d} \) và \( \bar{E}_{d} = \frac{3}{2}kT \)</h3>
+
+                        <div class="form-group">
+                            <label>Áp suất khí \( p \) (\(\text{Pa}\)):</label>
+                            <input type="number" id="calc1-p" class="form-control" placeholder="Bỏ trống nếu cần tìm p (VD: 2000000)" step="any">
+                        </div>
+                        <div class="form-group">
+                            <label>Mật độ phân tử \( \mu \) (\(\text{phân tử/m}^3\)):</label>
+                            <input type="number" id="calc1-mu" class="form-control" placeholder="Bỏ trống nếu cần tìm μ (VD: 4.84e26)" step="any">
+                        </div>
+                        <div class="form-group">
+                            <label>Nhiệt độ tuyệt đối \( T \) (\(\text{K}\)) <em>[Hoặc tự suy ra \(\bar{E}_{d}\)]</em>:</label>
+                            <input type="number" id="calc1-T" class="form-control" placeholder="Bỏ trống nếu cần tìm T và Eđ (VD: 300)" step="any">
+                        </div>
+
+                        <div style="display:flex; gap:0.5rem;">
+                            <button class="btn btn-primary" onclick="solveCalc1()" style="flex:1;">⚡ Tính toán & Giải chi tiết</button>
+                            <button class="btn btn-secondary" onclick="fillDemoCalc1()">Mẫu thử</button>
+                            <button class="btn btn-secondary" onclick="clearCalc1()">Xóa</button>
+                        </div>
+
+                        <div id="calc1-result" class="highlight-box" style="display:none; margin-top:1rem; background:white;"></div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:0; background:#f8fafc;">
+                        <h3 style="font-size:1.05rem; color:var(--primary-dark); margin-bottom:1rem;">2️⃣ Hệ thức Tốc độ căn quân phương: \( v_{\text{rms}} = \sqrt{\overline{v^2}} = \sqrt{\frac{3RT}{M}} \)</h3>
+
+                        <div class="form-group">
+                            <label>Tốc độ căn quân phương \( \sqrt{\overline{v^2}} \) (\(\text{m/s}\)):</label>
+                            <input type="number" id="calc2-v" class="form-control" placeholder="Bỏ trống nếu cần tìm v_rms (VD: 517)" step="any">
+                        </div>
+                        <div class="form-group">
+                            <label>Nhiệt độ tuyệt đối \( T \) (\(\text{K}\)):</label>
+                            <input type="number" id="calc2-T" class="form-control" placeholder="Bỏ trống nếu cần tìm T (VD: 320)" step="any">
+                        </div>
+                        <div class="form-group">
+                            <label>Khối lượng mol \( M \) (\(\text{g/mol}\)):</label>
+                            <input type="number" id="calc2-M" class="form-control" placeholder="Bỏ trống nếu cần tìm M (VD: 4 cho He, 32 cho O2)" step="any">
+                        </div>
+
+                        <div style="display:flex; gap:0.5rem;">
+                            <button class="btn btn-primary" onclick="solveCalc2()" style="flex:1;">⚡ Tính toán & Giải chi tiết</button>
+                            <button class="btn btn-secondary" onclick="fillDemoCalc2()">Mẫu thử</button>
+                            <button class="btn btn-secondary" onclick="clearCalc2()">Xóa</button>
+                        </div>
+
+                        <div id="calc2-result" class="highlight-box" style="display:none; margin-top:1rem; background:white;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: PHÒNG LUYỆN TẬP PHÂN HÓA ==================== -->
+        <section id="tab5" class="tab-content">
+            <!-- BÀI TOÁN CẤP 1 -->
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+                    <span class="level-badge level-1">Cấp độ 1: Nhận biết - Thông hiểu</span>
+                    <span style="font-size:0.85rem; color:var(--text-muted);">Trích Tài liệu Chủ đề 6 & SBT Vật lí 12 KNTT</span>
+                </div>
+                <h3 style="font-size:1.1rem; color:var(--text-main); margin-bottom:0.5rem;">Bài toán 1: Động năng trung bình và Tốc độ căn quân phương của phân tử khí Helium</h3>
+                <p>Một bình kín chứa khí Helium (\(\text{He}\)) có khối lượng mol \( M = 4\text{ g/mol} \) ở nhiệt độ \( t = 47\text{ }^\circ\text{C} \). Coi các phân tử khí là giống nhau. Cho hằng số Boltzmann \( k = 1,38 \cdot 10^{-23}\text{ J/K} \) và hằng số khí lí tưởng \( R = 8,31\text{ J/(mol}\cdot\text{K)} \).</p>
+                <p>a) Tính động năng tịnh tiến trung bình \( \bar{E}_{d} \) của một phân tử khí Helium ở nhiệt độ trên.</p>
+                <p>b) Tính tốc độ căn quân phương \( \sqrt{\overline{v^2}} \) trong chuyển động nhiệt của phân tử khí Helium.</p>
+
+                <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <button class="btn btn-secondary" onclick="toggleElement('hint-p1')">💡 Gợi ý tư duy</button>
+                    <button class="btn btn-primary" onclick="toggleElement('sol-p1')">📖 Xem Lời giải chi tiết</button>
+                </div>
+
+                <div id="hint-p1" class="hidden-box">
+                    <strong>Gợi ý tư duy:</strong>
+                    <br>• Bước 1: Đổi nhiệt độ \( t = 47\text{ }^\circ\text{C} \) sang thang nhiệt độ tuyệt đối Kelvin: \( T(\text{K}) = t(^\circ\text{C}) + 273 \).
+                    <br>• Bước 2: Đổi khối lượng mol \( M = 4\text{ g/mol} \) ra đơn vị chuẩn SI là \( \text{kg/mol} \).
+                    <br>• Bước 3: Áp dụng trực tiếp công thức \( \bar{E}_{d} = \frac{3}{2}kT \) và \( \sqrt{\overline{v^2}} = \sqrt{\frac{3RT}{M}} \).
+                </div>
+
+                <div id="sol-p1" class="hidden-box" style="border-color:var(--primary); background:#f0f9ff;">
+                    <strong>Lời giải chi tiết:</strong>
+                    <p>Đổi đơn vị chuẩn SI: Nhiệt độ tuyệt đối \( T = 47 + 273 = 320\text{ K} \); Khối lượng mol \( M = 4\text{ g/mol} = 4 \cdot 10^{-3}\text{ kg/mol} \).</p>
+                    <p>a) Động năng tịnh tiến trung bình của một phân tử khí Helium là:</p>
+                    \[ \bar{E}_{d} = \frac{3}{2}kT = \frac{3}{2} \cdot 1,38 \cdot 10^{-23} \cdot 320 = 6,624 \cdot 10^{-21}\text{ J} \]
+                    <p>b) Tốc độ căn quân phương trong chuyển động nhiệt của phân tử khí Helium là:</p>
+                    \[ \sqrt{\overline{v^2}} = \sqrt{\frac{3RT}{M}} = \sqrt{\frac{3 \cdot 8,31 \cdot 320}{4 \cdot 10^{-3}}} \approx 1412\text{ m/s} \]
+                </div>
+            </div>
+
+            <!-- BÀI TOÁN CẤP 2 -->
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+                    <span class="level-badge level-2">Cấp độ 2: Vận dụng</span>
+                    <span style="font-size:0.85rem; color:var(--text-muted);">Phối hợp Định luật Dalton & Động học phân tử</span>
+                </div>
+                <h3 style="font-size:1.1rem; color:var(--text-main); margin-bottom:0.5rem;">Bài toán 2: Áp suất và Bình phương tốc độ trung bình của Hỗn hợp khí Hydrogen - Helium</h3>
+                <p>Một bình kín có thể tích \( V = 22,4 \cdot 10^{-3}\text{ m}^3 \) chứa \( 1,00\text{ mol} \) khí Hydrogen (\(\text{H}_2\)) ở điều kiện tiêu chuẩn (nhiệt độ \( 0,00\text{ }^\circ\text{C} \) và áp suất \( p_0 = 1,00\text{ atm} = 1,01 \cdot 10^5\text{ Pa} \)). Người ta bơm thêm \( 1,00\text{ mol} \) khí Helium (\(\text{He}\)) cũng ở điều kiện tiêu chuẩn vào bình này và giữ nhiệt độ không đổi ở \( 0,00\text{ }^\circ\text{C} \). Biết khối lượng riêng ở điều kiện tiêu chuẩn của khí Hydrogen và khí Helium lần lượt là \( \rho_1 = 9,00 \cdot 10^{-2}\text{ kg/m}^3 \) và \( \rho_2 = 18,0 \cdot 10^{-2}\text{ kg/m}^3 \).</p>
+                <p>a) Tính tổng khối lượng và khối lượng riêng \( \rho \) của hỗn hợp khí trong bình.</p>
+                <p>b) Xác định áp suất \( p \) của hỗn hợp khí tác dụng lên thành bình và giá trị trung bình của bình phương tốc độ phân tử khí \( \overline{v^2} \) trong bình.</p>
+
+                <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <button class="btn btn-secondary" onclick="toggleElement('hint-p2')">💡 Gợi ý tư duy</button>
+                    <button class="btn btn-primary" onclick="toggleElement('sol-p2')">📖 Xem Lời giải chi tiết</button>
+                </div>
+
+                <div id="hint-p2" class="hidden-box">
+                    <strong>Gợi ý tư duy:</strong>
+                    <br>• Khối lượng mỗi khí: \( m_1 = \rho_1 V \), \( m_2 = \rho_2 V \). Suy ra khối lượng riêng hỗn hợp \( \rho = \frac{m_1 + m_2}{V} = \rho_1 + \rho_2 \).
+                    <br>• Áp suất hỗn hợp khí lên thành bình bằng tổng áp suất riêng phần do các phân tử \(\text{H}_2\) và \(\text{He}\) gây ra: \( p = p_1 + p_2 \).
+                    <br>• Sử dụng hệ thức cơ bản: \( p = \frac{1}{3}\rho \overline{v^2} \Rightarrow \overline{v^2} = \frac{3p}{\rho} \).
+                </div>
+
+                <div id="sol-p2" class="hidden-box" style="border-color:var(--primary); background:#f0f9ff;">
+                    <strong>Lời giải chi tiết:</strong>
+                    <p>a) Tổng khối lượng khí Hydrogen và Helium trong bình là:</p>
+                    \[ m = (\rho_1 + \rho_2)V = (9,00 \cdot 10^{-2} + 18,0 \cdot 10^{-2}) \cdot 22,4 \cdot 10^{-3} = 6,048 \cdot 10^{-3}\text{ kg} \]
+                    <p>Khối lượng riêng của hỗn hợp khí trong bình:</p>
+                    \[ \rho = \frac{m}{V} = \rho_1 + \rho_2 = 27,0 \cdot 10^{-2}\text{ kg/m}^3 = 0,27\text{ kg/m}^3 \]
+                    <p>b) Vì cả \( 1,00\text{ mol} \) \(\text{H}_2\) và \( 1,00\text{ mol} \) \(\text{He}\) cùng chiếm thể tích \( V = 22,4 \cdot 10^{-3}\text{ m}^3 \) ở \( 0,00\text{ }^\circ\text{C} \) nên mỗi khí gây ra áp suất \( 1,00\text{ atm} \). Tổng áp suất của hỗn hợp khí lên thành bình là:</p>
+                    \[ p = p_1 + p_2 = 1,00 + 1,00 = 2,00\text{ atm} = 2 \cdot 1,01 \cdot 10^5\text{ Pa} = 2,02 \cdot 10^5\text{ Pa} \]
+                    <p>Giá trị trung bình của bình phương tốc độ phân tử khí trong bình là:</p>
+                    \[ \overline{v^2} = \frac{3p}{\rho} = \frac{3 \cdot 2,02 \cdot 10^5}{0,27} \approx 2,24 \cdot 10^6\text{ m}^2\text{/s}^2 \]
+                </div>
+            </div>
+
+            <!-- BÀI TOÁN CẤP 3 -->
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+                    <span class="level-badge level-3">Cấp độ 3: Vận dụng cao & Tích hợp Năng lực số / AI</span>
+                    <span style="font-size:0.85rem; color:var(--text-muted);">Bài toán Van bảo hiểm & Khí quyển Hành tinh</span>
+                </div>
+                <h3 style="font-size:1.1rem; color:var(--text-main); margin-bottom:0.5rem;">Bài toán 3: Tốc độ vũ trụ cấp I & Sự thất thoát khí quyển Trái Đất (Kết hợp Đánh giá Năng lực số)</h3>
+                <p>Để một phân tử khí ở tầng cao khí quyển thoát khỏi sức hút của Trái Đất bay vào vũ trụ, tốc độ của nó phải đạt tới <strong>tốc độ vũ trụ cấp II</strong> (\( v_{\text{II}} \approx 11,2\text{ km/s} \)) hoặc đạt <strong>tốc độ vũ trụ cấp I</strong> (\( v_{\text{I}} = 7,9\text{ km/s} \)) để bay quanh quỹ đạo.</p>
+                <p>a) Tính nhiệt độ tuyệt đối \( T_1 \) để căn bậc hai của trung bình bình phương tốc độ các phân tử khí Oxygen (\(\text{O}_2\), \( M_1 = 32\text{ g/mol} \)) đạt tốc độ vũ trụ cấp I (\( 7,9\text{ km/s} \)).</p>
+                <p>b) Cùng ở nhiệt độ \( T_1 \) đó, tốc độ căn quân phương của phân tử khí Hydrogen (\(\text{H}_2\), \( M_2 = 2\text{ g/mol} \)) bằng bao nhiêu \( \text{km/s} \)? Từ đó giải thích vì sao khí quyển Trái Đất giữ được rất nhiều \(\text{O}_2\) và \(\text{N}_2\) nhưng lại hầu như không giữ được khí \(\text{H}_2\) tự do.</p>
+                <p>c) <strong>[Góc Năng lực số & AI]:</strong> Một học sinh dùng công cụ AI tạo sinh (Generative AI) để giải câu a và AI trả lời: <em>"Ta có \( T_1 = \frac{v^2 M}{3R} = \frac{7,9^2 \cdot 32}{3 \cdot 8,31} \approx 80,1\text{ K} \)"</em>. Em hãy kiểm chứng và chỉ ra lỗi sai nghiêm trọng về xử lý dữ liệu đơn vị của AI.</p>
+
+                <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+                    <button class="btn btn-secondary" onclick="toggleElement('hint-p3')">💡 Gợi ý tư duy</button>
+                    <button class="btn btn-primary" onclick="toggleElement('sol-p3')">📖 Xem Lời giải chi tiết</button>
+                </div>
+
+                <div id="hint-p3" class="hidden-box">
+                    <strong>Gợi ý tư duy:</strong>
+                    <br>• Chú ý đổi đơn vị: \( v_{\text{I}} = 7,9\text{ km/s} = 7900\text{ m/s} \) và \( M_1 = 32 \cdot 10^{-3}\text{ kg/mol} \).
+                    <br>• Ở cùng nhiệt độ \( T_1 \), động năng trung bình của \(\text{H}_2\) và \(\text{O}_2\) bằng nhau nên \( \frac{v_{\text{H}_2}}{v_{\text{O}_2}} = \sqrt{\frac{M_{\text{O}_2}}{M_{\text{H}_2}}} \).
+                </div>
+
+                <div id="sol-p3" class="hidden-box" style="border-color:var(--primary); background:#f0f9ff;">
+                    <strong>Lời giải chi tiết:</strong>
+                    <p>a) Đổi đơn vị chuẩn SI: \( v_{\text{I}} = 7,9\text{ km/s} = 7900\text{ m/s} \); \( M_1 = 32 \cdot 10^{-3}\text{ kg/mol} \).</p>
+                    <p>Từ công thức \( \sqrt{\overline{v^2}} = \sqrt{\frac{3RT_1}{M_1}} \), suy ra nhiệt độ \( T_1 \) cần thiết là:</p>
+                    \[ T_1 = \frac{\overline{v^2} \cdot M_1}{3R} = \frac{7900^2 \cdot 32 \cdot 10^{-3}}{3 \cdot 8,31} \approx 8,0 \cdot 10^4\text{ K} \text{ (tức } 80\,000\text{ K)} \]
+                    <p>b) Ở cùng nhiệt độ \( T_1 \), vì \( \bar{E}_{d(\text{H}_2)} = \bar{E}_{d(\text{O}_2)} \) nên tỉ số tốc độ căn quân phương là:</p>
+                    \[ \frac{v_{\text{rms}(\text{H}_2)}}{v_{\text{rms}(\text{O}_2)}} = \sqrt{\frac{M_1}{M_2}} = \sqrt{\frac{32}{2}} = 4 \Rightarrow v_{\text{rms}(\text{H}_2)} = 4 \cdot 7,9 = 31,6\text{ km/s} \]
+                    <p>Vì phân tử \(\text{H}_2\) nhẹ hơn \(\text{O}_2\) tới 16 lần nên ở cùng nhiệt độ, tốc độ chuyển động nhiệt của \(\text{H}_2\) lớn gấp 4 lần \(\text{O}_2\), dễ dàng vượt qua tốc độ thoát li (\( 11,2\text{ km/s} \)) và thoát ra ngoài không gian vũ trụ.</p>
+                    <p>c) <strong>Phân tích lỗi sai của AI (Năng lực số):</strong> AI đã mắc 2 lỗi cơ bản về thứ nguyên đơn vị SI: (1) Không đổi \( 7,9\text{ km/s} \) ra \( 7900\text{ m/s} \) (làm kết quả bị nhỏ đi \( 10^6 \) lần); (2) Không đổi \( M = 32\text{ g/mol} \) ra \( 32 \cdot 10^{-3}\text{ kg/mol} \) (làm kết quả lệch thêm \( 10^3 \) lần). Do đó kết quả của AI bị sai lệch đi \( 10^3 \) lần (\( 80\text{ K} \) thay vì \( 8,0 \cdot 10^4\text{ K} \)).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: BÀI TỰ ĐÁNH GIÁ (INTERACTIVE QUIZ) ==================== -->
+        <section id="tab6" class="tab-content">
+            <div class="card">
+                <div class="card-title">🎯 Bài Tự Đánh Giá Trắc Nghiệm (4 Câu hỏi Trọng tâm)</div>
+                <p style="margin-bottom:1.25rem;">Hãy chọn phương án đúng nhất cho từng câu hỏi dưới đây và nhấn nút <strong>"Nộp bài & Xem kết quả"</strong>.</p>
+
+                <div id="quiz-container"></div>
+
+                <div style="margin-top:1.5rem; display:flex; gap:0.75rem;">
+                    <button class="btn btn-primary" onclick="submitQuiz()">✅ Nộp bài & Xem kết quả</button>
+                    <button class="btn btn-secondary" onclick="resetQuiz()">🔄 Làm lại</button>
+                </div>
+
+                <div id="quiz-result-box" style="display:none; margin-top:1.5rem;"></div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 7: TIỆN ÍCH LỚP HỌC ==================== -->
+        <section id="tab7" class="tab-content">
+            <div class="grid-2">
+                <!-- VISUAL TIMER -->
+                <div class="card" id="timer-card" style="text-align:center;">
+                    <div class="card-title" style="justify-content:center;">⏱️ Đồng Hồ Đếm Ngược Thảo Luận Nhóm</div>
+                    <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem;">Công cụ quản lý thời gian hoạt động nhóm trên lớp kèm âm báo tự động.</p>
+
+                    <div style="position:relative; width:220px; height:220px; margin:0 auto 1rem auto;">
+                        <svg width="220" height="220" viewBox="0 0 220 220">
+                            <circle cx="110" cy="110" r="96" fill="none" stroke="#e2e8f0" stroke-width="14"></circle>
+                            <circle id="timer-ring" cx="110" cy="110" r="96" fill="none" stroke="#0284c7" stroke-width="14"
+                                stroke-dasharray="603.18" stroke-dashoffset="0" stroke-linecap="round"
+                                transform="rotate(-90 110 110)" style="transition: stroke-dashoffset 0.3s linear;"></circle>
+                        </svg>
+                        <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                            <div class="timer-display" id="timer-text">03:00</div>
+                            <div style="font-size:0.8rem; color:var(--text-muted); font-weight:600;" id="timer-status">SẴN SÀNG</div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:center; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem;">
+                        <button class="btn btn-secondary" onclick="setTimer(60)">1 Phút</button>
+                        <button class="btn btn-secondary" onclick="setTimer(180)">3 Phút</button>
+                        <button class="btn btn-secondary" onclick="setTimer(300)">5 Phút</button>
+                        <button class="btn btn-secondary" onclick="setTimer(600)">10 Phút</button>
+                    </div>
+
+                    <div style="display:flex; justify-content:center; gap:0.75rem;">
+                        <button class="btn btn-primary" id="btn-timer-start" onclick="toggleTimer()">▶️ Bắt đầu</button>
+                        <button class="btn btn-secondary" onclick="resetTimer()">🔄 Đặt lại</button>
+                    </div>
+                </div>
+
+                <!-- LUCKY WHEEL -->
+                <div class="card">
+                    <div class="card-title" style="justify-content:center;">🎡 Vòng Quay May Mắn Gọi Tên Học Sinh</div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; align-items:center;">
+                        <div style="text-align:center; position:relative;">
+                            <canvas id="wheelCanvas" width="260" height="260" style="background:transparent; border-radius:50%;"></canvas>
+                            <button class="btn btn-accent" onclick="spinWheel()" id="btn-spin" style="margin-top:0.75rem; width:100%; font-size:1rem;">🎯 QUAY NGAY</button>
+                        </div>
+
+                        <div>
+                            <div class="form-group">
+                                <label>Chọn Tổ / Nhóm học tập:</label>
+                                <select id="wheel-group" class="form-control" onchange="loadGroupPreset()">
+                                    <option value="all">Cả 4 Tổ (Tổ 1, 2, 3, 4)</option>
+                                    <option value="to1">Danh sách Tổ 1</option>
+                                    <option value="to2">Danh sách Tổ 2</option>
+                                    <option value="to3">Danh sách Tổ 3</option>
+                                    <option value="to4">Danh sách Tổ 4</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom:0.5rem;">
+                                <label>Danh sách tên (mỗi dòng 1 tên):</label>
+                                <textarea id="wheel-names" rows="6" class="form-control" oninput="drawWheel()" style="font-size:0.85rem;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- POPUP MODAL FOR LUCKY WHEEL -->
+    <div class="modal-overlay" id="winner-modal">
+        <div class="modal-card">
+            <div style="font-size:3rem; margin-bottom:0.5rem;">🎉</div>
+            <h2 style="color:var(--primary-dark); margin-bottom:0.5rem;">XIN CHÚC MỪNG!</h2>
+            <p style="color:var(--text-muted); margin-bottom:1rem;">Học sinh / Nhóm được mời trả lời câu hỏi Vật lý là:</p>
+            <div id="winner-name" style="font-size:1.6rem; font-weight:800; color:var(--accent); background:#fffbeb; padding:0.75rem; border-radius:10px; border:2px dashed var(--accent); margin-bottom:1.5rem;"></div>
+            <button class="btn btn-primary" onclick="closeWinnerModal()">Đã rõ! Tiếp tục bài học</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div><strong>© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</strong></div>
+        <div style="font-size:0.8rem; margin-top:0.25rem; color:#94a3b8;">Hệ thống Học liệu Vật lý 12 Tương tác — Chương trình GDPT 2018</div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* =========================================================
+           1. CẤU HÌNH KATEX AUTO-RENDER CHUẨN QUY ĐỊNH
+        ========================================================= */
+        const katexConfig = {
+            delimiters: [
+                { left: "\\[", right: "\\]", display: true },
+                { left: "\\(", right: "\\)", display: false }
+            ],
+            throwOnError: false
+        };
+
+        function renderAllMath(element = document.body) {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(element, katexConfig);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            renderAllMath();
+            initSim3A();
+            initSim3B();
+            initQuiz();
+            loadGroupPreset();
+            updateTimerDisplay();
+        });
+
+        /* =========================================================
+           2. ĐIỀU HƯỚNG TAB & ĐÓNG MỞ HỘP GỢI Ý
+        ========================================================= */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            const target = document.getElementById(tabId);
+            if (target) target.classList.add('active');
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            const mapIndex = { 'tab1': 0, 'tab2': 1, 'tab3a': 2, 'tab3b': 3, 'tab4': 4, 'tab5': 5, 'tab6': 6, 'tab7': 7 };
+            if (mapIndex[tabId] !== undefined && buttons[mapIndex[tabId]]) {
+                buttons[mapIndex[tabId]].classList.add('active');
+            }
+            renderAllMath(target);
+        }
+
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (el.style.display === "block") {
+                el.style.display = "none";
+            } else {
+                el.style.display = "block";
+                renderAllMath(el);
+            }
+        }
+
+        /* =========================================================
+           3A. MÔ PHỎNG VA CHẠM PHÂN TỬ & ÁP SUẤT (SIMULATION 3A)
+        ========================================================= */
+        const canvas3a = document.getElementById('sim3aCanvas');
+        const ctx3a = canvas3a.getContext('2d');
+        let particles3a = [];
+        let hits3a = [];
+        let isPaused3a = false;
+
+        function createParticles3A(count, speedScale, boxWidth) {
+            particles3a = [];
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = speedScale * (0.75 + Math.random() * 0.5);
+                particles3a.push({
+                    x: 30 + Math.random() * (boxWidth - 50),
+                    y: 30 + Math.random() * (canvas3a.height - 60),
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    r: 4.5
+                });
+            }
+        }
+
+        function updateSim3A() {
+            const N_sim = parseInt(document.getElementById('slider3a-N').value);
+            const T = parseFloat(document.getElementById('slider3a-T').value);
+            const V = parseFloat(document.getElementById('slider3a-V').value); // Lít
+            const M_g = parseFloat(document.getElementById('select3a-gas').value); // g/mol
+
+            document.getElementById('val3a-N').textContent = N_sim + " hạt";
+            document.getElementById('val3a-T').textContent = `${T} K (${Math.round(T - 273)} °C)`;
+            document.getElementById('val3a-V').textContent = V.toFixed(1).replace('.', ',') + " Lít";
+
+            // Tính toán vật lý thực tế (1 hạt mô phỏng đại diện cho 10^21 phân tử)
+            const k = 1.38e-23;
+            const R = 8.31;
+            const M_kg = M_g * 1e-3;
+            const N_real = N_sim * 1e21;
+            const V_m3 = V * 1e-3;
+
+            const mu = N_real / V_m3; // m^-3
+            const Ed = 1.5 * k * T; // J
+            const vrms = Math.sqrt((3 * R * T) / M_kg); // m/s
+            const p_Pa = (2 / 3) * mu * Ed; // Pa
+            const p_kPa = p_Pa / 1000;
+
+            const muExp = Math.floor(Math.log10(mu));
+            const muMant = (mu / Math.pow(10, muExp)).toFixed(2).replace('.', ',');
+            const edExp = Math.floor(Math.log10(Ed));
+            const edMant = (Ed / Math.pow(10, edExp)).toFixed(2).replace('.', ',');
+
+            document.getElementById('out3a-mu').innerHTML = `\\(${muMant} \\cdot 10^{${muExp}}\\text{ m}^{-3}\\)`;
+            document.getElementById('out3a-Ed').innerHTML = `\\(${edMant} \\cdot 10^{${edExp}}\\text{ J}\\)`;
+            document.getElementById('out3a-vrms').innerHTML = `\\(${Math.round(vrms)}\\text{ m/s}\\)`;
+            document.getElementById('out3a-p').innerHTML = `\\(${p_kPa.toFixed(1).replace('.', ',')}\\text{ kPa}\\)`;
+            renderAllMath(document.getElementById('tab3a'));
+
+            // Cập nhật vận tốc mô phỏng tỉ lệ với v_rms
+            const boxRight = 40 + (V / 12) * 510;
+            const speedScale = Math.min(Math.max(vrms / 140, 1.2), 9.5);
+
+            if (particles3a.length !== N_sim) {
+                createParticles3A(N_sim, speedScale, boxRight - 20);
+            } else {
+                particles3a.forEach(pt => {
+                    const currentSpeed = Math.hypot(pt.vx, pt.vy) || 1;
+                    pt.vx = (pt.vx / currentSpeed) * speedScale;
+                    pt.vy = (pt.vy / currentSpeed) * speedScale;
+                    if (pt.x > boxRight - 10) pt.x = boxRight - 15;
+                });
+            }
+        }
+
+        function togglePause3A() {
+            isPaused3a = !isPaused3a;
+            document.getElementById('btnPause3A').textContent = isPaused3a ? "▶️ Tiếp tục" : "⏸️ Tạm dừng";
+        }
+
+        function resetSim3A() {
+            document.getElementById('slider3a-N').value = 60;
+            document.getElementById('slider3a-T').value = 300;
+            document.getElementById('slider3a-V').value = 10;
+            document.getElementById('select3a-gas').value = "28";
+            isPaused3a = false;
+            document.getElementById('btnPause3A').textContent = "⏸️ Tạm dừng";
+            particles3a = [];
+            updateSim3A();
+        }
+
+        function initSim3A() {
+            updateSim3A();
+            function animate3A() {
+                ctx3a.clearRect(0, 0, canvas3a.width, canvas3a.height);
+
+                const V = parseFloat(document.getElementById('slider3a-V').value);
+                const T = parseFloat(document.getElementById('slider3a-T').value);
+                const boxLeft = 20;
+                const boxTop = 20;
+                const boxBottom = canvas3a.height - 20;
+                const boxRight = 40 + (V / 12) * 510;
+
+                // Vẽ bình chứa
+                ctx3a.strokeStyle = "#94a3b8";
+                ctx3a.lineWidth = 4;
+                ctx3a.strokeRect(boxLeft, boxTop, boxRight - boxLeft, boxBottom - boxTop);
+
+                // Vẽ Pít-tông bên phải (Thành bình ABCD)
+                ctx3a.fillStyle = "#38bdf8";
+                ctx3a.fillRect(boxRight, boxTop, 14, boxBottom - boxTop);
+                ctx3a.fillStyle = "#64748b";
+                ctx3a.fillRect(boxRight + 14, (boxTop + boxBottom) / 2 - 8, 560 - boxRight, 16);
+
+                // Màu hạt theo nhiệt độ T
+                const ratioT = (T - 100) / 1100;
+                const rCol = Math.round(56 + ratioT * 199);
+                const gCol = Math.round(189 - ratioT * 100);
+                const bCol = Math.round(248 - ratioT * 180);
+                const particleColor = `rgb(${rCol},${gCol},${bCol})`;
+
+                // Cập nhật & vẽ hạt
+                particles3a.forEach((pt, idx) => {
+                    if (!isPaused3a) {
+                        pt.x += pt.vx;
+                        pt.y += pt.vy;
+
+                        if (pt.x - pt.r < boxLeft) {
+                            pt.x = boxLeft + pt.r;
+                            pt.vx = -pt.vx;
+                        }
+                        if (pt.x + pt.r > boxRight) {
+                            pt.x = boxRight - pt.r;
+                            pt.vx = -pt.vx;
+                            hits3a.push({ x: boxRight, y: pt.y, alpha: 1.0 });
+                        }
+                        if (pt.y - pt.r < boxTop) {
+                            pt.y = boxTop + pt.r;
+                            pt.vy = -pt.vy;
+                        }
+                        if (pt.y + pt.r > boxBottom) {
+                            pt.y = boxBottom - pt.r;
+                            pt.vy = -pt.vy;
+                        }
+                    }
+
+                    ctx3a.beginPath();
+                    ctx3a.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
+                    ctx3a.fillStyle = idx === 0 ? "#facc15" : particleColor;
+                    ctx3a.fill();
+
+                    // Vẽ vector vận tốc cho hạt mẫu số 0
+                    if (idx === 0) {
+                        ctx3a.beginPath();
+                        ctx3a.moveTo(pt.x, pt.y);
+                        ctx3a.lineTo(pt.x + pt.vx * 6, pt.y + pt.vy * 6);
+                        ctx3a.strokeStyle = "#facc15";
+                        ctx3a.lineWidth = 2;
+                        ctx3a.stroke();
+                    }
+                });
+
+                // Vẽ hiệu ứng xung lực va chạm lên thành bình phải
+                for (let i = hits3a.length - 1; i >= 0; i--) {
+                    const h = hits3a[i];
+                    ctx3a.beginPath();
+                    ctx3a.arc(h.x, h.y, 10 * (1.2 - h.alpha), 0, Math.PI * 2);
+                    ctx3a.strokeStyle = `rgba(239, 68, 68, ${h.alpha})`;
+                    ctx3a.lineWidth = 2.5;
+                    ctx3a.stroke();
+                    h.alpha -= 0.05;
+                    if (h.alpha <= 0) hits3a.splice(i, 1);
+                }
+
+                requestAnimationFrame(animate3A);
+            }
+            requestAnimationFrame(animate3A);
+        }
+
+        /* =========================================================
+           3B. MÔ PHỎNG ĐỘNG NĂNG & HỖN HỢP KHÍ N2, O2, CO2 (SIM 3B)
+        ========================================================= */
+        const canvas3b = document.getElementById('sim3bCanvas');
+        const ctx3b = canvas3b.getContext('2d');
+        let mixParticles = [];
+
+        function initSim3B() {
+            const types = [
+                { name: 'N2', M: 28, color: '#38bdf8', r: 4.5 },
+                { name: 'O2', M: 32, color: '#34d399', r: 5.2 },
+                { name: 'CO2', M: 44, color: '#fbbf24', r: 6.2 }
+            ];
+            mixParticles = [];
+            types.forEach(t => {
+                for (let i = 0; i < 18; i++) {
+                    const ang = Math.random() * Math.PI * 2;
+                    mixParticles.push({
+                        name: t.name,
+                        M: t.M,
+                        color: t.color,
+                        r: t.r,
+                        x: 30 + Math.random() * (canvas3b.width - 60),
+                        y: 30 + Math.random() * (canvas3b.height - 60),
+                        dirX: Math.cos(ang),
+                        dirY: Math.sin(ang),
+                        speed: 2
+                    });
+                }
+            });
+            updateSim3B();
+
+            function animate3B() {
+                ctx3b.clearRect(0, 0, canvas3b.width, canvas3b.height);
+                ctx3b.strokeStyle = "#64748b";
+                ctx3b.lineWidth = 3;
+                ctx3b.strokeRect(12, 12, canvas3b.width - 24, canvas3b.height - 24);
+
+                mixParticles.forEach(p => {
+                    p.x += p.dirX * p.speed;
+                    p.y += p.dirY * p.speed;
+
+                    if (p.x - p.r < 14) { p.x = 14 + p.r; p.dirX *= -1; }
+                    if (p.x + p.r > canvas3b.width - 14) { p.x = canvas3b.width - 14 - p.r; p.dirX *= -1; }
+                    if (p.y - p.r < 14) { p.y = 14 + p.r; p.dirY *= -1; }
+                    if (p.y + p.r > canvas3b.height - 14) { p.y = canvas3b.height - 14 - p.r; p.dirY *= -1; }
+
+                    ctx3b.beginPath();
+                    ctx3b.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx3b.fillStyle = p.color;
+                    ctx3b.fill();
+                });
+
+                requestAnimationFrame(animate3B);
+            }
+            requestAnimationFrame(animate3B);
+        }
+
+        function updateSim3B() {
+            const T = parseFloat(document.getElementById('slider3b-T').value);
+            document.getElementById('val3b-T').textContent = `${T} K (${Math.round(T - 273)} °C)`;
+            document.getElementById('lbl3b-T').textContent = `${T} K`;
+
+            const k = 1.38e-23;
+            const R = 8.31;
+            const Ed = 1.5 * k * T;
+            const edExp = Math.floor(Math.log10(Ed));
+            const edMant = (Ed / Math.pow(10, edExp)).toFixed(2).replace('.', ',');
+
+            const vN2 = Math.sqrt((3 * R * T) / 0.028);
+            const vO2 = Math.sqrt((3 * R * T) / 0.032);
+            const vCO2 = Math.sqrt((3 * R * T) / 0.044);
+
+            document.getElementById('out3b-Ed').innerHTML = `\\(${edMant} \\cdot 10^{${edExp}}\\text{ J}\\)`;
+            document.getElementById('out3b-vN2').textContent = Math.round(vN2) + " m/s";
+            document.getElementById('out3b-vO2').textContent = Math.round(vO2) + " m/s";
+            document.getElementById('out3b-vCO2').textContent = Math.round(vCO2) + " m/s";
+
+            mixParticles.forEach(p => {
+                const vReal = Math.sqrt((3 * R * T) / (p.M * 1e-3));
+                p.speed = vReal / 160;
+            });
+
+            const maxV = 1000;
+            const pctEd = Math.min((T / 1000) * 100, 100);
+            document.getElementById('sim3b-bars').innerHTML = `
+                <div style="font-size:0.85rem; font-weight:700; margin-bottom:0.35rem;">1. Động năng trung bình \\(\\bar{E}_{d}\\) (Bằng nhau cho cả 3 khí):</div>
+                <div style="background:#e2e8f0; border-radius:6px; height:18px; overflow:hidden; margin-bottom:0.85rem;">
+                    <div style="width:${pctEd}%; background:linear-gradient(90deg, #0284c7, #10b981); height:100%;"></div>
+                </div>
+                <div style="font-size:0.85rem; font-weight:700; margin-bottom:0.35rem;">2. Tốc độ căn quân phương \\(\\sqrt{\\overline{v^2}}\\):</div>
+                <div style="font-size:0.8rem; margin-bottom:2px;">Khí \\(\\text{N}_2\\): ${Math.round(vN2)} m/s</div>
+                <div style="background:#e2e8f0; border-radius:6px; height:14px; overflow:hidden; margin-bottom:0.4rem;">
+                    <div style="width:${Math.min(vN2/maxV*100, 100)}%; background:#38bdf8; height:100%;"></div>
+                </div>
+                <div style="font-size:0.8rem; margin-bottom:2px;">Khí \\(\\text{O}_2\\): ${Math.round(vO2)} m/s</div>
+                <div style="background:#e2e8f0; border-radius:6px; height:14px; overflow:hidden; margin-bottom:0.4rem;">
+                    <div style="width:${Math.min(vO2/maxV*100, 100)}%; background:#10b981; height:100%;"></div>
+                </div>
+                <div style="font-size:0.8rem; margin-bottom:2px;">Khí \\(\\text{CO}_2\\): ${Math.round(vCO2)} m/s</div>
+                <div style="background:#e2e8f0; border-radius:6px; height:14px; overflow:hidden;">
+                    <div style="width:${Math.min(vCO2/maxV*100, 100)}%; background:#f59e0b; height:100%;"></div>
+                </div>
+            `;
+            renderAllMath(document.getElementById('tab3b'));
+        }
+
+        /* =========================================================
+           4. MÁY TÍNH THAM SỐ VẬT LÝ (CALCULATOR MODULE)
+        ========================================================= */
+        function formatSciLatex(val) {
+            if (val === 0) return "0";
+            if (Math.abs(val) >= 0.01 && Math.abs(val) < 10000) {
+                return Number(val.toPrecision(4)).toString().replace('.', ',');
+            }
+            const exp = Math.floor(Math.log10(Math.abs(val)));
+            const mant = (val / Math.pow(10, exp)).toFixed(2).replace('.', ',');
+            return `${mant} \\cdot 10^{${exp}}`;
+        }
+
+        function fillDemoCalc1() {
+            document.getElementById('calc1-p').value = "2000000";
+            document.getElementById('calc1-mu').value = "4.84e26";
+            document.getElementById('calc1-T').value = "";
+            solveCalc1();
+        }
+
+        function clearCalc1() {
+            document.getElementById('calc1-p').value = "";
+            document.getElementById('calc1-mu').value = "";
+            document.getElementById('calc1-T').value = "";
+            document.getElementById('calc1-result').style.display = "none";
+        }
+
+        function solveCalc1() {
+            const pStr = document.getElementById('calc1-p').value.trim();
+            const muStr = document.getElementById('calc1-mu').value.trim();
+            const TStr = document.getElementById('calc1-T').value.trim();
+            const resBox = document.getElementById('calc1-result');
+            const k = 1.38e-23;
+
+            let html = "";
+            if (pStr === "" && muStr !== "" && TStr !== "") {
+                const mu = parseFloat(muStr);
+                const T = parseFloat(TStr);
+                const Ed = 1.5 * k * T;
+                const p = (2 / 3) * mu * Ed;
+                html = `
+                    <strong>✅ Kết quả giải chi tiết (Tìm \\( \\bar{E}_{d} \\) và \\( p \\)):</strong>
+                    \\[ \\bar{E}_{d} = \\frac{3}{2}kT = \\frac{3}{2} \\cdot 1,38 \\cdot 10^{-23} \\cdot ${T} = ${formatSciLatex(Ed)}\\text{ J} \\]
+                    \\[ p = \\frac{2}{3}\\mu \\bar{E}_{d} = \\frac{2}{3} \\cdot (${formatSciLatex(mu)}) \\cdot (${formatSciLatex(Ed)}) = \\mathbf{${formatSciLatex(p)}\\text{ Pa}} \\]
+                `;
+            } else if (muStr === "" && pStr !== "" && TStr !== "") {
+                const p = parseFloat(pStr);
+                const T = parseFloat(TStr);
+                const Ed = 1.5 * k * T;
+                const mu = (1.5 * p) / Ed;
+                html = `
+                    <strong>✅ Kết quả giải chi tiết (Tìm mật độ phân tử \\( \\mu \\)):</strong>
+                    \\[ \\bar{E}_{d} = \\frac{3}{2}kT = ${formatSciLatex(Ed)}\\text{ J} \\]
+                    \\[ p = \\frac{2}{3}\\mu \\bar{E}_{d} \\Rightarrow \\mu = \\frac{3p}{2\\bar{E}_{d}} = \\frac{3 \\cdot ${formatSciLatex(p)}}{2 \\cdot ${formatSciLatex(Ed)}} = \\mathbf{${formatSciLatex(mu)}\\text{ phân tử/m}^3} \\]
+                `;
+            } else if (TStr === "" && pStr !== "" && muStr !== "") {
+                const p = parseFloat(pStr);
+                const mu = parseFloat(muStr);
+                const Ed = (1.5 * p) / mu;
+                const T = (2 * Ed) / (3 * k);
+                html = `
+                    <strong>✅ Kết quả giải chi tiết (Tìm \\( \\bar{E}_{d} \\) và \\( T \\)):</strong>
+                    \\[ p = \\frac{2}{3}\\mu \\bar{E}_{d} \\Rightarrow \\bar{E}_{d} = \\frac{3p}{2\\mu} = \\frac{3 \\cdot ${formatSciLatex(p)}}{2 \\cdot ${formatSciLatex(mu)}} = \\mathbf{${formatSciLatex(Ed)}\\text{ J}} \\]
+                    \\[ \\bar{E}_{d} = \\frac{3}{2}kT \\Rightarrow T = \\frac{2\\bar{E}_{d}}{3k} = \\frac{2 \\cdot ${formatSciLatex(Ed)}}{3 \\cdot 1,38 \\cdot 10^{-23}} = \\mathbf{${formatSciLatex(T)}\\text{ K}} \\]
+                `;
+            } else {
+                html = `<span style="color:var(--danger); font-weight:600;">⚠️ Vui lòng nhập đúng 2 đại lượng đã biết và để trống 1 đại lượng cần tìm!</span>`;
+            }
+
+            resBox.innerHTML = html;
+            resBox.style.display = "block";
+            renderAllMath(resBox);
+        }
+
+        function fillDemoCalc2() {
+            document.getElementById('calc2-v').value = "";
+            document.getElementById('calc2-T').value = "320";
+            document.getElementById('calc2-M').value = "4";
+            solveCalc2();
+        }
+
+        function clearCalc2() {
+            document.getElementById('calc2-v').value = "";
+            document.getElementById('calc2-T').value = "";
+            document.getElementById('calc2-M').value = "";
+            document.getElementById('calc2-result').style.display = "none";
+        }
+
+        function solveCalc2() {
+            const vStr = document.getElementById('calc2-v').value.trim();
+            const TStr = document.getElementById('calc2-T').value.trim();
+            const MStr = document.getElementById('calc2-M').value.trim();
+            const resBox = document.getElementById('calc2-result');
+            const R = 8.31;
+
+            let html = "";
+            if (vStr === "" && TStr !== "" && MStr !== "") {
+                const T = parseFloat(TStr);
+                const M_g = parseFloat(MStr);
+                const M_kg = M_g * 1e-3;
+                const vrms = Math.sqrt((3 * R * T) / M_kg);
+                html = `
+                    <strong>✅ Kết quả giải chi tiết (Tìm tốc độ căn quân phương \\( \\sqrt{\\overline{v^2}} \\)):</strong>
+                    <p>Đổi đơn vị: \\( M = ${M_g}\\text{ g/mol} = ${M_g} \\cdot 10^{-3}\\text{ kg/mol} \\).</p>
+                    \\[ \\sqrt{\\overline{v^2}} = \\sqrt{\\frac{3RT}{M}} = \\sqrt{\\frac{3 \\cdot 8,31 \\cdot ${T}}{${M_g} \\cdot 10^{-3}}} \\approx \\mathbf{${Math.round(vrms)}\\text{ m/s}} \\]
+                `;
+            } else if (TStr === "" && vStr !== "" && MStr !== "") {
+                const v = parseFloat(vStr);
+                const M_g = parseFloat(MStr);
+                const M_kg = M_g * 1e-3;
+                const T = (v * v * M_kg) / (3 * R);
+                html = `
+                    <strong>✅ Kết quả giải chi tiết (Tìm nhiệt độ tuyệt đối \\( T \\)):</strong>
+                    \\[ \\overline{v^2} = \\frac{3RT}{M} \\Rightarrow T = \\frac{\\overline{v^2} \\cdot M}{3R} = \\frac{${v}^2 \\cdot ${M_g} \\cdot 10^{-3}}{3 \\cdot 8,31} \\approx \\mathbf{${formatSciLatex(T)}\\text{ K}} \\]
+                `;
+            } else if (MStr === "" && vStr !== "" && TStr !== "") {
+                const v = parseFloat(vStr);
+                const T = parseFloat(TStr);
+                const M_kg = (3 * R * T) / (v * v);
+                const M_g = M_kg * 1000;
+                html = `
+                    <strong>✅ Kết quả giải chi tiết (Tìm khối lượng mol \\( M \\)):</strong>
+                    \\[ M = \\frac{3RT}{\\overline{v^2}} = \\frac{3 \\cdot 8,31 \\cdot ${T}}{${v}^2} \\approx ${formatSciLatex(M_kg)}\\text{ kg/mol} \\approx \\mathbf{${M_g.toFixed(1).replace('.', ',')}\\text{ g/mol}} \\]
+                `;
+            } else {
+                html = `<span style="color:var(--danger); font-weight:600;">⚠️ Vui lòng nhập đúng 2 đại lượng đã biết và để trống 1 đại lượng cần tìm!</span>`;
+            }
+
+            resBox.innerHTML = html;
+            resBox.style.display = "block";
+            renderAllMath(resBox);
+        }
+
+        /* =========================================================
+           6. BÀI TỰ ĐÁNH GIÁ (INTERACTIVE QUIZ)
+        ========================================================= */
+        const quizQuestions = [
+            {
+                q: "Câu 1: Theo mô hình động học phân tử, áp suất chất khí tác dụng lên thành bình KHÔNG được xác định bằng biểu thức nào sau đây?",
+                options: [
+                    "A. \\( p = \\frac{2}{3}\\frac{Nm}{V}\\overline{v^2} \\)",
+                    "B. \\( p = \\frac{1}{3}\\frac{Nm}{V}\\overline{v^2} \\)",
+                    "C. \\( p = \\frac{1}{3}\\rho \\overline{v^2} \\)",
+                    "D. \\( p = \\frac{2}{3}\\mu \\bar{E}_{d} \\)"
+                ],
+                correct: 0,
+                explain: "Ta có \\( p = \\frac{1}{3}\\frac{Nm}{V}\\overline{v^2} = \\frac{1}{3}\\rho \\overline{v^2} = \\frac{2}{3}\\mu \\bar{E}_{d} \\) (vì \\( \\bar{E}_{d} = \\frac{1}{2}m\\overline{v^2} \\)). Do đó biểu thức \\( p = \\frac{2}{3}\\frac{Nm}{V}\\overline{v^2} \\) là SAI hệ số."
+            },
+            {
+                q: "Câu 2: Không khí là hỗn hợp gồm các khí chính như Nitrogen (\\(\\text{N}_2\\), \\(M = 28\\text{ g/mol}\\)), Oxygen (\\(\\text{O}_2\\), \\(M = 32\\text{ g/mol}\\)) và Carbon dioxide (\\(\\text{CO}_2\\), \\(M = 44\\text{ g/mol}\\)) ở cùng một nhiệt độ. Sắp xếp giá trị \\(\\overline{v^2}\\) của phân tử các chất khí này theo thứ tự TĂNG DẦN là:",
+                options: [
+                    "A. \\(\\text{CO}_2\\); \\(\\text{N}_2\\); \\(\\text{O}_2\\).",
+                    "B. \\(\\text{O}_2\\); \\(\\text{CO}_2\\); \\(\\text{N}_2\\).",
+                    "C. \\(\\text{N}_2\\); \\(\\text{O}_2\\); \\(\\text{CO}_2\\).",
+                    "D. \\(\\text{CO}_2\\); \\(\\text{O}_2\\); \\(\\text{N}_2\\)."
+                ],
+                correct: 3,
+                explain: "Ở cùng nhiệt độ \\(T\\), động năng tịnh tiến trung bình \\(\\bar{E}_{d} = \\frac{1}{2}m\\overline{v^2} = \\frac{3}{2}kT\\) của các phân tử bằng nhau. Suy ra \\(\\overline{v^2} = \\frac{3RT}{M}\\) tỉ lệ nghịch với khối lượng mol \\(M\\). Vì \\(M_{\\text{CO}_2} (44) > M_{\\text{O}_2} (32) > M_{\\text{N}_2} (28)\\) nên \\(\\overline{v^2}_{\\text{CO}_2} < \\overline{v^2}_{\\text{O}_2} < \\overline{v^2}_{\\text{N}_2}\\)."
+            },
+            {
+                q: "Câu 3: Một chiếc xe tải vượt qua sa mạc Safari. Buổi sáng sớm nhiệt độ là \\( 3,0\\text{ }^\\circ\\text{C} \\), đến giữa trưa nhiệt độ tăng lên \\( 42\\text{ }^\\circ\\text{C} \\). Coi khí trong lốp xe có nhiệt độ như ngoài trời và \\( k = 1,38 \\cdot 10^{-23}\\text{ J/K} \\). Độ tăng động năng tịnh tiến trung bình \\(\\Delta \\bar{E}_{d}\\) của một phân tử khí do sự gia tăng nhiệt độ này là:",
+                options: [
+                    "A. \\( 0,81 \\cdot 10^{-21}\\text{ J} \\)",
+                    "B. \\( 6,52 \\cdot 10^{-21}\\text{ J} \\)",
+                    "C. \\( 5,71 \\cdot 10^{-21}\\text{ J} \\)",
+                    "D. \\( 1,38 \\cdot 10^{-21}\\text{ J} \\)"
+                ],
+                correct: 0,
+                explain: "Độ tăng nhiệt độ tuyệt đối bằng độ tăng nhiệt độ Celsius: \\( \\Delta T = T_2 - T_1 = 42 - 3,0 = 39\\text{ K} \\). Độ tăng động năng tịnh tiến trung bình của một phân tử khí là: \\[ \\Delta \\bar{E}_{d} = \\frac{3}{2}k\\Delta T = \\frac{3}{2} \\cdot 1,38 \\cdot 10^{-23} \\cdot 39 = 8,073 \\cdot 10^{-22}\\text{ J} \\approx 0,81 \\cdot 10^{-21}\\text{ J} \\]"
+            },
+            {
+                q: "Câu 4: Áp suất của một khối khí lí tưởng là \\( p = 2,00\\text{ MPa} \\), số phân tử khí trong \\( 1,00\\text{ cm}^3 \\) là \\( 4,84 \\cdot 10^{20}\\text{ phân tử} \\). Cho \\( k = 1,38 \\cdot 10^{-23}\\text{ J/K} \\). Động năng tịnh tiến trung bình của phân tử khí và nhiệt độ của khối khí lần lượt là:",
+                options: [
+                    "A. \\( \\bar{E}_{d} = 6,20 \\cdot 10^{-21}\\text{ J} \\) và \\( T \\approx 299\\text{ K} \\)",
+                    "B. \\( \\bar{E}_{d} = 4,13 \\cdot 10^{-21}\\text{ J} \\) và \\( T \\approx 305\\text{ K} \\)",
+                    "C. \\( \\bar{E}_{d} = 6,20 \\cdot 10^{-21}\\text{ J} \\) và \\( T \\approx 350\\text{ K} \\)",
+                    "D. \\( \\bar{E}_{d} = 3,10 \\cdot 10^{-21}\\text{ J} \\) và \\( T \\approx 299\\text{ K} \\)"
+                ],
+                correct: 0,
+                explain: "Mật độ phân tử khí: \\( \\mu = \\frac{N}{V} = \\frac{4,84 \\cdot 10^{20}}{1,00 \\cdot 10^{-6}\\text{ m}^3} = 4,84 \\cdot 10^{26}\\text{ m}^{-3} \\). <br>Từ công thức \\( p = \\frac{2}{3}\\mu \\bar{E}_{d} \\Rightarrow \\bar{E}_{d} = \\frac{3p}{2\\mu} = \\frac{3 \\cdot 2,00 \\cdot 10^6}{2 \\cdot 4,84 \\cdot 10^{26}} \\approx 6,20 \\cdot 10^{-21}\\text{ J} \\). <br>Nhiệt độ tuyệt đối: \\( T = \\frac{2\\bar{E}_{d}}{3k} = \\frac{2 \\cdot 6,20 \\cdot 10^{-21}}{3 \\cdot 1,38 \\cdot 10^{-23}} \\approx 299,5\\text{ K} \\approx 299\\text{ K} \\)."
+            }
+        ];
+
+        function initQuiz() {
+            const container = document.getElementById('quiz-container');
+            let html = "";
+            quizQuestions.forEach((item, idx) => {
+                html += `
+                    <div class="card" style="margin-bottom:1rem; background:#f8fafc;">
+                        <div style="font-weight:700; margin-bottom:0.75rem; color:var(--text-main);">${item.q}</div>
+                        ${item.options.map((opt, oIdx) => `
+                            <label class="quiz-option" id="lbl-q${idx}-o${oIdx}">
+                                <input type="radio" name="quiz-q${idx}" value="${oIdx}">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            renderAllMath(container);
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            let detailHtml = "";
+
+            quizQuestions.forEach((item, idx) => {
+                const selected = document.querySelector(`input[name="quiz-q${idx}"]:checked`);
+                const userAns = selected ? parseInt(selected.value) : -1;
+                const isCorrect = (userAns === item.correct);
+                if (isCorrect) score++;
+
+                detailHtml += `
+                    <div class="highlight-box" style="border-left-color: ${isCorrect ? 'var(--success)' : 'var(--danger)'}; background:white;">
+                        <div style="font-weight:700; color:${isCorrect ? '#047857' : '#b91c1c'};">
+                            Câu ${idx + 1}: ${isCorrect ? '✅ Chính xác!' : '❌ Chưa đúng'} (Đáp án đúng: ${['A','B','C','D'][item.correct]})
+                        </div>
+                        <div style="margin-top:0.35rem; font-size:0.93rem;"><strong>Giải thích:</strong> ${item.explain}</div>
+                    </div>
+                `;
+            });
+
+            const resultBox = document.getElementById('quiz-result-box');
+            resultBox.innerHTML = `
+                <div class="card" style="border:2px solid var(--primary); margin-bottom:0;">
+                    <h3 style="color:var(--primary-dark); margin-bottom:0.75rem;">📊 Kết quả của bạn: ${score} / ${quizQuestions.length} câu đúng (${(score/quizQuestions.length)*10} điểm)</h3>
+                    ${detailHtml}
+                </div>
+            `;
+            resultBox.style.display = "block";
+            // BẮT BUỘC gọi lại renderMathInElement ngay sau khi in kết quả
+            renderMathInElement(resultBox, katexConfig);
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('#quiz-container input[type="radio"]').forEach(r => r.checked = false);
+            const resultBox = document.getElementById('quiz-result-box');
+            resultBox.style.display = "none";
+            resultBox.innerHTML = "";
+        }
+
+        /* =========================================================
+           7. TIỆN ÍCH LỚP HỌC: ĐỒNG HỒ ĐẾM NGƯỢC & VÒNG QUAY MAY MẮN
+        ========================================================= */
+        let totalSeconds = 180;
+        let remainingSeconds = 180;
+        let timerInterval = null;
+        const circumference = 2 * Math.PI * 96;
+
+        function setTimer(sec) {
+            pauseTimer();
+            totalSeconds = sec;
+            remainingSeconds = sec;
+            document.getElementById('timer-card').classList.remove('blink-alarm');
+            document.getElementById('timer-status').textContent = "SẴN SÀNG";
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+            const secs = (remainingSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('timer-text').textContent = `${mins}:${secs}`;
+
+            const ring = document.getElementById('timer-ring');
+            const offset = circumference * (1 - remainingSeconds / totalSeconds);
+            ring.style.strokeDashoffset = offset;
+        }
+
+        function playBeep() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                for (let i = 0; i < 3; i++) {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.frequency.value = 880;
+                    gain.gain.setValueAtTime(0.25, ctx.currentTime + i * 0.3);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.3 + 0.25);
+                    osc.start(ctx.currentTime + i * 0.3);
+                    osc.stop(ctx.currentTime + i * 0.3 + 0.25);
+                }
+            } catch (e) {}
+        }
+
+        function toggleTimer() {
+            if (timerInterval) {
+                pauseTimer();
+            } else {
+                if (remainingSeconds <= 0) remainingSeconds = totalSeconds;
+                document.getElementById('timer-card').classList.remove('blink-alarm');
+                document.getElementById('timer-status').textContent = "ĐANG ĐẾM NGƯỢC...";
+                document.getElementById('btn-timer-start').textContent = "⏸️ Tạm dừng";
+                timerInterval = setInterval(() => {
+                    remainingSeconds--;
+                    updateTimerDisplay();
+                    if (remainingSeconds <= 0) {
+                        pauseTimer();
+                        document.getElementById('timer-status').textContent = "⏰ HẾT GIỜ!";
+                        document.getElementById('timer-card').classList.add('blink-alarm');
+                        playBeep();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            document.getElementById('btn-timer-start').textContent = "▶️ Bắt đầu";
+        }
+
+        function resetTimer() {
+            setTimer(totalSeconds);
+        }
+
+        // LUCKY WHEEL
+        const wheelPresets = {
+            all: ["Tổ 1 - Nhóm A", "Tổ 1 - Nhóm B", "Tổ 2 - Nhóm A", "Tổ 2 - Nhóm B", "Tổ 3 - Nhóm A", "Tổ 3 - Nhóm B", "Tổ 4 - Nhóm A", "Tổ 4 - Nhóm B"],
+            to1: ["Nguyễn Minh An (Tổ 1)", "Trần Bảo Châu (Tổ 1)", "Lê Hoàng Dũng (Tổ 1)", "Phạm Thu Hà (Tổ 1)", "Võ Quốc Khánh (Tổ 1)", "Hoàng Gia Bảo (Tổ 1)"],
+            to2: ["Đặng Ngọc Ánh (Tổ 2)", "Bùi Tuấn Kiệt (Tổ 2)", "Ngô Phương Linh (Tổ 2)", "Đỗ Minh Quân (Tổ 2)", "Hồ Thanh Thảo (Tổ 2)", "Lý Gia Huy (Tổ 2)"],
+            to3: ["Phan Thanh Bình (Tổ 3)", "Vũ Ngọc Diệp (Tổ 3)", "Đinh Hoàng Nam (Tổ 3)", "Trịnh Mai Phương (Tổ 3)", "Lương Thế Vinh (Tổ 3)", "Mai Xuân Phúc (Tổ 3)"],
+            to4: ["Cao Minh Khôi (Tổ 4)", "Dương Quỳnh Như (Tổ 4)", "Tạ Quang Sáng (Tổ 4)", "Chu Bảo Trâm (Tổ 4)", "Nguyễn Hải Đăng (Tổ 4)", "Lâm Tâm Như (Tổ 4)"]
+        };
+
+        const wheelColors = ["#0284c7", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#0ea5e9", "#14b8a6"];
+        let wheelAngle = 0;
+        let isSpinning = false;
+
+        function loadGroupPreset() {
+            const g = document.getElementById('wheel-group').value;
+            document.getElementById('wheel-names').value = wheelPresets[g].join("\n");
+            drawWheel();
+        }
+
+        function getWheelList() {
+            return document.getElementById('wheel-names').value
+                .split("\n")
+                .map(s => s.trim())
+                .filter(s => s.length > 0);
+        }
+
+        function drawWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            const ctx = canvas.getContext('2d');
+            const items = getWheelList();
+            const n = items.length || 1;
+            const arc = (Math.PI * 2) / n;
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const r = cx - 10;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < n; i++) {
+                const start = wheelAngle + i * arc;
+                const end = start + arc;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, start, end);
+                ctx.closePath();
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.fill();
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(start + arc / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 11px Inter, sans-serif";
+                const label = items[i] ? (items[i].length > 18 ? items[i].slice(0, 16) + "…" : items[i]) : "Trống";
+                ctx.fillText(label, r - 10, 4);
+                ctx.restore();
+            }
+
+            // Vẽ tâm & kim chỉ ở góc 0 rad (bên phải)
+            ctx.beginPath();
+            ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+            ctx.fillStyle = "#0f172a";
+            ctx.fill();
+            ctx.strokeStyle = "#ffffff";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 2, cy - 10);
+            ctx.lineTo(canvas.width - 2, cy + 10);
+            ctx.lineTo(canvas.width - 22, cy);
+            ctx.closePath();
+            ctx.fillStyle = "#facc15";
+            ctx.fill();
+            ctx.strokeStyle = "#0f172a";
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            const items = getWheelList();
+            if (items.length === 0) return;
+
+            isSpinning = true;
+            const spinDuration = 3500;
+            const startAngle = wheelAngle;
+            const extraSpins = (5 + Math.random() * 4) * Math.PI * 2;
+            const startTime = performance.now();
+
+            function step(now) {
+                const t = Math.min((now - startTime) / spinDuration, 1);
+                const easeOut = 1 - Math.pow(1 - t, 3);
+                wheelAngle = startAngle + extraSpins * easeOut;
+                drawWheel();
+
+                if (t < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    isSpinning = false;
+                    const normalized = ((2 * Math.PI - (wheelAngle % (2 * Math.PI))) + 2 * Math.PI) % (2 * Math.PI);
+                    const arc = (2 * Math.PI) / items.length;
+                    const idx = Math.floor(normalized / arc) % items.length;
+                    showWinnerModal(items[idx]);
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        function showWinnerModal(name) {
+            document.getElementById('winner-name').textContent = name;
+            document.getElementById('winner-modal').style.display = "flex";
+            playBeep();
+        }
+
+        function closeWinnerModal() {
+            document.getElementById('winner-modal').style.display = "none";
+        }
+    </script>
+</body>
+</html>
