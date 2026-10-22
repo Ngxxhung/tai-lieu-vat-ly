@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vật Lý 12 - Bài 18: Ứng dụng hiện tượng cảm ứng điện từ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.35);
+            transform: translateY(-1px);
+        }
+        .sim-subtab.active {
+            background-color: #0284c7;
+            color: white;
+            border-color: #0284c7;
+        }
+        .card-scientific {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .katex-display {
+            margin: 0.75em 0 !important;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.25rem 0;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: #ef4444; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            50% { border-color: #fca5a5; box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+        }
+        .timer-finished {
+            animation: pulse-border 1s infinite;
+        }
+        input[type="range"] {
+            accent-color: #0284c7;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-gradient-to-r from-slate-900 via-blue-900 to-sky-900 text-white shadow-lg border-b-4 border-sky-400">
+        <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 border border-sky-400/30 text-sky-200 text-xs font-semibold uppercase tracking-wider mb-2">
+                    <i class="fa-solid fa-bolt-lightning text-amber-400"></i> Vật Lý 12 • Chương III: Từ Trường • Chủ đề 5 (Bài 18)
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                    ỨNG DỤNG HIỆN TƯỢNG CẢM ỨNG ĐIỆN TỪ
+                </h1>
+                <p class="mt-1.5 text-sm sm:text-base font-medium text-sky-200 flex items-center justify-center md:justify-start gap-2">
+                    <i class="fa-solid fa-graduation-cap text-amber-300"></i>
+                    <span>© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</span>
+                </p>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-800/70 px-4 py-2.5 rounded-xl border border-slate-700">
+                <div class="text-right">
+                    <div class="text-xs text-slate-400">Trạng thái hệ thống</div>
+                    <div class="text-sm font-bold text-emerald-400 flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span> Phòng Lab Sẵn Sàng
+                    </div>
+                </div>
+                <i class="fa-solid fa-microchip text-2xl text-sky-400"></i>
+            </div>
+        </div>
+    </header>
+
+    <nav class="bg-white shadow-sm sticky top-0 z-30 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-2 sm:px-4">
+            <div class="flex items-center space-x-1 overflow-x-auto py-2.5 no-scrollbar" id="main-tabs">
+                <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn active whitespace-nowrap px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-1.5">
+                    <span>🚀 1. Khởi động</span>
+                </button>
+                <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-1.5">
+                    <span>📖 2. Cốt lõi Lý thuyết</span>
+                </button>
+                <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-1.5">
+                    <span>🔬 3. Mô phỏng Tương tác</span>
+                </button>
+                <button onclick="switchTab('tab4')" id="btn-tab4" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-1.5">
+                    <span>🧮 4. Máy tính Vật lý</span>
+                </button>
+                <button onclick="switchTab('tab5')" id="btn-tab5" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-1.5">
+                    <span>📝 5. Luyện tập Phân hóa</span>
+                </button>
+                <button onclick="switchTab('tab6')" id="btn-tab6" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-1.5">
+                    <span>🎯 6. Tự đánh giá (Quiz)</span>
+                </button>
+                <button onclick="switchTab('tab7')" id="btn-tab7" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-1.5">
+                    <span>🛠️ 7. Tiện ích Lớp học</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 lg:px-8">
+
+        <section id="tab1" class="tab-content space-y-6">
+            <div class="bg-gradient-to-br from-blue-600 to-indigo-800 rounded-2xl p-6 sm:p-8 text-white shadow-lg">
+                <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-3">
+                    <i class="fa-solid fa-rocket text-amber-300"></i>
+                    KHỞI ĐỘNG & THỰC TIỄN: NHỮNG NGHỊCH LÝ ĐIỆN TỪ QUANH TA
+                </h2>
+                <p class="mt-2 text-blue-100 max-w-3xl leading-relaxed">
+                    Hiện tượng cảm ứng điện từ do Michael Faraday khám phá năm 1831 không chỉ nằm trên trang sách mà đang vận hành thế giới hiện đại từng giây. Hãy cùng giải mã 4 tình huống mâu thuẫn nhận thức dưới đây trước khi bước vào bài học!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Tình huống 1 -->
+                <div class="card-scientific p-6 hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold uppercase">Tình huống 1: Sạc Không Dây</span>
+                            <i class="fa-solid fa-mobile-screen-button text-2xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Truyền điện qua lớp vỏ nhựa cách điện?</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            Chúng ta đều biết dòng điện cần dây dẫn kim loại kín mạch để chạy từ ổ cắm vào điện thoại. Thế nhưng với đế sạc không dây, chỉ cần đặt chiếc điện thoại có lưng bằng kính/nhựa lên mặt đế nhựa là pin tự động được nạp đầy!
+                        </p>
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg text-sm text-amber-900">
+                            <strong><i class="fa-solid fa-circle-question"></i> Câu hỏi mâu thuẫn:</strong> Không hề có điểm tiếp xúc kim loại nào giữa sạc và điện thoại, năng lượng điện đã "nhảy" qua lớp vỏ cách điện bằng cơ chế vật lý nào?
+                        </div>
+                    </div>
+                    <button onclick="toggleWarmupAnswer('ans-w1')" class="mt-4 w-full py-2 bg-slate-100 hover:bg-blue-50 text-blue-700 font-semibold rounded-lg text-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lightbulb"></i> Khám phá bản chất vật lý
+                    </button>
+                    <div id="ans-w1" class="hidden mt-3 p-3.5 bg-blue-50 rounded-lg text-sm text-slate-700 border border-blue-200">
+                        <strong>Giải mã:</strong> Sạc không dây chính là một <strong>máy biến áp tách rời</strong>! Cuộn sơ cấp nằm trong đế sạc nhận dòng xoay chiều tạo ra từ trường biến thiên xuyên qua vỏ nhựa. Cuộn thứ cấp gắn sau lưng điện thoại đón từ thông biến thiên \(\Phi\) này và sinh ra suất điện động cảm ứng \(e_{c} = -N\frac{\Delta \Phi}{\Delta t}\) để sạc pin.
+                    </div>
+                </div>
+
+                <!-- Tình huống 2 -->
+                <div class="card-scientific p-6 hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 bg-rose-100 text-rose-800 rounded-full text-xs font-bold uppercase">Tình huống 2: Bếp Từ "Lạnh"</span>
+                            <i class="fa-solid fa-fire-burner text-2xl text-rose-600"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Nước sôi sùng sục nhưng mặt bếp vẫn mát?</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            Khi đun bếp ga hay bếp hồng ngoại, mặt bếp nóng đỏ rực rồi mới truyền nhiệt lên đáy nồi. Nhưng trên bếp từ, nếu đặt một tờ giấy dưới đáy nồi inox đang đun nước sôi \(100\text{ }^\circ\text{C}\), tờ giấy không hề bị cháy! Mặt khác, đặt nồi thủy tinh hay nồi nhôm dày lên thì bếp từ lại báo lỗi không đun được.
+                        </p>
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg text-sm text-amber-900">
+                            <strong><i class="fa-solid fa-circle-question"></i> Câu hỏi mâu thuẫn:</strong> Tại sao mặt bếp không tỏa nhiệt mà đáy nồi tự nóng lên dữ dội? Vì sao nồi nhôm dẫn điện tốt nhưng bếp từ lại "kén" không nhận?
+                        </div>
+                    </div>
+                    <button onclick="toggleWarmupAnswer('ans-w2')" class="mt-4 w-full py-2 bg-slate-100 hover:bg-blue-50 text-blue-700 font-semibold rounded-lg text-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lightbulb"></i> Khám phá bản chất vật lý
+                    </button>
+                    <div id="ans-w2" class="hidden mt-3 p-3.5 bg-blue-50 rounded-lg text-sm text-slate-700 border border-blue-200">
+                        <strong>Giải mã:</strong> Cuộn dây dưới mặt kính bếp từ tạo ra từ trường biến thiên tần số cao (khoảng \(20\text{ kHz} - 30\text{ kHz}\)). Từ trường này xuyên qua mặt kính cách nhiệt và sinh ra <strong>dòng điện xoáy Foucault</strong> trực tiếp trong đáy nồi bằng vật liệu sắt từ (inox nhiễm từ), làm đáy nồi tự tỏa nhiệt theo định luật Joule-Lenz \(Q = I^2 R t\).
+                    </div>
+                </div>
+
+                <!-- Tình huống 3 -->
+                <div class="card-scientific p-6 hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-bold uppercase">Tình huống 3: Đàn Ghi Ta Điện</span>
+                            <i class="fa-solid fa-guitar text-2xl text-purple-600"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Cây đàn gỗ đặc không hộp cộng hưởng!</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            Đàn ghi ta thùng (Acoustic) bắt buộc phải có thùng đàn rỗng để cộng hưởng âm thanh và dùng dây nilon hoặc kim loại đều kêu to. Ngược lại, đàn ghi ta điện có thân gỗ đặc nguyên khối. Nếu rút dây cắm loa ra và gảy, tiếng đàn bé xíu như tiếng gảy dây chun!
+                        </p>
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg text-sm text-amber-900">
+                            <strong><i class="fa-solid fa-circle-question"></i> Câu hỏi mâu thuẫn:</strong> Làm sao bộ phận "Pick-up" dưới dây đàn có thể "nghe" được đúng tần số nốt nhạc và tại sao tuyệt đối không thể lắp dây nilon cho đàn ghi ta điện?
+                        </div>
+                    </div>
+                    <button onclick="toggleWarmupAnswer('ans-w3')" class="mt-4 w-full py-2 bg-slate-100 hover:bg-blue-50 text-blue-700 font-semibold rounded-lg text-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lightbulb"></i> Khám phá bản chất vật lý
+                    </button>
+                    <div id="ans-w3" class="hidden mt-3 p-3.5 bg-blue-50 rounded-lg text-sm text-slate-700 border border-blue-200">
+                        <strong>Giải mã:</strong> Dây đàn bằng thép bị nam châm vĩnh cửu bên dưới từ hóa thành một nam châm nhỏ. Khi gảy dây đàn dao động với tần số \(f\), từ thông qua cuộn dây cảm ứng biến thiên cùng tần số \(f\), tạo ra dòng điện cảm ứng xoay chiều mang tín hiệu âm thanh đưa tới bộ khuếch đại (Amply). Dây nilon không nhiễm từ nên không tạo ra hiện tượng này!
+                    </div>
+                </div>
+
+                <!-- Tình huống 4 -->
+                <div class="card-scientific p-6 hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase">Tình huống 4: Đường dây 500 kV</span>
+                            <i class="fa-solid fa-tower-observation text-2xl text-emerald-600"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Nghịch lý điện áp siêu cao \(500\text{ kV}\)?</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            Các thiết bị điện trong gia đình chỉ dùng điện áp hiệu dụng \(U = 220\text{ V}\). Thế nhưng để truyền tải điện năng từ nhà máy thủy điện Hòa Bình vào miền Nam, người ta lại phải dùng máy biến áp nâng điện áp lên tới \(U = 500\text{ kV} = 500\,000\text{ V}\) cực kỳ nguy hiểm rồi mới hạ xuống!
+                        </p>
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg text-sm text-amber-900">
+                            <strong><i class="fa-solid fa-circle-question"></i> Câu hỏi mâu thuẫn:</strong> Theo định luật Ohm hay công thức \(P_{hp} = \frac{U^2}{R}\), tăng \(U\) đáng lẽ làm hao phí tăng? Tại sao nâng điện áp lên \(n\) lần lại giúp giảm công suất hao phí đi \(n^2\) lần?
+                        </div>
+                    </div>
+                    <button onclick="toggleWarmupAnswer('ans-w4')" class="mt-4 w-full py-2 bg-slate-100 hover:bg-blue-50 text-blue-700 font-semibold rounded-lg text-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lightbulb"></i> Khám phá bản chất vật lý
+                    </button>
+                    <div id="ans-w4" class="hidden mt-3 p-3.5 bg-blue-50 rounded-lg text-sm text-slate-700 border border-blue-200">
+                        <strong>Giải mã:</strong> Điện áp \(U = 500\text{ kV}\) là điện áp giữa hai dây truyền tải, KHÔNG phải là độ sụt áp \(\Delta U = I \cdot R\) trên dây! Với công suất truyền tải \(P\) xác định, cường độ dòng điện trên dây là \(I = \frac{P}{U \cos\varphi}\). Do đó công suất tỏa nhiệt hao phí là \(P_{hp} = I^2 R = \frac{P^2 R}{U^2 \cos^2\varphi}\). Khi tăng \(U\) lên \(n\) lần thì \(I\) giảm \(n\) lần, dẫn đến \(P_{hp}\) giảm \(n^2\) lần!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab2" class="tab-content hidden space-y-6">
+            <!-- 1. Khái niệm then chốt -->
+            <div class="card-scientific p-6">
+                <h2 class="text-xl font-bold text-blue-900 border-b border-slate-200 pb-3 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-sky-600"></i>
+                    I. KHÁI NIỆM THEN CHỐT & NGUYÊN LÝ VẬT LÝ
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-blue-800 text-base mb-2 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center">1</span>
+                            Máy biến áp & Truyền tải điện
+                        </h3>
+                        <ul class="text-sm text-slate-700 space-y-2 list-disc pl-4">
+                            <li><strong>Định nghĩa:</strong> Thiết bị biến đổi điện áp (và cường độ) của dòng điện xoay chiều nhưng <strong>giữ nguyên tần số \(f\)</strong>.</li>
+                            <li><strong>Cấu tạo:</strong> Cuộn sơ cấp (\(N_{1}\) vòng) nối nguồn xoay chiều \(u_{1}\); cuộn thứ cấp (\(N_{2}\) vòng) nối tải tiêu thụ \(u_{2}\); lõi biến áp gồm các lá thép kỹ thuật điện (pha silicon) ghép cách điện.</li>
+                            <li><strong>Điều kiện áp dụng:</strong> Chỉ hoạt động với <strong>dòng điện xoay chiều</strong> (hoặc dòng điện biến thiên). Nếu nối với nguồn không đổi (DC), từ thông \(\Phi\) không biến thiên nên \(U_{2} = 0\text{ V}\).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-blue-800 text-base mb-2 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center">2</span>
+                            Đàn ghi ta điện (Pickup cảm ứng)
+                        </h3>
+                        <ul class="text-sm text-slate-700 space-y-2 list-disc pl-4">
+                            <li><strong>Cấu tạo:</strong> Thân đàn đặc (không có hộp cộng hưởng), dây đàn làm bằng <strong>thép</strong> (vật liệu sắt từ). Bên dưới mỗi dây đàn có cuộn dây cảm ứng bọc quanh một nam châm vĩnh cửu nhỏ.</li>
+                            <li><strong>Nguyên lý:</strong> Đoạn dây thép sát nam châm bị từ hóa. Khi gảy đàn, dây thép dao động làm từ thông \(\Phi\) qua cuộn dây biến thiên cùng tần số với tần số dao động cơ của dây đàn, sinh ra suất điện động cảm ứng \(e_{c} = -N\frac{\Delta \Phi}{\Delta t}\) đưa tới máy tăng âm và loa.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-blue-800 text-base mb-2 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center">3</span>
+                            Dòng điện Foucault (Dòng điện xoáy)
+                        </h3>
+                        <ul class="text-sm text-slate-700 space-y-2 list-disc pl-4">
+                            <li><strong>Bản chất:</strong> Là dòng điện cảm ứng có đường sức khép kín (xoáy) sinh ra trực tiếp bên trong một <strong>khối vật dẫn</strong> khi khối vật dẫn chuyển động cắt các đường sức từ hoặc đặt trong từ trường biến thiên theo thời gian.</li>
+                            <li><strong>Tác dụng:</strong>
+                                <br>+ <em>Cản trở chuyển động (Định luật Lenz):</em> Ứng dụng làm phanh điện từ, bộ hãm kim đồng hồ đo điện, phân loại đồng xu.
+                                <br>+ <em>Tỏa nhiệt (Joule-Lenz):</em> Ứng dụng trong bếp từ, lò luyện kim cảm ứng.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Hệ thống công thức cốt lõi -->
+            <div class="card-scientific p-6">
+                <h2 class="text-xl font-bold text-blue-900 border-b border-slate-200 pb-3 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-square-root-variable text-sky-600"></i>
+                    II. HỆ THỐNG CÔNG THỨC CỐT LÕI & ĐƠN VỊ SI
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-800 text-white">
+                                <th class="p-3.5 border border-slate-700">Tên quy luật / Thiết bị</th>
+                                <th class="p-3.5 border border-slate-700">Công thức Vật lý chuẩn</th>
+                                <th class="p-3.5 border border-slate-700">Giải thích đại lượng & Ý nghĩa vật lý</th>
+                                <th class="p-3.5 border border-slate-700">Đơn vị chuẩn (SI)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3.5 font-semibold text-slate-800">1. Suất điện động cảm ứng (Định luật Faraday)</td>
+                                <td class="p-3.5 bg-blue-50/50 font-medium">
+                                    \[ e_{c} = -N \frac{\Delta \Phi}{\Delta t} \]
+                                    \[ |e_{c}| = B l v \sin\theta \]
+                                </td>
+                                <td class="p-3.5 text-slate-600">
+                                    • \(e_{c}\): Suất điện động cảm ứng xuất hiện trong cuộn dây.<br>
+                                    • \(N\): Số vòng dây của cuộn dây.<br>
+                                    • \(\Delta \Phi\): Độ biến thiên từ thông qua 1 vòng dây trong thời gian \(\Delta t\).<br>
+                                    • \(l, \vec{v}\): Chiều dài và vận tốc đoạn dây dẫn cắt từ trường \(\vec{B}\).
+                                </td>
+                                <td class="p-3.5 text-slate-700">
+                                    • \(e_{c}\): Vôn (\(\text{V}\))<br>
+                                    • \(\Phi\): Vêbe (\(\text{Wb}\))<br>
+                                    • \(\Delta t\): Giây (\(\text{s}\))<br>
+                                    • \(B\): Tesla (\(\text{T}\))
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3.5 font-semibold text-slate-800">2. Công thức Máy biến áp lý tưởng (Khi có tải kín)</td>
+                                <td class="p-3.5 bg-blue-50/50 font-medium">
+                                    \[ \frac{U_{1}}{U_{2}} = \frac{E_{1}}{E_{2}} = \frac{N_{1}}{N_{2}} = \frac{I_{2}}{I_{1}} \]
+                                    <span class="text-xs text-slate-500 block mt-1">Hệ số biến áp: \(k = \frac{N_{1}}{N_{2}}\) (hoặc xét tỉ số \(\frac{N_{2}}{N_{1}}\))</span>
+                                </td>
+                                <td class="p-3.5 text-slate-600">
+                                    • \(U_{1}, U_{2}\): Điện áp hiệu dụng ở cuộn sơ cấp và thứ cấp.<br>
+                                    • \(N_{1}, N_{2}\): Số vòng dây cuộn sơ cấp và thứ cấp.<br>
+                                    • \(I_{1}, I_{2}\): Cường độ dòng điện hiệu dụng cuộn sơ cấp và thứ cấp.<br>
+                                    • Nếu \(N_{2} > N_{1} \Rightarrow U_{2} > U_{1}\): <strong>Máy tăng áp</strong>.<br>
+                                    • Nếu \(N_{2} < N_{1} \Rightarrow U_{2} < U_{1}\): <strong>Máy hạ áp</strong>.
+                                </td>
+                                <td class="p-3.5 text-slate-700">
+                                    • \(U_{1}, U_{2}\): \(\text{V}\)<br>
+                                    • \(I_{1}, I_{2}\): Ampe (\(\text{A}\))<br>
+                                    • \(N_{1}, N_{2}\): vòng
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3.5 font-semibold text-slate-800">3. Công suất hao phí trên đường dây truyền tải</td>
+                                <td class="p-3.5 bg-blue-50/50 font-medium">
+                                    \[ P = U I \cos\varphi \Rightarrow I = \frac{P}{U \cos\varphi} \]
+                                    \[ P_{hp} = I^2 R_{d} = \frac{P^2 R_{d}}{U^2 \cos^2\varphi} \]
+                                </td>
+                                <td class="p-3.5 text-slate-600">
+                                    • \(P\): Công suất điện truyền đi tại trạm phát.<br>
+                                    • \(U\): Điện áp hiệu dụng nơi phát.<br>
+                                    • \(\cos\varphi\): Hệ số công suất của mạch truyền tải.<br>
+                                    • \(R_{d} = \rho \frac{l}{S}\): Điện trở tổng cộng của đường dây tải điện.<br>
+                                    • \(P_{hp}\): Công suất tỏa nhiệt hao phí trên đường dây.
+                                </td>
+                                <td class="p-3.5 text-slate-700">
+                                    • \(P, P_{hp}\): Oát (\(\text{W}\))<br>
+                                    • \(R_{d}\): Ôm (\(\Omega\))<br>
+                                    • \(U\): Vôn (\(\text{V}\))
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3.5 font-semibold text-slate-800">4. Hiệu suất truyền tải điện năng & Độ sụt áp</td>
+                                <td class="p-3.5 bg-blue-50/50 font-medium">
+                                    \[ H = \frac{P - P_{hp}}{P} = 1 - \frac{P_{hp}}{P} \]
+                                    \[ \Delta U = I R_{d} \]
+                                </td>
+                                <td class="p-3.5 text-slate-600">
+                                    • \(H\): Hiệu suất truyền tải điện năng.<br>
+                                    • \(\Delta U\): Độ giảm thế (sụt áp) trên đường dây.<br>
+                                    • Khi tăng \(U\) lên \(n\) lần (với \(P, R_{d}, \cos\varphi\) không đổi) thì \(P_{hp}\) giảm \(n^2\) lần.
+                                </td>
+                                <td class="p-3.5 text-slate-700">
+                                    • \(H\): Không thứ nguyên (hoặc \(\%\))<br>
+                                    • \(\Delta U\): Vôn (\(\text{V}\))
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. Bẫy lý thuyết -->
+            <div class="card-scientific p-6 border-l-4 border-l-rose-600">
+                <h2 class="text-xl font-bold text-rose-800 pb-2 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+                    III. BẪY LÝ THUYẾT KINH ĐIỂN HỌC SINH HAY MẮC PHẢI
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-rose-50 border border-rose-200">
+                        <div class="font-bold text-rose-900 mb-1">❌ Bẫy 1: Nhầm tỉ lệ nghịch giữa \(U\) và \(I\) với tỉ lệ thuận</div>
+                        <p class="text-sm text-slate-700">
+                            Nhiều học sinh viết sai thành \(\frac{U_{1}}{U_{2}} = \frac{N_{1}}{N_{2}} = \frac{I_{1}}{I_{2}}\).<br>
+                            <strong>✅ Bản chất đúng:</strong> Vì máy biến áp lý tưởng bảo toàn công suất (\(P_{1} = P_{2} \Leftrightarrow U_{1}I_{1} = U_{2}I_{2}\)), nên máy biến áp làm <strong>tăng điện áp bao nhiêu lần thì giảm cường độ dòng điện bấy nhiêu lần</strong>: \(\frac{U_{1}}{U_{2}} = \frac{N_{1}}{N_{2}} = \frac{I_{2}}{I_{1}}\).
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-rose-50 border border-rose-200">
+                        <div class="font-bold text-rose-900 mb-1">❌ Bẫy 2: Dùng máy biến áp cho bình ắc-quy (Điện một chiều DC)</div>
+                        <p class="text-sm text-slate-700">
+                            Đề bài: "Đặt điện áp không đổi \(U_{1} = 24\text{ V}\) vào cuộn sơ cấp có \(N_{1} = 100\text{ vòng}\), tính \(U_{2}\) ở cuộn thứ cấp \(N_{2} = 500\text{ vòng}\)". Học sinh nhân chéo ra \(120\text{ V}\) là SAI!<br>
+                            <strong>✅ Bản chất đúng:</strong> Dòng điện không đổi tạo ra từ thông không đổi (\(\Delta \Phi = 0\)), không có hiện tượng cảm ứng điện từ nên \(U_{2} = 0\text{ V}\).
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-rose-50 border border-rose-200">
+                        <div class="font-bold text-rose-900 mb-1">❌ Bẫy 3: Quên nhân đôi chiều dài dây dẫn truyền tải</div>
+                        <p class="text-sm text-slate-700">
+                            Khi bài toán cho khoảng cách từ nhà máy điện đến nơi tiêu thụ là \(d\) (km), học sinh chỉ lấy \(l = d\) để tính điện trở \(R_{d} = \rho \frac{l}{S}\).<br>
+                            <strong>✅ Bản chất đúng:</strong> Truyền tải điện xoay chiều 1 pha cần <strong>2 dây dẫn</strong> (dây đi và dây về), do đó tổng chiều dài dây dẫn phải là \(l = 2d\).
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-rose-50 border border-rose-200">
+                        <div class="font-bold text-rose-900 mb-1">❌ Bẫy 4: Hiểu sai về cấu tạo lõi thép máy biến áp</div>
+                        <p class="text-sm text-slate-700">
+                            Tưởng rằng dòng điện chạy trực tiếp từ cuộn sơ cấp qua lõi thép sang cuộn thứ cấp.<br>
+                            <strong>✅ Bản chất đúng:</strong> Dòng điện không truyền qua lõi thép! Dây quấn được phủ sơn cách điện với lõi; các lá thép kỹ thuật điện cũng được sơn cách điện với nhau để <strong>cắt nhỏ đường đi của dòng điện Foucault</strong>, làm tăng điện trở của lõi đối với dòng xoáy để chống nóng máy.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab3" class="tab-content hidden space-y-6">
+            <!-- Sub-navigation for Multiple Simulation Labs -->
+            <div class="card-scientific p-4 bg-slate-800 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-bold flex items-center gap-2 text-sky-300">
+                        <i class="fa-solid fa-flask-vial"></i> PHÒNG THÍ NGHIỆM ẢO ĐA MÔ HÌNH (MULTI-SIMULATION LAB)
+                    </h2>
+                    <p class="text-xs text-slate-300 mt-0.5">Chọn mô hình thí nghiệm bên phải để tương tác trực tiếp với các tham số vật lý theo thời gian thực.</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="switchSimSubTab('simA')" id="btn-simA" class="sim-subtab active px-4 py-2 rounded-lg text-xs sm:text-sm font-bold border border-slate-600 transition flex items-center gap-2">
+                        <i class="fa-solid fa-bolt"></i> Tab 3A: Máy Biến Áp & Truyền Tải Điện
+                    </button>
+                    <button onclick="switchSimSubTab('simB')" id="btn-simB" class="sim-subtab px-4 py-2 rounded-lg text-xs sm:text-sm font-bold border border-slate-600 bg-slate-700 text-slate-200 hover:bg-slate-600 transition flex items-center gap-2">
+                        <i class="fa-solid fa-guitar"></i> Tab 3B: Ghi Ta Điện & Phanh Foucault
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= TAB 3A: MÁY BIẾN ÁP & TRUYỀN TẢI ĐIỆN NĂNG ================= -->
+            <div id="simA" class="space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Canvas Simulation Area -->
+                    <div class="lg:col-span-8 card-scientific p-4 flex flex-col justify-between">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3 border-b border-slate-100 pb-2">
+                            <div>
+                                <span class="text-xs font-bold uppercase px-2.5 py-1 bg-sky-100 text-sky-800 rounded-md">Mô hình 3A</span>
+                                <h3 class="text-base font-bold text-slate-800 inline-block ml-2">Khảo sát Máy Biến Áp & Dao Động Ký Hai Chùm Tia</h3>
+                            </div>
+                            <div id="transformer-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                                Máy Tăng Áp (\(N_{2} > N_{1}\))
+                            </div>
+                        </div>
+
+                        <!-- Responsive Canvas -->
+                        <div class="relative w-full bg-slate-950 rounded-xl overflow-hidden border border-slate-800" style="height: 400px;">
+                            <canvas id="canvasSimA" class="w-full h-full block"></canvas>
+                        </div>
+
+                        <!-- Hướng dẫn thao tác thử và sai -->
+                        <div class="mt-3 p-3 bg-sky-50 border border-sky-200 rounded-xl text-xs sm:text-sm text-sky-950">
+                            <strong><i class="fa-solid fa-compass-drafting text-sky-600"></i> Nhiệm vụ "Thử và Sai":</strong>
+                            <ul class="list-disc pl-5 mt-1 space-y-1">
+                                <li>Thử giữ nguyên \(U_{1} = 200\text{ V}, N_{1} = 200\text{ vòng}\), kéo thanh trượt tăng \(N_{2}\) lên gấp đôi (\(400\text{ vòng}\)). Quan sát biên độ sóng \(u_{2}(t)\) trên dao động ký và giá trị \(I_{2}\) thay đổi ra sao?</li>
+                                <li>Thử chuyển công tắc nguồn sang <strong>Điện một chiều (DC)</strong>: Quan sát xem từ thông \(\Phi\) trong lõi thép còn biến thiên không và điện áp \(U_{2}\) bằng bao nhiêu?</li>
+                                <li>Tăng điện áp truyền tải \(U_{1}\) hoặc tăng \(N_{2}\) để nâng \(U_{2}\): Quan sát công suất hao phí \(P_{hp}\) trên đường dây truyền tải giảm mạnh như thế nào!</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Control Panel & Real-time Outputs -->
+                    <div class="lg:col-span-4 space-y-4">
+                        <!-- Controls -->
+                        <div class="card-scientific p-5 space-y-4">
+                            <h4 class="font-bold text-slate-800 border-b pb-2 flex items-center justify-between">
+                                <span><i class="fa-solid fa-sliders text-sky-600"></i> Tham số điều khiển (Inputs)</span>
+                                <button onclick="resetSimA()" class="text-xs text-sky-600 hover:underline font-medium"><i class="fa-solid fa-rotate-left"></i> Đặt lại</button>
+                            </h4>
+
+                            <!-- Loại nguồn điện -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1.5">Chế độ nguồn điện sơ cấp:</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="setSourceType('AC')" id="btn-src-ac" class="py-1.5 px-3 rounded-lg text-xs font-bold bg-sky-600 text-white shadow-sm transition">
+                                        Xoay chiều (AC)
+                                    </button>
+                                    <button onclick="setSourceType('DC')" id="btn-src-dc" class="py-1.5 px-3 rounded-lg text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 transition">
+                                        Một chiều (DC)
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- U1 -->
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span class="text-slate-700">Điện áp sơ cấp \(U_{1}\):</span>
+                                    <span id="lbl-u1" class="text-sky-700 font-bold">220 V</span>
+                                </div>
+                                <input type="range" id="slider-u1" min="50" max="500" step="10" value="220" oninput="updateSimAParams()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+                            </div>
+
+                            <!-- N1 -->
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span class="text-slate-700">Số vòng cuộn sơ cấp \(N_{1}\):</span>
+                                    <span id="lbl-n1" class="text-sky-700 font-bold">200 vòng</span>
+                                </div>
+                                <input type="range" id="slider-n1" min="100" max="1000" step="50" value="200" oninput="updateSimAParams()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+                            </div>
+
+                            <!-- N2 -->
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span class="text-slate-700">Số vòng cuộn thứ cấp \(N_{2}\):</span>
+                                    <span id="lbl-n2" class="text-emerald-700 font-bold">400 vòng</span>
+                                </div>
+                                <input type="range" id="slider-n2" min="100" max="1000" step="50" value="400" oninput="updateSimAParams()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+                            </div>
+
+                            <!-- Điện trở đường dây truyền tải R_d -->
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span class="text-slate-700">Điện trở đường dây tải \(R_{d}\):</span>
+                                    <span id="lbl-rd" class="text-amber-700 font-bold">20 \(\Omega\)</span>
+                                </div>
+                                <input type="range" id="slider-rd" min="5" max="100" step="5" value="20" oninput="updateSimAParams()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+                            </div>
+                        </div>
+
+                        <!-- Real-time Outputs -->
+                        <div class="card-scientific p-5 bg-slate-900 text-white space-y-3">
+                            <h4 class="font-bold text-sky-400 text-sm border-b border-slate-700 pb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-gauge-high"></i> ĐẦU RA THỜI GIAN THỰC (REAL-TIME)
+                            </h4>
+                            <div class="grid grid-cols-2 gap-2.5 text-xs">
+                                <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700">
+                                    <div class="text-slate-400">Tỉ số vòng \(\frac{N_{2}}{N_{1}}\)</div>
+                                    <div id="out-ratio" class="text-base font-bold text-white mt-0.5">2.00</div>
+                                </div>
+                                <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700">
+                                    <div class="text-slate-400">Điện áp ra \(U_{2}\)</div>
+                                    <div id="out-u2" class="text-base font-bold text-emerald-400 mt-0.5">440.0 V</div>
+                                </div>
+                                <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700">
+                                    <div class="text-slate-400">Dòng thứ cấp \(I_{2}\) (truyền tải)</div>
+                                    <div id="out-i2" class="text-base font-bold text-amber-300 mt-0.5">22.73 A</div>
+                                </div>
+                                <div class="bg-slate-800 p-2.5 rounded-lg border border-slate-700">
+                                    <div class="text-slate-400">Dòng sơ cấp \(I_{1}\)</div>
+                                    <div id="out-i1" class="text-base font-bold text-sky-300 mt-0.5">45.45 A</div>
+                                </div>
+                            </div>
+                            <div class="bg-slate-800/90 p-3 rounded-lg border border-slate-700 space-y-1.5">
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-slate-300">Công suất truyền đi (\(P = 10\text{ kW}\)):</span>
+                                    <span id="out-p-loss" class="font-bold text-rose-400">\(P_{hp} = 1033\text{ W}\)</span>
+                                </div>
+                                <div class="w-full bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                                    <div id="bar-efficiency" class="bg-emerald-500 h-full transition-all duration-300" style="width: 89.7%"></div>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-slate-400">Hiệu suất truyền tải \(H\):</span>
+                                    <span id="out-eff" class="font-bold text-emerald-400">89.67 %</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 3B: ĐÀN GHI TA ĐIỆN & DÒNG ĐIỆN FOUCAULT ================= -->
+            <div id="simB" class="hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Canvas Simulation B -->
+                    <div class="lg:col-span-8 card-scientific p-4 flex flex-col justify-between">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3 border-b border-slate-100 pb-2">
+                            <div>
+                                <span class="text-xs font-bold uppercase px-2.5 py-1 bg-purple-100 text-purple-800 rounded-md">Mô hình 3B</span>
+                                <h3 class="text-base font-bold text-slate-800 inline-block ml-2">Khảo sát Pickup Đàn Ghi Ta Điện & Con Lắc Foucault</h3>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="setSimBMode('guitar')" id="btn-mode-guitar" class="px-3 py-1 rounded-md text-xs font-bold bg-purple-600 text-white">
+                                    🎸 Đàn Ghi Ta Điện
+                                </button>
+                                <button onclick="setSimBMode('foucault')" id="btn-mode-foucault" class="px-3 py-1 rounded-md text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300">
+                                    🛑 Con Lắc Foucault
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="relative w-full bg-slate-950 rounded-xl overflow-hidden border border-slate-800" style="height: 400px;">
+                            <canvas id="canvasSimB" class="w-full h-full block"></canvas>
+                        </div>
+
+                        <div class="mt-3 p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs sm:text-sm text-purple-950">
+                            <strong><i class="fa-solid fa-compass-drafting text-purple-600"></i> Nhiệm vụ "Thử và Sai":</strong>
+                            <ul class="list-disc pl-5 mt-1 space-y-1">
+                                <li>Ở chế độ <strong>Đàn Ghi Ta Điện</strong>: Bấm nút "Gảy dây đàn", sau đó đổi chất liệu dây sang <em>Dây Nylon</em>. Vì sao dây đàn vẫn dao động cơ học nhưng suất điện động cảm ứng \(e_{c}(t) = 0\text{ V}\)?</li>
+                                <li>Ở chế độ <strong>Con Lắc Foucault</strong>: So sánh thời gian dừng lại giữa <em>Tấm kim loại liền khối</em> và <em>Tấm kim loại có rãnh xẻ</em> khi đi qua khe nam châm chữ U.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Controls for Sim B -->
+                    <div class="lg:col-span-4 space-y-4">
+                        <!-- Guitar Controls -->
+                        <div id="ctrl-guitar" class="card-scientific p-5 space-y-4">
+                            <h4 class="font-bold text-purple-900 border-b pb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-guitar text-purple-600"></i> Điều khiển Đàn Ghi Ta Điện
+                            </h4>
+                            <button onclick="pluckGuitarString()" class="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-md transition transform active:scale-95 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-hand-pointer"></i> GẢY DÂY ĐÀN (PLUCK STRING)
+                            </button>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Chất liệu dây đàn:</label>
+                                <select id="sel-string-mat" onchange="updateSimBParams()" class="w-full p-2 border border-slate-300 rounded-lg text-sm font-medium bg-white">
+                                    <option value="steel">Dây thép hợp kim (Sắt từ - Chuẩn)</option>
+                                    <option value="nylon">Dây Nylon / Nhựa (Không nhiễm từ)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span>Biên độ gảy đàn \(A\):</span>
+                                    <span id="lbl-pluck-amp" class="text-purple-700 font-bold">Mạnh (100%)</span>
+                                </div>
+                                <input type="range" id="slider-pluck-amp" min="20" max="100" step="10" value="100" oninput="updateSimBParams()" class="w-full h-2 bg-slate-200 rounded-lg">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span>Tần số nốt nhạc \(f\):</span>
+                                    <span id="lbl-note-freq" class="text-purple-700 font-bold">440 Hz (Nốt La - A4)</span>
+                                </div>
+                                <input type="range" id="slider-note-freq" min="110" max="880" step="110" value="440" oninput="updateSimBParams()" class="w-full h-2 bg-slate-200 rounded-lg">
+                            </div>
+                        </div>
+
+                        <!-- Foucault Controls -->
+                        <div id="ctrl-foucault" class="hidden card-scientific p-5 space-y-4">
+                            <h4 class="font-bold text-rose-900 border-b pb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-magnet text-rose-600"></i> Điều khiển Con Lắc Foucault
+                            </h4>
+                            <button onclick="releasePendulum()" class="w-full py-3 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-700 hover:to-amber-700 text-white font-bold rounded-xl shadow-md transition transform active:scale-95 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-play"></i> KÉO LỆCH & THẢ CON LẮC
+                            </button>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Cấu tạo tấm kim loại K:</label>
+                                <select id="sel-plate-type" onchange="releasePendulum()" class="w-full p-2 border border-slate-300 rounded-lg text-sm font-medium bg-white">
+                                    <option value="solid">Tấm đồng liền khối (Dòng Foucault mạnh)</option>
+                                    <option value="slotted">Tấm đồng có rãnh xẻ (Giảm dòng Foucault)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span>Cảm ứng từ nam châm \(B\):</span>
+                                    <span id="lbl-foucault-b" class="text-rose-700 font-bold">0.8 T</span>
+                                </div>
+                                <input type="range" id="slider-foucault-b" min="0" max="1.5" step="0.1" value="0.8" oninput="updateSimBParams()" class="w-full h-2 bg-slate-200 rounded-lg">
+                            </div>
+                        </div>
+
+                        <!-- Output Box Sim B -->
+                        <div class="card-scientific p-5 bg-slate-900 text-white space-y-2.5 text-xs">
+                            <h4 class="font-bold text-purple-400 text-sm border-b border-slate-700 pb-1.5">
+                                <i class="fa-solid fa-wave-square"></i> Trạng thái Vật lý
+                            </h4>
+                            <div id="simB-status-text" class="text-slate-300 leading-relaxed">
+                                Dây đàn bằng thép bị từ hóa. Khi dao động làm từ thông \(\Phi\) qua cuộn dây Pickup biến thiên, sinh ra suất điện động cảm ứng \(e_{c}\) cùng tần số với âm thanh.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab4" class="tab-content hidden space-y-6">
+            <div class="card-scientific p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-blue-900 flex items-center gap-2">
+                            <i class="fa-solid fa-calculator text-sky-600"></i>
+                            MÁY TÍNH THAM SỐ VẬT LÝ TỰ ĐỘNG (STEP-BY-STEP SOLVER)
+                        </h2>
+                        <p class="text-sm text-slate-600 mt-1">
+                            Nhập các đại lượng đã biết và <strong>bỏ trống (để rỗng) đúng 1 đại lượng cần tìm</strong>. Hệ thống sẽ tự động phân tích và trình bày lời giải chi tiết bằng KaTeX.
+                        </p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="switchCalcMode('calc-mba')" id="btn-calc-mba" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold bg-blue-600 text-white shadow">
+                            1. Máy Biến Áp Lý Tưởng
+                        </button>
+                        <button onclick="switchCalcMode('calc-trans')" id="btn-calc-trans" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300">
+                            2. Truyền Tải Điện Năng
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Module 1: Máy biến áp -->
+                <div id="calc-mba" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-5 bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-800 text-base">Nhập 3 trong 4 thông số (\(U_{1}, U_{2}, N_{1}, N_{2}\))</h3>
+                            <button onclick="fillSampleMBA()" class="text-xs text-blue-600 hover:underline font-semibold">Điền ví dụ mẫu</button>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Điện áp sơ cấp \(U_{1}\text{ (V)}\):</label>
+                                <input type="number" id="inp-u1" placeholder="Bỏ trống nếu cần tìm" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Điện áp thứ cấp \(U_{2}\text{ (V)}\):</label>
+                                <input type="number" id="inp-u2" placeholder="Bỏ trống nếu cần tìm" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Số vòng sơ cấp \(N_{1}\text{ (vòng)}\):</label>
+                                <input type="number" id="inp-n1" placeholder="Bỏ trống nếu cần tìm" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Số vòng thứ cấp \(N_{2}\text{ (vòng)}\):</label>
+                                <input type="number" id="inp-n2" placeholder="Bỏ trống nếu cần tìm" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                        </div>
+                        <div class="pt-2 border-t border-slate-200">
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Tuỳ chọn thêm: Cường độ dòng thứ cấp \(I_{2}\text{ (A)}\) (để tính \(I_{1}, P\)):</label>
+                            <input type="number" id="inp-i2" placeholder="Nhập I2 (nếu có, VD: 5)" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div class="flex gap-2 pt-2">
+                            <button onclick="solveTransformer()" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Tính toán & Giải chi tiết
+                            </button>
+                            <button onclick="clearMBAInputs()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg text-sm">
+                                Xóa
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-white p-5 rounded-xl border-2 border-dashed border-slate-300 flex flex-col justify-center" id="res-mba">
+                        <div class="text-center text-slate-400 py-8">
+                            <i class="fa-solid fa-square-root-variable text-4xl mb-2 text-slate-300"></i>
+                            <p class="text-sm">Nhập 3 đại lượng đã biết và bỏ trống 1 đại lượng cần tìm, sau đó bấm <strong>"Tính toán & Giải chi tiết"</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 2: Truyền tải điện năng -->
+                <div id="calc-trans" class="hidden grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-5 bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-800 text-base">Nhập 4 trong 5 thông số truyền tải</h3>
+                            <button onclick="fillSampleTrans()" class="text-xs text-blue-600 hover:underline font-semibold">Điền ví dụ mẫu</button>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Công suất phát \(P\text{ (W)}\):</label>
+                                <input type="number" id="inp-p" placeholder="VD: 100000" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Điện áp phát \(U\text{ (V)}\):</label>
+                                <input type="number" id="inp-u" placeholder="VD: 10000" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Điện trở dây \(R_{d}\text{ (}\Omega\text{)}\):</label>
+                                <input type="number" id="inp-r" placeholder="VD: 20" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Hệ số công suất \(\cos\varphi\):</label>
+                                <input type="number" id="inp-cosphi" step="0.05" value="1" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Công suất hao phí \(P_{hp}\text{ (W)}\):</label>
+                                <input type="number" id="inp-php" placeholder="Bỏ trống nếu cần tìm P_hp" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm">
+                            </div>
+                        </div>
+                        <div class="flex gap-2 pt-2">
+                            <button onclick="solveTransmission()" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Giải bài toán truyền tải
+                            </button>
+                            <button onclick="clearTransInputs()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg text-sm">
+                                Xóa
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-white p-5 rounded-xl border-2 border-dashed border-slate-300 flex flex-col justify-center" id="res-trans">
+                        <div class="text-center text-slate-400 py-8">
+                            <i class="fa-solid fa-tower-cell text-4xl mb-2 text-slate-300"></i>
+                            <p class="text-sm">Bỏ trống 1 đại lượng bất kỳ (\(P, U, R_{d}\) hoặc \(P_{hp}\)) để máy tính giải tự động.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab5" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h2 class="text-xl sm:text-2xl font-bold text-blue-900 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-ruler text-sky-600"></i>
+                    PHÒNG LUYỆN TẬP PHÂN HÓA 3 CẤP ĐỘ (GUIDED PRACTICE)
+                </h2>
+                <p class="text-sm text-slate-600 mt-1">
+                    Hệ thống bài tập trích lọc từ tài liệu bài giảng & Sách Bài Tập Vật Lý 12 (KNTT). Hãy tự suy nghĩ trước khi bấm xem Gợi ý tư duy hoặc Lời giải chi tiết.
+                </p>
+            </div>
+
+            <!-- Cấp độ 1 -->
+            <div class="card-scientific p-6 border-l-4 border-l-emerald-500">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase">
+                        🌱 Cấp độ 1: Nhận biết – Thông hiểu
+                    </span>
+                    <span class="text-xs text-slate-500">Nguồn: SBT Vật lí 12 - Bài 18.6</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-2">
+                    Bài toán 1: Xác định số vòng dây của máy biến áp dân dụng
+                </h3>
+                <p class="text-sm sm:text-base text-slate-700 leading-relaxed mb-4">
+                    Một máy biến áp lí tưởng có cuộn sơ cấp gồm \(N_{1} = 3300\text{ vòng}\) dây. Khi mắc hai đầu cuộn sơ cấp vào mạng điện xoay chiều có điện áp hiệu dụng \(U_{1} = 220\text{ V}\) thì ở hai đầu cuộn thứ cấp để hở có một điện áp hiệu dụng là \(U_{2} = 12\text{ V}\). Bỏ qua mọi hao phí của máy biến áp.
+                    <br>a) Máy biến áp này là máy tăng áp hay máy hạ áp? Vì sao?
+                    <br>b) Tính số vòng dây \(N_{2}\) của cuộn thứ cấp.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="toggleElement('hint-p1')" class="px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5">
+                        <i class="fa-regular fa-lightbulb"></i> Ẩn/Hiện Gợi ý tư duy
+                    </button>
+                    <button onclick="toggleElement('sol-p1')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-check-double"></i> Ẩn/Hiện Lời giải chi tiết
+                    </button>
+                </div>
+                <div id="hint-p1" class="hidden mt-4 p-4 bg-amber-50 rounded-xl border border-amber-200 text-sm text-amber-900">
+                    <strong>💡 Gợi ý tư duy:</strong> So sánh điện áp đầu ra \(U_{2}\) với điện áp đầu vào \(U_{1}\). Áp dụng công thức liên hệ giữa điện áp hiệu dụng và số vòng dây: \(\frac{U_{1}}{U_{2}} = \frac{N_{1}}{N_{2}}\).
+                </div>
+                <div id="sol-p1" class="hidden mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm text-slate-800 space-y-2">
+                    <div class="font-bold text-blue-800">📘 Lời giải chi tiết:</div>
+                    <p>a) Do điện áp đầu ra nhỏ hơn điện áp đầu vào (\(U_{2} = 12\text{ V} < U_{1} = 220\text{ V}\)) nên đây là <strong>máy hạ áp</strong>.</p>
+                    <p>b) Áp dụng công thức máy biến áp lí tưởng:</p>
+                    \[ \frac{U_{1}}{U_{2}} = \frac{N_{1}}{N_{2}} \Rightarrow N_{2} = N_{1} \cdot \frac{U_{2}}{U_{1}} \]
+                    <p>Thay số vào công thức:</p>
+                    \[ N_{2} = 3300 \cdot \frac{12}{220} = 180\text{ vòng} \]
+                    <p class="font-semibold text-emerald-700">Đáp số: Máy hạ áp; \(N_{2} = 180\text{ vòng}\).</p>
+                </div>
+            </div>
+
+            <!-- Cấp độ 2 -->
+            <div class="card-scientific p-6 border-l-4 border-l-sky-500">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <span class="px-3 py-1 bg-sky-100 text-sky-800 rounded-full text-xs font-bold uppercase">
+                        ⚡ Cấp độ 2: Vận dụng (Phối hợp hiện tượng & Bài toán chạm vòng dây)
+                    </span>
+                    <span class="text-xs text-slate-500">Nguồn: Tài liệu Chuyên đề Chủ đề 5 - GV</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-2">
+                    Bài toán 2: Sự cố nối tắt (chạm chập) vòng dây và cuốn ngược vòng dây trong máy biến áp
+                </h3>
+                <p class="text-sm sm:text-base text-slate-700 leading-relaxed mb-4">
+                    Một máy biến áp lí tưởng có cuộn sơ cấp gồm \(N_{1} = 2200\text{ vòng}\) nối vào điện áp hiệu dụng \(U_{1} = 220\text{ V}\). Cuộn thứ cấp theo thiết kế có \(N_{2} = 240\text{ vòng}\).
+                    <br>a) Trong quá trình sử dụng, do lớp sơn cách điện bị hỏng nên có \(n = 20\text{ vòng}\) dây ở cuộn thứ cấp bị nối tắt (đoản mạch). Xác định điện áp hiệu dụng \(U_{2}\) ở hai đầu cuộn thứ cấp lúc này.
+                    <br>b) Giả sử cuộn thứ cấp không bị nối tắt, nhưng khi quấn dây người thợ vô ý quấn ngược chiều \(m = 15\text{ vòng}\) dây trong tổng số \(N_{2} = 240\text{ vòng}\). Tìm điện áp \(U'_{2}\) khi đó.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="toggleElement('hint-p2')" class="px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5">
+                        <i class="fa-regular fa-lightbulb"></i> Ẩn/Hiện Gợi ý tư duy
+                    </button>
+                    <button onclick="toggleElement('sol-p2')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-check-double"></i> Ẩn/Hiện Lời giải chi tiết
+                    </button>
+                </div>
+                <div id="hint-p2" class="hidden mt-4 p-4 bg-amber-50 rounded-xl border border-amber-200 text-sm text-amber-900">
+                    <strong>💡 Gợi ý tư duy:</strong>
+                    <br>• Khi \(n\) vòng dây bị nối tắt, số vòng dây hiệu dụng sinh ra điện áp ở cuộn thứ cấp chỉ còn là \(N_{2\text{ (mới)}} = N_{2} - n\).
+                    <br>• Khi quấn ngược \(m\) vòng dây, từ thông qua \(m\) vòng này sinh ra suất điện động ngược pha và triệt tiêu bớt suất điện động của \(m\) vòng quấn đúng chiều! Do đó tổng số vòng dây bị mất tác dụng là \(2m\).
+                </div>
+                <div id="sol-p2" class="hidden mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm text-slate-800 space-y-2">
+                    <div class="font-bold text-blue-800">📘 Lời giải chi tiết:</div>
+                    <p><strong>a) Trường hợp bị nối tắt \(n = 20\text{ vòng}\) ở cuộn thứ cấp:</strong></p>
+                    <p>Số vòng dây thực tế tham gia tạo điện áp ở cuộn thứ cấp là: \(N'_{2} = N_{2} - n = 240 - 20 = 220\text{ vòng}\).</p>
+                    \[ \frac{U_{1}}{U_{2}} = \frac{N_{1}}{N_{2} - n} \Rightarrow U_{2} = U_{1} \cdot \frac{N_{2} - n}{N_{1}} = 220 \cdot \frac{220}{2200} = 22\text{ V} \]
+                    <p><strong>b) Trường hợp quấn ngược \(m = 15\text{ vòng}\) trong tổng số \(N_{2} = 240\text{ vòng}\):</strong></p>
+                    <p>Mỗi vòng dây quấn ngược chiều sẽ có suất điện động cảm ứng ngược dấu, triệt tiêu suất điện động của 1 vòng quấn thuận chiều. Do đó số vòng dây hiệu dụng còn lại là \(N''_{2} = N_{2} - 2m\):</p>
+                    \[ \frac{U_{1}}{U'_{2}} = \frac{N_{1}}{N_{2} - 2m} \Rightarrow U'_{2} = U_{1} \cdot \frac{N_{2} - 2m}{N_{1}} = 220 \cdot \frac{240 - 2 \cdot 15}{2200} = 220 \cdot \frac{210}{2200} = 21\text{ V} \]
+                    <p class="font-semibold text-emerald-700">Đáp số: a) \(U_{2} = 22\text{ V}\); b) \(U'_{2} = 21\text{ V}\).</p>
+                </div>
+            </div>
+
+            <!-- Cấp độ 3 -->
+            <div class="card-scientific p-6 border-l-4 border-l-purple-600">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-bold uppercase">
+                        🏆 Cấp độ 3: Vận dụng cao (Khảo sát dữ liệu thực nghiệm & Năng lực số/AI)
+                    </span>
+                    <span class="text-xs text-slate-500">Nguồn: SBT Vật lí 12 - Bài 18.8 & Thực tiễn Truyền tải điện</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-2">
+                    Bài toán 3: Khảo sát đồ thị thực nghiệm máy phát & Tối ưu hóa truyền tải điện năng
+                </h3>
+                <p class="text-sm sm:text-base text-slate-700 leading-relaxed mb-4">
+                    <strong>Phần 1 (Xử lý dữ liệu thực nghiệm - SBT 18.8):</strong> Một máy phát điện xoay chiều mô hình có rôto là nam châm vĩnh cửu quay với tần số \(f\text{ (vòng/s)}\), cuộn dây dẹt trên stato có \(N = 700\text{ vòng}\), tiết diện mỗi vòng là \(S = 3\text{ cm} \times 3\text{ cm}\). Khi đo suất điện động hiệu dụng \(E\text{ (V)}\) theo tần số \(f\), học sinh thu được bảng số liệu trên đồ thị tuyến tính đi qua gốc tọa độ: tại \(f_{1} = 810,5\text{ vòng/s}\) thì \(E_{1} = 0,022\text{ V}\); tại \(f_{2} = 1341\text{ vòng/s}\) thì \(E_{2} = 0,037\text{ V}\). Hãy xác định giá trị trung bình của cảm ứng từ \(B\) mà nam châm gây ra tại tâm khung dây.
+                    <br><br>
+                    <strong>Phần 2 (Bài toán thực tiễn truyền tải):</strong> Điện năng từ một trạm phát có công suất không đổi \(P\) được truyền đến nơi tiêu thụ trên đường dây có điện trở \(R_{d}\). Ban đầu, khi điện áp nơi phát là \(U\) thì hiệu suất truyền tải là \(H_{1} = 80\%\). Để giảm công suất hao phí trên đường dây đi \(4\) lần (giữ nguyên \(P\) và \(\cos\varphi = 1\)), người ta dùng máy tăng áp ở nơi phát có tỉ số vòng dây \(\frac{N_{2}}{N_{1}} = k\). Tính \(k\) và hiệu suất truyền tải mới \(H_{2}\).
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="toggleElement('hint-p3')" class="px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5">
+                        <i class="fa-regular fa-lightbulb"></i> Ẩn/Hiện Gợi ý tư duy & Năng lực số
+                    </button>
+                    <button onclick="toggleElement('sol-p3')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-check-double"></i> Ẩn/Hiện Lời giải chi tiết
+                    </button>
+                </div>
+                <div id="hint-p3" class="hidden mt-4 p-4 bg-amber-50 rounded-xl border border-amber-200 text-sm text-amber-900">
+                    <strong>💡 Gợi ý tư duy & Năng lực số:</strong>
+                    <br>• <em>Phần 1:</em> Vôn kế đo giá trị hiệu dụng \(E = \frac{E_{0}}{\sqrt{2}} = \frac{N B S (2\pi f)}{\sqrt{2}}\). Tìm hệ số góc trung bình \(\bar{a} = \overline{\left(\frac{E}{f}\right)}\) từ các điểm thực nghiệm, từ đó rút ra \(B\).
+                    <br>• <em>Phần 2:</em> Công suất hao phí \(P_{hp} \sim \frac{1}{U^2}\). Muốn \(P_{hp}\) giảm \(4\) lần thì \(U\) phải tăng \(\sqrt{4} = 2\) lần.
+                </div>
+                <div id="sol-p3" class="hidden mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200 text-sm text-slate-800 space-y-2">
+                    <div class="font-bold text-blue-800">📘 Lời giải chi tiết:</div>
+                    <p><strong>Phần 1: Xác định cảm ứng từ \(B\) từ đồ thị thực nghiệm</strong></p>
+                    <p>Diện tích một vòng dây: \(S = 3\text{ cm} \times 3\text{ cm} = 9\text{ cm}^2 = 9 \cdot 10^{-4}\text{ m}^2\).</p>
+                    <p>Ta có hệ số góc trung bình của đường thẳng \(E(f)\): \(\frac{E}{f} \approx \frac{0,037}{1341} \approx 2,759 \cdot 10^{-5}\text{ V}\cdot\text{s}\).</p>
+                    <p>Từ công thức suất điện động hiệu dụng:</p>
+                    \[ E = \frac{E_{0}}{\sqrt{2}} = \frac{2\pi f N B S}{\sqrt{2}} = \sqrt{2}\pi N B S f \Rightarrow B = \frac{E}{f \cdot \sqrt{2}\pi N S} \]
+                    \[ B = \frac{2,759 \cdot 10^{-5}}{\sqrt{2} \cdot \pi \cdot 700 \cdot 9 \cdot 10^{-4}} \approx 9,75 \cdot 10^{-6}\text{ T} \]
+                    <p><strong>Phần 2: Tối ưu hóa hiệu suất truyền tải điện</strong></p>
+                    <p>Ta có: \(P_{hp} = \frac{P^2 R_{d}}{U^2 \cos^2\varphi}\). Để \(P_{hp2} = \frac{P_{hp1}}{4}\) thì điện áp truyền tải phải tăng lên \(2\) lần (\(U_{2} = 2U_{1}\)), suy ra tỉ số máy tăng áp là \(k = \frac{N_{2}}{N_{1}} = 2\).</p>
+                    <p>Ban đầu \(H_{1} = 80\% \Rightarrow \frac{P_{hp1}}{P} = 1 - H_{1} = 20\% = 0,20\).</p>
+                    <p>Lúc sau \(P_{hp2}\) giảm \(4\) lần nên tỉ lệ hao phí mới là: \(\frac{P_{hp2}}{P} = \frac{20\%}{4} = 5\% = 0,05\).</p>
+                    <p>Hiệu suất truyền tải mới là: \(H_{2} = 100\% - 5\% = 95\%\).</p>
+                    <p class="font-semibold text-emerald-700">Đáp số: Phần 1: \(B = 9,75 \cdot 10^{-6}\text{ T}\); Phần 2: \(k = 2\) và \(H_{2} = 95\%\).</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab6" class="tab-content hidden space-y-6">
+            <div class="card-scientific p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-blue-900 flex items-center gap-2">
+                            <i class="fa-solid fa-bullseye text-rose-600"></i>
+                            BÀI TỰ ĐÁNH GIÁ TƯƠNG TÁC (INTERACTIVE QUIZ)
+                        </h2>
+                        <p class="text-sm text-slate-600 mt-1">
+                            Hoàn thành 4 câu hỏi trắc nghiệm khách quan chuẩn kiến thức Bài 18 và bấm <strong>"Nộp bài & Xem giải thích"</strong>.
+                        </p>
+                    </div>
+                    <div id="quiz-score-banner" class="hidden px-4 py-2 rounded-xl bg-blue-100 text-blue-900 font-bold text-sm">
+                        Điểm số: <span id="quiz-score-val">0/4</span>
+                    </div>
+                </div>
+
+                <div id="quiz-container" class="space-y-6">
+                    <!-- Quiz items will be rendered by JS -->
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-slate-200 flex flex-wrap gap-3">
+                    <button onclick="submitQuiz()" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white font-bold rounded-xl shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Nộp bài & Xem kết quả
+                    </button>
+                    <button onclick="resetQuiz()" class="px-5 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition flex items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Làm lại
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab7" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Tool 1: Visual Timer -->
+                <div class="lg:col-span-5 card-scientific p-6 flex flex-col justify-between" id="timer-card">
+                    <div>
+                        <h3 class="text-xl font-bold text-blue-900 border-b pb-3 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-stopwatch text-sky-600"></i>
+                            ĐỒNG HỒ ĐẾM NGƯỢC (VISUAL TIMER)
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-4">Quản lý thời gian thảo luận nhóm và làm bài tập trên lớp kèm âm báo tự động.</p>
+
+                        <!-- Quick Select Buttons -->
+                        <div class="grid grid-cols-4 gap-2 mb-6">
+                            <button onclick="setTimerPreset(60)" class="py-1.5 px-2 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 rounded-lg text-xs font-bold transition">1 Phút</button>
+                            <button onclick="setTimerPreset(180)" class="py-1.5 px-2 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 rounded-lg text-xs font-bold transition">3 Phút</button>
+                            <button onclick="setTimerPreset(300)" class="py-1.5 px-2 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 rounded-lg text-xs font-bold transition">5 Phút</button>
+                            <button onclick="setTimerPreset(600)" class="py-1.5 px-2 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 rounded-lg text-xs font-bold transition">10 Phút</button>
+                        </div>
+
+                        <!-- Circular Progress SVG -->
+                        <div class="relative w-56 h-56 mx-auto flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="52" stroke="#e2e8f0" stroke-width="10" fill="none"></circle>
+                                <circle id="timer-progress-circle" cx="60" cy="60" r="52" stroke="#0284c7" stroke-width="10" fill="none"
+                                    stroke-dasharray="326.72" stroke-dashoffset="0" stroke-linecap="round" class="transition-all duration-500"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span id="timer-display" class="text-4xl font-extrabold text-slate-800 tracking-wider">03:00</span>
+                                <span id="timer-status" class="text-xs font-semibold text-slate-400 uppercase mt-1">Sẵn sàng</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timer Controls -->
+                    <div class="mt-6 flex gap-3">
+                        <button onclick="toggleTimer()" id="btn-timer-start" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-play"></i> Bắt đầu
+                        </button>
+                        <button onclick="resetTimer()" class="px-5 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition">
+                            <i class="fa-solid fa-rotate-left"></i> Đặt lại
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tool 2: Lucky Wheel -->
+                <div class="lg:col-span-7 card-scientific p-6">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b pb-3 mb-4">
+                        <h3 class="text-xl font-bold text-blue-900 flex items-center gap-2">
+                            <i class="fa-solid fa-dharmachakra text-amber-500"></i>
+                            VÒNG QUAY MAY MẮN THEO 4 TỔ (LUCKY WHEEL)
+                        </h3>
+                        <!-- Chọn tổ -->
+                        <div class="flex gap-1.5">
+                            <button onclick="loadTeamList(1)" id="btn-team-1" class="px-3 py-1 rounded-lg text-xs font-bold bg-blue-600 text-white">Tổ 1</button>
+                            <button onclick="loadTeamList(2)" id="btn-team-2" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-200 text-slate-700">Tổ 2</button>
+                            <button onclick="loadTeamList(3)" id="btn-team-3" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-200 text-slate-700">Tổ 3</button>
+                            <button onclick="loadTeamList(4)" id="btn-team-4" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-200 text-slate-700">Tổ 4</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <!-- Wheel Canvas -->
+                        <div class="md:col-span-7 flex flex-col items-center">
+                            <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
+                                <!-- Pointer Arrow -->
+                                <div class="absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-rose-600 drop-shadow-md">
+                                    <i class="fa-solid fa-caret-left text-4xl"></i>
+                                </div>
+                                <canvas id="wheelCanvas" width="300" height="300" class="w-full h-full"></canvas>
+                            </div>
+                            <button onclick="spinWheel()" id="btn-spin" class="mt-4 w-full max-w-xs py-3 bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-extrabold rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-wand-sparkles"></i> QUAY GỌI TÊN NGẪU NHIÊN
+                            </button>
+                        </div>
+
+                        <!-- Student List Input -->
+                        <div class="md:col-span-5 space-y-3">
+                            <label class="block text-xs font-bold text-slate-700">
+                                Danh sách học sinh đang chọn (mỗi dòng 1 tên):
+                            </label>
+                            <textarea id="wheel-names-input" rows="8" oninput="updateWheelFromTextarea()" class="w-full p-3 border border-slate-300 rounded-xl text-xs sm:text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                            <p class="text-xs text-slate-500">
+                                <i class="fa-solid fa-circle-info text-sky-600"></i> Thầy/Cô có thể dán trực tiếp danh sách học sinh của lớp vào ô trên, vòng quay sẽ tự động chia múi màu tức thì.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Modal Popup for Lucky Wheel Winner -->
+    <div id="winner-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-amber-400 transform transition-all">
+            <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-500 flex items-center justify-center mx-auto mb-3 text-3xl">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <h4 class="text-sm font-bold uppercase tracking-wider text-slate-400">Xin chúc mừng học sinh được chọn</h4>
+            <div id="winner-name" class="text-2xl sm:text-3xl font-extrabold text-blue-900 my-3 py-3 px-4 bg-blue-50 rounded-xl border border-blue-200">
+                Nguyễn Văn A
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600 mb-5">Hãy sẵn sàng trả lời câu hỏi hoặc lên bảng thực hiện nhiệm vụ Vật lý nhé!</p>
+            <button onclick="closeWinnerModal()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition">
+                Đóng thông báo
+            </button>
+        </div>
+    </div>
+
+    <footer class="bg-slate-900 text-slate-300 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs sm:text-sm">
+            <div class="font-semibold text-white flex items-center gap-2">
+                <i class="fa-solid fa-atom text-sky-400"></i>
+                <span>© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</span>
+            </div>
+            <div class="text-slate-400">
+                Học liệu số tương tác Vật lý 12 • Kết nối tri thức với cuộc sống
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cấu hình KaTeX chuẩn theo yêu cầu bắt buộc
+        const katexConfig = {
+            delimiters: [
+                {left: "\\[", right: "\\]", display: true},
+                {left: "\\(", right: "\\)", display: false}
+            ],
+            throwOnError: false
+        };
+
+        function triggerMathRender(element = document.body) {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(element, katexConfig);
+            }
+        }
+
+        // Chuyển đổi 7 Tab chính
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            const target = document.getElementById(tabId);
+            const targetBtn = document.getElementById('btn-' + tabId);
+            if (target) target.classList.remove('hidden');
+            if (targetBtn) targetBtn.classList.add('active');
+
+            if (tabId === 'tab3') {
+                resizeSimCanvases();
+            }
+            triggerMathRender(target);
+        }
+
+        // Ẩn/hiện câu trả lời ở Tab 1 và Tab 5
+        function toggleWarmupAnswer(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+                triggerMathRender(el);
+            }
+        }
+
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+                triggerMathRender(el);
+            }
+        }
+
+        let currentSimTab = 'simA';
+        let simAState = {
+            sourceType: 'AC',
+            U1: 220,
+            N1: 200,
+            N2: 400,
+            Rd: 20,
+            P_transmit: 10000, // 10 kW
+            phase: 0
+        };
+
+        let simBState = {
+            mode: 'guitar', // 'guitar' or 'foucault'
+            stringMaterial: 'steel',
+            pluckAmp: 0,
+            maxPluckAmp: 100,
+            noteFreq: 440,
+            pendulumAngle: 0.7,
+            pendulumVel: 0,
+            plateType: 'solid',
+            B_field: 0.8,
+            time: 0
+        };
+
+        function switchSimSubTab(subId) {
+            currentSimTab = subId;
+            document.getElementById('simA').classList.toggle('hidden', subId !== 'simA');
+            document.getElementById('simB').classList.toggle('hidden', subId !== 'simB');
+
+            const btnA = document.getElementById('btn-simA');
+            const btnB = document.getElementById('btn-simB');
+            if (subId === 'simA') {
+                btnA.className = 'sim-subtab active px-4 py-2 rounded-lg text-xs sm:text-sm font-bold border border-slate-600 transition flex items-center gap-2';
+                btnB.className = 'sim-subtab px-4 py-2 rounded-lg text-xs sm:text-sm font-bold border border-slate-600 bg-slate-700 text-slate-200 hover:bg-slate-600 transition flex items-center gap-2';
+            } else {
+                btnB.className = 'sim-subtab active px-4 py-2 rounded-lg text-xs sm:text-sm font-bold border border-slate-600 transition flex items-center gap-2';
+                btnA.className = 'sim-subtab px-4 py-2 rounded-lg text-xs sm:text-sm font-bold border border-slate-600 bg-slate-700 text-slate-200 hover:bg-slate-600 transition flex items-center gap-2';
+            }
+            resizeSimCanvases();
+        }
+
+        function setSourceType(type) {
+            simAState.sourceType = type;
+            const btnAC = document.getElementById('btn-src-ac');
+            const btnDC = document.getElementById('btn-src-dc');
+            if (type === 'AC') {
+                btnAC.className = 'py-1.5 px-3 rounded-lg text-xs font-bold bg-sky-600 text-white shadow-sm transition';
+                btnDC.className = 'py-1.5 px-3 rounded-lg text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 transition';
+            } else {
+                btnDC.className = 'py-1.5 px-3 rounded-lg text-xs font-bold bg-amber-600 text-white shadow-sm transition';
+                btnAC.className = 'py-1.5 px-3 rounded-lg text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 transition';
+            }
+            updateSimAParams();
+        }
+
+        function updateSimAParams() {
+            simAState.U1 = parseFloat(document.getElementById('slider-u1').value);
+            simAState.N1 = parseInt(document.getElementById('slider-n1').value);
+            simAState.N2 = parseInt(document.getElementById('slider-n2').value);
+            simAState.Rd = parseFloat(document.getElementById('slider-rd').value);
+
+            document.getElementById('lbl-u1').textContent = simAState.U1 + ' V';
+            document.getElementById('lbl-n1').textContent = simAState.N1 + ' vòng';
+            document.getElementById('lbl-n2').textContent = simAState.N2 + ' vòng';
+            document.getElementById('lbl-rd').innerHTML = simAState.Rd + ' &Omega;';
+
+            const ratio = simAState.N2 / simAState.N1;
+            const U2 = simAState.sourceType === 'AC' ? simAState.U1 * ratio : 0;
+
+            const badge = document.getElementById('transformer-badge');
+            if (simAState.sourceType === 'DC') {
+                badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800';
+                badge.innerHTML = 'Nguồn DC: Từ thông không biến thiên (\\(U_{2} = 0\\text{ V}\\))';
+            } else if (simAState.N2 > simAState.N1) {
+                badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800';
+                badge.innerHTML = 'Máy Tăng Áp (\\(N_{2} > N_{1}\\))';
+            } else if (simAState.N2 < simAState.N1) {
+                badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+                badge.innerHTML = 'Máy Hạ Áp (\\(N_{2} < N_{1}\\))';
+            } else {
+                badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-800';
+                badge.innerHTML = 'Biến áp cách ly (\\(N_{2} = N_{1}\\))';
+            }
+            triggerMathRender(badge);
+
+            document.getElementById('out-ratio').textContent = ratio.toFixed(2);
+            document.getElementById('out-u2').textContent = U2.toFixed(1) + ' V';
+
+            if (U2 > 0) {
+                const I2 = simAState.P_transmit / U2;
+                const I1 = I2 * ratio;
+                const P_loss = Math.min(simAState.P_transmit, I2 * I2 * simAState.Rd);
+                const eff = Math.max(0, ((simAState.P_transmit - P_loss) / simAState.P_transmit) * 100);
+
+                document.getElementById('out-i2').textContent = I2.toFixed(2) + ' A';
+                document.getElementById('out-i1').textContent = I1.toFixed(2) + ' A';
+                document.getElementById('out-p-loss').textContent = 'P_hp = ' + P_loss.toFixed(0) + ' W';
+                document.getElementById('out-eff').textContent = eff.toFixed(1) + ' %';
+                document.getElementById('bar-efficiency').style.width = eff.toFixed(1) + '%';
+            } else {
+                document.getElementById('out-i2').textContent = '0.00 A';
+                document.getElementById('out-i1').textContent = 'DC (Ngắn mạch)';
+                document.getElementById('out-p-loss').textContent = 'Không truyền tải';
+                document.getElementById('out-eff').textContent = '0.0 %';
+                document.getElementById('bar-efficiency').style.width = '0%';
+            }
+        }
+
+        function resetSimA() {
+            document.getElementById('slider-u1').value = 220;
+            document.getElementById('slider-n1').value = 200;
+            document.getElementById('slider-n2').value = 400;
+            document.getElementById('slider-rd').value = 20;
+            setSourceType('AC');
+        }
+
+        function setSimBMode(mode) {
+            simBState.mode = mode;
+            document.getElementById('ctrl-guitar').classList.toggle('hidden', mode !== 'guitar');
+            document.getElementById('ctrl-foucault').classList.toggle('hidden', mode !== 'foucault');
+
+            const btnG = document.getElementById('btn-mode-guitar');
+            const btnF = document.getElementById('btn-mode-foucault');
+            const statusBox = document.getElementById('simB-status-text');
+
+            if (mode === 'guitar') {
+                btnG.className = 'px-3 py-1 rounded-md text-xs font-bold bg-purple-600 text-white';
+                btnF.className = 'px-3 py-1 rounded-md text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300';
+                statusBox.innerHTML = 'Dây đàn bằng thép bị từ hóa. Khi dao động làm từ thông \\(\\Phi\\) qua cuộn dây Pickup biến thiên, sinh ra suất điện động cảm ứng \\(e_{c}\\) cùng tần số với âm thanh.';
+                pluckGuitarString();
+            } else {
+                btnF.className = 'px-3 py-1 rounded-md text-xs font-bold bg-rose-600 text-white';
+                btnG.className = 'px-3 py-1 rounded-md text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300';
+                statusBox.innerHTML = 'Khi tấm kim loại dao động cắt các đường sức từ, dòng điện xoáy Foucault sinh ra tạo lực từ cản trở chuyển động (Định luật Lenz). Tấm có rãnh xẻ làm tăng điện trở nên giảm dòng Foucault.';
+                releasePendulum();
+            }
+            triggerMathRender(statusBox);
+        }
+
+        function pluckGuitarString() {
+            simBState.pluckAmp = simBState.maxPluckAmp;
+        }
+
+        function releasePendulum() {
+            simBState.plateType = document.getElementById('sel-plate-type').value;
+            simBState.pendulumAngle = 0.75; // ~43 degrees
+            simBState.pendulumVel = 0;
+        }
+
+        function updateSimBParams() {
+            simBState.stringMaterial = document.getElementById('sel-string-mat').value;
+            simBState.maxPluckAmp = parseInt(document.getElementById('slider-pluck-amp').value);
+            simBState.noteFreq = parseInt(document.getElementById('slider-note-freq').value);
+            simBState.B_field = parseFloat(document.getElementById('slider-foucault-b').value);
+
+            document.getElementById('lbl-pluck-amp').textContent = simBState.maxPluckAmp + '%';
+            document.getElementById('lbl-note-freq').textContent = simBState.noteFreq + ' Hz';
+            document.getElementById('lbl-foucault-b').textContent = simBState.B_field.toFixed(1) + ' T';
+        }
+
+        function resizeSimCanvases() {
+            const cA = document.getElementById('canvasSimA');
+            const cB = document.getElementById('canvasSimB');
+            if (cA && cA.parentElement) {
+                cA.width = cA.parentElement.clientWidth;
+                cA.height = cA.parentElement.clientHeight;
+            }
+            if (cB && cB.parentElement) {
+                cB.width = cB.parentElement.clientWidth;
+                cB.height = cB.parentElement.clientHeight;
+            }
+        }
+
+        function drawSimA() {
+            const canvas = document.getElementById('canvasSimA');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            simAState.phase += 0.06;
+
+            // Left Half: Transformer Core & Coils
+            const coreX = w * 0.08;
+            const coreY = h * 0.16;
+            const coreW = w * 0.36;
+            const coreH = h * 0.68;
+            const limbW = Math.max(24, coreW * 0.22);
+
+            // Draw Laminated Iron Core
+            ctx.fillStyle = '#334155';
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 2;
+            ctx.fillRect(coreX, coreY, coreW, coreH);
+            ctx.strokeRect(coreX, coreY, coreW, coreH);
+
+            // Inner window of core
+            ctx.fillStyle = '#020617';
+            ctx.fillRect(coreX + limbW, coreY + limbW, coreW - 2 * limbW, coreH - 2 * limbW);
+            ctx.strokeRect(coreX + limbW, coreY + limbW, coreW - 2 * limbW, coreH - 2 * limbW);
+
+            // Animated Magnetic Flux Lines inside Core
+            const fluxFactor = simAState.sourceType === 'AC' ? Math.sin(simAState.phase) : 0.8;
+            ctx.save();
+            ctx.strokeStyle = simAState.sourceType === 'AC' ? `rgba(56, 189, 248, ${0.35 + 0.65 * Math.abs(fluxFactor)})` : 'rgba(251, 191, 36, 0.7)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([8, 6]);
+            ctx.lineDashOffset = simAState.sourceType === 'AC' ? -simAState.phase * 12 : 0;
+            const midOffset = limbW * 0.5;
+            ctx.strokeRect(coreX + midOffset, coreY + midOffset, coreW - 2 * midOffset, coreH - 2 * midOffset);
+            ctx.restore();
+
+            // Primary Coil (Left limb)
+            const turns1 = Math.min(18, Math.max(4, Math.round(simAState.N1 / 55)));
+            const coilStartY = coreY + limbW + 10;
+            const coilEndY = coreY + coreH - limbW - 10;
+            const step1 = (coilEndY - coilStartY) / turns1;
+
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 3.5;
+            for (let i = 0; i < turns1; i++) {
+                const y = coilStartY + i * step1;
+                ctx.beginPath();
+                ctx.moveTo(coreX - 4, y);
+                ctx.lineTo(coreX + limbW + 4, y + step1 * 0.4);
+                ctx.stroke();
+            }
+
+            // Secondary Coil (Right limb)
+            const turns2 = Math.min(18, Math.max(4, Math.round(simAState.N2 / 55)));
+            const step2 = (coilEndY - coilStartY) / turns2;
+            const rightLimbX = coreX + coreW - limbW;
+
+            ctx.strokeStyle = '#34d399';
+            ctx.lineWidth = 3.5;
+            for (let i = 0; i < turns2; i++) {
+                const y = coilStartY + i * step2;
+                ctx.beginPath();
+                ctx.moveTo(rightLimbX - 4, y);
+                ctx.lineTo(coreX + coreW + 4, y + step2 * 0.4);
+                ctx.stroke();
+            }
+
+            // Labels on Transformer
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = 'bold 12px Inter, sans-serif';
+            ctx.fillText(`Sơ cấp (N₁ = ${simAState.N1})`, coreX - 10, coreY - 10);
+            ctx.fillText(`Thứ cấp (N₂ = ${simAState.N2})`, rightLimbX - 15, coreY - 10);
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillText(`U₁ = ${simAState.U1} V (${simAState.sourceType})`, coreX, coreY + coreH + 22);
+
+            const ratio = simAState.N2 / simAState.N1;
+            const U2 = simAState.sourceType === 'AC' ? simAState.U1 * ratio : 0;
+            ctx.fillStyle = '#34d399';
+            ctx.fillText(`U₂ = ${U2.toFixed(1)} V`, rightLimbX, coreY + coreH + 22);
+
+            // Right Half: Dual-Beam Oscilloscope (Hình 18.1 SBT)
+            const oscX = w * 0.50;
+            const oscY = h * 0.12;
+            const oscW = w * 0.46;
+            const oscH = h * 0.76;
+
+            ctx.fillStyle = '#0f172a';
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            ctx.fillRect(oscX, oscY, oscW, oscH);
+            ctx.strokeRect(oscX, oscY, oscW, oscH);
+
+            // Grid lines
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.15)';
+            ctx.lineWidth = 1;
+            for (let gx = oscX; gx <= oscX + oscW; gx += 30) {
+                ctx.beginPath();
+                ctx.moveTo(gx, oscY);
+                ctx.lineTo(gx, oscY + oscH);
+                ctx.stroke();
+            }
+            for (let gy = oscY; gy <= oscY + oscH; gy += 30) {
+                ctx.beginPath();
+                ctx.moveTo(oscX, gy);
+                ctx.lineTo(oscX + oscW, gy);
+                ctx.stroke();
+            }
+
+            // Center Axis
+            const midY = oscY + oscH / 2;
+            ctx.strokeStyle = '#64748b';
+            ctx.beginPath();
+            ctx.moveTo(oscX, midY);
+            ctx.lineTo(oscX + oscW, midY);
+            ctx.stroke();
+
+            // Plot u1(t)
+            const scaleV = (oscH * 0.42) / 1000; // max 1000V scale
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            for (let px = 0; px <= oscW; px++) {
+                const t = px * 0.045 - simAState.phase;
+                const val1 = simAState.sourceType === 'AC' ? simAState.U1 * Math.sin(t) : simAState.U1;
+                const py = midY - Math.max(-oscH * 0.45, Math.min(oscH * 0.45, val1 * scaleV));
+                if (px === 0) ctx.moveTo(oscX + px, py);
+                else ctx.lineTo(oscX + px, py);
+            }
+            ctx.stroke();
+
+            // Plot u2(t)
+            ctx.strokeStyle = '#34d399';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            for (let px = 0; px <= oscW; px++) {
+                const t = px * 0.045 - simAState.phase;
+                const val2 = simAState.sourceType === 'AC' ? U2 * Math.sin(t) : 0;
+                const py = midY - Math.max(-oscH * 0.45, Math.min(oscH * 0.45, val2 * scaleV));
+                if (px === 0) ctx.moveTo(oscX + px, py);
+                else ctx.lineTo(oscX + px, py);
+            }
+            ctx.stroke();
+
+            // Legend on Oscilloscope
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = 'bold 12px Inter, sans-serif';
+            ctx.fillText('Dao động ký 2 chùm tia: u₁(t) [Xanh lam] & u₂(t) [Xanh lục]', oscX + 12, oscY + 20);
+        }
+
+        function drawSimB() {
+            const canvas = document.getElementById('canvasSimB');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            simBState.time += 0.05;
+
+            if (simBState.mode === 'guitar') {
+                // Damping of plucked string
+                simBState.pluckAmp *= 0.992;
+                if (simBState.pluckAmp < 0.2) simBState.pluckAmp = 0;
+
+                const freqFactor = simBState.noteFreq / 220;
+                const disp = (simBState.pluckAmp * 0.25) * Math.sin(simBState.time * freqFactor * 2.5);
+
+                // 1. Draw Guitar String (Top)
+                const strY = h * 0.22;
+                ctx.strokeStyle = simBState.stringMaterial === 'steel' ? '#cbd5e1' : '#fde047';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(w * 0.06, strY);
+                ctx.quadraticCurveTo(w * 0.26, strY + disp, w * 0.46, strY);
+                ctx.stroke();
+
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = 'bold 12px Inter, sans-serif';
+                ctx.fillText(simBState.stringMaterial === 'steel' ? 'Dây đàn bằng thép (3) - Bị từ hóa (S-N)' : 'Dây đàn Nylon (3) - Không từ tính', w * 0.08, strY - 28);
+
+                // 2. Draw Pickup Magnet & Coil (Below String)
+                const magX = w * 0.23;
+                const magY = h * 0.40;
+                const magW = w * 0.06;
+                const magH = h * 0.42;
+
+                // Permanent magnet (1)
+                ctx.fillStyle = '#ef4444';
+                ctx.fillRect(magX, magY, magW, magH / 2);
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillRect(magX, magY + magH / 2, magW, magH / 2);
+
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText('N', magX + magW / 2 - 4, magY + 20);
+                ctx.fillText('S', magX + magW / 2 - 4, magY + magH - 10);
+
+                // Pickup Coil (2)
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 3;
+                for (let wy = magY + 25; wy < magY + magH - 25; wy += 12) {
+                    ctx.beginPath();
+                    ctx.moveTo(magX - 8, wy);
+                    ctx.lineTo(magX + magW + 8, wy + 5);
+                    ctx.stroke();
+                }
+
+                // 3. Draw Amplifier Signal e_c(t) on Right Side
+                const oscX = w * 0.52;
+                const oscY = h * 0.15;
+                const oscW = w * 0.44;
+                const oscH = h * 0.70;
+
+                ctx.fillStyle = '#0f172a';
+                ctx.strokeStyle = '#475569';
+                ctx.lineWidth = 2;
+                ctx.fillRect(oscX, oscY, oscW, oscH);
+                ctx.strokeRect(oscX, oscY, oscW, oscH);
+
+                const midY = oscY + oscH / 2;
+                ctx.strokeStyle = '#a855f7';
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                const isMagnetic = simBState.stringMaterial === 'steel';
+                for (let px = 0; px <= oscW; px++) {
+                    const t = px * 0.06 - simBState.time * freqFactor * 2.5;
+                    const env = isMagnetic ? (simBState.pluckAmp * 0.9) : 0;
+                    const py = midY - env * Math.sin(t);
+                    if (px === 0) ctx.moveTo(oscX + px, py);
+                    else ctx.lineTo(oscX + px, py);
+                }
+                ctx.stroke();
+
+                ctx.fillStyle = '#e2e8f0';
+                ctx.fillText(`Tín hiệu ra máy tăng âm e_c(t) - f = ${simBState.noteFreq} Hz`, oscX + 10, oscY + 22);
+            } else {
+                // Foucault Pendulum Mode
+                const damping = simBState.plateType === 'solid'
+                    ? (0.002 + 0.045 * simBState.B_field * simBState.B_field)
+                    : (0.002 + 0.005 * simBState.B_field * simBState.B_field);
+
+                const accel = -0.025 * Math.sin(simBState.pendulumAngle) - damping * simBState.pendulumVel;
+                simBState.pendulumVel += accel;
+                simBState.pendulumAngle += simBState.pendulumVel;
+
+                const pivotX = w * 0.5;
+                const pivotY = h * 0.12;
+                const rodLen = h * 0.58;
+
+                const bobX = pivotX + rodLen * Math.sin(simBState.pendulumAngle);
+                const bobY = pivotY + rodLen * Math.cos(simBState.pendulumAngle);
+
+                // Draw Magnet Poles at Bottom Center
+                const poleW = 90;
+                const poleH = 70;
+                ctx.fillStyle = 'rgba(239, 68, 68, 0.35)';
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.fillRect(pivotX - poleW / 2, pivotY + rodLen - 35, poleW, poleH);
+                ctx.strokeRect(pivotX - poleW / 2, pivotY + rodLen - 35, poleW, poleH);
+
+                ctx.fillStyle = '#fca5a5';
+                ctx.font = 'bold 13px Inter, sans-serif';
+                ctx.fillText(`Vùng từ trường B = ${simBState.B_field.toFixed(1)} T`, pivotX - 65, pivotY + rodLen + 55);
+
+                // Pivot & Rod
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(pivotX, pivotY);
+                ctx.lineTo(bobX, bobY);
+                ctx.stroke();
+
+                // Metal Plate K
+                ctx.save();
+                ctx.translate(bobX, bobY);
+                ctx.rotate(-simBState.pendulumAngle);
+                ctx.fillStyle = '#f59e0b';
+                ctx.strokeStyle = '#fef08a';
+                ctx.lineWidth = 2;
+                ctx.fillRect(-35, -25, 70, 50);
+                ctx.strokeRect(-35, -25, 70, 50);
+
+                if (simBState.plateType === 'slotted') {
+                    // Draw slots
+                    ctx.fillStyle = '#020617';
+                    for (let sx = -22; sx <= 18; sx += 16) {
+                        ctx.fillRect(sx, -10, 8, 35);
+                    }
+                } else if (Math.abs(simBState.pendulumVel) > 0.002 && simBState.B_field > 0) {
+                    // Draw Eddy Current swirl
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 16, 0, Math.PI * 1.8);
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+        }
+
+        function animateSimulations() {
+            if (!document.getElementById('tab3').classList.contains('hidden')) {
+                if (currentSimTab === 'simA') drawSimA();
+                else drawSimB();
+            }
+            requestAnimationFrame(animateSimulations);
+        }
+
+        function switchCalcMode(modeId) {
+            const mba = document.getElementById('calc-mba');
+            const trans = document.getElementById('calc-trans');
+            const btnMba = document.getElementById('btn-calc-mba');
+            const btnTrans = document.getElementById('btn-calc-trans');
+
+            if (modeId === 'calc-mba') {
+                mba.classList.remove('hidden');
+                mba.classList.add('grid');
+                trans.classList.add('hidden');
+                trans.classList.remove('grid');
+                btnMba.className = 'px-4 py-2 rounded-lg text-xs sm:text-sm font-bold bg-blue-600 text-white shadow';
+                btnTrans.className = 'px-4 py-2 rounded-lg text-xs sm:text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300';
+            } else {
+                trans.classList.remove('hidden');
+                trans.classList.add('grid');
+                mba.classList.add('hidden');
+                mba.classList.remove('grid');
+                btnTrans.className = 'px-4 py-2 rounded-lg text-xs sm:text-sm font-bold bg-blue-600 text-white shadow';
+                btnMba.className = 'px-4 py-2 rounded-lg text-xs sm:text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300';
+            }
+        }
+
+        function fillSampleMBA() {
+            document.getElementById('inp-u1').value = 220;
+            document.getElementById('inp-u2').value = '';
+            document.getElementById('inp-n1').value = 1100;
+            document.getElementById('inp-n2').value = 55;
+            document.getElementById('inp-i2').value = 4;
+            solveTransformer();
+        }
+
+        function clearMBAInputs() {
+            ['inp-u1', 'inp-u2', 'inp-n1', 'inp-n2', 'inp-i2'].forEach(id => document.getElementById(id).value = '');
+        }
+
+        function solveTransformer() {
+            const u1Str = document.getElementById('inp-u1').value.trim();
+            const u2Str = document.getElementById('inp-u2').value.trim();
+            const n1Str = document.getElementById('inp-n1').value.trim();
+            const n2Str = document.getElementById('inp-n2').value.trim();
+            const i2Str = document.getElementById('inp-i2').value.trim();
+
+            const resBox = document.getElementById('res-mba');
+            const missingCount = [u1Str, u2Str, n1Str, n2Str].filter(v => v === '').length;
+
+            if (missingCount !== 1) {
+                resBox.innerHTML = `
+                    <div class="p-4 bg-rose-50 text-rose-800 rounded-xl border border-rose-200 text-sm">
+                        <strong><i class="fa-solid fa-circle-exclamation"></i> Lưu ý nhập liệu:</strong> Vui lòng nhập chính xác <strong>3 đại lượng đã biết</strong> và <strong>bỏ trống đúng 1 đại lượng cần tìm</strong> trong 4 đại lượng \\((U_{1}, U_{2}, N_{1}, N_{2})\\).
+                    </div>`;
+                triggerMathRender(resBox);
+                return;
+            }
+
+            let u1 = parseFloat(u1Str), u2 = parseFloat(u2Str), n1 = parseFloat(n1Str), n2 = parseFloat(n2Str);
+            let stepLatex = '';
+            let targetResult = '';
+
+            if (u1Str === '') {
+                u1 = (u2 * n1) / n2;
+                stepLatex = `\\[ \\frac{U_{1}}{U_{2}} = \\frac{N_{1}}{N_{2}} \\Rightarrow U_{1} = U_{2} \\cdot \\frac{N_{1}}{N_{2}} = ${u2} \\cdot \\frac{${n1}}{${n2}} = ${u1.toFixed(2)}\\text{ V} \\]`;
+                targetResult = `Điện áp hiệu dụng cuộn sơ cấp: \\(U_{1} = ${u1.toFixed(2)}\\text{ V}\\)`;
+            } else if (u2Str === '') {
+                u2 = (u1 * n2) / n1;
+                stepLatex = `\\[ \\frac{U_{1}}{U_{2}} = \\frac{N_{1}}{N_{2}} \\Rightarrow U_{2} = U_{1} \\cdot \\frac{N_{2}}{N_{1}} = ${u1} \\cdot \\frac{${n2}}{${n1}} = ${u2.toFixed(2)}\\text{ V} \\]`;
+                targetResult = `Điện áp hiệu dụng cuộn thứ cấp: \\(U_{2} = ${u2.toFixed(2)}\\text{ V}\\)`;
+            } else if (n1Str === '') {
+                n1 = (n2 * u1) / u2;
+                stepLatex = `\\[ \\frac{U_{1}}{U_{2}} = \\frac{N_{1}}{N_{2}} \\Rightarrow N_{1} = N_{2} \\cdot \\frac{U_{1}}{U_{2}} = ${n2} \\cdot \\frac{${u1}}{${u2}} = ${Math.round(n1)}\\text{ vòng} \\]`;
+                targetResult = `Số vòng dây cuộn sơ cấp: \\(N_{1} = ${Math.round(n1)}\\text{ vòng}\\)`;
+            } else if (n2Str === '') {
+                n2 = (n1 * u2) / u1;
+                stepLatex = `\\[ \\frac{U_{1}}{U_{2}} = \\frac{N_{1}}{N_{2}} \\Rightarrow N_{2} = N_{1} \\cdot \\frac{U_{2}}{U_{1}} = ${n1} \\cdot \\frac{${u2}}{${u1}} = ${Math.round(n2)}\\text{ vòng} \\]`;
+                targetResult = `Số vòng dây cuộn thứ cấp: \\(N_{2} = ${Math.round(n2)}\\text{ vòng}\\)`;
+            }
+
+            let extraI1 = '';
+            if (i2Str !== '' && !isNaN(parseFloat(i2Str))) {
+                const i2 = parseFloat(i2Str);
+                const i1 = i2 * (u2 / u1);
+                extraI1 = `
+                    <div class="mt-3 pt-3 border-t border-slate-200 text-sm">
+                        <strong>Bước bổ sung (Tính cường độ dòng sơ cấp \\(I_{1}\\)):</strong>
+                        \\[ \\frac{I_{1}}{I_{2}} = \\frac{U_{2}}{U_{1}} \\Rightarrow I_{1} = I_{2} \\cdot \\frac{U_{2}}{U_{1}} = ${i2} \\cdot \\frac{${u2.toFixed(1)}}{${u1.toFixed(1)}} = ${i1.toFixed(3)}\\text{ A} \\]
+                    </div>`;
+            }
+
+            const machineType = n2 > n1 ? 'Máy tăng áp (\\(N_{2} > N_{1}\\))' : (n2 < n1 ? 'Máy hạ áp (\\(N_{2} < N_{1}\\))' : 'Biến áp 1:1');
+
+            resBox.innerHTML = `
+                <div class="space-y-3 text-slate-800">
+                    <div class="flex items-center justify-between border-b pb-2">
+                        <span class="font-bold text-blue-900"><i class="fa-solid fa-wand-magic-sparkles text-sky-600"></i> LỜI GIẢI TỰ ĐỘNG CHI TIẾT</span>
+                        <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold">${machineType}</span>
+                    </div>
+                    <div class="text-sm">
+                        <strong>Bước 1: Áp dụng công thức máy biến áp lí tưởng:</strong>
+                        ${stepLatex}
+                    </div>
+                    ${extraI1}
+                    <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg font-bold text-emerald-900 text-sm">
+                        ✅ Kết luận: ${targetResult}
+                    </div>
+                </div>`;
+            triggerMathRender(resBox);
+        }
+
+        function fillSampleTrans() {
+            document.getElementById('inp-p').value = 500000;
+            document.getElementById('inp-u').value = 10000;
+            document.getElementById('inp-r').value = 8;
+            document.getElementById('inp-cosphi').value = 1;
+            document.getElementById('inp-php').value = '';
+            solveTransmission();
+        }
+
+        function clearTransInputs() {
+            ['inp-p', 'inp-u', 'inp-r', 'inp-php'].forEach(id => document.getElementById(id).value = '');
+        }
+
+        function solveTransmission() {
+            const pStr = document.getElementById('inp-p').value.trim();
+            const uStr = document.getElementById('inp-u').value.trim();
+            const rStr = document.getElementById('inp-r').value.trim();
+            const cosStr = document.getElementById('inp-cosphi').value.trim() || '1';
+            const phpStr = document.getElementById('inp-php').value.trim();
+
+            const resBox = document.getElementById('res-trans');
+            const missingCount = [pStr, uStr, rStr, phpStr].filter(v => v === '').length;
+
+            if (missingCount !== 1) {
+                resBox.innerHTML = `
+                    <div class="p-4 bg-rose-50 text-rose-800 rounded-xl border border-rose-200 text-sm">
+                        <strong><i class="fa-solid fa-circle-exclamation"></i> Lưu ý:</strong> Hãy nhập 3 thông số và bỏ trống đúng 1 thông số cần tìm trong \\((P, U, R_{d}, P_{hp})\\).
+                    </div>`;
+                triggerMathRender(resBox);
+                return;
+            }
+
+            let P = parseFloat(pStr), U = parseFloat(uStr), R = parseFloat(rStr), cosphi = parseFloat(cosStr), Php = parseFloat(phpStr);
+            let stepLatex = '';
+
+            if (phpStr === '') {
+                Php = (P * P * R) / (U * U * cosphi * cosphi);
+                stepLatex = `\\[ P_{hp} = \\frac{P^2 R_{d}}{U^2 \\cos^2\\varphi} = \\frac{${P}^2 \\cdot ${R}}{${U}^2 \\cdot ${cosphi}^2} = ${Php.toFixed(2)}\\text{ W} \\]`;
+            } else if (rStr === '') {
+                R = (Php * U * U * cosphi * cosphi) / (P * P);
+                stepLatex = `\\[ R_{d} = \\frac{P_{hp} U^2 \\cos^2\\varphi}{P^2} = \\frac{${Php} \\cdot ${U}^2 \\cdot ${cosphi}^2}{${P}^2} = ${R.toFixed(2)}\\text{ }\\Omega \\]`;
+            } else if (uStr === '') {
+                U = Math.sqrt((P * P * R) / (Php * cosphi * cosphi));
+                stepLatex = `\\[ U = \\sqrt{\\frac{P^2 R_{d}}{P_{hp} \\cos^2\\varphi}} = \\sqrt{\\frac{${P}^2 \\cdot ${R}}{${Php} \\cdot ${cosphi}^2}} = ${U.toFixed(2)}\\text{ V} \\]`;
+            } else if (pStr === '') {
+                P = U * cosphi * Math.sqrt(Php / R);
+                stepLatex = `\\[ P = U \\cos\\varphi \\sqrt{\\frac{P_{hp}}{R_{d}}} = ${U} \\cdot ${cosphi} \\sqrt{\\frac{${Php}}{${R}}} = ${P.toFixed(2)}\\text{ W} \\]`;
+            }
+
+            const H = ((P - Php) / P) * 100;
+            const I = P / (U * cosphi);
+
+            resBox.innerHTML = `
+                <div class="space-y-3 text-slate-800">
+                    <div class="font-bold text-blue-900 border-b pb-2">
+                        <i class="fa-solid fa-bolt text-amber-500"></i> LỜI GIẢI BÀI TOÁN TRUYỀN TẢI ĐIỆN NĂNG
+                    </div>
+                    <div class="text-sm">
+                        <strong>Bước 1: Biến đổi công thức hao phí truyền tải:</strong>
+                        ${stepLatex}
+                    </div>
+                    <div class="text-sm">
+                        <strong>Bước 2: Cường độ dòng điện và Hiệu suất truyền tải \\(H\\):</strong>
+                        \\[ I = \\frac{P}{U \\cos\\varphi} = ${I.toFixed(2)}\\text{ A}; \\quad H = \\frac{P - P_{hp}}{P} \\cdot 100\\% = ${H.toFixed(2)}\\% \\]
+                    </div>
+                </div>`;
+            triggerMathRender(resBox);
+        }
+
+        const quizQuestions = [
+            {
+                q: "Câu 1: Nhận định nào sau đây là ĐÚNG khi nói về máy biến áp lí tưởng?",
+                options: [
+                    "A. Máy biến áp là thiết bị biến đổi điện áp xoay chiều nhưng không làm thay đổi tần số \\(f\\) của dòng điện.",
+                    "B. Máy biến áp là thiết bị biến đổi điện áp xoay chiều cả về độ lớn và tần số \\(f\\) của dòng điện.",
+                    "C. Máy biến áp có thể biến đổi điện áp của nguồn điện một chiều không đổi (ắc-quy).",
+                    "D. Lõi máy biến áp được đúc bằng một khối thép đặc nguyên khối để dẫn điện từ cuộn sơ cấp sang thứ cấp."
+                ],
+                correct: 0,
+                explain: "Máy biến áp hoạt động dựa trên hiện tượng cảm ứng điện từ, chỉ làm thay đổi giá trị hiệu dụng của điện áp \\(U\\) và cường độ dòng điện \\(I\\), nhưng giữ nguyên tần số \\(f\\) của dòng điện xoay chiều."
+            },
+            {
+                q: "Câu 2: Đối với máy biến áp lí tưởng đang hoạt động có tải, gọi \\(N_{1}, U_{1}, I_{1}\\) và \\(N_{2}, U_{2}, I_{2}\\) lần lượt là số vòng dây, điện áp hiệu dụng và cường độ dòng điện hiệu dụng ở cuộn sơ cấp và cuộn thứ cấp. Hệ thức nào sau đây là SAI?",
+                options: [
+                    "A. \\(\\frac{N_{1}}{N_{2}} = \\frac{I_{2}}{I_{1}}\\)",
+                    "B. \\(\\frac{N_{1}}{N_{2}} = \\frac{U_{2}}{U_{1}}\\)",
+                    "C. \\(\\frac{U_{2}}{U_{1}} = \\frac{I_{1}}{I_{2}}\\)",
+                    "D. \\(\\frac{N_{1}}{U_{1}} = \\frac{N_{2}}{U_{2}}\\)"
+                ],
+                correct: 1,
+                explain: "Theo công thức máy biến áp lí tưởng: \\(\\frac{U_{1}}{U_{2}} = \\frac{N_{1}}{N_{2}} = \\frac{I_{2}}{I_{1}}\\). Do đó tỉ số \\(\\frac{N_{1}}{N_{2}} = \\frac{U_{2}}{U_{1}}\\) ở phương án B bị viết ngược!"
+            },
+            {
+                q: "Câu 3: Để giảm công suất hao phí \\(P_{hp}\\) do tỏa nhiệt trên đường dây truyền tải điện năng đi xa bằng dòng điện xoay chiều (với công suất phát \\(P\\) và hệ số công suất \\(\\cos\\varphi\\) không đổi), biện pháp hiệu quả nhất là:",
+                options: [
+                    "A. Giảm điện áp hiệu dụng ở nơi phát xuống \\(n\\) lần để giảm công suất tỏa nhiệt \\(n^2\\) lần.",
+                    "B. Tăng điện áp hiệu dụng ở nơi sản xuất điện lên \\(n\\) lần để giảm công suất hao phí trên đường dây \\(n^2\\) lần.",
+                    "C. Dùng dây dẫn bằng bạc hoặc siêu dẫn trên toàn bộ mạng lưới quốc gia.",
+                    "D. Tăng điện trở \\(R_{d}\\) của đường dây tải điện lên \\(n\\) lần."
+                ],
+                correct: 1,
+                explain: "Ta có công thức công suất hao phí: \\(P_{hp} = I^2 R_{d} = \\frac{P^2 R_{d}}{U^2 \\cos^2\\varphi}\\). Khi dùng máy tăng áp nâng điện áp \\(U\\) ở nơi phát lên \\(n\\) lần thì công suất hao phí \\(P_{hp}\\) giảm đi \\(n^2\\) lần."
+            },
+            {
+                q: "Câu 4: Khi nói về nguyên tắc hoạt động của bếp từ và đàn ghi ta điện, phát biểu nào sau đây là ĐÚNG?",
+                options: [
+                    "A. Nồi kim loại trên bếp từ nóng lên là do nhiệt lượng từ mặt bếp truyền trực tiếp lên đáy nồi giống như bếp hồng ngoại.",
+                    "B. Đàn ghi ta điện có thể sử dụng dây đàn bằng nylon vì hộp cộng hưởng của đàn khuếch đại âm thanh.",
+                    "C. Nguyên nhân làm đáy nồi kim loại trên bếp từ nóng lên là do tác dụng nhiệt của dòng điện xoáy Foucault sinh ra trực tiếp ở đáy nồi.",
+                    "D. Lõi máy biến áp nóng lên khi hoạt động không liên quan gì đến dòng điện Foucault."
+                ],
+                correct: 2,
+                explain: "Bếp từ tạo ra từ trường biến thiên xuyên qua đáy nồi bằng kim loại nhiễm từ, sinh ra dòng điện cảm ứng xoáy (dòng điện Foucault) trực tiếp trong đáy nồi, làm đáy nồi tự nóng lên theo định luật Joule-Lenz \\(Q = I^2 R t\\)."
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = quizQuestions.map((item, idx) => `
+                <div class="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3" id="q-block-${idx}">
+                    <div class="font-bold text-slate-800 text-sm sm:text-base">${item.q}</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        ${item.options.map((opt, oIdx) => `
+                            <label class="flex items-start gap-2.5 p-3 rounded-lg bg-white border border-slate-200 hover:border-blue-400 cursor-pointer transition text-sm">
+                                <input type="radio" name="quiz-q-${idx}" value="${oIdx}" class="mt-1 accent-blue-600">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="q-exp-${idx}" class="hidden p-3.5 rounded-lg text-sm"></div>
+                </div>
+            `).join('');
+            triggerMathRender(container);
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            quizQuestions.forEach((item, idx) => {
+                const selected = document.querySelector(`input[name="quiz-q-${idx}"]:checked`);
+                const expEl = document.getElementById(`q-exp-${idx}`);
+                expEl.classList.remove('hidden');
+
+                if (selected && parseInt(selected.value) === item.correct) {
+                    score++;
+                    expEl.className = "mt-3 p-3.5 rounded-lg text-sm bg-emerald-50 border border-emerald-300 text-emerald-950";
+                    expEl.innerHTML = `<strong>✅ Chính xác!</strong> ${item.explain}`;
+                } else {
+                    const correctLetter = ['A', 'B', 'C', 'D'][item.correct];
+                    expEl.className = "mt-3 p-3.5 rounded-lg text-sm bg-rose-50 border border-rose-300 text-rose-950";
+                    expEl.innerHTML = `<strong>❌ Chưa đúng (Đáp án đúng là ${correctLetter}).</strong> ${item.explain}`;
+                }
+                // Bắt buộc gọi renderMathInElement ngay sau khi in giải thích
+                renderMathInElement(expEl, katexConfig);
+            });
+
+            const banner = document.getElementById('quiz-score-banner');
+            banner.classList.remove('hidden');
+            document.getElementById('quiz-score-val').textContent = `${score} / ${quizQuestions.length}`;
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-score-banner').classList.add('hidden');
+            renderQuiz();
+        }
+
+        let timerTotalSeconds = 180;
+        let timerRemaining = 180;
+        let timerInterval = null;
+        let isTimerRunning = false;
+
+        function setTimerPreset(sec) {
+            pauseTimer();
+            timerTotalSeconds = sec;
+            timerRemaining = sec;
+            document.getElementById('timer-card').classList.remove('timer-finished');
+            document.getElementById('timer-status').textContent = 'Sẵn sàng';
+            updateTimerUI();
+        }
+
+        function updateTimerUI() {
+            const mins = Math.floor(timerRemaining / 60).toString().padStart(2, '0');
+            const secs = (timerRemaining % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').textContent = `${mins}:${secs}`;
+
+            const circle = document.getElementById('timer-progress-circle');
+            const circumference = 326.72;
+            const offset = circumference - (timerRemaining / timerTotalSeconds) * circumference;
+            circle.style.strokeDashoffset = offset;
+        }
+
+        function playBeepSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.6);
+            } catch (e) {}
+        }
+
+        function toggleTimer() {
+            if (isTimerRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function startTimer() {
+            if (timerRemaining <= 0) timerRemaining = timerTotalSeconds;
+            isTimerRunning = true;
+            document.getElementById('timer-card').classList.remove('timer-finished');
+            document.getElementById('timer-status').textContent = 'Đang đếm ngược...';
+            document.getElementById('btn-timer-start').innerHTML = '<i class="fa-solid fa-pause"></i> Tạm dừng';
+
+            timerInterval = setInterval(() => {
+                timerRemaining--;
+                updateTimerUI();
+                if (timerRemaining <= 0) {
+                    pauseTimer();
+                    document.getElementById('timer-status').textContent = 'HẾT GIỜ!';
+                    document.getElementById('timer-card').classList.add('timer-finished');
+                    playBeepSound();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            isTimerRunning = false;
+            clearInterval(timerInterval);
+            document.getElementById('btn-timer-start').innerHTML = '<i class="fa-solid fa-play"></i> Tiếp tục';
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timerRemaining = timerTotalSeconds;
+            document.getElementById('timer-card').classList.remove('timer-finished');
+            document.getElementById('timer-status').textContent = 'Sẵn sàng';
+            document.getElementById('btn-timer-start').innerHTML = '<i class="fa-solid fa-play"></i> Bắt đầu';
+            updateTimerUI();
+        }
+
+        // Lucky Wheel Logic
+        const teamData = {
+            1: ["Nguyễn Minh An - Tổ 1", "Trần Quốc Bảo - Tổ 1", "Lê Hoàng Châu - Tổ 1", "Phạm Thùy Dương - Tổ 1", "Hoàng Gia Huy - Tổ 1", "Vũ Khánh Linh - Tổ 1"],
+            2: ["Đặng Tuấn Kiệt - Tổ 2", "Bùi Ngọc Mai - Tổ 2", "Đỗ Hải Nam - Tổ 2", "Ngô Phương Oanh - Tổ 2", "Lý Minh Phúc - Tổ 2", "Trương Bảo Quyên - Tổ 2"],
+            3: ["Phan Thanh Sơn - Tổ 3", "Võ Anh Thư - Tổ 3", "Dương Quốc Trung - Tổ 3", "Hồ Thảo Uyên - Tổ 3", "Đinh Khôi Vĩ - Tổ 3", "Lâm Yến Xuân - Tổ 3"],
+            4: ["Mai Đức Anh - Tổ 4", "Cao Thiên Bình - Tổ 4", "Tạ Minh Cường - Tổ 4", "Chu Hải Đăng - Tổ 4", "Đoàn Mỹ Hạnh - Tổ 4", "Kiều Trọng Nghĩa - Tổ 4"]
+        };
+
+        let wheelNames = [...teamData[1]];
+        let wheelAngle = 0;
+        let isSpinning = false;
+        const wheelColors = ['#0284c7', '#0d9488', '#7c3aed', '#e11d48', '#d97706', '#2563eb', '#059669', '#9333ea'];
+
+        function loadTeamList(teamNum) {
+            [1, 2, 3, 4].forEach(n => {
+                const btn = document.getElementById('btn-team-' + n);
+                btn.className = n === teamNum
+                    ? 'px-3 py-1 rounded-lg text-xs font-bold bg-blue-600 text-white'
+                    : 'px-3 py-1 rounded-lg text-xs font-bold bg-slate-200 text-slate-700';
+            });
+            wheelNames = [...teamData[teamNum]];
+            document.getElementById('wheel-names-input').value = wheelNames.join('\n');
+            drawWheel();
+        }
+
+        function updateWheelFromTextarea() {
+            const raw = document.getElementById('wheel-names-input').value;
+            wheelNames = raw.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+            if (wheelNames.length === 0) wheelNames = ["Chưa có tên"];
+            drawWheel();
+        }
+
+        function drawWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const radius = cx - 8;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const sliceAngle = (2 * Math.PI) / wheelNames.length;
+
+            wheelNames.forEach((name, i) => {
+                const start = wheelAngle + i * sliceAngle;
+                const end = start + sliceAngle;
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, radius, start, end);
+                ctx.closePath();
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(start + sliceAngle / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 12px Inter, sans-serif';
+                const shortName = name.length > 18 ? name.substring(0, 16) + '...' : name;
+                ctx.fillText(shortName, radius - 14, 4);
+                ctx.restore();
+            });
+
+            // Center cap
+            ctx.beginPath();
+            ctx.arc(cx, cy, 20, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+
+        function spinWheel() {
+            if (isSpinning || wheelNames.length === 0) return;
+            isSpinning = true;
+
+            const spinDuration = 3500;
+            const startAngle = wheelAngle;
+            const extraSpins = (5 + Math.random() * 4) * 2 * Math.PI;
+            const startTime = performance.now();
+
+            function step(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(1, elapsed / spinDuration);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+
+                wheelAngle = startAngle + extraSpins * easeOut;
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    isSpinning = false;
+                    const sliceAngle = (2 * Math.PI) / wheelNames.length;
+                    const normalized = (2 * Math.PI - (wheelAngle % (2 * Math.PI))) % (2 * Math.PI);
+                    const winIdx = Math.floor(normalized / sliceAngle) % wheelNames.length;
+                    showWinnerModal(wheelNames[winIdx]);
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        function showWinnerModal(name) {
+            playBeepSound();
+            document.getElementById('winner-name').textContent = name;
+            const modal = document.getElementById('winner-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeWinnerModal() {
+            const modal = document.getElementById('winner-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Khởi chạy toàn bộ ứng dụng khi tải trang
+        window.onload = function () {
+            triggerMathRender(document.body);
+            updateSimAParams();
+            updateSimBParams();
+            renderQuiz();
+            loadTeamList(1);
+            resizeSimCanvases();
+            animateSimulations();
+
+            window.addEventListener('resize', resizeSimCanvases);
+        };
+    </script>
+</body>
+</html>
