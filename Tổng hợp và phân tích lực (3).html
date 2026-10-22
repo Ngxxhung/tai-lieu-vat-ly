@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 13: Tổng hợp và Phân tích lực. Cân bằng lực - Vật Lý 10</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --secondary: #0284c7;
+            --bg-main: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --accent: #f59e0b;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.4rem; letter-spacing: 0.5px; }
+        .copyright-header { font-size: 0.95rem; opacity: 0.9; font-weight: 500; color: #e0f2fe; }
+        
+        /* Navigation Tabs */
+        .nav-container {
+            background: var(--bg-card);
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            max-width: 1400px;
+            margin: 0 auto;
+            scrollbar-width: thin;
+        }
+        .tab-btn {
+            padding: 0.9rem 1.2rem;
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .tab-btn:hover { color: var(--primary-light); background-color: #f8fafc; }
+        .tab-btn.active {
+            color: var(--primary-light);
+            border-bottom-color: var(--primary-light);
+            background-color: #eff6ff;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 1300px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+        }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* UI Components */
+        .card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eff6ff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
+        
+        .alert-box {
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-light);
+            background-color: #eff6ff;
+        }
+        .alert-warning { border-left-color: var(--accent); background-color: #fffbeb; }
+        .alert-danger { border-left-color: var(--danger); background-color: #fef2f2; }
+        .alert-success { border-left-color: var(--success); background-color: #f0fdf4; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.95rem; }
+        th, td { padding: 0.85rem 1rem; border: 1px solid var(--border); text-align: left; }
+        th { background-color: #f8fafc; color: var(--primary); font-weight: 700; }
+        tr:nth-child(even) { background-color: #fcfcfd; }
+
+        /* Simulation Layout */
+        .sim-layout {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+        @media (max-width: 900px) { .sim-layout { grid-template-columns: 1fr; } }
+        .canvas-wrapper {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            text-align: center;
+        }
+        canvas { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+        .control-group { margin-bottom: 1rem; }
+        .control-group label { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.3rem; }
+        input[type="range"] { width: 100%; accent-color: var(--primary-light); cursor: pointer; }
+        .output-panel {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-top: 1rem;
+        }
+        .output-item { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px dashed #cbd5e1; }
+        .output-item:last-child { border-bottom: none; }
+
+        /* Buttons & Inputs */
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            background-color: var(--primary-light);
+            color: white;
+            transition: background 0.2s;
+        }
+        .btn:hover { background-color: var(--primary); }
+        .btn-outline { background: transparent; border: 1.5px solid var(--primary-light); color: var(--primary-light); }
+        .btn-outline:hover { background: #eff6ff; }
+        .btn-accent { background-color: var(--accent); color: #000; }
+        .btn-accent:hover { background-color: #d97706; color: white; }
+        .form-input {
+            width: 100%;
+            padding: 0.65rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Quiz & Practice */
+        .solution-box {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+        }
+        .quiz-option {
+            display: block;
+            padding: 0.75rem 1rem;
+            margin: 0.5rem 0;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover { background-color: #f1f5f9; }
+        .quiz-option input { margin-right: 0.75rem; }
+
+        /* Timer & Wheel */
+        .timer-display { font-size: 2.5rem; font-weight: 700; color: var(--primary); text-align: center; margin: 0.5rem 0; }
+        .blink { animation: blinker 0.8s linear infinite; color: var(--danger) !important; }
+        @keyframes blinker { 50% { opacity: 0.2; } }
+
+        footer {
+            background-color: var(--text-dark);
+            color: #cbd5e1;
+            text-align: center;
+            padding: 1.25rem;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 99px;
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>CHỦ ĐỀ 13: TỔNG HỢP VÀ PHÂN TÍCH LỰC. CÂN BẰNG LỰC</h1>
+    <div class="copyright-header">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+</header>
+
+<div class="nav-container">
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="openTab('tab1')">🚀 1. Khởi động</button>
+        <button class="tab-btn" onclick="openTab('tab2')">📖 2. Lý thuyết</button>
+        <button class="tab-btn" onclick="openTab('tab3a')">🔬 3A. TN Lực đồng quy</button>
+        <button class="tab-btn" onclick="openTab('tab3b')">🔬 3B. TN Lực song song</button>
+        <button class="tab-btn" onclick="openTab('tab3c')">🔬 3C. TN Mặt phẳng nghiêng</button>
+        <button class="tab-btn" onclick="openTab('tab4')">🧮 4. Máy tính</button>
+        <button class="tab-btn" onclick="openTab('tab5')">📝 5. Luyện tập</button>
+        <button class="tab-btn" onclick="openTab('tab6')">🎯 6. Tự đánh giá</button>
+        <button class="tab-btn" onclick="openTab('tab7')">🛠️ 7. Tiện ích lớp học</button>
+    </div>
+</div>
+
+<main>
+    <!-- TAB 1: KHỞI ĐỘNG -->
+    <section id="tab1" class="tab-content active">
+        <div class="card">
+            <h2 class="card-title">🚀 Khởi động & Tình huống Thực tiễn</h2>
+            <p style="margin-bottom: 1rem;">Quan sát các hiện tượng kỹ thuật và đời sống dưới đây. Tại sao tổng độ lớn các lực tác dụng không đơn thuần là phép cộng số học thông thường?</p>
+            
+            <div class="grid-3">
+                <div class="card" style="margin-bottom:0;">
+                    <span class="badge">Tình huống 1: Hàng hải</span>
+                    <h3 style="margin: 0.5rem 0; color: var(--primary);">Hai tàu kéo sà lan</h3>
+                    <p style="font-size: 0.9rem;">Hai tàu kéo dùng dây cáp kéo một tàu chở hàng bị chết máy vào cảng với hai lực \(\vec{F}_1\) và \(\vec{F}_2\) lệch nhau góc \(\alpha = 30^\circ\), mỗi tàu kéo một lực \(8000 \text{ N}\).</p>
+                    <div class="alert-box alert-warning" style="margin-top: 0.8rem; font-size: 0.85rem;">
+                        <strong>Câu hỏi mâu thuẫn:</strong> Tại sao lực kéo tổng cộng tác dụng lên tàu hàng <em>không phải</em> là \(8000 + 8000 = 16000 \text{ N}\) mà chỉ đạt khoảng \(15455 \text{ N}\)? Nếu hai tàu chạy tách ra xa nhau làm góc \(\alpha\) tăng lên \(90^\circ\), tàu hàng sẽ được kéo mạnh hơn hay yếu đi?
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom:0;">
+                    <span class="badge">Tình huống 2: Đời sống Việt Nam</span>
+                    <h3 style="margin: 0.5rem 0; color: var(--primary);">Đòn gánh của người nông dân</h3>
+                    <p style="font-size: 0.9rem;">Một bác nông dân gánh hai bó lúa có khối lượng không đều nhau: bó trước \(m_1 = 25 \text{ kg}\), bó sau \(m_2 = 15 \text{ kg}\) trên đòn gánh dài \(1,5 \text{ m}\).</p>
+                    <div class="alert-box alert-warning" style="margin-top: 0.8rem; font-size: 0.85rem;">
+                        <strong>Câu hỏi mâu thuẫn:</strong> Nếu bác đặt vai ở chính giữa đòn gánh, đòn gánh sẽ bị nghiêng ngay lập tức. Vậy vai bác phải đặt lệch về phía bó lúa nặng hay bó lúa nhẹ, và cách đầu gánh bao nhiêu centimet để đòn gánh nằm ngang cân bằng?
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom:0;">
+                    <span class="badge">Tình huống 3: Kỹ thuật xây dựng</span>
+                    <h3 style="margin: 0.5rem 0; color: var(--primary);">Dây cáp treo đèn giao thông</h3>
+                    <p style="font-size: 0.9rem;">Một đèn tín hiệu giao thông chỉ nặng \(P = 100 \text{ N}\) được treo ở chính giữa một sợi dây cáp căng ngang giữa hai cột điện làm dây võng xuống hợp góc \(150^\circ\).</p>
+                    <div class="alert-box alert-warning" style="margin-top: 0.85rem; font-size: 0.85rem;">
+                        <strong>Câu hỏi mâu thuẫn:</strong> Đèn chỉ nặng \(100 \text{ N}\), nhưng mỗi nhánh dây cáp lại phải chịu lực căng lên tới gần \(193 \text{ N}\)! Vì sao nếu kỹ sư cố kéo dây cáp thật thẳng (góc tiến tới \(180^\circ\)) thì dây cáp chắc chắn sẽ bị đứt dù đèn rất nhẹ?
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 2: LÝ THUYẾT -->
+    <section id="tab2" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">📖 1. Khái niệm & Bản chất Vật lý</h2>
+            <div class="grid-2">
+                <div class="alert-box">
+                    <h4>1. Tổng hợp lực</h4>
+                    <p>Là phép thay thế các lực tác dụng đồng thời vào cùng một vật bằng một lực có tác dụng giống hệt như các lực ấy. Lực thay thế gọi là <strong>hợp lực</strong> (\(\vec{F}\)), các lực được thay thế gọi là các <strong>lực thành phần</strong> (\(\vec{F}_1, \vec{F}_2, ...\)).</p>
+                    <p style="margin-top:0.5rem;">Phương trình vector tổng quát: \[\vec{F} = \vec{F}_1 + \vec{F}_2 + \vec{F}_3 + ...\]</p>
+                </div>
+                <div class="alert-box alert-success">
+                    <h4>2. Điều kiện cân bằng của chất điểm</h4>
+                    <p>Muốn cho một vật chịu tác dụng của nhiều lực đứng cân bằng thì hợp lực của các lực tác dụng lên nó phải bằng không:</p>
+                    \[\sum \vec{F} = \vec{F}_1 + \vec{F}_2 + ... = \vec{0}\]
+                    <p><em>Hệ quả 3 lực cân bằng:</em> Ba lực có giá đồng phẳng, đồng quy và hợp lực của hai lực bất kỳ cân bằng với lực thứ ba (\(\vec{F}_{12} = -\vec{F}_3\)).</p>
+                </div>
+            </div>
+            <div class="alert-box" style="margin-top:0.5rem;">
+                <h4>3. Phân tích lực</h4>
+                <p>Là phép thay thế một lực bằng hai lực thành phần có tác dụng giống hệt như lực đó (thường chọn hai phương vuông góc \(Ox \perp Oy\) để hai thành phần độc lập tác dụng). Điều kiện áp dụng: Chỉ phân tích lực khi biết rõ lực đó gây ra tác dụng theo hai phương nào.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">📐 2. Hệ thống Công thức Cốt lõi</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Trường hợp / Mô hình</th>
+                        <th>Công thức Vật lý chuẩn</th>
+                        <th>Giải thích biến số & Đơn vị (SI)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Hai lực cùng phương, cùng chiều</strong><br>\(\vec{F}_1 \uparrow\uparrow \vec{F}_2 \ (\alpha = 0^\circ)\)</td>
+                        <td>\[F = F_{max} = F_1 + F_2\]<br>(\(\vec{F}\) cùng phương, cùng chiều \(\vec{F}_1, \vec{F}_2\))</td>
+                        <td rowspan="4">
+                            • \(F_1, F_2\): Độ lớn hai lực thành phần (\(\text{N}\))<br>
+                            • \(F\): Độ lớn hợp lực (\(\text{N}\))<br>
+                            • \(\alpha = (\vec{F}_1, \vec{F}_2)\): Góc hợp bởi hai vector lực thành phần (\(\text{độ } ^\circ\) hoặc \(\text{rad}\))<br>
+                            • \(\theta = (\vec{F}, \vec{F}_1)\): Góc định hướng của hợp lực so với \(\vec{F}_1\)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Hai lực cùng phương, ngược chiều</strong><br>\(\vec{F}_1 \uparrow\downarrow \vec{F}_2 \ (\alpha = 180^\circ)\)</td>
+                        <td>\[F = F_{min} = |F_1 - F_2|\]<br>(\(\vec{F}\) cùng chiều với lực có độ lớn lớn hơn)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Hai lực đồng quy vuông góc</strong><br>\(\vec{F}_1 \perp \vec{F}_2 \ (\alpha = 90^\circ)\)</td>
+                        <td>\[F = \sqrt{F_1^2 + F_2^2}, \quad \cos\theta = \frac{F_1}{F}\]</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. Hai lực đồng quy bất kỳ</strong><br>(Quy tắc hình bình hành)</td>
+                        <td>\[F = \sqrt{F_1^2 + F_2^2 + 2F_1F_2\cos\alpha}\]
+                        <strong>Hệ quả giới hạn:</strong> \[|F_1 - F_2| \le F \le F_1 + F_2\]
+                        <em>Đặc biệt khi \(F_1 = F_2\):</em> \[F = 2F_1\cos\left(\frac{\alpha}{2}\right)\]</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5. Hai lực song song cùng chiều</strong><br>(Quy tắc chia trong)</td>
+                        <td>\[F = F_1 + F_2 \quad \text{và} \quad \frac{F_1}{F_2} = \frac{d_2}{d_1}\]
+                        (với \(d_1 + d_2 = AB\))</td>
+                        <td>
+                            • \(d_1 = OA\): Khoảng cách từ giá của \(\vec{F}_1\) đến giá hợp lực \(\vec{F}\) (\(\text{m}\))<br>
+                            • \(d_2 = OB\): Khoảng cách từ giá của \(\vec{F}_2\) đến giá hợp lực \(\vec{F}\) (\(\text{m}\))
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>6. Phân tích lực vuông góc & Mặt phẳng nghiêng</strong></td>
+                        <td>
+                            • Hệ trục \(Oxy\): \[F_x = F\cos\alpha, \quad F_y = F\sin\alpha\]
+                            • Trọng lực \(\vec{P}\) trên mặt phẳng nghiêng góc \(\alpha\):
+                            \[P_x = P\sin\alpha, \quad P_y = P\cos\alpha\]
+                        </td>
+                        <td>
+                            • \(P_x\): Thành phần kéo vật trượt dọc mặt phẳng nghiêng (\(\text{N}\))<br>
+                            • \(P_y\): Thành phần ép vuông góc lên mặt phẳng nghiêng (\(\text{N}\))
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">⚠️ 3. Bẫy Lý thuyết (Các sai lầm học sinh hay mắc phải)</h2>
+            <div class="grid-3">
+                <div class="alert-box alert-danger">
+                    <h4>Bẫy 1: Nhầm hai lực cân bằng và hai lực trực đối</h4>
+                    <p>• <strong>Hai lực cân bằng:</strong> Cùng tác dụng vào <strong>MỘT vật</strong>, cùng giá, ngược chiều, cùng độ lớn (VD: Trọng lực \(\vec{P}\) và phản lực \(\vec{N}\) tác dụng lên quyển sách).</p>
+                    <p>• <strong>Hai lực trực đối (ĐL III Newton):</strong> Tác dụng vào <strong>HAI vật khác nhau</strong> nên không triệt tiêu nhau (VD: Áp lực \(\vec{Q}\) sách đè lên bàn và phản lực \(\vec{N}\) bàn nâng sách).</p>
+                </div>
+                <div class="alert-box alert-danger">
+                    <h4>Bẫy 2: Nhầm công thức lượng giác trong Toán và Lý</h4>
+                    <p>• Trong định lý hàm cosin tính cạnh đối diện góc \(\alpha\) của tam giác có dấu trừ (\(-\)).</p>
+                    <p>• Trong quy tắc hình bình hành tổng hợp hai lực chung gốc tạo góc \(\alpha\), công thức bắt buộc mang <strong>dấu cộng (\(+\))</strong>: \[F^2 = F_1^2 + F_2^2 + 2F_1F_2\cos\alpha\]</p>
+                </div>
+                <div class="alert-box alert-danger">
+                    <h4>Bẫy 3: Nhầm hàm \(\sin\) và \(\cos\) trên mặt phẳng nghiêng</h4>
+                    <p>• Khi mặt phẳng nghiêng hợp với phương ngang góc \(\alpha\), góc giữa trọng lực \(\vec{P}\) (thẳng đứng) và trục \(Oy\) (vuông góc mặt nghiêng) chính là \(\alpha\).</p>
+                    <p>• Do đó thành phần trượt dọc mặt nghiêng là \(P_x = P\sin\alpha\) (nhiều em nhầm thành \(P\cos\alpha\)).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 3A: MÔ PHỎNG LỰC ĐỒNG QUY -->
+    <section id="tab3a" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">🔬 Mô phỏng 3A: Tổng hợp hai lực đồng quy (Quy tắc hình bình hành)</h2>
+            <div class="sim-layout">
+                <div class="canvas-wrapper">
+                    <canvas id="canvas3a" width="600" height="420"></canvas>
+                </div>
+                <div>
+                    <div class="card" style="margin-bottom: 1rem;">
+                        <h3 style="margin-bottom: 0.8rem; color: var(--primary);">Tham số điều khiển (Inputs)</h3>
+                        <div class="control-group">
+                            <label><span>Độ lớn lực \(F_1\) (Màu xanh lam):</span> <span id="val_f1_3a">60 N</span></label>
+                            <input type="range" id="f1_3a" min="10" max="100" value="60" oninput="updateSim3A()">
+                        </div>
+                        <div class="control-group">
+                            <label><span>Độ lớn lực \(F_2\) (Màu xanh lá):</span> <span id="val_f2_3a">80 N</span></label>
+                            <input type="range" id="f2_3a" min="10" max="100" value="80" oninput="updateSim3A()">
+                        </div>
+                        <div class="control-group">
+                            <label><span>Góc hợp bởi hai lực \(\alpha\):</span> <span id="val_alpha_3a">90°</span></label>
+                            <input type="range" id="alpha_3a" min="0" max="180" value="90" oninput="updateSim3A()">
+                        </div>
+                        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.5rem;">
+                            <button class="btn btn-outline" style="padding:0.35rem 0.7rem; font-size:0.8rem;" onclick="setAlpha3A(0)">\(\alpha = 0^\circ\)</button>
+                            <button class="btn btn-outline" style="padding:0.35rem 0.7rem; font-size:0.8rem;" onclick="setAlpha3A(60)">\(\alpha = 60^\circ\)</button>
+                            <button class="btn btn-outline" style="padding:0.35rem 0.7rem; font-size:0.8rem;" onclick="setAlpha3A(90)">\(\alpha = 90^\circ\)</button>
+                            <button class="btn btn-outline" style="padding:0.35rem 0.7rem; font-size:0.8rem;" onclick="setAlpha3A(120)">\(\alpha = 120^\circ\)</button>
+                            <button class="btn btn-outline" style="padding:0.35rem 0.7rem; font-size:0.8rem;" onclick="setAlpha3A(180)">\(\alpha = 180^\circ\)</button>
+                        </div>
+
+                        <div class="output-panel">
+                            <div class="output-item"><span>Hợp lực \(F\) (Màu đỏ):</span> <strong id="out_f_3a" style="color:var(--danger); font-size:1.1rem;">100.00 N</strong></div>
+                            <div class="output-item"><span>Góc lệch \(\theta = (\vec{F}, \vec{F}_1)\):</span> <strong id="out_theta_3a">53.13°</strong></div>
+                            <div class="output-item"><span>Khoảng giá trị cho phép:</span> <strong id="out_range_3a">[20 N ; 140 N]</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="alert-box alert-warning" style="font-size: 0.9rem;">
+                        <strong>💡 Hướng dẫn "Thử và Sai":</strong>
+                        <ul style="margin-left: 1.2rem; margin-top: 0.3rem;">
+                            <li>Điều chỉnh \(F_1 = F_2 = 60 \text{ N}\), sau đó kéo góc \(\alpha = 120^\circ\). Quan sát xem độ lớn hợp lực \(F\) bằng bao nhiêu?</li>
+                            <li>Khi tăng góc \(\alpha\) từ \(0^\circ\) đến \(180^\circ\), độ lớn hợp lực \(F\) tăng hay giảm?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 3B: MÔ PHỎNG LỰC SONG SONG -->
+    <section id="tab3b" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">🔬 Mô phỏng 3B: Tổng hợp hai lực song song cùng chiều (Bài toán Đòn gánh)</h2>
+            <div class="sim-layout">
+                <div class="canvas-wrapper">
+                    <canvas id="canvas3b" width="600" height="420"></canvas>
+                </div>
+                <div>
+                    <div class="card" style="margin-bottom: 1rem;">
+                        <h3 style="margin-bottom: 0.8rem; color: var(--primary);">Tham số điều khiển (Inputs)</h3>
+                        <div class="control-group">
+                            <label><span>Trọng lượng đầu A (\(F_1\)):</span> <span id="val_f1_3b">300 N</span></label>
+                            <input type="range" id="f1_3b" min="50" max="500" step="10" value="300" oninput="updateSim3B()">
+                        </div>
+                        <div class="control-group">
+                            <label><span>Trọng lượng đầu B (\(F_2\)):</span> <span id="val_f2_3b">200 N</span></label>
+                            <input type="range" id="f2_3b" min="50" max="500" step="10" value="200" oninput="updateSim3B()">
+                        </div>
+                        <div class="control-group">
+                            <label><span>Chiều dài đòn gánh \(AB\):</span> <span id="val_L_3b">1.50 m</span></label>
+                            <input type="range" id="L_3b" min="1.0" max="3.0" step="0.1" value="1.5" oninput="updateSim3B()">
+                        </div>
+
+                        <div class="output-panel">
+                            <div class="output-item"><span>Tổng lực đè lên vai (\(F = F_1 + F_2\)):</span> <strong id="out_f_3b" style="color:var(--danger); font-size:1.1rem;">500 N</strong></div>
+                            <div class="output-item"><span>Khoảng cách \(d_1 = OA\) (từ vai đến A):</span> <strong id="out_d1_3b" style="color:var(--primary-light);">0.600 m (60.0 cm)</strong></div>
+                            <div class="output-item"><span>Khoảng cách \(d_2 = OB\) (từ vai đến B):</span> <strong id="out_d2_3b" style="color:var(--success);">0.900 m (90.0 cm)</strong></div>
+                            <div class="output-item"><span>Kiểm chứng tỉ lệ \(F_1 \cdot d_1 = F_2 \cdot d_2\):</span> <strong id="out_check_3b">180 = 180 (Cân bằng)</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="alert-box alert-warning" style="font-size: 0.9rem;">
+                        <strong>💡 Hướng dẫn "Thử và Sai":</strong>
+                        <ul style="margin-left: 1.2rem; margin-top: 0.3rem;">
+                            <li>Đặt \(F_1 = 250 \text{ N}\), \(F_2 = 150 \text{ N}\) và \(AB = 1,5 \text{ m}\) (giống Ví dụ 5 trong tài liệu). Kiểm tra xem vị trí đặt vai \(O\) cách đầu \(A\) có đúng bằng \(62,5 \text{ cm}\) không?</li>
+                            <li>Tăng \(F_1\) lớn gấp 3 lần \(F_2\). Điểm đặt vai \(O\) dịch chuyển về gần đầu nào?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 3C: MÔ PHỎNG MẶT PHẲNG NGHIÊNG -->
+    <section id="tab3c" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">🔬 Mô phỏng 3C: Phân tích trọng lực & Cân bằng trên mặt phẳng nghiêng</h2>
+            <div class="sim-layout">
+                <div class="canvas-wrapper">
+                    <canvas id="canvas3c" width="600" height="420"></canvas>
+                </div>
+                <div>
+                    <div class="card" style="margin-bottom: 1rem;">
+                        <h3 style="margin-bottom: 0.8rem; color: var(--primary);">Tham số điều khiển (Inputs)</h3>
+                        <div class="control-group">
+                            <label><span>Trọng lượng vật \(P\):</span> <span id="val_P_3c">80 N</span></label>
+                            <input type="range" id="P_3c" min="20" max="200" step="5" value="80" oninput="updateSim3C()">
+                        </div>
+                        <div class="control-group">
+                            <label><span>Góc nghiêng \(\alpha\):</span> <span id="val_alpha_3c">30°</span></label>
+                            <input type="range" id="alpha_3c" min="5" max="60" step="1" value="30" oninput="updateSim3C()">
+                        </div>
+
+                        <div class="output-panel">
+                            <div class="output-item"><span>Thành phần trượt \(P_x = P\sin\alpha\):</span> <strong id="out_px_3c" style="color:var(--danger);">40.00 N</strong></div>
+                            <div class="output-item"><span>Thành phần nén \(P_y = P\cos\alpha\):</span> <strong id="out_py_3c" style="color:var(--primary-light);">69.28 N</strong></div>
+                            <div class="output-item"><span>Lực căng dây giữ vật (\(T = P_x\)):</span> <strong id="out_t_3c" style="color:var(--success);">40.00 N</strong></div>
+                            <div class="output-item"><span>Phản lực mặt nghiêng (\(N = P_y\)):</span> <strong id="out_n_3c">69.28 N</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="alert-box alert-warning" style="font-size: 0.9rem;">
+                        <strong>💡 Hướng dẫn "Thử và Sai":</strong>
+                        <ul style="margin-left: 1.2rem; margin-top: 0.3rem;">
+                            <li>Đặt \(P = 80 \text{ N}\), \(\alpha = 30^\circ\) (Ví dụ 1 Dạng 2 tài liệu). Đối chiếu giá trị lực căng dây \(T\) trên màn hình.</li>
+                            <li>Khi dốc càng cao (tăng góc \(\alpha\)), lực căng dây \(T\) và áp lực \(P_y\) nén lên mặt dốc biến đổi ngược chiều nhau như thế nào?</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 4: MÁY TÍNH VẬT LÝ -->
+    <section id="tab4" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">🧮 Máy tính Tham số Vật lý Thông minh</h2>
+            <p style="margin-bottom: 1rem;">Nhập <strong>3 trong 4 đại lượng</strong> bất kỳ của bài toán tổng hợp hai lực đồng quy và bỏ trống đại lượng cần tìm. Hệ thống sẽ tự động phân tích và trình bày lời giải chi tiết bằng KaTeX.</p>
+            
+            <div class="grid-2">
+                <div>
+                    <div class="control-group">
+                        <label>Lực thành phần thứ nhất \(F_1 \ (\text{N})\):</label>
+                        <input type="number" id="calc_f1" class="form-input" placeholder="Ví dụ: 40 (Bỏ trống nếu cần tìm)" value="40">
+                    </div>
+                    <div class="control-group">
+                        <label>Lực thành phần thứ hai \(F_2 \ (\text{N})\):</label>
+                        <input type="number" id="calc_f2" class="form-input" placeholder="Ví dụ: 30 (Bỏ trống nếu cần tìm)" value="30">
+                    </div>
+                    <div class="control-group">
+                        <label>Góc hợp bởi hai lực \(\alpha \ (^\circ)\):</label>
+                        <input type="number" id="calc_alpha" class="form-input" placeholder="Từ 0 đến 180 (Bỏ trống nếu cần tìm)" value="60">
+                    </div>
+                    <div class="control-group">
+                        <label>Độ lớn hợp lực \(F \ (\text{N})\):</label>
+                        <input type="number" id="calc_f" class="form-input" placeholder="Bỏ trống để máy tính giải...">
+                    </div>
+                    <div style="display:flex; gap:0.8rem; margin-top: 1rem;">
+                        <button class="btn" onclick="solvePhysicsCalc()">⚡ Phân tích & Giải chi tiết</button>
+                        <button class="btn btn-outline" onclick="clearCalc()">🔄 Xóa trắng</button>
+                    </div>
+                </div>
+
+                <div id="calc_result" class="alert-box" style="min-height: 250px; display:flex; flex-direction:column; justify-content:center;">
+                    <p style="color: var(--text-muted); text-align:center;">Kết quả biến đổi công thức và từng bước thay số sẽ hiển thị tại đây...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 5: LUYỆN TẬP PHÂN HÓA -->
+    <section id="tab5" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">📝 Phòng Luyện tập Phân hóa (3 Cấp độ)</h2>
+
+            <!-- Cấp độ 1 -->
+            <div class="card" style="border-left: 5px solid var(--success);">
+                <span class="badge" style="background:#dcfce7; color:#15803d;">Cấp độ 1: Nhận biết - Thông hiểu</span>
+                <h3 style="margin: 0.5rem 0;">Bài toán 1: Tổng hợp lực đồng quy trực tiếp</h3>
+                <p>Cho hai lực đồng quy có độ lớn \(F_1 = 40 \text{ N}\) và \(F_2 = 30 \text{ N}\). Hãy xác định độ lớn của hợp lực \(F\) khi chúng hợp với nhau một góc:<br>
+                a) \(\alpha = 0^\circ\) &nbsp;&nbsp;&nbsp;&nbsp; b) \(\alpha = 60^\circ\) &nbsp;&nbsp;&nbsp;&nbsp; c) \(\alpha = 90^\circ\)</p>
+                <div style="margin-top: 0.8rem;">
+                    <button class="btn btn-outline" onclick="toggleBox('hint1')">💡 Gợi ý tư duy</button>
+                    <button class="btn" onclick="toggleBox('sol1')">📖 Xem lời giải chi tiết</button>
+                </div>
+                <div id="hint1" class="solution-box">
+                    <strong>Gợi ý:</strong> Áp dụng trực tiếp công thức tổng quát \(F = \sqrt{F_1^2 + F_2^2 + 2F_1F_2\cos\alpha}\) hoặc các công thức đặc biệt khi hai lực cùng chiều (\(\alpha = 0^\circ\)) và vuông góc (\(\alpha = 90^\circ\)).
+                </div>
+                <div id="sol1" class="solution-box">
+                    <strong>Lời giải chi tiết:</strong><br>
+                    a) Khi \(\alpha = 0^\circ\) (\(\vec{F}_1 \uparrow\uparrow \vec{F}_2\)):
+                    \[F = F_1 + F_2 = 40 + 30 = 70 \text{ N}\]
+                    b) Khi \(\alpha = 60^\circ\):
+                    \[F = \sqrt{F_1^2 + F_2^2 + 2F_1F_2\cos 60^\circ} = \sqrt{40^2 + 30^2 + 2 \cdot 40 \cdot 30 \cdot 0,5} = \sqrt{3700} = 10\sqrt{37} \approx 60,83 \text{ N}\]
+                    c) Khi \(\alpha = 90^\circ\) (\(\vec{F}_1 \perp \vec{F}_2\)):
+                    \[F = \sqrt{F_1^2 + F_2^2} = \sqrt{40^2 + 30^2} = 50 \text{ N}\]
+                </div>
+            </div>
+
+            <!-- Cấp độ 2 -->
+            <div class="card" style="border-left: 5px solid var(--secondary);">
+                <span class="badge">Cấp độ 2: Vận dụng</span>
+                <h3 style="margin: 0.5rem 0;">Bài toán 2: Cân bằng của vật rắn dưới tác dụng của hệ lực căng dây</h3>
+                <p>Một chậu cây có khối lượng \(m = 10 \text{ kg}\) được giữ yên tại điểm \(O\) bằng hai sợi dây \(OA\) và \(OB\). Sợi dây \(OA\) treo lên trần nhà nghiêng góc \(\alpha = 30^\circ\) so với phương thẳng đứng, sợi dây \(OB\) gắn vào tường và kéo căng nằm ngang. Lấy \(g = 10 \mathrm{ m/s^2}\). Tính lực căng \(T_1\) của dây \(OA\) và \(T_2\) của dây \(OB\).</p>
+                <div style="margin-top: 0.8rem;">
+                    <button class="btn btn-outline" onclick="toggleBox('hint2')">💡 Gợi ý tư duy</button>
+                    <button class="btn" onclick="toggleBox('sol2')">📖 Xem lời giải chi tiết</button>
+                </div>
+                <div id="hint2" class="solution-box">
+                    <strong>Gợi ý:</strong> Chọn hệ trục tọa độ \(Oxy\) tại nút dây \(O\) (\(Ox\) nằm ngang hướng theo dây \(OB\), \(Oy\) thẳng đứng hướng lên). Phân tích lực căng \(\vec{T}_1\) thành hai thành phần vuông góc rồi viết điều kiện cân bằng chiếu lên hai trục.
+                </div>
+                <div id="sol2" class="solution-box">
+                    <strong>Lời giải chi tiết:</strong><br>
+                    • Trọng lượng của chậu cây: \(P = m \cdot g = 10 \cdot 10 = 100 \text{ N}\).<br>
+                    • Điều kiện cân bằng tại nút dây \(O\): \[\vec{T}_1 + \vec{T}_2 + \vec{P} = \vec{0} \quad (1)\]
+                    • Chọn hệ trục \(Oxy\) với \(Ox\) nằm ngang sang phải, \(Oy\) thẳng đứng hướng lên:<br>
+                    + Chiếu \((1)\) lên trục \(Oy\): \[T_1\cos 30^\circ - P = 0 \Rightarrow T_1 = \frac{P}{\cos 30^\circ} = \frac{100}{\frac{\sqrt{3}}{2}} = \frac{200}{\sqrt{3}} \approx 115,47 \text{ N}\]
+                    + Chiếu \((1)\) lên trục \(Ox\): \[T_2 - T_1\sin 30^\circ = 0 \Rightarrow T_2 = P\tan 30^\circ = \frac{100}{\sqrt{3}} \approx 57,74 \text{ N}\]
+                </div>
+            </div>
+
+            <!-- Cấp độ 3 -->
+            <div class="card" style="border-left: 5px solid var(--accent); margin-bottom:0;">
+                <span class="badge" style="background:#fef3c7; color:#b45309;">Cấp độ 3: Vận dụng cao & Tích hợp Năng lực số / AI</span>
+                <h3 style="margin: 0.5rem 0;">Bài toán 3: Cực trị Lực căng cáp & Thiết kế cảm biến AI giám sát an toàn</h3>
+                <p>Một đèn tín hiệu giao thông nặng \(P = 120 \text{ N}\) được treo ở chính giữa sợi dây cáp căng ngang giữa hai cột trụ cách nhau \(L = 8 \text{ m}\). Biết mỗi nhánh dây cáp chỉ chịu được lực căng tối đa \(T_{max} = 500 \text{ N}\).<br>
+                a) Tìm độ võng tối thiểu \(h_{min}\) tại điểm treo đèn ở giữa dây để dây cáp không bị đứt.<br>
+                b) <strong>[Tích hợp Năng lực AI - Yêu cầu 10.D2.1 & 10.A1.2]:</strong> Một nhóm học sinh dùng <em>AI tạo sinh (Chatbot LLM)</em> để hỏi công thức thiết kế hệ thống cảm biến cảnh báo đứt cáp, và AI trả lời rằng: <em>"Cần căng dây thật thẳng (\(h = 0 \text{ m}\)) để đèn cao nhất và lực căng nhỏ nhất"</em>. Em hãy dùng kết quả vật lý ở câu (a) để phản biện lỗi "ảo giác AI" (hallucination) này và đề xuất sơ đồ hệ thống AI giám sát độ võng an toàn.</p>
+                <div style="margin-top: 0.8rem;">
+                    <button class="btn btn-outline" onclick="toggleBox('hint3')">💡 Gợi ý tư duy</button>
+                    <button class="btn" onclick="toggleBox('sol3')">📖 Xem lời giải chi tiết</button>
+                </div>
+                <div id="hint3" class="solution-box">
+                    <strong>Gợi ý:</strong> Gọi \(\beta\) là góc hợp bởi nhánh dây và phương thẳng đứng. Biểu diễn \(\cos\beta\) theo độ võng \(h\) và nửa khoảng cách cột \(a = \frac{L}{2} = 4 \text{ m}\), sau đó giải bất phương trình \(T \le T_{max}\).
+                </div>
+                <div id="sol3" class="solution-box">
+                    <strong>Lời giải chi tiết:</strong><br>
+                    <strong>a) Tìm độ võng tối thiểu \(h_{min}\):</strong><br>
+                    • Do đèn treo chính giữa nên \(T_1 = T_2 = T\). Gọi \(\beta\) là góc giữa mỗi nhánh dây với phương thẳng đứng.<br>
+                    • Điều kiện cân bằng theo phương thẳng đứng: \[2T\cos\beta = P \Rightarrow T = \frac{P}{2\cos\beta}\]
+                    • Xét tam giác vuông tạo bởi nửa khoảng cách hai cột (\(a = 4 \text{ m}\)) và độ võng \(h\):
+                    \[\cos\beta = \frac{h}{\sqrt{a^2 + h^2}} = \frac{h}{\sqrt{4^2 + h^2}}\]
+                    • Để dây không đứt: \[T \le T_{max} \Leftrightarrow \frac{P\sqrt{16 + h^2}}{2h} \le 500 \Leftrightarrow \frac{120\sqrt{16 + h^2}}{2h} \le 500 \Leftrightarrow 60\sqrt{16 + h^2} \le 500h\]
+                    • Bình phương hai vế: \[3600(16 + h^2) \le 250000h^2 \Rightarrow 246400h^2 \ge 57600 \Rightarrow h \ge 0,483 \text{ m} \ (48,3 \text{ cm})\]
+                    <strong>b) Phản biện AI & Thiết kế hệ thống (Năng lực AI & Năng lực số):</strong><br>
+                    • <em>Kiểm chứng & Phản biện (NLa/NLc):</em> Khi kéo dây thật thẳng (\(h \to 0\)), ta có \(\cos\beta \to 0 \Rightarrow T = \frac{P}{2\cos\beta} \to \infty\) (lực căng tiến ra vô cùng lớn làm đứt cáp ngay lập tức). Kết luận của AI tạo sinh là sai bản chất Vật lý. Con người phải giữ quyền kiểm chứng cuối cùng!<br>
+                    • <em>Cấu trúc hệ thống AI cảnh báo (NLd):</em><br>
+                    1. <strong>Dữ liệu đầu vào (Input):</strong> Cảm biến lực căng (Loadcell) gắn ở hai đầu cáp và cảm biến góc nghiêng đo độ võng \(h\) theo thời gian thực.<br>
+                    2. <strong>Thuật toán/Mô hình xử lý:</strong> Đối chiếu giá trị \(T\) thực tế (hoặc dự báo khi có gió bão cộng hưởng) với ngưỡng an toàn \(T_{safe} = 0,8 T_{max} = 400 \text{ N}\).<br>
+                    3. <strong>Đầu ra (Output):</strong> Phát tín hiệu cảnh báo tự động về trung tâm điều khiển giao thông để kỹ sư bảo trì kịp thời.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 6: BÀI TỰ ĐÁNH GIÁ -->
+    <section id="tab6" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">🎯 Bài Tự Đánh Giá Tương Tác (Interactive Quiz)</h2>
+            <p style="margin-bottom: 1rem;">Chọn phương án trả lời đúng nhất cho 4 câu hỏi dưới đây và nhấn <strong>Nộp bài</strong> để xem điểm cùng giải thích chi tiết.</p>
+            
+            <div id="quiz-container"></div>
+
+            <div style="margin-top: 1.5rem; text-align: center;">
+                <button class="btn" style="padding: 0.8rem 2rem; font-size: 1.05rem;" onclick="submitQuiz()">✅ Nộp bài & Xem giải thích</button>
+                <button class="btn btn-outline" style="padding: 0.8rem 1.5rem; font-size: 1.05rem; margin-left: 0.5rem;" onclick="renderQuiz()">🔄 Làm lại</button>
+            </div>
+
+            <div id="quiz-result" style="margin-top: 1.5rem; display: none;"></div>
+        </div>
+    </section>
+
+    <!-- TAB 7: TIỆN ÍCH LỚP HỌC -->
+    <section id="tab7" class="tab-content">
+        <div class="grid-2">
+            <!-- Đồng hồ đếm ngược -->
+            <div class="card" style="text-align: center;">
+                <h2 class="card-title">⏱️ Đồng hồ Đếm ngược (Visual Timer)</h2>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Sử dụng để quản lý thời gian thảo luận nhóm và làm bài tập trên lớp.</p>
+                
+                <canvas id="timerCanvas" width="220" height="220"></canvas>
+                <div id="timerText" class="timer-display">05:00</div>
+
+                <div style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                    <button class="btn btn-outline" onclick="setTimer(60)">1 Phút</button>
+                    <button class="btn btn-outline" onclick="setTimer(180)">3 Phút</button>
+                    <button class="btn btn-outline" onclick="setTimer(300)">5 Phút</button>
+                    <button class="btn btn-outline" onclick="setTimer(600)">10 Phút</button>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 0.8rem;">
+                    <button class="btn" id="timerStartBtn" onclick="toggleTimer()">▶️ Bắt đầu</button>
+                    <button class="btn btn-accent" onclick="resetTimer()">🔄 Đặt lại</button>
+                </div>
+            </div>
+
+            <!-- Vòng quay may mắn -->
+            <div class="card">
+                <h2 class="card-title">🎡 Vòng quay May mắn (Lucky Wheel)</h2>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap;">
+                    <label style="font-weight: 600;">Chọn danh sách:</label>
+                    <select id="groupSelect" class="form-input" style="width: auto; margin-top:0;" onchange="changeWheelGroup()">
+                        <option value="all">Cả lớp / Mặc định</option>
+                        <option value="to1">Tổ 1</option>
+                        <option value="to2">Tổ 2</option>
+                        <option value="to3">Tổ 3</option>
+                        <option value="to4">Tổ 4</option>
+                    </select>
+                    <button class="btn btn-accent" onclick="spinWheel()">🎯 QUAY NGAY</button>
+                </div>
+
+                <div style="text-align: center; position: relative;">
+                    <canvas id="wheelCanvas" width="320" height="320"></canvas>
+                </div>
+
+                <div id="winnerPopup" class="alert-box alert-success" style="display:none; text-align:center; margin-top:0.8rem; font-size:1.1rem; font-weight:700;"></div>
+
+                <div style="margin-top: 0.8rem;">
+                    <label style="font-size: 0.85rem; font-weight: 600;">Danh sách tên học sinh (mỗi tên một dòng):</label>
+                    <textarea id="wheelNames" class="form-input" rows="4" oninput="drawWheel()">Nguyễn Minh An&#10;Trần Hoàng Bách&#10;Lê Ngọc Châu&#10;Phạm Quốc Đạt&#10;Hoàng Thảo Vy&#10;Vũ Đức Trọng&#10;Đặng Khánh Linh&#10;Bùi Gia Hưng</textarea>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div>© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+    <div style="font-size: 0.8rem; opacity: 0.75; margin-top: 0.25rem;">Hệ thống Học tập Vật lý 10 Tương tác - Chương trình GDPT 2018 (Kết nối tri thức với cuộc sống)</div>
+</footer>
+
+<script>
+    // Cấu hình KaTeX chuẩn bắt buộc
+    const katexConfig = {
+        delimiters: [
+            {left: "\\[", right: "\\]", display: true},
+            {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+    };
+
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof renderMathInElement === "function") {
+            renderMathInElement(document.body, katexConfig);
+        }
+        updateSim3A();
+        updateSim3B();
+        updateSim3C();
+        renderQuiz();
+        drawTimerProgress(1);
+        drawWheel();
+    });
+
+    // Chuyển đổi Tab
+    function openTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+        
+        if (tabId === 'tab3a') updateSim3A();
+        if (tabId === 'tab3b') updateSim3B();
+        if (tabId === 'tab3c') updateSim3C();
+    }
+
+    // Ẩn/Hiện hộp lời giải
+    function toggleBox(id) {
+        const box = document.getElementById(id);
+        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // Hàm tiện ích vẽ mũi tên vector trên Canvas
+    function drawArrow(ctx, fromx, fromy, tox, toy, color, width, label) {
+        const headlen = 11;
+        const dx = tox - fromx;
+        const dy = toy - fromy;
+        const angle = Math.atan2(dy, dx);
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        ctx.moveTo(fromx, fromy);
+        ctx.lineTo(tox, toy);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(tox, toy);
+        ctx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fill();
+
+        if (label) {
+            ctx.font = "bold 15px Inter, sans-serif";
+            ctx.fillText(label, tox + 14 * Math.cos(angle) - 8, toy + 14 * Math.sin(angle) + 5);
+        }
+        ctx.restore();
+    }
+
+    /* ==========================================
+       MÔ PHỎNG 3A: QUY TẮC HÌNH BÌNH HÀNH
+       ========================================== */
+    function setAlpha3A(val) {
+        document.getElementById('alpha_3a').value = val;
+        updateSim3A();
+    }
+
+    function updateSim3A() {
+        const F1 = parseFloat(document.getElementById('f1_3a').value);
+        const F2 = parseFloat(document.getElementById('f2_3a').value);
+        const alphaDeg = parseFloat(document.getElementById('alpha_3a').value);
+        const alphaRad = alphaDeg * Math.PI / 180;
+
+        document.getElementById('val_f1_3a').innerText = F1 + " N";
+        document.getElementById('val_f2_3a').innerText = F2 + " N";
+        document.getElementById('val_alpha_3a').innerText = alphaDeg + "°";
+
+        const F = Math.sqrt(F1*F1 + F2*F2 + 2*F1*F2*Math.cos(alphaRad));
+        let thetaDeg = 0;
+        if (F > 0.001) {
+            let cosTheta = (F1 + F2 * Math.cos(alphaRad)) / F;
+            cosTheta = Math.max(-1, Math.min(1, cosTheta));
+            thetaDeg = Math.acos(cosTheta) * 180 / Math.PI;
+        }
+
+        document.getElementById('out_f_3a').innerText = F.toFixed(2) + " N";
+        document.getElementById('out_theta_3a').innerText = thetaDeg.toFixed(2) + "°";
+        document.getElementById('out_range_3a').innerText = `[${Math.abs(F1 - F2)} N ; ${F1 + F2} N]`;
+
+        const canvas = document.getElementById('canvas3a');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Vẽ lưới nền
+        ctx.strokeStyle = "#f1f5f9";
+        ctx.lineWidth = 1;
+        for (let x = 0; x < canvas.width; x += 25) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+        for (let y = 0; y < canvas.height; y += 25) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+
+        const ox = 200, oy = 280;
+        const scale = 1.6;
+
+        const x1 = ox + F1 * scale;
+        const y1 = oy;
+        const x2 = ox + F2 * scale * Math.cos(-alphaRad);
+        const y2 = oy + F2 * scale * Math.sin(-alphaRad);
+        const xf = ox + (F1 + F2 * Math.cos(alphaRad)) * scale;
+        const yf = oy - (F2 * Math.sin(alphaRad)) * scale;
+
+        // Vẽ đường nét đứt hình bình hành
+        ctx.save();
+        ctx.setLineDash([6, 5]);
+        ctx.strokeStyle = "#94a3b8";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(xf, yf);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.restore();
+
+        // Vẽ cung góc alpha
+        ctx.save();
+        ctx.strokeStyle = "#f59e0b";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(ox, oy, 35, -alphaRad, 0);
+        ctx.stroke();
+        ctx.fillStyle = "#d97706";
+        ctx.font = "bold 13px Inter";
+        ctx.fillText("α=" + alphaDeg + "°", ox + 42 * Math.cos(-alphaRad/2), oy + 42 * Math.sin(-alphaRad/2));
+        ctx.restore();
+
+        // Vẽ các vector lực
+        drawArrow(ctx, ox, oy, x1, y1, "#2563eb", 3, "F₁");
+        drawArrow(ctx, ox, oy, x2, y2, "#16a34a", 3, "F₂");
+        if (F > 0.5) {
+            drawArrow(ctx, ox, oy, xf, yf, "#dc2626", 4, "F");
+        }
+
+        // Vẽ chất điểm O
+        ctx.fillStyle = "#0f172a";
+        ctx.beginPath();
+        ctx.arc(ox, oy, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillText("O", ox - 18, oy + 18);
+    }
+
+    /* ==========================================
+       MÔ PHỎNG 3B: HAI LỰC SONG SONG (ĐÒN GÁNH)
+       ========================================== */
+    function updateSim3B() {
+        const F1 = parseFloat(document.getElementById('f1_3b').value);
+        const F2 = parseFloat(document.getElementById('f2_3b').value);
+        const L = parseFloat(document.getElementById('L_3b').value);
+
+        document.getElementById('val_f1_3b').innerText = F1 + " N";
+        document.getElementById('val_f2_3b').innerText = F2 + " N";
+        document.getElementById('val_L_3b').innerText = L.toFixed(2) + " m";
+
+        const F = F1 + F2;
+        const d1 = (F2 * L) / F;
+        const d2 = L - d1;
+
+        document.getElementById('out_f_3b').innerText = F + " N";
+        document.getElementById('out_d1_3b').innerText = `${d1.toFixed(3)} m (${(d1*100).toFixed(1)} cm)`;
+        document.getElementById('out_d2_3b').innerText = `${d2.toFixed(3)} m (${(d2*100).toFixed(1)} cm)`;
+        document.getElementById('out_check_3b').innerText = `${(F1*d1).toFixed(1)} = ${(F2*d2).toFixed(1)} (Cân bằng)`;
+
+        const canvas = document.getElementById('canvas3b');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const barY = 140;
+        const barStartX = 90;
+        const barEndX = 510;
+        const barPixelLen = barEndX - barStartX;
+        const pivotX = barStartX + (d1 / L) * barPixelLen;
+
+        // Vẽ thanh đòn gánh AB
+        ctx.strokeStyle = "#78350f";
+        ctx.lineWidth = 10;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(barStartX, barY);
+        ctx.lineTo(barEndX, barY);
+        ctx.stroke();
+
+        // Điểm tựa O (Vai người)
+        ctx.fillStyle = "#f59e0b";
+        ctx.beginPath();
+        ctx.moveTo(pivotX, barY - 5);
+        ctx.lineTo(pivotX - 14, barY - 28);
+        ctx.lineTo(pivotX + 14, barY - 28);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = "#0f172a";
+        ctx.font = "bold 14px Inter";
+        ctx.fillText("Vai (O)", pivotX - 22, barY - 35);
+
+        // Kích thước d1, d2
+        ctx.strokeStyle = "#64748b";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(barStartX, barY - 55);
+        ctx.lineTo(barEndX, barY - 55);
+        ctx.stroke();
+        ctx.fillStyle = "#2563eb";
+        ctx.fillText(`d₁ = ${d1.toFixed(2)}m`, (barStartX + pivotX)/2 - 35, barY - 62);
+        ctx.fillStyle = "#16a34a";
+        ctx.fillText(`d₂ = ${d2.toFixed(2)}m`, (pivotX + barEndX)/2 - 35, barY - 62);
+
+        // Vẽ các vector lực song song
+        const scaleF = 0.25;
+        drawArrow(ctx, barStartX, barY, barStartX, barY + F1 * scaleF, "#2563eb", 3, `F₁=${F1}N`);
+        drawArrow(ctx, barEndX, barY, barEndX, barY + F2 * scaleF, "#16a34a", 3, `F₂=${F2}N`);
+        drawArrow(ctx, pivotX, barY, pivotX, barY + F * scaleF, "#dc2626", 4, `F=${F}N`);
+
+        // Nhãn A, B
+        ctx.fillStyle = "#0f172a";
+        ctx.fillText("A", barStartX - 18, barY + 5);
+        ctx.fillText("B", barEndX + 10, barY + 5);
+    }
+
+    /* ==========================================
+       MÔ PHỎNG 3C: MẶT PHẲNG NGHIÊNG
+       ========================================== */
+    function updateSim3C() {
+        const P = parseFloat(document.getElementById('P_3c').value);
+        const alphaDeg = parseFloat(document.getElementById('alpha_3c').value);
+        const alphaRad = alphaDeg * Math.PI / 180;
+
+        document.getElementById('val_P_3c').innerText = P + " N";
+        document.getElementById('val_alpha_3c').innerText = alphaDeg + "°";
+
+        const Px = P * Math.sin(alphaRad);
+        const Py = P * Math.cos(alphaRad);
+
+        document.getElementById('out_px_3c').innerText = Px.toFixed(2) + " N";
+        document.getElementById('out_py_3c').innerText = Py.toFixed(2) + " N";
+        document.getElementById('out_t_3c').innerText = Px.toFixed(2) + " N";
+        document.getElementById('out_n_3c').innerText = Py.toFixed(2) + " N";
+
+        const canvas = document.getElementById('canvas3c');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const baseX = 500, baseY = 350;
+        const rampLen = 400;
+        const topX = baseX - rampLen * Math.cos(alphaRad);
+        const topY = baseY - rampLen * Math.sin(alphaRad);
+
+        // Vẽ mặt phẳng nghiêng
+        ctx.fillStyle = "#e2e8f0";
+        ctx.strokeStyle = "#475569";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(baseX, baseY);
+        ctx.lineTo(topX, topY);
+        ctx.lineTo(topX, baseY);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Ký hiệu góc nghiêng alpha
+        ctx.strokeStyle = "#d97706";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(baseX, baseY, 45, Math.PI, Math.PI + alphaRad);
+        ctx.stroke();
+        ctx.fillStyle = "#d97706";
+        ctx.font = "bold 14px Inter";
+        ctx.fillText(alphaDeg + "°", baseX - 75, baseY - 10);
+
+        // Vị trí khối gỗ trên mặt nghiêng
+        const distFromTop = 160;
+        const boxCenterOnRampX = topX + distFromTop * Math.cos(alphaRad);
+        const boxCenterOnRampY = topY + distFromTop * Math.sin(alphaRad);
+        const boxW = 60, boxH = 36;
+
+        // Tọa độ tâm khối gỗ
+        const cx = boxCenterOnRampX + (boxH/2) * Math.sin(alphaRad);
+        const cy = boxCenterOnRampY - (boxH/2) * Math.cos(alphaRad);
+
+        // Vẽ dây giữ từ đỉnh dốc tới vật
+        ctx.strokeStyle = "#334155";
+        ctx.lineWidth = 2;
+        const postTopX = topX + (boxH/2) * Math.sin(alphaRad);
+        const postTopY = topY - (boxH/2) * Math.cos(alphaRad);
+        ctx.beginPath();
+        ctx.moveTo(topX, topY);
+        ctx.lineTo(postTopX + 10*Math.sin(alphaRad), postTopY - 10*Math.cos(alphaRad));
+        ctx.moveTo(postTopX, postTopY);
+        ctx.lineTo(cx, cy);
+        ctx.stroke();
+
+        // Vẽ khối gỗ
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(alphaRad);
+        ctx.fillStyle = "#fde68a";
+        ctx.strokeStyle = "#b45309";
+        ctx.lineWidth = 2;
+        ctx.fillRect(-boxW/2, -boxH/2, boxW, boxH);
+        ctx.strokeRect(-boxW/2, -boxH/2, boxW, boxH);
+        ctx.restore();
+
+        // Vẽ các vector lực từ tâm O(cx, cy)
+        const scale = 0.85;
+        const pLen = P * scale;
+        const pxLen = Px * scale;
+        const pyLen = Py * scale;
+
+        const pxEndX = cx + pxLen * Math.cos(alphaRad);
+        const pxEndY = cy + pxLen * Math.sin(alphaRad);
+        const pyEndX = cx - pyLen * Math.sin(alphaRad);
+        const pyEndY = cy + pyLen * Math.cos(alphaRad);
+        const pEndX = cx;
+        const pEndY = cy + pLen;
+
+        // Đường gióng hình chữ nhật phân tích lực
+        ctx.save();
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = "#94a3b8";
+        ctx.beginPath();
+        ctx.moveTo(pxEndX, pxEndY);
+        ctx.lineTo(pEndX, pEndY);
+        ctx.lineTo(pyEndX, pyEndY);
+        ctx.stroke();
+        ctx.restore();
+
+        // Vẽ P, Px, Py, T, N
+        drawArrow(ctx, cx, cy, pEndX, pEndY, "#0f172a", 3, "P");
+        drawArrow(ctx, cx, cy, pxEndX, pxEndY, "#dc2626", 3, "Pₓ");
+        drawArrow(ctx, cx, cy, pyEndX, pyEndY, "#2563eb", 3, "Pᵧ");
+        drawArrow(ctx, cx, cy, cx - pxLen * Math.cos(alphaRad), cy - pxLen * Math.sin(alphaRad), "#16a34a", 3, "T");
+        drawArrow(ctx, cx, cy, cx + pyLen * Math.sin(alphaRad), cy - pyLen * Math.cos(alphaRad), "#9333ea", 3, "N");
+    }
+
+    /* ==========================================
+       TAB 4: MÁY TÍNH THAM SỐ VẬT LÝ
+       ========================================== */
+    function clearCalc() {
+        document.getElementById('calc_f1').value = '';
+        document.getElementById('calc_f2').value = '';
+        document.getElementById('calc_alpha').value = '';
+        document.getElementById('calc_f').value = '';
+        document.getElementById('calc_result').innerHTML = '<p style="color: var(--text-muted); text-align:center;">Đã xóa dữ liệu. Hãy nhập 3 đại lượng đã biết và bỏ trống 1 đại lượng cần tìm.</p>';
+    }
+
+    function solvePhysicsCalc() {
+        const f1Str = document.getElementById('calc_f1').value.trim();
+        const f2Str = document.getElementById('calc_f2').value.trim();
+        const alphaStr = document.getElementById('calc_alpha').value.trim();
+        const fStr = document.getElementById('calc_f').value.trim();
+
+        const resBox = document.getElementById('calc_result');
+        const emptyCount = [f1Str, f2Str, alphaStr, fStr].filter(x => x === '').length;
+
+        if (emptyCount !== 1) {
+            resBox.innerHTML = `<div style="color:var(--danger); font-weight:600;">⚠️ Vui lòng nhập chính xác 3 đại lượng đã biết và chỉ bỏ trống 1 đại lượng cần tìm!</div>`;
+            return;
+        }
+
+        let html = '';
+        if (fStr === '') {
+            // Tìm hợp lực F
+            const F1 = parseFloat(f1Str);
+            const F2 = parseFloat(f2Str);
+            const alpha = parseFloat(alphaStr);
+            const rad = alpha * Math.PI / 180;
+            const F = Math.sqrt(F1*F1 + F2*F2 + 2*F1*F2*Math.cos(rad));
+            document.getElementById('calc_f').value = F.toFixed(2);
+
+            html = `
+                <h4 style="color:var(--primary); margin-bottom:0.5rem;">✅ Giải tìm độ lớn hợp lực \\(F\\):</h4>
+                <p><strong>Bước 1:</strong> Áp dụng công thức quy tắc hình bình hành:</p>
+                \\[F = \\sqrt{F_1^2 + F_2^2 + 2F_1F_2\\cos\\alpha}\\]
+                <p><strong>Bước 2:</strong> Thay số \\(F_1 = ${F1} \\text{ N}\\), \\(F_2 = ${F2} \\text{ N}\\), \\(\\alpha = ${alpha}^\\circ\\):</p>
+                \\[F = \\sqrt{${F1}^2 + ${F2}^2 + 2 \\cdot ${F1} \\cdot ${F2} \\cdot \\cos(${alpha}^\\circ)}\\]
+                \\[\\Rightarrow F \\approx \\mathbf{${F.toFixed(2)} \\text{ N}}\\]
+            `;
+        } else if (alphaStr === '') {
+            // Tìm góc alpha
+            const F1 = parseFloat(f1Str);
+            const F2 = parseFloat(f2Str);
+            const F = parseFloat(fStr);
+
+            if (F < Math.abs(F1 - F2) || F > (F1 + F2)) {
+                resBox.innerHTML = `<div style="color:var(--danger); font-weight:600;">❌ Dữ liệu vô lý về mặt Vật lý! Độ lớn hợp lực \\(F\\) bắt buộc phải thỏa mãn: \\(|F_1 - F_2| \\le F \\le F_1 + F_2\\) (tức là từ \\(${Math.abs(F1-F2)} \\text{ N}\\) đến \\(${F1+F2} \\text{ N}\\)).</div>`;
+                renderMathInElement(resBox, katexConfig);
+                return;
+            }
+            const cosAlpha = (F*F - F1*F1 - F2*F2) / (2 * F1 * F2);
+            const alpha = Math.acos(Math.max(-1, Math.min(1, cosAlpha))) * 180 / Math.PI;
+            document.getElementById('calc_alpha').value = alpha.toFixed(2);
+
+            html = `
+                <h4 style="color:var(--primary); margin-bottom:0.5rem;">✅ Giải tìm góc hợp bởi hai lực \\(\\alpha\\):</h4>
+                <p><strong>Bước 1:</strong> Từ công thức \\(F^2 = F_1^2 + F_2^2 + 2F_1F_2\\cos\\alpha\\), rút ra:</p>
+                \\[\\cos\\alpha = \\frac{F^2 - F_1^2 - F_2^2}{2F_1F_2}\\]
+                <p><strong>Bước 2:</strong> Thay số:</p>
+                \\[\\cos\\alpha = \\frac{${F}^2 - ${F1}^2 - ${F2}^2}{2 \\cdot ${F1} \\cdot ${F2}} = ${cosAlpha.toFixed(4)}\\]
+                \\[\\Rightarrow \\alpha = \\arccos(${cosAlpha.toFixed(4)}) \\approx \\mathbf{${alpha.toFixed(2)}^\\circ}\\]
+            `;
+        } else {
+            // Tìm F1 hoặc F2 bằng phương trình bậc 2
+            const knownF = f1Str === '' ? parseFloat(f2Str) : parseFloat(f1Str);
+            const targetName = f1Str === '' ? 'F_1' : 'F_2';
+            const knownName = f1Str === '' ? 'F_2' : 'F_1';
+            const alpha = parseFloat(alphaStr);
+            const F = parseFloat(fStr);
+            const cosA = Math.cos(alpha * Math.PI / 180);
+
+            // x^2 + (2*knownF*cosA)*x + (knownF^2 - F^2) = 0
+            const b = 2 * knownF * cosA;
+            const c = knownF * knownF - F * F;
+            const delta = b * b - 4 * c;
+
+            if (delta < 0) {
+                resBox.innerHTML = `<div style="color:var(--danger); font-weight:600;">❌ Phương trình vô nghiệm (\(\\Delta < 0\)). Không tồn tại lực thành phần thỏa mãn bộ số liệu này!</div>`;
+                renderMathInElement(resBox, katexConfig);
+                return;
+            }
+            const x1 = (-b + Math.sqrt(delta)) / 2;
+            const x2 = (-b - Math.sqrt(delta)) / 2;
+            const validX = x1 > 0 ? x1 : (x2 > 0 ? x2 : -1);
+
+            if (validX <= 0) {
+                resBox.innerHTML = `<div style="color:var(--danger); font-weight:600;">❌ Không tìm được độ lớn lực dương thỏa mãn điều kiện bài toán!</div>`;
+                return;
+            }
+
+            if (f1Str === '') document.getElementById('calc_f1').value = validX.toFixed(2);
+            else document.getElementById('calc_f2').value = validX.toFixed(2);
+
+            html = `
+                <h4 style="color:var(--primary); margin-bottom:0.5rem;">✅ Giải tìm lực thành phần \\(${targetName}\\):</h4>
+                <p><strong>Bước 1:</strong> Thiết lập phương trình bậc hai đối với \\(${targetName}\\):</p>
+                \\[${targetName}^2 + (2${knownName}\\cos\\alpha)${targetName} + (${knownName}^2 - F^2) = 0\\]
+                <p><strong>Bước 2:</strong> Thay \\(${knownName} = ${knownF} \\text{ N}, \\alpha = ${alpha}^\\circ, F = ${F} \\text{ N}\\), giải phương trình lấy nghiệm dương:</p>
+                \\[\\Rightarrow ${targetName} \\approx \\mathbf{${validX.toFixed(2)} \\text{ N}}\\]
+            `;
+        }
+
+        resBox.innerHTML = html;
+        renderMathInElement(resBox, katexConfig);
+    }
+
+    /* ==========================================
+       TAB 6: BÀI TỰ ĐÁNH GIÁ (QUIZ)
+       ========================================== */
+    const quizData = [
+        {
+            q: "Câu 1: Một chất điểm chịu tác dụng đồng thời của hai lực \\(\\vec{F}_1\\) và \\(\\vec{F}_2\\) thì hợp lực \\(\\vec{F}\\) của chúng luôn có độ lớn thỏa mãn hệ thức nào sau đây?",
+            options: [
+                "A. \\(F = F_1 - F_2\\)",
+                "B. \\(F = F_1 + F_2\\)",
+                "C. \\(|F_1 - F_2| \\le F \\le F_1 + F_2\\)",
+                "D. \\(F^2 = F_1^2 + F_2^2\\)"
+            ],
+            correct: 2,
+            explain: "Theo quy tắc hình bình hành: \\(F = \\sqrt{F_1^2 + F_2^2 + 2F_1F_2\\cos\\alpha}\\). Vì \\(-1 \\le \\cos\\alpha \\le 1\\) nên luôn có \\(|F_1 - F_2| \\le F \\le F_1 + F_2\\)."
+        },
+        {
+            q: "Câu 2: Cho hai lực đồng quy có cùng độ lớn \\(F_1 = F_2 = 30 \\text{ N}\\). Góc tạo bởi hai lực là \\(\\alpha = 120^\\circ\\). Độ lớn của hợp lực \\(\\vec{F}\\) là:",
+            options: [
+                "A. \\(60 \\text{ N}\\)",
+                "B. \\(30\\sqrt{2} \\text{ N}\\)",
+                "C. \\(30 \\text{ N}\\)",
+                "D. \\(15\\sqrt{3} \\text{ N}\\)"
+            ],
+            correct: 2,
+            explain: "Khi \\(F_1 = F_2\\), ta áp dụng công thức: \\(F = 2F_1\\cos\\left(\\frac{\\alpha}{2}\\right) = 2 \\cdot 30 \\cdot \\cos(60^\\circ) = 30 \\text{ N}\\)."
+        },
+        {
+            q: "Câu 3: Hai người công nhân khiêng một thùng hàng nặng \\(m = 100 \\text{ kg}\\) bằng một đòn tre dài \\(2 \\text{ m}\\). Điểm treo thùng hàng cách vai người thứ nhất \\(d_1 = 1,2 \\text{ m}\\). Lấy \\(g = 10 \\mathrm{ m/s^2}\\). Lực đè lên vai người thứ nhất (\\(P_1\\)) và người thứ hai (\\(P_2\\)) lần lượt là:",
+            options: [
+                "A. \\(P_1 = 400 \\text{ N}; \\ P_2 = 600 \\text{ N}\\)",
+                "B. \\(P_1 = 600 \\text{ N}; \\ P_2 = 400 \\text{ N}\\)",
+                "C. \\(P_1 = 500 \\text{ N}; \\ P_2 = 500 \\text{ N}\\)",
+                "D. \\(P_1 = 300 \\text{ N}; \\ P_2 = 700 \\text{ N}\\)"
+            ],
+            correct: 0,
+            explain: "Trọng lượng thùng hàng \\(P = mg = 1000 \\text{ N}\\). Ta có \\(d_1 = 1,2 \\text{ m} \\Rightarrow d_2 = 2 - 1,2 = 0,8 \\text{ m}\\). Áp dụng quy tắc chia trong cho hai lực song song cùng chiều: \\(\\begin{cases} P_1 + P_2 = 1000 \\\\ 1,2 P_1 = 0,8 P_2 \\end{cases} \\Rightarrow P_1 = 400 \\text{ N}, \\ P_2 = 600 \\text{ N}\\)."
+        },
+        {
+            q: "Câu 4: Một cái đèn có trọng lượng \\(P = 25 \\text{ N}\\) được treo vào hai sợi dây giống nhau làm thành góc \\(60^\\circ\\) đối xứng qua phương thẳng đứng. Độ lớn lực căng \\(T\\) của mỗi sợi dây là:",
+            options: [
+                "A. \\(25,0 \\text{ N}\\)",
+                "B. \\(14,4 \\text{ N}\\)",
+                "C. \\(12,5 \\text{ N}\\)",
+                "D. \\(21,7 \\text{ N}\\)"
+            ],
+            correct: 1,
+            explain: "Khi đèn cân bằng: \\(\\vec{T}_1 + \\vec{T}_2 + \\vec{P} = \\vec{0}\\). Do hai dây giống nhau và hợp góc \\(60^\\circ\\) nên \\(T_1 = T_2 = T\\) và mỗi dây lệch với phương thẳng đứng góc \\(30^\\circ\\). Suy ra: \\(2T\\cos 30^\\circ = P \\Rightarrow T = \\frac{P}{\\sqrt{3}} = \\frac{25}{\\sqrt{3}} \\approx 14,4 \\text{ N}\\)."
+        }
+    ];
+
+    function renderQuiz() {
+        const container = document.getElementById('quiz-container');
+        document.getElementById('quiz-result').style.display = 'none';
+        let html = '';
+        quizData.forEach((item, idx) => {
+            html += `<div class="card" style="margin-bottom: 1rem;">
+                <div style="font-weight: 600; margin-bottom: 0.7rem;">${item.q}</div>`;
+            item.options.forEach((opt, oIdx) => {
+                html += `<label class="quiz-option">
+                    <input type="radio" name="q${idx}" value="${oIdx}"> ${opt}
+                </label>`;
+            });
+            html += `</div>`;
+        });
+        container.innerHTML = html;
+        if (typeof renderMathInElement === "function") {
+            renderMathInElement(container, katexConfig);
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        let detailHtml = '';
+        quizData.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            const userAns = selected ? parseInt(selected.value) : -1;
+            const isCorrect = (userAns === item.correct);
+            if (isCorrect) score++;
+
+            detailHtml += `
+                <div class="alert-box ${isCorrect ? 'alert-success' : 'alert-danger'}" style="margin-top: 0.8rem;">
+                    <div><strong>Câu ${idx + 1}:</strong> ${isCorrect ? '✅ Chính xác!' : '❌ Chưa chính xác!'} (Đáp án đúng: <strong>${item.options[item.correct]}</strong>)</div>
+                    <div style="margin-top: 0.4rem; font-size: 0.92rem;"><em>Giải thích:</em> ${item.explain}</div>
+                </div>
+            `;
+        });
+
+        const resultDiv = document.getElementById('quiz-result');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `
+            <div class="card" style="border: 2px solid var(--primary-light);">
+                <h3 style="color: var(--primary); text-align:center; font-size: 1.4rem;">🎉 Kết quả của bạn: ${score} / ${quizData.length} câu đúng (${(score/quizData.length)*10} điểm)</h3>
+                ${detailHtml}
+            </div>
+        `;
+        // Gọi lại renderMathInElement ngay sau khi in kết quả như yêu cầu
+        renderMathInElement(resultDiv, katexConfig);
+    }
+
+    /* ==========================================
+       TAB 7: ĐỒNG HỒ ĐẾM NGƯỢC & VÒNG QUAY
+       ========================================== */
+    let totalSeconds = 300;
+    let remainingSeconds = 300;
+    let timerInterval = null;
+    let isTimerRunning = false;
+
+    function setTimer(sec) {
+        pauseTimer();
+        totalSeconds = sec;
+        remainingSeconds = sec;
+        document.getElementById('timerText').classList.remove('blink');
+        updateTimerText();
+        drawTimerProgress(1);
+    }
+
+    function updateTimerText() {
+        const m = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
+        const s = String(remainingSeconds % 60).padStart(2, '0');
+        document.getElementById('timerText').innerText = `${m}:${s}`;
+    }
+
+    function drawTimerProgress(ratio) {
+        const canvas = document.getElementById('timerCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2, cy = canvas.height / 2, r = 88;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Vòng tròn nền
+        ctx.strokeStyle = "#e2e8f0";
+        ctx.lineWidth = 14;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Vòng tròn tiến trình
+        ctx.strokeStyle = ratio > 0.2 ? "#2563eb" : "#dc2626";
+        ctx.lineWidth = 14;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2 * ratio));
+        ctx.stroke();
+    }
+
+    function playBeep() {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+            osc.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.6);
+        } catch(e) {}
+    }
+
+    function toggleTimer() {
+        if (isTimerRunning) {
+            pauseTimer();
+        } else {
+            if (remainingSeconds <= 0) remainingSeconds = totalSeconds;
+            isTimerRunning = true;
+            document.getElementById('timerStartBtn').innerText = "⏸️ Tạm dừng";
+            timerInterval = setInterval(() => {
+                remainingSeconds--;
+                updateTimerText();
+                drawTimerProgress(remainingSeconds / totalSeconds);
+                if (remainingSeconds <= 0) {
+                    pauseTimer();
+                    document.getElementById('timerText').classList.add('blink');
+                    playBeep();
+                }
+            }, 1000);
+        }
+    }
+
+    function pauseTimer() {
+        isTimerRunning = false;
+        clearInterval(timerInterval);
+        document.getElementById('timerStartBtn').innerText = "▶️ Bắt đầu";
+    }
+
+    function resetTimer() {
+        setTimer(totalSeconds);
+    }
+
+    // Vòng quay may mắn theo 4 Tổ
+    const groupPresets = {
+        all: "Nguyễn Minh An\nTrần Hoàng Bách\nLê Ngọc Châu\nPhạm Quốc Đạt\nHoàng Thảo Vy\nVũ Đức Trọng\nĐặng Khánh Linh\nBùi Gia Hưng",
+        to1: "Tổ 1 - Minh An\nTổ 1 - Hoàng Bách\nTổ 1 - Bảo Ngọc\nTổ 1 - Tuấn Kiệt\nTổ 1 - Thanh Trúc\nTổ 1 - Quốc Khánh",
+        to2: "Tổ 2 - Ngọc Châu\nTổ 2 - Quốc Đạt\nTổ 2 - Phương Thảo\nTổ 2 - Minh Khôi\nTổ 2 - Gia Bảo\nTổ 2 - Hồng Nhung",
+        to3: "Tổ 3 - Thảo Vy\nTổ 3 - Đức Trọng\nTổ 3 - Hải Đăng\nTổ 3 - Kim Ngân\nTổ 3 - Tấn Phát\nTổ 3 - Thùy Dương",
+        to4: "Tổ 4 - Khánh Linh\nTổ 4 - Gia Hưng\nTổ 4 - Anh Tuấn\nTổ 4 - Mai Phương\nTổ 4 - Hữu Phước\nTổ 4 - Yến Nhi"
+    };
+
+    let wheelAngle = 0;
+    let isSpinning = false;
+    const wheelColors = ["#2563eb", "#0284c7", "#16a34a", "#d97706", "#9333ea", "#dc2626", "#0d9488", "#4f46e5"];
+
+    function changeWheelGroup() {
+        const g = document.getElementById('groupSelect').value;
+        document.getElementById('wheelNames').value = groupPresets[g];
+        document.getElementById('winnerPopup').style.display = 'none';
+        drawWheel();
+    }
+
+    function getNamesList() {
+        return document.getElementById('wheelNames').value
+            .split('\n')
+            .map(s => s.trim())
+            .filter(s => s.length > 0);
+    }
+
+    function drawWheel() {
+        const names = getNamesList();
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2, cy = canvas.height / 2, r = 140;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (names.length === 0) return;
+        const arc = (Math.PI * 2) / names.length;
+
+        names.forEach((name, i) => {
+            const startAngle = wheelAngle + i * arc;
+            const endAngle = startAngle + arc;
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, r, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fillStyle = wheelColors[i % wheelColors.length];
+            ctx.fill();
+            ctx.strokeStyle = "#ffffff";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Vẽ tên học sinh
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(startAngle + arc / 2);
+            ctx.textAlign = "right";
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 13px Inter, sans-serif";
+            ctx.fillText(name.substring(0, 18), r - 12, 5);
+            ctx.restore();
+        });
+
+        // Kim chỉ ở góc 0 rad (bên phải)
+        ctx.fillStyle = "#0f172a";
+        ctx.beginPath();
+        ctx.moveTo(cx + r - 8, cy);
+        ctx.lineTo(cx + r + 16, cy - 10);
+        ctx.lineTo(cx + r + 16, cy + 10);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    function spinWheel() {
+        const names = getNamesList();
+        if (isSpinning || names.length === 0) return;
+        isSpinning = true;
+        document.getElementById('winnerPopup').style.display = 'none';
+
+        let spinVelocity = 0.35 + Math.random() * 0.25;
+        const friction = 0.985;
+
+        function animateSpin() {
+            wheelAngle += spinVelocity;
+            wheelAngle %= (Math.PI * 2);
+            spinVelocity *= friction;
+            drawWheel();
+
+            if (spinVelocity > 0.002) {
+                requestAnimationFrame(animateSpin);
+            } else {
+                isSpinning = false;
+                const arc = (Math.PI * 2) / names.length;
+                const normalizedAngle = (Math.PI * 2 - (wheelAngle % (Math.PI * 2))) % (Math.PI * 2);
+                const winIndex = Math.floor(normalizedAngle / arc) % names.length;
+                const popup = document.getElementById('winnerPopup');
+                popup.style.display = 'block';
+                popup.innerHTML = `🎉 Xin chúc mừng bạn: <span style="color:var(--danger);">${names[winIndex]}</span> được mời trả lời!`;
+                playBeep();
+            }
+        }
+        requestAnimationFrame(animateSpin);
+    }
+</script>
+
+</body>
+</html>
