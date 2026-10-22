@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vật Lý 12 | Bài 5: Nhiệt Nóng Chảy Riêng</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-light: #1e6bc4;
+            --primary-dark: #092c4c;
+            --accent: #0284c7;
+            --bg-light: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --radius: 10px;
+            --shadow: 0 4px 12px rgba(15, 76, 129, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary), var(--accent));
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        header .subtitle {
+            font-size: 1rem;
+            opacity: 0.92;
+            font-weight: 500;
+        }
+
+        header .copyright-header {
+            margin-top: 0.6rem;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.3rem 1rem;
+            border-radius: 999px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* NAVIGATION TABS */
+        .nav-container {
+            background: var(--card-bg);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .nav-tabs {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            padding: 0.4rem 0.5rem;
+            gap: 0.35rem;
+        }
+
+        .tab-btn {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.65rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.88rem;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .tab-btn:hover {
+            background: #e2e8f0;
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 3px 8px rgba(15, 76, 129, 0.25);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            flex: 1;
+            max-width: 1280px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CARDS & GRIDS */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-title {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        /* TABLES */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* CALLOUT BOXES */
+        .alert-box {
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 5px solid var(--primary);
+            background: #f0f9ff;
+        }
+
+        .alert-warning {
+            border-left-color: var(--warning);
+            background: #fffbeb;
+        }
+
+        .alert-danger {
+            border-left-color: var(--danger);
+            background: #fef2f2;
+        }
+
+        .alert-success {
+            border-left-color: var(--success);
+            background: #f0fdf4;
+        }
+
+        /* BUTTONS & INPUTS */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-warning {
+            background: var(--warning);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            font-size: 0.92rem;
+            color: var(--primary-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* SIMULATION LABS */
+        .sim-layout {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 960px) {
+            .sim-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .canvas-box {
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #334155;
+        }
+
+        canvas {
+            max-width: 100%;
+            border-radius: 6px;
+            background: #ffffff;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .stat-item {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 0.65rem;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+
+        .stat-item .label {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            display: block;
+        }
+
+        .stat-item .val {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        /* PRACTICE & QUIZ */
+        .solution-box {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border: 1px dashed var(--primary);
+            border-radius: 8px;
+        }
+
+        .quiz-option {
+            display: block;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+            background: #fff;
+        }
+
+        .quiz-option:hover {
+            background: #f1f5f9;
+            border-color: var(--primary);
+        }
+
+        .quiz-option input {
+            margin-right: 0.6rem;
+        }
+
+        /* CLASSROOM TOOLS */
+        .timer-display {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+            margin: 0.5rem 0;
+        }
+
+        .blink-alarm {
+            animation: alarmBlink 0.6s infinite alternate;
+        }
+
+        @keyframes alarmBlink {
+            from { background-color: #ffffff; }
+            to { background-color: #fecaca; }
+        }
+
+        /* MODAL POPUP */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 1rem;
+        }
+
+        .modal-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-top: 6px solid var(--primary);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--primary-dark);
+            color: #e2e8f0;
+            text-align: center;
+            padding: 1.25rem;
+            margin-top: auto;
+            font-size: 0.92rem;
+            border-top: 3px solid var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <h1>CHƯƠNG I: VẬT LÍ NHIỆT — BÀI 5: NHIỆT NÓNG CHẢY RIÊNG</h1>
+        <div class="subtitle">Hệ thống Học tập Tương tác & Mô phỏng Thí nghiệm Ảo Vật lý 12 (Chương trình GDPT 2018)</div>
+        <div class="copyright-header" id="header-copyright">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <div class="nav-container">
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('tab1')">🚀 1. Khởi động & Thực tiễn</button>
+            <button class="tab-btn" onclick="switchTab('tab2')">📖 2. Cốt lõi Lý thuyết</button>
+            <button class="tab-btn" onclick="switchTab('tab3a')">🔬 3A. Mô phỏng Thực hành Nước đá</button>
+            <button class="tab-btn" onclick="switchTab('tab3b')">🔥 3B. Mô phỏng Lò nung Kim loại</button>
+            <button class="tab-btn" onclick="switchTab('tab4')">🧮 4. Máy tính Vật lý</button>
+            <button class="tab-btn" onclick="switchTab('tab5')">📝 5. Luyện tập Phân hóa</button>
+            <button class="tab-btn" onclick="switchTab('tab6')">🎯 6. Bài Tự đánh giá</button>
+            <button class="tab-btn" onclick="switchTab('tab7')">🛠️ 7. Tiện ích Lớp học</button>
+        </div>
+    </div>
+
+    <!-- MAIN WORKSPACE -->
+    <main>
+
+        <!-- ==================== TAB 1: WARM-UP ==================== -->
+        <section id="tab1" class="tab-content active">
+            <div class="card">
+                <h2 class="card-title">🌍 Hiện tượng Tự nhiên & Công nghệ Thực tiễn</h2>
+                <p style="margin-bottom: 1rem;">Sự nóng chảy không chỉ xuất hiện trong ly nước đá giải khát hằng ngày mà còn đóng vai trò cốt lõi trong kỹ thuật luyện kim, bảo vệ mạch điện và lịch sử văn minh nhân loại.</p>
+                
+                <div class="grid-3">
+                    <div class="alert-box">
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">🧊 1. Nghịch lý "Nhiệt ẩn" khi đun nước đá</h3>
+                        <p>Khi đun một cốc nước đá đang tan ở \( 0\text{ }^\circ\text{C} \), mặc dù bếp điện vẫn liên tục truyền nhiệt lượng \( Q \) vào cốc nhưng nhiệt kế vẫn đứng yên ở vạch \( 0\text{ }^\circ\text{C} \) suốt một thời gian dài. Phần năng lượng nhiệt đó đã biến đi đâu?</p>
+                    </div>
+                    <div class="alert-box alert-warning">
+                        <h3 style="color: var(--warning); margin-bottom: 0.5rem;">⚡ 2. Bí mật của dây Cầu chì và Thiếc hàn</h3>
+                        <p>Trong mạch điện gia đình hoặc thiết bị điện tử, dây cầu chì làm bằng chì (\( t_c = 327\text{ }^\circ\text{C} \), \( \lambda = 0,25 \cdot 10^5\text{ J/kg} \)) sẽ lập tức đứt khi đoản mạch để cứu toàn bộ hệ thống dây đồng (\( t_c = 1084\text{ }^\circ\text{C} \)). Vì sao chì lại nhạy với sự tăng dòng điện đến vậy?</p>
+                    </div>
+                    <div class="alert-box alert-success">
+                        <h3 style="color: var(--success); margin-bottom: 0.5rem;">🏺 3. Lịch sử: Thời đại Đồ Đồng & Đồ Sắt</h3>
+                        <p>Tại sao trong lịch sử loài người, <strong>Thời đại Đồ Đồng</strong> (Trống đồng Đông Sơn, vũ khí đồng) lại xuất hiện sớm hơn hàng thiên niên kỷ so với <strong>Thời đại Đồ Sắt</strong>, dù sắt phổ biến hơn trong vỏ Trái Đất?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">💡 Câu hỏi Mâu thuẫn Nhận thức (Tương tác Khám phá)</h2>
+                <div class="grid-2">
+                    <div>
+                        <p><strong>Tình huống thử thách:</strong> Một xưởng đúc cần nấu chảy hoàn toàn \( m = 2\text{ kg} \) kim loại từ nhiệt độ phòng \( 27\text{ }^\circ\text{C} \) (\( 300\text{ K} \)). Giả sử xưởng thử nghiệm với hai mẫu: một nồi bằng <strong>Đồng</strong> và một nồi bằng <strong>Sắt</strong> có cùng khối lượng \( 2\text{ kg} \).</p>
+                        <ul style="margin: 0.8rem 0 1rem 1.4rem;">
+                            <li>Với Đồng: \( c_{\text{Cu}} = 380\text{ J/(kg}\cdot\text{K)} \), \( t_{c,\text{Cu}} = 1084\text{ }^\circ\text{C} \), \( \lambda_{\text{Cu}} = 1,80 \cdot 10^5\text{ J/kg} \).</li>
+                            <li>Với Sắt: \( c_{\text{Fe}} = 440\text{ J/(kg}\cdot\text{K)} \), \( t_{c,\text{Fe}} = 1535\text{ }^\circ\text{C} \), \( \lambda_{\text{Fe}} = 2,77 \cdot 10^5\text{ J/kg} \).</li>
+                        </ul>
+                        <button class="btn" onclick="toggleWarmupAnswer()">🔍 Giải mã câu hỏi Lịch sử & Vật lý</button>
+                    </div>
+                    <div id="warmup-answer" style="display: none;" class="alert-box alert-success">
+                        <h4>📊 Phân tích Định lượng (Theo SBT Vật lí 12 - Bài 5.6):</h4>
+                        <p>• Nhiệt lượng cần đúc nồi đồng \( 2\text{ kg} \):</p>
+                        \[ Q_{\text{Cu}} = m c_{\text{Cu}} \Delta t_1 + m \lambda_{\text{Cu}} = 2 \cdot 380 \cdot (1084 - 27) + 2 \cdot 1,80 \cdot 10^5 = 1\,163\,320\text{ J} \approx 1,16\text{ MJ} \]
+                        <p>• Nhiệt lượng cần đúc nồi sắt \( 2\text{ kg} \):</p>
+                        \[ Q_{\text{Fe}} = m c_{\text{Fe}} \Delta t_2 + m \lambda_{\text{Fe}} = 2 \cdot 440 \cdot (1535 - 27) + 2 \cdot 2,77 \cdot 10^5 = 1\,881\,040\text{ J} \approx 1,88\text{ MJ} \]
+                        <p><strong>Kết luận:</strong> Đúc sắt không chỉ đòi hỏi lò nung đạt ngưỡng nhiệt độ cực cao (\( 1535\text{ }^\circ\text{C} \)) mà còn tiêu tốn năng lượng lớn hơn nhiều do cả nhiệt dung riêng \( c \) và <strong>nhiệt nóng chảy riêng \( \lambda \)</strong> của sắt đều vượt trội so với đồng!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: CORE THEORY ==================== -->
+        <section id="tab2" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">📖 1. Khái niệm & Bản chất Vật lý của Sự nóng chảy</h2>
+                <div class="grid-2">
+                    <div>
+                        <div class="alert-box">
+                            <h4>📌 Định nghĩa Nhiệt nóng chảy riêng (\(\lambda\))</h4>
+                            <p><strong>Nhiệt nóng chảy riêng</strong> của một chất là nhiệt lượng cần truyền cho một đơn vị khối lượng (\( 1\text{ kg} \)) chất đó để làm nó <strong>nóng chảy hoàn toàn ở nhiệt độ nóng chảy</strong> mà không làm thay đổi nhiệt độ.</p>
+                        </div>
+                        <p><strong>Điều kiện áp dụng nghiêm ngặt:</strong></p>
+                        <ul style="margin-left: 1.4rem;">
+                            <li>Chỉ áp dụng cho <strong>chất rắn kết tinh</strong> (có cấu trúc mạng tinh thể và nhiệt độ nóng chảy \( t_c \) xác định ở áp suất chuẩn).</li>
+                            <li>Chất rắn vô định hình (nhựa thông, nhựa đường, thủy tinh, sáp...) <em>không có</em> nhiệt độ nóng chảy xác định nên không có nhiệt nóng chảy riêng xác định.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="alert-box alert-warning">
+                            <h4>🔬 Bản chất Vi mô (Thuyết động học phân tử)</h4>
+                            <p>Khi chất rắn kết tinh đạt đến nhiệt độ nóng chảy \( t_c \):</p>
+                            <p>• Nhiệt lượng \( Q = \lambda m \) cung cấp cho vật chỉ dùng để <strong>phá vỡ mạng tinh thể</strong> (tăng thế năng tương tác phân tử \( W_t \)).</p>
+                            <p>• Động năng chuyển động nhiệt trung bình của các phân tử \( \bar{E}_d \) không đổi nên <strong>nhiệt độ \( T \) giữ nguyên không đổi</strong> trong suốt quá trình nóng chảy (\(\Delta U = Q > 0\)).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">📐 2. Hệ thống Công thức Cốt lõi & Đơn vị SI</h2>
+                <div class="alert-box" style="text-align: center; font-size: 1.15rem;">
+                    \[ Q = \lambda m \quad \Longleftrightarrow \quad \lambda = \frac{Q}{m} \]
+                    <p style="font-size: 0.95rem; margin-top: 0.4rem;">Nếu vật rắn kết tinh đang ở nhiệt độ \( t_0 < t_c \), tổng nhiệt lượng cần để làm vật nóng chảy hoàn toàn là:</p>
+                    \[ Q_{\text{tp}} = Q_1 + Q_2 = m c_r (t_c - t_0) + \lambda m \]
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ký hiệu</th>
+                                <th>Tên đại lượng vật lý</th>
+                                <th>Ý nghĩa vật lý</th>
+                                <th>Đơn vị chuẩn (SI)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>\( Q \)</td>
+                                <td>Nhiệt lượng nóng chảy</td>
+                                <td>Năng lượng nhiệt truyền cho vật trong quá trình chuyển thể từ rắn sang lỏng tại \( t_c \)</td>
+                                <td>\(\text{J}\) (Jun)</td>
+                            </tr>
+                            <tr>
+                                <td>\( m \)</td>
+                                <td>Khối lượng nóng chảy</td>
+                                <td>Phần khối lượng chất rắn thực sự chuyển sang thể lỏng</td>
+                                <td>\(\text{kg}\) (Kilôgam)</td>
+                            </tr>
+                            <tr>
+                                <td>\( \lambda \)</td>
+                                <td>Nhiệt nóng chảy riêng</td>
+                                <td>Đặc trưng cho bản chất của chất rắn kết tinh (và phụ thuộc áp suất ngoài)</td>
+                                <td>\(\text{J/kg}\)</td>
+                            </tr>
+                            <tr>
+                                <td>\( \bar{P} \)</td>
+                                <td>Công suất trung bình</td>
+                                <td>Nhiệt lượng do dây điện trở tỏa ra trong một đơn vị thời gian: \( Q = \bar{P} \tau_M \)</td>
+                                <td>\(\text{W}\) (\(\text{J/s}\))</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 style="color: var(--primary); margin: 1.2rem 0 0.5rem;">📊 Bảng 5.1 (SGK): Nhiệt độ nóng chảy và Nhiệt nóng chảy riêng dưới áp suất tiêu chuẩn</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Chất rắn kết tinh</th>
+                                <th>Nhiệt độ nóng chảy \( t_c \) (\(\text{}^\circ\text{C}\))</th>
+                                <th>Nhiệt nóng chảy riêng \( \lambda \) (\(\text{J/kg}\))</th>
+                                <th>Nhiệt dung riêng thể rắn \( c \) (\(\text{J/(kg}\cdot\text{K)}\))</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🧊 <strong>Nước đá</strong></td>
+                                <td>\( 0\text{ }^\circ\text{C} \)</td>
+                                <td>\( 3,34 \cdot 10^5\text{ J/kg} \)</td>
+                                <td>\( 2100\text{ J/(kg}\cdot\text{K)} \)</td>
+                            </tr>
+                            <tr>
+                                <td>🔩 <strong>Sắt (Fe)</strong></td>
+                                <td>\( 1535\text{ }^\circ\text{C} \)</td>
+                                <td>\( 2,77 \cdot 10^5\text{ J/kg} \) (hoặc \( 2,27 \cdot 10^5\text{ J/kg} \))</td>
+                                <td>\( 440\text{ J/(kg}\cdot\text{K)} \)</td>
+                            </tr>
+                            <tr>
+                                <td>🥉 <strong>Đồng (Cu)</strong></td>
+                                <td>\( 1084\text{ }^\circ\text{C} \)</td>
+                                <td>\( 1,80 \cdot 10^5\text{ J/kg} \)</td>
+                                <td>\( 380\text{ J/(kg}\cdot\text{K)} \)</td>
+                            </tr>
+                            <tr>
+                                <td>🧱 <strong>Nhôm (Al)</strong></td>
+                                <td>\( 658\text{ }^\circ\text{C} \)</td>
+                                <td>\( 3,90 \cdot 10^5\text{ J/kg} \)</td>
+                                <td>\( 880\text{ J/(kg}\cdot\text{K)} \)</td>
+                            </tr>
+                            <tr>
+                                <td>🔌 <strong>Chì (Pb)</strong></td>
+                                <td>\( 327\text{ }^\circ\text{C} \)</td>
+                                <td>\( 0,25 \cdot 10^5\text{ J/kg} \)</td>
+                                <td>\( 126\text{ J/(kg}\cdot\text{K)} \) (hoặc \( 130\text{ J/(kg}\cdot\text{K)} \))</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">⚠️ 3. Bẫy Lý thuyết & Sai lầm Học sinh hay mắc phải</h2>
+                <div class="grid-2">
+                    <div class="alert-box alert-danger">
+                        <h4>❌ Sai lầm 1: Áp dụng trực tiếp \( Q = \lambda m \) khi vật chưa ở nhiệt độ nóng chảy</h4>
+                        <p><strong>Ví dụ bẫy:</strong> "Tính nhiệt lượng làm nóng chảy hoàn toàn \( 100\text{ g} \) nước đá ở \( -20\text{ }^\circ\text{C} \)." Học sinh thường chỉ lấy \( Q = m\lambda = 0,1 \cdot 3,34 \cdot 10^5 = 33400\text{ J} \).</p>
+                        <p><strong>Sửa đúng:</strong> Phải tính tổng 2 giai đoạn: Tăng nhiệt độ từ \( -20\text{ }^\circ\text{C} \) lên \( 0\text{ }^\circ\text{C} \) (\( Q_1 = m c_{\text{đá}} \Delta t = 4200\text{ J} \)) + Nóng chảy tại \( 0\text{ }^\circ\text{C} \) (\( Q_2 = 33400\text{ J} \)) \(\Rightarrow Q = 37600\text{ J} \).</p>
+                    </div>
+                    <div class="alert-box alert-danger">
+                        <h4>❌ Sai lầm 2: Ngộ nhận \( t_c \) càng cao thì \( \lambda \) càng lớn</h4>
+                        <p><strong>Phản ví dụ:</strong> Sắt nóng chảy ở \( 1535\text{ }^\circ\text{C} \) có \( \lambda_{\text{Fe}} = 2,77 \cdot 10^5\text{ J/kg} \), trong khi Nước đá nóng chảy ở \( 0\text{ }^\circ\text{C} \) lại có \( \lambda_{\text{đá}} = 3,34 \cdot 10^5\text{ J/kg} > \lambda_{\text{Fe}} \).</p>
+                    </div>
+                    <div class="alert-box alert-warning">
+                        <h4>❌ Sai lầm 3: Nhầm lẫn giữa "Nhiệt nóng chảy" và "Nhiệt nóng chảy riêng"</h4>
+                        <p>• <strong>Nhiệt nóng chảy (\( Q \)):</strong> Đơn vị là \(\text{J}\), phụ thuộc cả bản chất và khối lượng \( m \) của vật.</p>
+                        <p>• <strong>Nhiệt nóng chảy riêng (\(\lambda\)):</strong> Đơn vị là \(\text{J/kg}\), chỉ phụ thuộc bản chất của chất rắn, không phụ thuộc khối lượng.</p>
+                    </div>
+                    <div class="alert-box alert-warning">
+                        <h4>❌ Sai lầm 4: Sai số hệ thống trong Thí nghiệm thực hành (SBT 5.9)</h4>
+                        <p>Khi dùng công thức \( \lambda_{\text{H}_2\text{O}} = \frac{\bar{P}\tau_M}{m} \) mà bỏ qua hao phí nhiệt ra môi trường (\( H < 100\% \)), giá trị \( \lambda \) tính được sẽ <strong>lớn hơn thực tế</strong> (nếu \( \bar{P}\tau_M \) phải bù cho phần nhiệt thất thoát) hoặc nhỏ hơn nếu nước đá nhận thêm nhiệt từ phòng ấm.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3A: SIMULATION LAB 1 (ICE EXPERIMENT) ==================== -->
+        <section id="tab3a" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">🔬 Phòng Thí nghiệm Ảo 3A: Thực hành Đo Nhiệt Nóng Chảy Riêng của Nước đá (SGK Bài 5)</h2>
+                <div class="alert-box">
+                    <strong>🎯 Hướng dẫn "Thử và Sai":</strong>
+                    1. Giữ nguyên khối lượng nước đá \( m = 0,025\text{ kg} \) và công suất \( \bar{P} = 14,25\text{ W} \) (như Bảng 5.2 SGK), nhấn <strong>Bắt đầu đun</strong> và quan sát điểm gãy \( M(\tau_M, 0\text{ }^\circ\text{C}) \) tại \(\tau_M \approx 600\text{ s}\).<br>
+                    2. Tăng gấp đôi khối lượng nước đá \( m \) hoặc thay đổi hệ số hao phí nhiệt, dự đoán xem thời điểm điểm gãy \(\tau_M\) và độ dốc đoạn tăng nhiệt độ sau khi tan hết sẽ dịch chuyển như thế nào!
+                </div>
+
+                <div class="sim-layout">
+                    <!-- Controls -->
+                    <div class="card" style="margin-bottom: 0; background: #f8fafc;">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">🎛️ Tham số Điều khiển</h3>
+                        
+                        <div class="form-group">
+                            <label>Khối lượng nước đá \( m \): <span id="sim3a-m-val" style="color: var(--accent);">0.025</span> \(\text{kg}\)</label>
+                            <input type="range" id="sim3a-m" min="0.015" max="0.060" step="0.005" value="0.025" oninput="resetSim3A()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Công suất điện trở nhiệt \( \bar{P} \): <span id="sim3a-p-val" style="color: var(--accent);">14.25</span> \(\text{W}\)</label>
+                            <input type="range" id="sim3a-p" min="10.0" max="30.0" step="0.25" value="14.25" oninput="resetSim3A()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Hiệu suất truyền nhiệt \( H \): <span id="sim3a-h-val" style="color: var(--accent);">98</span> \(\%\)</label>
+                            <input type="range" id="sim3a-h" min="85" max="100" step="1" value="98" oninput="resetSim3A()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tốc độ mô phỏng thời gian:</label>
+                            <select id="sim3a-speed" class="form-control">
+                                <option value="20">Nhanh vừa (1 giây thực = 20 s TN)</option>
+                                <option value="50" selected>Nhanh (1 giây thực = 50 s TN)</option>
+                                <option value="100">Rất nhanh (1 giây thực = 100 s TN)</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
+                            <button class="btn" id="btn-sim3a-toggle" onclick="toggleSim3A()">▶️ Bắt đầu đun</button>
+                            <button class="btn btn-secondary" onclick="resetSim3A()">🔄 Đặt lại</button>
+                        </div>
+
+                        <div class="alert-box alert-warning" style="margin-top: 1rem; font-size: 0.88rem;">
+                            <strong>Công thức xử lý số liệu:</strong>
+                            \[ \lambda_{\text{đo}} = \frac{\bar{P} \cdot \tau_M}{m} \quad ; \quad \lambda_{\text{thực}} = \frac{H \cdot \bar{P} \cdot \tau_M}{m} \]
+                        </div>
+                    </div>
+
+                    <!-- Canvas & Outputs -->
+                    <div>
+                        <div class="canvas-box">
+                            <canvas id="canvas3a" width="760" height="390"></canvas>
+                            <div class="stat-grid">
+                                <div class="stat-item">
+                                    <span class="label">Thời gian \(\tau\)</span>
+                                    <span class="val" id="out3a-time">0 s</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="label">Nhiệt độ \(t\)</span>
+                                    <span class="val" id="out3a-temp">0.00 °C</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="label">Tỉ lệ đá đã tan</span>
+                                    <span class="val" id="out3a-melt">0.0 %</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="label">Điểm gãy \(\tau_M\)</span>
+                                    <span class="val" id="out3a-taum">600 s</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="label">\(\lambda_{\text{đo}} = \frac{\bar{P}\tau_M}{m}\)</span>
+                                    <span class="val" id="out3a-lambda">3.41×10⁵ J/kg</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Real-time Data Table -->
+                        <div class="table-responsive" style="margin-top: 1rem; max-height: 210px; overflow-y: auto;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Lần đọc</th>
+                                        <th>Thời gian \(\tau\text{ (s)}\)</th>
+                                        <th>Nhiệt độ \(t\text{ (}^\circ\text{C)}\)</th>
+                                        <th>Công suất \(P\text{ (W)}\)</th>
+                                        <th>Trạng thái trong Nhiệt lượng kế</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table3a-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3B: SIMULATION LAB 2 (METAL FURNACE) ==================== -->
+        <section id="tab3b" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">🔥 Phòng Thí nghiệm Ảo 3B: Khảo sát 3 Giai đoạn Nung Chảy Kim loại & Cấu trúc Vi mô</h2>
+                <div class="alert-box">
+                    <strong>🎯 Hướng dẫn "Thử và Sai":</strong>
+                    Chọn các chất rắn kết tinh khác nhau (Nước đá, Chì, Nhôm, Đồng, Sắt) và điều chỉnh nhiệt độ ban đầu \( t_0 < t_c \). Quan sát sự chuyển động nhiệt của các hạt trong mạng tinh thể (bên trái) và đồ thị 3 giai đoạn (a: Tăng nhiệt độ rắn \(\rightarrow\) b: Nóng chảy đẳng nhiệt tại \( t_c \) \(\rightarrow\) c: Tăng nhiệt độ lỏng).
+                </div>
+
+                <div class="sim-layout">
+                    <!-- Controls -->
+                    <div class="card" style="margin-bottom: 0; background: #f8fafc;">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">🎛️ Bảng Điều khiển Lò nung</h3>
+                        
+                        <div class="form-group">
+                            <label>Chọn vật liệu kết tinh:</label>
+                            <select id="sim3b-mat" class="form-control" onchange="changeMaterial3B()">
+                                <option value="ice">🧊 Nước đá (tc = 0 °C, λ = 3,34·10⁵ J/kg)</option>
+                                <option value="pb">🔌 Chì - Pb (tc = 327 °C, λ = 0,25·10⁵ J/kg)</option>
+                                <option value="al">🧱 Nhôm - Al (tc = 658 °C, λ = 3,90·10⁵ J/kg)</option>
+                                <option value="cu" selected>🥉 Đồng - Cu (tc = 1084 °C, λ = 1,80·10⁵ J/kg)</option>
+                                <option value="fe">🔩 Sắt - Fe (tc = 1535 °C, λ = 2,77·10⁵ J/kg)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Khối lượng mẫu \( m \): <span id="sim3b-m-val" style="color: var(--accent);">2.0</span> \(\text{kg}\)</label>
+                            <input type="range" id="sim3b-m" min="0.5" max="5.0" step="0.5" value="2.0" oninput="resetSim3B()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nhiệt độ ban đầu \( t_0 \): <span id="sim3b-t0-val" style="color: var(--accent);">30</span> \(\text{}^\circ\text{C}\)</label>
+                            <input type="range" id="sim3b-t0" min="-20" max="200" step="5" value="30" oninput="resetSim3B()">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Công suất hữu ích của lò \( P_{\text{ích}} \): <span id="sim3b-p-val" style="color: var(--accent);">10000</span> \(\text{W}\)</label>
+                            <input type="range" id="sim3b-p" min="2000" max="25000" step="1000" value="10000" oninput="resetSim3B()">
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <button class="btn" id="btn-sim3b-toggle" onclick="toggleSim3B()">▶️ Bật lò nung</button>
+                            <button class="btn btn-secondary" onclick="resetSim3B()">🔄 Đặt lại</button>
+                        </div>
+
+                        <div id="sim3b-formulas" class="alert-box" style="margin-top: 1rem; font-size: 0.88rem;">
+                        </div>
+                    </div>
+
+                    <!-- Canvas & Outputs -->
+                    <div>
+                        <div class="canvas-box">
+                            <canvas id="canvas3b" width="760" height="400"></canvas>
+                            <div class="stat-grid">
+                                <div class="stat-item">
+                                    <span class="label">Giai đoạn hiện tại</span>
+                                    <span class="val" id="out3b-stage">a) Đun nóng rắn</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="label">Nhiệt độ hiện tại \(t\)</span>
+                                    <span class="val" id="out3b-temp">30.0 °C</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="label">Nhiệt lượng \(Q_1 = mc\Delta t\)</span>
+                                    <span class="val" id="out3b-q1">801.0 kJ</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="label">Nhiệt nóng chảy \(Q_2 = \lambda m\)</span>
+                                    <span class="val" id="out3b-q2">360.0 kJ</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="label">Tổng thời gian nung chảy</span>
+                                    <span class="val" id="out3b-totaltime">116.1 s</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: CALCULATOR MODULE ==================== -->
+        <section id="tab4" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">🧮 Máy tính Tham số Vật lý & Giải chi tiết từng bước (KaTeX)</h2>
+                <p style="margin-bottom: 1rem;">Chọn chế độ bài toán, nhập các đại lượng đã biết và <strong>ĐỂ TRỐNG 1 ô cần tìm</strong>, hệ thống sẽ tự động phân tích công thức và trình bày lời giải chi tiết.</p>
+
+                <div class="form-group">
+                    <label>Chế độ bài toán:</label>
+                    <select id="calc-mode" class="form-control" onchange="switchCalcMode()">
+                        <option value="basic">Chế độ 1: Công thức cơ bản quá trình nóng chảy (Q = λ·m)</option>
+                        <option value="furnace">Chế độ 2: Bài toán Lò nung kim loại có hiệu suất (Tăng nhiệt từ t₀ đến tc + Nóng chảy hoàn toàn)</option>
+                    </select>
+                </div>
+
+                <!-- MODE 1 -->
+                <div id="calc-panel-basic" class="grid-3" style="margin-top: 1rem;">
+                    <div class="form-group">
+                        <label>Nhiệt lượng cung cấp \( Q \) (\(\text{J}\)):</label>
+                        <input type="number" id="c1-q" class="form-control" placeholder="Bỏ trống nếu cần tìm Q" value="167000">
+                    </div>
+                    <div class="form-group">
+                        <label>Khối lượng vật rắn \( m \) (\(\text{kg}\)):</label>
+                        <input type="number" id="c1-m" class="form-control" placeholder="Bỏ trống nếu cần tìm m" value="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label>Nhiệt nóng chảy riêng \( \lambda \) (\(\text{J/kg}\)):</label>
+                        <input type="number" id="c1-lambda" class="form-control" placeholder="Bỏ trống nếu cần tìm λ" value="">
+                    </div>
+                </div>
+
+                <!-- MODE 2 -->
+                <div id="calc-panel-furnace" class="grid-3" style="margin-top: 1rem; display: none;">
+                    <div class="form-group">
+                        <label>Khối lượng kim loại \( m \) (\(\text{kg}\)):</label>
+                        <input type="number" id="c2-m" class="form-control" value="2">
+                    </div>
+                    <div class="form-group">
+                        <label>Nhiệt dung riêng \( c \) (\(\text{J/(kg}\cdot\text{K)}\)):</label>
+                        <input type="number" id="c2-c" class="form-control" value="380">
+                    </div>
+                    <div class="form-group">
+                        <label>Nhiệt độ ban đầu \( t_0 \) (\(\text{}^\circ\text{C}\)):</label>
+                        <input type="number" id="c2-t0" class="form-control" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label>Nhiệt độ nóng chảy \( t_c \) (\(\text{}^\circ\text{C}\)):</label>
+                        <input type="number" id="c2-tc" class="form-control" value="1084">
+                    </div>
+                    <div class="form-group">
+                        <label>Nhiệt nóng chảy riêng \( \lambda \) (\(\text{J/kg}\)):</label>
+                        <input type="number" id="c2-lambda" class="form-control" value="180000">
+                    </div>
+                    <div class="form-group">
+                        <label>Công suất lò \( P \) (\(\text{W}\)) & Hiệu suất \( H \) (\(\%\)):</label>
+                        <div style="display: flex; gap: 0.4rem;">
+                            <input type="number" id="c2-p" class="form-control" placeholder="P (W)" value="20000">
+                            <input type="number" id="c2-h" class="form-control" placeholder="H (%)" value="50">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                    <button class="btn" onclick="solveCalculator()">🧮 Phân tích & Giải chi tiết</button>
+                    <button class="btn btn-secondary" onclick="clearCalcField()">🧹 Xóa ô cần tìm (Mẫu thử)</button>
+                </div>
+
+                <div id="calc-result" class="alert-box alert-success" style="margin-top: 1.5rem; display: none;"></div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: GUIDED PRACTICE ==================== -->
+        <section id="tab5" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">📝 Phòng Luyện tập Phân hóa 3 Cấp độ (Có Gợi ý Tư duy & Lời giải Chi tiết)</h2>
+
+                <!-- LEVEL 1 -->
+                <div class="card" style="border-left: 5px solid var(--success);">
+                    <h3 style="color: var(--success);">🟢 CẤP ĐỘ 1 (Nhận biết - Thông hiểu): Áp dụng công thức trực tiếp & Chuyển đổi giai đoạn</h3>
+                    <p style="margin: 0.6rem 0;"><strong>Đề bài (Từ tài liệu Chủ đề 5):</strong> Một thỏi nhôm có khối lượng \( m = 1,0\text{ kg} \) đang ở nhiệt độ \( t_0 = 8\text{ }^\circ\text{C} \). Cần cung cấp nhiệt lượng \( Q \) bằng bao nhiêu \(\text{kJ}\) (làm tròn đến hàng đơn vị) để làm nóng chảy hoàn toàn thỏi nhôm này ở nhiệt độ nóng chảy? Biết nhôm nóng chảy ở \( t_c = 658\text{ }^\circ\text{C} \), nhiệt nóng chảy riêng của nhôm là \( \lambda = 3,9 \cdot 10^5\text{ J/kg} \) và nhiệt dung riêng của nhôm là \( c = 880\text{ J/(kg}\cdot\text{K)} \).</p>
+                    
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                        <button class="btn btn-secondary" onclick="toggleBox('hint1')">💡 Gợi ý tư duy</button>
+                        <button class="btn" onclick="toggleBox('sol1')">📖 Xem Lời giải chi tiết</button>
+                    </div>
+
+                    <div id="hint1" class="solution-box">
+                        <strong>Gợi ý tư duy:</strong> Thỏi nhôm ban đầu ở \( 8\text{ }^\circ\text{C} \) chưa đạt tới nhiệt độ nóng chảy \( 658\text{ }^\circ\text{C} \). Do đó quá trình thu nhiệt gồm 2 giai đoạn nối tiếp: (1) Tăng nhiệt độ từ \( 8\text{ }^\circ\text{C} \rightarrow 658\text{ }^\circ\text{C} \) và (2) Nóng chảy hoàn toàn tại \( 658\text{ }^\circ\text{C} \).
+                    </div>
+
+                    <div id="sol1" class="solution-box">
+                        <h4>✅ Lời giải chi tiết:</h4>
+                        <p>• <strong>Bước 1:</strong> Nhiệt lượng cần cung cấp để thỏi nhôm tăng nhiệt độ từ \( t_0 = 8\text{ }^\circ\text{C} \) đến nhiệt độ nóng chảy \( t_c = 658\text{ }^\circ\text{C} \):</p>
+                        \[ Q_1 = m c (t_c - t_0) = 1,0 \cdot 880 \cdot (658 - 8) = 572\,000\text{ J} = 572\text{ kJ} \]
+                        <p>• <strong>Bước 2:</strong> Nhiệt lượng cần cung cấp để làm nóng chảy hoàn toàn \( 1,0\text{ kg} \) nhôm ở \( 658\text{ }^\circ\text{C} \):</p>
+                        \[ Q_2 = \lambda m = 3,9 \cdot 10^5 \cdot 1,0 = 390\,000\text{ J} = 390\text{ kJ} \]
+                        <p>• <strong>Bước 3:</strong> Tổng nhiệt lượng cần cung cấp cho thỏi nhôm:</p>
+                        \[ Q = Q_1 + Q_2 = 572 + 390 = 962\text{ kJ} \]
+                    </div>
+                </div>
+
+                <!-- LEVEL 2 -->
+                <div class="card" style="border-left: 5px solid var(--warning);">
+                    <h3 style="color: var(--warning);">🟡 CẤP ĐỘ 2 (Vận dụng): Phối hợp Phương trình Cân bằng Nhiệt & Sự nóng chảy</h3>
+                    <p style="margin: 0.6rem 0;"><strong>Đề bài (Bài toán Nhiệt lượng kế - Chủ đề 5):</strong> Người ta thả một cục nước đá khối lượng \( m_{\text{đá}} = 80\text{ g} = 0,08\text{ kg} \) ở \( t_1 = 0\text{ }^\circ\text{C} \) vào một cốc nhôm đựng \( m_{\text{n}} = 0,4\text{ kg} \) nước ở \( t_2 = 20\text{ }^\circ\text{C} \) đặt trong bình nhiệt lượng kế. Khối lượng của cốc nhôm là \( m_{\text{Al}} = 0,20\text{ kg} \). Tính nhiệt độ cân bằng \( t \) của nước trong cốc nhôm (theo \(\text{}^\circ\text{C}\), làm tròn đến 1 chữ số thập phân) khi cục nước đá vừa tan hết và đạt cân bằng nhiệt. Cho biết nhiệt nóng chảy riêng của nước đá là \( \lambda = 3,4 \cdot 10^5\text{ J/kg} \), nhiệt dung riêng của nhôm là \( c_{\text{Al}} = 880\text{ J/(kg}\cdot\text{K)} \) và của nước là \( c_{\text{n}} = 4180\text{ J/(kg}\cdot\text{K)} \). Bỏ qua sự mất mát nhiệt ra ngoài môi trường.</p>
+
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                        <button class="btn btn-secondary" onclick="toggleBox('hint2')">💡 Gợi ý tư duy</button>
+                        <button class="btn" onclick="toggleBox('sol2')">📖 Xem Lời giải chi tiết</button>
+                    </div>
+
+                    <div id="hint2" class="solution-box">
+                        <strong>Gợi ý tư duy:</strong>
+                        <ul>
+                            <li>Vật thu nhiệt: Cục nước đá \( 0,08\text{ kg} \) thu nhiệt \( \lambda m_{\text{đá}} \) để tan thành nước ở \( 0\text{ }^\circ\text{C} \), sau đó lượng nước này tiếp tục thu nhiệt \( m_{\text{đá}} c_{\text{n}} (t - 0) \) để tăng lên nhiệt độ cân bằng \( t \).</li>
+                            <li>Vật tỏa nhiệt: Cốc nhôm (\( 0,20\text{ kg} \)) và nước trong cốc (\( 0,4\text{ kg} \)) hạ nhiệt độ từ \( 20\text{ }^\circ\text{C} \) xuống \( t \).</li>
+                        </ul>
+                    </div>
+
+                    <div id="sol2" class="solution-box">
+                        <h4>✅ Lời giải chi tiết:</h4>
+                        <p>• Gọi \( t \) (\(\text{}^\circ\text{C}\), với \( 0 < t < 20 \)) là nhiệt độ cân bằng của hệ sau khi cục nước đá tan hết.</p>
+                        <p>• Tổng nhiệt lượng do cục nước đá thu vào để tan hoàn toàn ở \( 0\text{ }^\circ\text{C} \) và tăng nhiệt độ lên \( t\text{ }^\circ\text{C} \):</p>
+                        \[ Q_{\text{thu}} = \lambda m_{\text{đá}} + m_{\text{đá}} c_{\text{n}} (t - 0) = 3,4 \cdot 10^5 \cdot 0,08 + 0,08 \cdot 4180 \cdot t = 27\,200 + 334,4 t \text{ (J)} \]
+                        <p>• Tổng nhiệt lượng do cốc nhôm và \( 0,4\text{ kg} \) nước ban đầu tỏa ra khi hạ từ \( 20\text{ }^\circ\text{C} \) xuống \( t\text{ }^\circ\text{C} \):</p>
+                        \[ Q_{\text{tỏa}} = (m_{\text{Al}} c_{\text{Al}} + m_{\text{n}} c_{\text{n}})(20 - t) = (0,20 \cdot 880 + 0,4 \cdot 4180)(20 - t) = 1848 \cdot (20 - t) = 36\,960 - 1848 t \text{ (J)} \]
+                        <p>• Áp dụng phương trình cân bằng nhiệt \( Q_{\text{thu}} = Q_{\text{tỏa}} \):</p>
+                        \[ 27\,200 + 334,4 t = 36\,960 - 1848 t \implies 2182,4 t = 9760 \implies t \approx 4,5\text{ }^\circ\text{C} \]
+                        <p><em>(Lưu ý: Nếu đề bài bỏ qua sự tăng nhiệt độ của nước đá sau khi tan hoặc lấy thông số làm tròn khác trong phiếu học tập thì \( t \approx 4,5\text{ }^\circ\text{C} \div 4,9\text{ }^\circ\text{C} \)).</em></p>
+                    </div>
+                </div>
+
+                <!-- LEVEL 3 -->
+                <div class="card" style="border-left: 5px solid var(--danger);">
+                    <h3 style="color: var(--danger);">🔴 CẤP ĐỘ 3 (Vận dụng cao & Đánh giá Năng lực Số/AI): Phân tích Đồ thị Thực nghiệm & Sai số Hệ thống</h3>
+                    <p style="margin: 0.6rem 0;"><strong>Đề bài (Tích hợp SBT Vật lí 12 - Bài I.1 đến I.4 & Khung Năng lực Số):</strong> Một nhóm học sinh lấy \( m = 1,2\text{ kg} \) viên nước đá nhỏ từ tủ đông ở nhiệt độ \( t_0 = -18\text{ }^\circ\text{C} \) đưa vào bình đun chuyên dụng có công suất định mức \( P = 2200\text{ W} \). Nhóm dùng cảm biến nhiệt độ kết nối máy tính thu được đồ thị thực nghiệm \( t(\tau) \) có các mốc thời gian đặc biệt:
+                    <br>— Từ \(\tau = 0\text{ s}\) đến \(\tau_1 = 19\text{ s}\): Nhiệt độ tăng từ \( -18\text{ }^\circ\text{C} \) lên \( 0\text{ }^\circ\text{C} \).
+                    <br>— Từ \(\tau_1 = 19\text{ s}\) đến \(\tau_2 = 220\text{ s}\): Nhiệt độ giữ không đổi ở \( 0\text{ }^\circ\text{C} \) cho tới khi đá tan hết.
+                    <br>— Từ \(\tau_2 = 220\text{ s}\) đến \(\tau_3 = 480\text{ s}\): Nước lỏng tăng nhiệt độ từ \( 0\text{ }^\circ\text{C} \) đến khi sôi ở \( 100\text{ }^\circ\text{C} \).
+                    <br>Cho biết giá trị chuẩn trong bảng dữ liệu là \( c_{\text{đá}} = 2100\text{ J/(kg}\cdot\text{K)} \) và \( \lambda = 334\,000\text{ J/kg} \).
+                    <br><strong>Yêu cầu:</strong>
+                    <br>a) Tính nhiệt lượng lý thuyết \( Q_{\text{lt}} \) mà \( 1,2\text{ kg} \) nước đá cần nhận để nóng chảy hoàn toàn thành nước ở \( 0\text{ }^\circ\text{C} \) và so sánh với điện năng \( A_{\text{điện}} \) ấm đã tiêu thụ trong \( 220\text{ s} \) đầu tiên. Từ đó tính hiệu suất thực tế \( H \) của ấm đun.
+                    <br>b) <strong>[Tư duy Năng lực Số & AI]:</strong> Một trợ lý AI đề xuất dùng đoạn đồ thị từ \( 0\text{ s} \rightarrow 19\text{ s} \) để tính nhiệt dung riêng của nước đá theo công thức \( c_{\text{đá}} = \frac{P \cdot 19}{1,2 \cdot 18} \). Hãy phản biện xem đề xuất của AI có hợp lý về mặt thực nghiệm vật lý hay không? Vì sao?</p>
+
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                        <button class="btn btn-secondary" onclick="toggleBox('hint3')">💡 Gợi ý tư duy</button>
+                        <button class="btn" onclick="toggleBox('sol3')">📖 Xem Lời giải chi tiết</button>
+                    </div>
+
+                    <div id="hint3" class="solution-box">
+                        <strong>Gợi ý tư duy:</strong>
+                        <ul>
+                            <li>Tính \( Q_{\text{lt}} = m c_{\text{đá}} \Delta t + m \lambda \) và \( A_{\text{điện}} = P \cdot \tau_2 \). Tỉ số \( H = \frac{Q_{\text{lt}}}{A_{\text{điện}}} \).</li>
+                            <li>Ở câu b: Chú ý sự truyền nhiệt trong chất rắn (các viên nước đá rời rạc) khác với chất lỏng được khuấy đều như thế nào? Nhiệt kế đặt ở một vị trí có đại diện cho toàn bộ khối nước đá không?</li>
+                        </ul>
+                    </div>
+
+                    <div id="sol3" class="solution-box">
+                        <h4>✅ Lời giải chi tiết & Phản biện AI:</h4>
+                        <p><strong>a) Tính toán năng lượng và Hiệu suất thực nghiệm:</strong></p>
+                        <p>• Nhiệt lượng lý thuyết cần cung cấp cho \( 1,2\text{ kg} \) nước đá từ \( -18\text{ }^\circ\text{C} \) đến khi nóng chảy hoàn toàn ở \( 0\text{ }^\circ\text{C} \):</p>
+                        \[ Q_{\text{lt}} = m c_{\text{đá}} (0 - (-18)) + m \lambda = 1,2 \cdot 2100 \cdot 18 + 1,2 \cdot 334\,000 = 45\,360 + 400\,800 = 446\,160\text{ J} \]
+                        <p>• Điện năng mà nguồn điện đã cung cấp cho ấm đun trong thời gian \(\tau_2 = 220\text{ s}\):</p>
+                        \[ A_{\text{điện}} = P \cdot \tau_2 = 2200 \cdot 220 = 484\,000\text{ J} \]
+                        <p>• Hiệu suất thực tế của ấm đun trong giai đoạn này:</p>
+                        \[ H = \frac{Q_{\text{lt}}}{A_{\text{điện}}} \cdot 100\% = \frac{446\,160}{484\,000} \cdot 100\% \approx 92,18\% \]
+                        <p>Sự chênh lệch \( \Delta E = 484\,000 - 446\,160 = 37\,840\text{ J} \) là phần nhiệt lượng hao phí truyền cho vỏ bình thủy tinh, đế nhiệt và tỏa ra môi trường xung quanh.</p>
+                        <hr style="margin: 0.75rem 0; border-color: #cbd5e1;">
+                        <p><strong>b) Phản biện đề xuất của AI (Theo SBT Vật lí 12 - Bài I.2):</strong></p>
+                        <p>Đề xuất của AI là <strong>KHÔNG CHÍNH XÁC</strong> về mặt thực nghiệm. Trong giai đoạn \( 0\text{ s} \rightarrow 19\text{ s} \), nước đá ở thể rắn gồm các viên nhỏ, không thể khuấy đều như chất lỏng, dẫn đến <strong>nhiệt độ phân bố không đồng đều</strong> (phần đá sát đáy ấm đã tan ở \( 0\text{ }^\circ\text{C} \) trong khi phần đá ở trên vẫn âm độ). Đầu đo nhiệt kế chỉ đo nhiệt độ cục bộ nên không thể dùng đoạn đồ thị này để xác định chính xác \( c_{\text{đá}} \).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: INTERACTIVE QUIZ ==================== -->
+        <section id="tab6" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">🎯 Bài Tự Đánh Giá Trắc Nghiệm Tương Tác</h2>
+                <p style="margin-bottom: 1rem;">Hoàn thành 4 câu hỏi trắc nghiệm trọng tâm dưới đây và nhấn <strong>Nộp bài & Xem giải thích</strong> để kiểm tra mức độ nắm vững bài học.</p>
+
+                <div id="quiz-container"></div>
+
+                <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+                    <button class="btn btn-success" onclick="submitQuiz()">✅ Nộp bài & Xem giải thích</button>
+                    <button class="btn btn-secondary" onclick="resetQuiz()">🔄 Làm lại</button>
+                </div>
+
+                <div id="quiz-score-banner" class="alert-box" style="margin-top: 1.5rem; display: none;"></div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 7: CLASSROOM TOOLS ==================== -->
+        <section id="tab7" class="tab-content">
+            <div class="grid-2">
+                <!-- VISUAL TIMER -->
+                <div class="card" id="timer-card">
+                    <h2 class="card-title">⏱️ Đồng Hồ Đếm Ngược Thảo Luận Nhóm</h2>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <canvas id="timer-canvas" width="240" height="240" style="background: transparent;"></canvas>
+                        <div class="timer-display" id="timer-text">03:00</div>
+                        
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1rem;">
+                            <button class="btn btn-secondary" onclick="setTimerPreset(60)">1 Phút</button>
+                            <button class="btn btn-secondary" onclick="setTimerPreset(180)">3 Phút</button>
+                            <button class="btn btn-secondary" onclick="setTimerPreset(300)">5 Phút</button>
+                            <button class="btn btn-secondary" onclick="setTimerPreset(600)">10 Phút</button>
+                        </div>
+
+                        <div style="display: flex; gap: 0.6rem;">
+                            <button class="btn btn-success" id="btn-timer-start" onclick="toggleTimer()">▶️ Bắt đầu</button>
+                            <button class="btn btn-danger" onclick="resetTimer()">🔄 Đặt lại</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LUCKY WHEEL -->
+                <div class="card">
+                    <h2 class="card-title">🎡 Vòng Quay May Mắn (Theo 4 Tổ Học Tập)</h2>
+                    <div class="form-group">
+                        <label>Chọn Tổ học tập hoặc nhập danh sách học sinh (mỗi tên 1 dòng):</label>
+                        <div style="display: flex; gap: 0.4rem; margin-bottom: 0.6rem; flex-wrap: wrap;">
+                            <button class="btn btn-secondary" onclick="loadGroupList(1)">Tổ 1</button>
+                            <button class="btn btn-secondary" onclick="loadGroupList(2)">Tổ 2</button>
+                            <button class="btn btn-secondary" onclick="loadGroupList(3)">Tổ 3</button>
+                            <button class="btn btn-secondary" onclick="loadGroupList(4)">Tổ 4</button>
+                        </div>
+                        <textarea id="wheel-names" class="form-control" rows="4" oninput="drawWheel()">Nguyễn Minh An - Tổ 1
+Trần Hoàng Bách - Tổ 1
+Lê Ngọc Châu - Tổ 1
+Phạm Quốc Đạt - Tổ 1
+Hoàng Thị Hà - Tổ 1
+Vũ Đức Huy - Tổ 1</textarea>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <canvas id="wheel-canvas" width="300" height="300" style="background: transparent;"></canvas>
+                        <button class="btn btn-warning" style="margin-top: 1rem; font-size: 1.05rem;" onclick="spinWheel()">🎯 QUAY NGẪU NHIÊN</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL WINNER POPUP -->
+    <div class="modal-overlay" id="winner-modal">
+        <div class="modal-card">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
+            <h3 style="color: var(--primary); font-size: 1.4rem;">XIN CHÚC MỪNG HỌC SINH!</h3>
+            <p id="winner-name" style="font-size: 1.5rem; font-weight: 800; color: var(--danger); margin: 1rem 0;"></p>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Mời em lên bảng / trả lời câu hỏi thử thách Vật lý 12!</p>
+            <button class="btn" onclick="closeWinnerModal()">Đóng thông báo</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div id="footer-copyright">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+        <div style="font-size: 0.8rem; opacity: 0.75; margin-top: 0.25rem;">Ứng dụng Web Giáo dục Tương tác Vật lý 12 — Thiết kế chuẩn HTML5, CSS3, Canvas & KaTeX</div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ==================== 1. KATEX CONFIG & COPYRIGHT YEAR ====================
+        const katexOptions = {
+            delimiters: [
+                { left: "\\[", right: "\\]", display: true },
+                { left: "\\(", right: "\\)", display: false }
+            ],
+            throwOnError: false
+        };
+
+        function renderAllMath(element = document.body) {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(element, katexOptions);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const currentYear = new Date().getFullYear();
+            const copyrightText = `© ${currentYear} - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng`;
+            document.getElementById('header-copyright').textContent = copyrightText;
+            document.getElementById('footer-copyright').textContent = copyrightText;
+
+            initSim3A();
+            initSim3B();
+            initQuiz();
+            drawTimerCircle(1);
+            drawWheel();
+            renderAllMath();
+        });
+
+        // ==================== 2. TAB NAVIGATION ====================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            const buttons = document.querySelectorAll('.tab-btn');
+            const mapIndex = {
+                'tab1': 0, 'tab2': 1, 'tab3a': 2, 'tab3b': 3,
+                'tab4': 4, 'tab5': 5, 'tab6': 6, 'tab7': 7
+            };
+            if (mapIndex[tabId] !== undefined) {
+                buttons[mapIndex[tabId]].classList.add('active');
+            }
+            renderAllMath(document.getElementById(tabId));
+        }
+
+        function toggleWarmupAnswer() {
+            const box = document.getElementById('warmup-answer');
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
+            renderAllMath(box);
+        }
+
+        function toggleBox(id) {
+            const el = document.getElementById(id);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+            renderAllMath(el);
+        }
+
+        // ==================== 3A. SIMULATION LAB 1: ICE MELTING EXPERIMENT ====================
+        let sim3A = {
+            running: false,
+            time: 0,
+            maxTime: 1050,
+            m: 0.025,
+            P: 14.25,
+            H: 0.98,
+            lambdaTrue: 334000,
+            cWater: 4180,
+            tauM: 600,
+            points: [],
+            lastLoggedStep: -120,
+            animId: null
+        };
+
+        function initSim3A() {
+            resetSim3A();
+        }
+
+        function resetSim3A() {
+            sim3A.running = false;
+            cancelAnimationFrame(sim3A.animId);
+            document.getElementById('btn-sim3a-toggle').innerHTML = '▶️ Bắt đầu đun';
+
+            sim3A.m = parseFloat(document.getElementById('sim3a-m').value);
+            sim3A.P = parseFloat(document.getElementById('sim3a-p').value);
+            sim3A.H = parseFloat(document.getElementById('sim3a-h').value) / 100;
+
+            document.getElementById('sim3a-m-val').textContent = sim3A.m.toFixed(3);
+            document.getElementById('sim3a-p-val').textContent = sim3A.P.toFixed(2);
+            document.getElementById('sim3a-h-val').textContent = Math.round(sim3A.H * 100);
+
+            // Time required to melt all ice: Q_useful = H * P * tauM = m * lambdaTrue
+            sim3A.tauM = (sim3A.m * sim3A.lambdaTrue) / (sim3A.P * sim3A.H);
+            sim3A.maxTime = Math.max(1000, Math.ceil((sim3A.tauM + 400) / 100) * 100);
+            sim3A.time = 0;
+            sim3A.points = [{ t: 0, temp: 0 }];
+            sim3A.lastLoggedStep = 0;
+
+            const lambdaMeasured = (sim3A.P * sim3A.tauM) / sim3A.m;
+            document.getElementById('out3a-taum').textContent = `${Math.round(sim3A.tauM)} s`;
+            document.getElementById('out3a-lambda').textContent = `${(lambdaMeasured / 1e5).toFixed(2)}×10⁵ J/kg`;
+            document.getElementById('out3a-time').textContent = `0 s`;
+            document.getElementById('out3a-temp').textContent = `0.00 °C`;
+            document.getElementById('out3a-melt').textContent = `0.0 %`;
+
+            document.getElementById('table3a-body').innerHTML = `
+                <tr>
+                    <td>1</td>
+                    <td>0</td>
+                    <td>0,00</td>
+                    <td>${sim3A.P.toFixed(2)}</td>
+                    <td>Bắt đầu đun (Hỗn hợp nước đá ở 0 °C)</td>
+                </tr>
+            `;
+
+            drawCanvas3A();
+        }
+
+        function getTemp3A(tau) {
+            if (tau <= sim3A.tauM) return 0;
+            // After melting, water + calorimeter heats up. Using effective heat capacity matching SGK Table 5.2 slope (~1.5 C in 360 s)
+            const effectiveMassWater = sim3A.m + 0.80; // includes cold water in calorimeter per SGK Step 1
+            return (sim3A.P * sim3A.H * (tau - sim3A.tauM)) / (effectiveMassWater * sim3A.cWater);
+        }
+
+        function toggleSim3A() {
+            sim3A.running = !sim3A.running;
+            document.getElementById('btn-sim3a-toggle').innerHTML = sim3A.running ? '⏸️ Tạm dừng' : '▶️ Tiếp tục';
+            if (sim3A.running) {
+                lastFrame3A = performance.now();
+                loopSim3A(lastFrame3A);
+            }
+        }
+
+        let lastFrame3A = 0;
+        function loopSim3A(now) {
+            if (!sim3A.running) return;
+            const dtReal = (now - lastFrame3A) / 1000;
+            lastFrame3A = now;
+
+            const speed = parseFloat(document.getElementById('sim3a-speed').value);
+            sim3A.time += dtReal * speed;
+
+            if (sim3A.time >= sim3A.maxTime) {
+                sim3A.time = sim3A.maxTime;
+                sim3A.running = false;
+                document.getElementById('btn-sim3a-toggle').innerHTML = '✅ Hoàn thành';
+            }
+
+            const curTemp = getTemp3A(sim3A.time);
+            sim3A.points.push({ t: sim3A.time, temp: curTemp });
+
+            const meltPct = Math.min(100, (sim3A.time / sim3A.tauM) * 100);
+            document.getElementById('out3a-time').textContent = `${Math.round(sim3A.time)} s`;
+            document.getElementById('out3a-temp').textContent = `${curTemp.toFixed(2)} °C`;
+            document.getElementById('out3a-melt').textContent = `${meltPct.toFixed(1)} %`;
+
+            // Log table every 120 seconds (like SGK Table 5.2)
+            while (sim3A.time >= sim3A.lastLoggedStep + 120 && sim3A.lastLoggedStep + 120 <= sim3A.maxTime) {
+                sim3A.lastLoggedStep += 120;
+                const tLog = sim3A.lastLoggedStep;
+                const tempLog = getTemp3A(tLog);
+                const tbody = document.getElementById('table3a-body');
+                const rowCount = tbody.rows.length + 1;
+                const status = tLog <= sim3A.tauM ? 'Đang nóng chảy (t = 0 °C không đổi)' : 'Đã tan hết, nước tăng nhiệt độ';
+                tbody.insertAdjacentHTML('beforeend', `
+                    <tr>
+                        <td>${rowCount}</td>
+                        <td>${tLog}</td>
+                        <td>${tempLog.toFixed(2).replace('.', ',')}</td>
+                        <td>${(sim3A.P + (Math.sin(tLog) * 0.03)).toFixed(2)}</td>
+                        <td>${status}</td>
+                    </tr>
+                `);
+            }
+
+            drawCanvas3A();
+            if (sim3A.running) {
+                sim3A.animId = requestAnimationFrame(loopSim3A);
+            }
+        }
+
+        function drawCanvas3A() {
+            const canvas = document.getElementById('canvas3a');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background split: Left = Calorimeter Apparatus (260px), Right = Graph t(tau) (500px)
+            ctx.fillStyle = '#f8fafc';
+            ctx.fillRect(0, 0, 255, canvas.height);
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.beginPath();
+            ctx.moveTo(255, 0);
+            ctx.lineTo(255, canvas.height);
+            ctx.stroke();
+
+            // --- DRAW CALORIMETER ON LEFT ---
+            ctx.fillStyle = '#0f4c81';
+            ctx.font = 'bold 14px Segoe UI';
+            ctx.fillText('BÌNH NHIỆT LƯỢNG KẾ (4)', 35, 28);
+
+            // Outer yellow insulated vessel
+            ctx.fillStyle = '#fde047';
+            ctx.strokeStyle = '#ca8a04';
+            ctx.lineWidth = 2;
+            ctx.fillRect(55, 110, 145, 200);
+            ctx.strokeRect(55, 110, 145, 200);
+
+            // Inner chamber
+            ctx.fillStyle = '#e0f2fe';
+            ctx.fillRect(70, 125, 115, 170);
+
+            // Water level
+            const meltFraction = Math.min(1, sim3A.time / sim3A.tauM);
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(70, 165, 115, 130);
+
+            // Ice cubes (shrink as meltFraction -> 1)
+            const iceScale = 1 - meltFraction;
+            if (iceScale > 0.02) {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+                ctx.strokeStyle = '#0284c7';
+                ctx.lineWidth = 1.5;
+                const cubes = [
+                    { x: 82, y: 175, s: 28 },
+                    { x: 118, y: 182, s: 30 },
+                    { x: 148, y: 172, s: 26 },
+                    { x: 98, y: 210, s: 28 },
+                    { x: 135, y: 215, s: 26 }
+                ];
+                cubes.forEach(c => {
+                    const sz = c.s * iceScale;
+                    ctx.fillRect(c.x, c.y, sz, sz);
+                    ctx.strokeRect(c.x, c.y, sz, sz);
+                });
+            }
+
+            // Heating resistor coil at bottom
+            ctx.strokeStyle = sim3A.running ? '#ef4444' : '#64748b';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (let x = 82; x <= 172; x += 10) {
+                ctx.lineTo(x, (x % 20 === 2) ? 275 : 287);
+            }
+            ctx.stroke();
+
+            // Digital Thermometer (3) & Wattmeter (2)
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(112, 48, 65, 36);
+            ctx.fillStyle = '#22c55e';
+            ctx.font = 'bold 13px monospace';
+            const curT = getTemp3A(sim3A.time);
+            ctx.fillText(`${curT.toFixed(2)}°C`, 118, 70);
+
+            // Thermometer probe
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(140, 84);
+            ctx.lineTo(140, 235);
+            ctx.stroke();
+
+            ctx.fillStyle = '#334155';
+            ctx.font = '12px Segoe UI';
+            ctx.fillText(`Oát kế: P = ${sim3A.P.toFixed(2)} W`, 62, 335);
+            ctx.fillText(`Khối lượng đá: m = ${sim3A.m} kg`, 52, 355);
+
+            // --- DRAW GRAPH t(tau) ON RIGHT ---
+            const gx = 310, gy = 335, gw = 415, gh = 275;
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+
+            // Grid lines
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            for (let i = 1; i <= 5; i++) {
+                const y = gy - (gh / 5) * i;
+                ctx.beginPath();
+                ctx.moveTo(gx, y);
+                ctx.lineTo(gx + gw, y);
+                ctx.stroke();
+                ctx.fillStyle = '#475569';
+                ctx.font = '11px Segoe UI';
+                ctx.fillText((i * 0.4).toFixed(1), gx - 28, y + 4);
+            }
+
+            const numXSteps = 5;
+            for (let i = 0; i <= numXSteps; i++) {
+                const x = gx + (gw / numXSteps) * i;
+                ctx.beginPath();
+                ctx.moveTo(x, gy);
+                ctx.lineTo(x, gy - gh);
+                ctx.stroke();
+                ctx.fillStyle = '#475569';
+                ctx.font = '11px Segoe UI';
+                const tVal = Math.round((sim3A.maxTime / numXSteps) * i);
+                ctx.fillText(tVal, x - 12, gy + 18);
+            }
+
+            // Axes
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(gx, gy - gh - 10);
+            ctx.lineTo(gx, gy);
+            ctx.lineTo(gx + gw + 10, gy);
+            ctx.stroke();
+
+            ctx.fillStyle = '#0f4c81';
+            ctx.font = 'bold 13px Segoe UI';
+            ctx.fillText('ĐỒ THỊ NHIỆT ĐỘ THEO THỜI GIAN t(τ) - HÌNH 5.1 SGK', gx + 20, 28);
+            ctx.fillText('t (°C)', gx - 25, gy - gh - 15);
+            ctx.fillText('τ (s)', gx + gw - 15, gy + 34);
+
+            // Plot curve
+            if (sim3A.points.length > 0) {
+                ctx.strokeStyle = '#0284c7';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                sim3A.points.forEach((pt, idx) => {
+                    const px = gx + (pt.t / sim3A.maxTime) * gw;
+                    const py = gy - Math.min(2.0, pt.temp) / 2.0 * gh;
+                    if (idx === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                });
+                ctx.stroke();
+            }
+
+            // Mark Point M (tauM, 0)
+            const mx = gx + (sim3A.tauM / sim3A.maxTime) * gw;
+            if (mx <= gx + gw) {
+                ctx.fillStyle = '#dc2626';
+                ctx.beginPath();
+                ctx.arc(mx, gy, 6, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.font = 'bold 12px Segoe UI';
+                ctx.fillText(`M (τM = ${Math.round(sim3A.tauM)}s)`, mx - 35, gy - 12);
+            }
+        }
+
+        // ==================== 3B. SIMULATION LAB 2: METAL FURNACE & MICRO-LATTICE ====================
+        const materialsDB = {
+            ice: { name: 'Nước đá', tc: 0, lambda: 334000, c: 2100, cLiq: 4180, minT0: -30, maxT0: -5, defT0: -15, color: '#38bdf8' },
+            pb:  { name: 'Chì (Pb)', tc: 327, lambda: 25000, c: 126, cLiq: 140, minT0: 20, maxT0: 200, defT0: 25, color: '#64748b' },
+            al:  { name: 'Nhôm (Al)', tc: 658, lambda: 390000, c: 880, cLiq: 1000, minT0: 20, maxT0: 300, defT0: 20, color: '#94a3b8' },
+            cu:  { name: 'Đồng (Cu)', tc: 1084, lambda: 180000, c: 380, cLiq: 420, minT0: 20, maxT0: 400, defT0: 30, color: '#d97706' },
+            fe:  { name: 'Sắt (Fe)', tc: 1535, lambda: 277000, c: 440, cLiq: 480, minT0: 20, maxT0: 500, defT0: 27, color: '#475569' }
+        };
+
+        let sim3B = {
+            running: false,
+            matKey: 'cu',
+            m: 2.0,
+            t0: 30,
+            P: 10000,
+            time: 0,
+            t1: 0,
+            t2: 0,
+            tMax: 0,
+            Q1: 0,
+            Q2: 0,
+            animId: null,
+            particles: []
+        };
+
+        function initSim3B() {
+            // Create 25 lattice particles (5x5)
+            for (let r = 0; r < 5; r++) {
+                for (let c = 0; c < 5; c++) {
+                    sim3B.particles.push({
+                        homeX: 60 + c * 34,
+                        homeY: 145 + r * 34,
+                        x: 60 + c * 34,
+                        y: 145 + r * 34,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: (Math.random() - 0.5) * 2
+                    });
+                }
+            }
+            changeMaterial3B();
+        }
+
+        function changeMaterial3B() {
+            const key = document.getElementById('sim3b-mat').value;
+            const mat = materialsDB[key];
+            const t0Input = document.getElementById('sim3b-t0');
+            t0Input.min = mat.minT0;
+            t0Input.max = mat.maxT0;
+            t0Input.value = mat.defT0;
+            resetSim3B();
+        }
+
+        function resetSim3B() {
+            sim3B.running = false;
+            cancelAnimationFrame(sim3B.animId);
+            document.getElementById('btn-sim3b-toggle').innerHTML = '▶️ Bật lò nung';
+
+            sim3B.matKey = document.getElementById('sim3b-mat').value;
+            const mat = materialsDB[sim3B.matKey];
+            sim3B.m = parseFloat(document.getElementById('sim3b-m').value);
+            sim3B.t0 = parseFloat(document.getElementById('sim3b-t0').value);
+            sim3B.P = parseFloat(document.getElementById('sim3b-p').value);
+
+            document.getElementById('sim3b-m-val').textContent = sim3B.m.toFixed(1);
+            document.getElementById('sim3b-t0-val').textContent = sim3B.t0;
+            document.getElementById('sim3b-p-val').textContent = sim3B.P;
+
+            sim3B.Q1 = sim3B.m * mat.c * (mat.tc - sim3B.t0);
+            sim3B.Q2 = sim3B.m * mat.lambda;
+            sim3B.t1 = sim3B.Q1 / sim3B.P;
+            sim3B.t2 = (sim3B.Q1 + sim3B.Q2) / sim3B.P;
+            sim3B.tMax = sim3B.t2 * 1.25;
+            sim3B.time = 0;
+
+            document.getElementById('out3b-q1').textContent = `${(sim3B.Q1 / 1000).toFixed(1)} kJ`;
+            document.getElementById('out3b-q2').textContent = `${(sim3B.Q2 / 1000).toFixed(1)} kJ`;
+            document.getElementById('out3b-totaltime').textContent = `${sim3B.t2.toFixed(1)} s`;
+            document.getElementById('out3b-temp').textContent = `${sim3B.t0.toFixed(1)} °C`;
+            document.getElementById('out3b-stage').textContent = 'a) Đun nóng rắn';
+
+            const fBox = document.getElementById('sim3b-formulas');
+            fBox.innerHTML = `
+                <strong>Tóm tắt Năng lượng (${mat.name}):</strong><br>
+                • \( Q_1 = m c (t_c - t_0) = ${(sim3B.Q1 / 1000).toFixed(1)}\text{ kJ} \)<br>
+                • \( Q_2 = \lambda m = ${(sim3B.Q2 / 1000).toFixed(1)}\text{ kJ} \)<br>
+                • \( Q_{\\text{tp}} = Q_1 + Q_2 = ${((sim3B.Q1 + sim3B.Q2) / 1000).toFixed(1)}\text{ kJ} \)
+            `;
+            renderAllMath(fBox);
+
+            // Reset particles to lattice home
+            sim3B.particles.forEach(p => {
+                p.x = p.homeX;
+                p.y = p.homeY;
+            });
+
+            drawCanvas3B();
+        }
+
+        function getState3B(t) {
+            const mat = materialsDB[sim3B.matKey];
+            if (t <= sim3B.t1) {
+                const frac = sim3B.t1 > 0 ? t / sim3B.t1 : 1;
+                return {
+                    stage: 'a) Đun nóng rắn',
+                    temp: sim3B.t0 + frac * (mat.tc - sim3B.t0),
+                    meltFrac: 0
+                };
+            } else if (t <= sim3B.t2) {
+                const frac = (t - sim3B.t1) / (sim3B.t2 - sim3B.t1);
+                return {
+                    stage: 'b) Đang nóng chảy',
+                    temp: mat.tc,
+                    meltFrac: frac
+                };
+            } else {
+                const extraQ = (t - sim3B.t2) * sim3B.P;
+                const dT = extraQ / (sim3B.m * mat.cLiq);
+                return {
+                    stage: 'c) Thể lỏng nóng lên',
+                    temp: mat.tc + dT,
+                    meltFrac: 1
+                };
+            }
+        }
+
+        function toggleSim3B() {
+            sim3B.running = !sim3B.running;
+            document.getElementById('btn-sim3b-toggle').innerHTML = sim3B.running ? '⏸️ Tạm dừng' : '▶️ Tiếp tục';
+            if (sim3B.running) {
+                lastFrame3B = performance.now();
+                loopSim3B(lastFrame3B);
+            }
+        }
+
+        let lastFrame3B = 0;
+        function loopSim3B(now) {
+            if (!sim3B.running) return;
+            const dt = (now - lastFrame3B) / 1000;
+            lastFrame3B = now;
+
+            // Complete full simulation in ~10 seconds real time
+            sim3B.time += dt * (sim3B.tMax / 10);
+            if (sim3B.time >= sim3B.tMax) {
+                sim3B.time = sim3B.tMax;
+                sim3B.running = false;
+                document.getElementById('btn-sim3b-toggle').innerHTML = '✅ Đã hóa lỏng';
+            }
+
+            const st = getState3B(sim3B.time);
+            document.getElementById('out3b-stage').textContent = st.stage;
+            document.getElementById('out3b-temp').textContent = `${st.temp.toFixed(1)} °C`;
+
+            drawCanvas3B();
+            if (sim3B.running) {
+                sim3B.animId = requestAnimationFrame(loopSim3B);
+            }
+        }
+
+        function drawCanvas3B() {
+            const canvas = document.getElementById('canvas3b');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const mat = materialsDB[sim3B.matKey];
+            const st = getState3B(sim3B.time);
+
+            // Split screen: Left (260px) = Microscopic Lattice & Crucible, Right = 3-Stage Graph (Hình 1.7 SGK)
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, 255, canvas.height);
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = 'bold 13px Segoe UI';
+            ctx.fillText('MÔ HÌNH MẠNG TINH THỂ VI MÔ', 22, 28);
+
+            // Crucible box
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(35, 115, 185, 195);
+
+            // Liquid pool at bottom of crucible proportional to meltFrac
+            if (st.meltFrac > 0) {
+                const liqH = st.meltFrac * 145;
+                ctx.fillStyle = sim3B.matKey === 'ice' ? 'rgba(56, 189, 248, 0.45)' : 'rgba(249, 115, 22, 0.55)';
+                ctx.fillRect(37, 308 - liqH, 181, liqH);
+            }
+
+            // Draw Lattice Bonds & Particles
+            const numMelted = Math.floor(st.meltFrac * sim3B.particles.length);
+            sim3B.particles.forEach((p, idx) => {
+                const isLiquid = idx >= (sim3B.particles.length - numMelted);
+                if (!isLiquid) {
+                    // Vibrate around lattice site
+                    const amp = 1.2 + (st.temp - sim3B.t0) / Math.max(50, mat.tc - sim3B.t0) * 3.5;
+                    p.x = p.homeX + (Math.random() - 0.5) * amp;
+                    p.y = p.homeY + (Math.random() - 0.5) * amp;
+                    // Draw crystal bonds to right/bottom neighbors
+                    ctx.strokeStyle = 'rgba(148, 163, 184, 0.45)';
+                    ctx.lineWidth = 1.5;
+                    if (idx % 5 < 4) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(sim3B.particles[idx + 1].homeX, sim3B.particles[idx + 1].homeY);
+                        ctx.stroke();
+                    }
+                } else {
+                    // Random liquid motion in lower crucible
+                    if (sim3B.running) {
+                        p.x += p.vx * 2.2;
+                        p.y += p.vy * 2.2;
+                        if (p.x < 48 || p.x > 208) p.vx *= -1;
+                        if (p.y < 185 || p.y > 296) p.vy *= -1;
+                        p.x = Math.max(48, Math.min(208, p.x));
+                        p.y = Math.max(185, Math.min(296, p.y));
+                    }
+                }
+
+                ctx.fillStyle = isLiquid ? '#f97316' : mat.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            });
+
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = '12px Segoe UI';
+            ctx.fillText(`Trạng thái: ${st.stage}`, 35, 345);
+            ctx.fillText(`Đã nóng chảy: ${(st.meltFrac * 100).toFixed(0)} %`, 35, 368);
+
+            // --- RIGHT SIDE: 3-STAGE HEATING GRAPH ---
+            const gx = 315, gy = 340, gw = 410, gh = 270;
+            const maxGraphTemp = getState3B(sim3B.tMax).temp;
+            const minGraphTemp = Math.min(0, sim3B.t0);
+            const tempSpan = Math.max(50, maxGraphTemp - minGraphTemp);
+
+            const toX = (t) => gx + (t / sim3B.tMax) * gw;
+            const toY = (temp) => gy - ((temp - minGraphTemp) / tempSpan) * gh;
+
+            // Shaded stage regions
+            const x1 = toX(sim3B.t1);
+            const x2 = toX(sim3B.t2);
+
+            ctx.fillStyle = 'rgba(2, 132, 199, 0.06)';
+            ctx.fillRect(gx, gy - gh, x1 - gx, gh);
+            ctx.fillStyle = 'rgba(217, 119, 6, 0.12)';
+            ctx.fillRect(x1, gy - gh, x2 - x1, gh);
+            ctx.fillStyle = 'rgba(220, 38, 38, 0.06)';
+            ctx.fillRect(x2, gy - gh, gx + gw - x2, gh);
+
+            // Dashed melting line tc
+            const yTc = toY(mat.tc);
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = '#d97706';
+            ctx.beginPath();
+            ctx.moveTo(gx, yTc);
+            ctx.lineTo(gx + gw, yTc);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = '#b45309';
+            ctx.font = 'bold 12px Segoe UI';
+            ctx.fillText(`tc = ${mat.tc} °C (Nóng chảy)`, gx + 8, yTc - 8);
+
+            // Axes
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(gx, gy - gh - 10);
+            ctx.lineTo(gx, gy);
+            ctx.lineTo(gx + gw + 10, gy);
+            ctx.stroke();
+
+            ctx.fillStyle = '#0f4c81';
+            ctx.font = 'bold 13px Segoe UI';
+            ctx.fillText(`ĐỒ THỊ 3 GIAI ĐOẠN NÓNG CHẢY CỦA ${mat.name.toUpperCase()}`, gx + 15, 28);
+            ctx.fillText('Nhiệt độ (°C)', gx - 35, gy - gh - 15);
+            ctx.fillText('Thời gian (s)', gx + gw - 35, gy + 32);
+
+            // Stage labels a, b, c
+            ctx.fillStyle = '#334155';
+            ctx.font = 'bold 12px Segoe UI';
+            ctx.fillText('GĐ (a)', (gx + x1) / 2 - 18, gy + 18);
+            ctx.fillText('GĐ (b): Q = λm', (x1 + x2) / 2 - 42, gy + 18);
+            ctx.fillText('GĐ (c)', (x2 + gx + gw) / 2 - 18, gy + 18);
+
+            // Full reference path (faint)
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(toX(0), toY(sim3B.t0));
+            ctx.lineTo(x1, yTc);
+            ctx.lineTo(x2, yTc);
+            ctx.lineTo(toX(sim3B.tMax), toY(maxGraphTemp));
+            ctx.stroke();
+
+            // Active progress curve
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 3.5;
+            ctx.beginPath();
+            ctx.moveTo(toX(0), toY(sim3B.t0));
+            if (sim3B.time <= sim3B.t1) {
+                ctx.lineTo(toX(sim3B.time), toY(st.temp));
+            } else if (sim3B.time <= sim3B.t2) {
+                ctx.lineTo(x1, yTc);
+                ctx.lineTo(toX(sim3B.time), yTc);
+            } else {
+                ctx.lineTo(x1, yTc);
+                ctx.lineTo(x2, yTc);
+                ctx.lineTo(toX(sim3B.time), toY(st.temp));
+            }
+            ctx.stroke();
+
+            // Current point dot
+            ctx.fillStyle = '#dc2626';
+            ctx.beginPath();
+            ctx.arc(toX(sim3B.time), toY(st.temp), 6, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // ==================== 4. CALCULATOR MODULE ====================
+        function switchCalcMode() {
+            const mode = document.getElementById('calc-mode').value;
+            document.getElementById('calc-panel-basic').style.display = mode === 'basic' ? 'grid' : 'none';
+            document.getElementById('calc-panel-furnace').style.display = mode === 'furnace' ? 'grid' : 'none';
+            document.getElementById('calc-result').style.display = 'none';
+        }
+
+        function clearCalcField() {
+            const mode = document.getElementById('calc-mode').value;
+            if (mode === 'basic') {
+                document.getElementById('c1-q').value = '';
+                document.getElementById('c1-m').value = '0.5';
+                document.getElementById('c1-lambda').value = '334000';
+            } else {
+                document.getElementById('c2-m').value = '2';
+                document.getElementById('c2-c').value = '380';
+                document.getElementById('c2-t0').value = '30';
+                document.getElementById('c2-tc').value = '1084';
+                document.getElementById('c2-lambda').value = '180000';
+            }
+            solveCalculator();
+        }
+
+        function solveCalculator() {
+            const mode = document.getElementById('calc-mode').value;
+            const resBox = document.getElementById('calc-result');
+            resBox.style.display = 'block';
+
+            if (mode === 'basic') {
+                const qVal = document.getElementById('c1-q').value.trim();
+                const mVal = document.getElementById('c1-m').value.trim();
+                const lVal = document.getElementById('c1-lambda').value.trim();
+
+                const Q = qVal !== '' ? parseFloat(qVal) : null;
+                const m = mVal !== '' ? parseFloat(mVal) : null;
+                const L = lVal !== '' ? parseFloat(lVal) : null;
+
+                if (Q === null && m !== null && L !== null) {
+                    const ansQ = m * L;
+                    resBox.innerHTML = `
+                        <h4>✅ Kết quả giải tìm Nhiệt lượng nóng chảy \\( Q \\):</h4>
+                        <p>• Bước 1: Áp dụng hệ thức tính nhiệt lượng trong quá trình nóng chảy ở nhiệt độ nóng chảy:</p>
+                        \\[ Q = \\lambda \\cdot m \\]
+                        <p>• Bước 2: Thay số vào công thức:</p>
+                        \\[ Q = ${L} \\cdot ${m} = ${ansQ.toLocaleString('vi-VN')}\\text{ J} = ${(ansQ / 1000).toFixed(2)}\\text{ kJ} \\]
+                    `;
+                } else if (m === null && Q !== null && L !== null && L > 0) {
+                    const ansM = Q / L;
+                    resBox.innerHTML = `
+                        <h4>✅ Kết quả giải tìm Khối lượng chất rắn nóng chảy \\( m \\):</h4>
+                        <p>• Bước 1: Từ công thức \\( Q = \\lambda m \\), suy ra khối lượng vật nóng chảy:</p>
+                        \\[ m = \\frac{Q}{\\lambda} \\]
+                        <p>• Bước 2: Thay số vào công thức:</p>
+                        \\[ m = \\frac{${Q}}{${L}} = ${ansM.toFixed(4)}\\text{ kg} = ${(ansM * 1000).toFixed(1)}\\text{ g} \\]
+                    `;
+                } else if (L === null && Q !== null && m !== null && m > 0) {
+                    const ansL = Q / m;
+                    resBox.innerHTML = `
+                        <h4>✅ Kết quả giải tìm Nhiệt nóng chảy riêng \\( \\lambda \\):</h4>
+                        <p>• Bước 1: Áp dụng công thức định nghĩa nhiệt nóng chảy riêng:</p>
+                        \\[ \\lambda = \\frac{Q}{m} \\]
+                        <p>• Bước 2: Thay số vào công thức:</p>
+                        \\[ \\lambda = \\frac{${Q}}{${m}} = ${ansL.toLocaleString('vi-VN')}\\text{ J/kg} = ${(ansL / 1e5).toFixed(2)} \\cdot 10^5\\text{ J/kg} \\]
+                    `;
+                } else {
+                    resBox.innerHTML = `<p style="color: var(--danger); font-weight: 600;">⚠️ Vui lòng nhập chính xác 2 đại lượng đã biết và ĐỂ TRỐNG đúng 1 ô cần tìm!</p>`;
+                }
+            } else {
+                const m = parseFloat(document.getElementById('c2-m').value);
+                const c = parseFloat(document.getElementById('c2-c').value);
+                const t0 = parseFloat(document.getElementById('c2-t0').value);
+                const tc = parseFloat(document.getElementById('c2-tc').value);
+                const lambda = parseFloat(document.getElementById('c2-lambda').value);
+                const P = parseFloat(document.getElementById('c2-p').value);
+                const H = parseFloat(document.getElementById('c2-h').value) / 100;
+
+                const Q1 = m * c * (tc - t0);
+                const Q2 = m * lambda;
+                const Qtp = Q1 + Q2;
+                const Pich = P * H;
+                const timeSec = Qtp / Pich;
+
+                resBox.innerHTML = `
+                    <h4>✅ Lời giải chi tiết bài toán Lò nung Kim loại:</h4>
+                    <p>• <strong>Bước 1:</strong> Nhiệt lượng cần để tăng nhiệt độ của \\( m = ${m}\\text{ kg} \\) kim loại từ \\( t_0 = ${t0}\\text{ }^\\circ\\text{C} \\) lên \\( t_c = ${tc}\\text{ }^\\circ\\text{C} \\):</p>
+                    \\[ Q_1 = m c (t_c - t_0) = ${m} \\cdot ${c} \\cdot (${tc} - ${t0}) = ${Q1.toLocaleString('vi-VN')}\\text{ J} \\]
+                    <p>• <strong>Bước 2:</strong> Nhiệt lượng cần để làm nóng chảy hoàn toàn \\( m = ${m}\\text{ kg} \\) kim loại tại \\( t_c = ${tc}\\text{ }^\\circ\\text{C} \\):</p>
+                    \\[ Q_2 = \\lambda m = ${lambda} \\cdot ${m} = ${Q2.toLocaleString('vi-VN')}\\text{ J} \\]
+                    <p>• <strong>Bước 3:</strong> Tổng nhiệt lượng có ích kim loại thu vào:</p>
+                    \\[ Q_{\\text{ích}} = Q_1 + Q_2 = ${Qtp.toLocaleString('vi-VN')}\\text{ J} \\approx ${(Qtp / 1e6).toFixed(3)}\\text{ MJ} \\]
+                    <p>• <strong>Bước 4:</strong> Công suất có ích của lò nung và thời gian nung cần thiết:</p>
+                    \\[ P_{\\text{ích}} = H \\cdot P = ${H} \\cdot ${P} = ${Pich}\\text{ W} \\implies t = \\frac{Q_{\\text{ích}}}{P_{\\text{ích}}} = \\frac{${Qtp}}{${Pich}} \\approx ${timeSec.toFixed(2)}\\text{ s} \\]
+                `;
+            }
+
+            renderAllMath(resBox);
+        }
+
+        // ==================== 5. INTERACTIVE QUIZ ====================
+        const quizData = [
+            {
+                q: "Câu 1: Phát biểu nào sau đây là ĐÚNG khi nói về định nghĩa và đơn vị của nhiệt nóng chảy riêng \\( \\lambda \\)?",
+                options: [
+                    "A. Nhiệt nóng chảy riêng của một chất là nhiệt lượng cần để làm cho \\( 1\\text{ kg} \\) chất đó nóng chảy hoàn toàn ở nhiệt độ nóng chảy mà không làm thay đổi nhiệt độ, đơn vị là \\( \\text{J/kg} \\).",
+                    "B. Nhiệt nóng chảy riêng của một chất là nhiệt độ mà tại đó chất rắn bắt đầu chuyển sang thể lỏng, đơn vị là \\( \\text{J/(kg}\\cdot\\text{K)} \\).",
+                    "C. Các vật rắn có khối lượng bằng nhau thì luôn có nhiệt nóng chảy riêng bằng nhau.",
+                    "D. Nhựa đường và thủy tinh có nhiệt nóng chảy riêng xác định ở áp suất tiêu chuẩn."
+                ],
+                correct: 0,
+                explain: "Theo SGK Vật lí 12 Bài 5, nhiệt nóng chảy riêng \\( \\lambda = \\frac{Q}{m} \\) (đơn vị \\( \\text{J/kg} \\)) là nhiệt lượng cần truyền cho \\( 1\\text{ kg} \\) chất rắn kết tinh để làm nó nóng chảy hoàn toàn ở nhiệt độ nóng chảy."
+            },
+            {
+                q: "Câu 2: Người ta cung cấp nhiệt lượng \\( Q \\) để làm nóng chảy hoàn toàn \\( m = 200\\text{ g} \\) nước đá đang ở nhiệt độ \\( t_0 = -20\\text{ }^\\circ\\text{C} \\). Biết nhiệt dung riêng của nước đá là \\( c = 2,1 \\cdot 10^3\\text{ J/(kg}\\cdot\\text{K)} \\) và nhiệt nóng chảy riêng của nước đá là \\( \\lambda = 3,34 \\cdot 10^5\\text{ J/kg} \\). Giá trị của \\( Q \\) là:",
+                options: [
+                    "A. \\( Q = 66,8\\text{ kJ} \\)",
+                    "B. \\( Q = 8,4\\text{ kJ} \\)",
+                    "C. \\( Q = 75,2\\text{ kJ} \\)",
+                    "D. \\( Q = 37,6\\text{ kJ} \\)"
+                ],
+                correct: 2,
+                explain: "Quá trình gồm 2 giai đoạn: \\( Q_1 = m c \\Delta t = 0,2 \\cdot 2100 \\cdot (0 - (-20)) = 8400\\text{ J} \\) và \\( Q_2 = \\lambda m = 3,34 \\cdot 10^5 \\cdot 0,2 = 66\\,800\\text{ J} \\). Tổng nhiệt lượng: \\( Q = Q_1 + Q_2 = 75\\,200\\text{ J} = 75,2\\text{ kJ} \\)."
+            },
+            {
+                q: "Câu 3: Dùng một lò nung điện có công suất \\( P = 2000\\text{ W} \\) với hiệu suất \\( H = 75\\% \\) để nấu chảy hoàn toàn \\( m = 2\\text{ kg} \\) đồng đang ở nhiệt độ nóng chảy \\( 1084\\text{ }^\\circ\\text{C} \\). Biết nhiệt nóng chảy riêng của đồng là \\( \\lambda = 1,80 \\cdot 10^5\\text{ J/kg} \\). Thời gian cần thiết để làm nóng chảy hoàn toàn lượng đồng trên là:",
+                options: [
+                    "A. \\( t = 180\\text{ s} \\)",
+                    "B. \\( t = 240\\text{ s} \\)",
+                    "C. \\( t = 135\\text{ s} \\)",
+                    "D. \\( t = 300\\text{ s} \\)"
+                ],
+                correct: 1,
+                explain: "Nhiệt lượng cần để làm nóng chảy hoàn toàn \\( 2\\text{ kg} \\) đồng ở nhiệt độ nóng chảy là \\( Q = \\lambda m = 1,80 \\cdot 10^5 \\cdot 2 = 3,6 \\cdot 10^5\\text{ J} \\). Công suất có ích của lò: \\( P_{\\text{ích}} = H P = 0,75 \\cdot 2000 = 1500\\text{ W} \\). Thời gian cần thiết: \\( t = \\frac{Q}{P_{\\text{ích}}} = \\frac{3,6 \\cdot 10^5}{1500} = 240\\text{ s} \\)."
+            },
+            {
+                q: "Câu 4: Trong thí nghiệm thực hành đo nhiệt nóng chảy riêng của nước đá (Bảng 5.2 SGK), biết khối lượng nước đá là \\( m = 0,025\\text{ kg} \\), công suất trung bình của dòng điện qua điện trở nhiệt là \\( \\bar{P} = 14,24\\text{ W} \\) và thời điểm nước đá vừa tan hết xác định từ điểm gãy đồ thị là \\( \\tau_M = 600\\text{ s} \\). Giá trị nhiệt nóng chảy riêng \\( \\lambda_{\\text{H}_2\\text{O}} \\) đo được trong thí nghiệm là:",
+                options: [
+                    "A. \\( \\lambda_{\\text{H}_2\\text{O}} = 3,42 \\cdot 10^5\\text{ J/kg} \\)",
+                    "B. \\( \\lambda_{\\text{H}_2\\text{O}} = 2,85 \\cdot 10^5\\text{ J/kg} \\)",
+                    "C. \\( \\lambda_{\\text{H}_2\\text{O}} = 8,54 \\cdot 10^3\\text{ J/kg} \\)",
+                    "D. \\( \\lambda_{\\text{H}_2\\text{O}} = 3,34 \\cdot 10^4\\text{ J/kg} \\)"
+                ],
+                correct: 0,
+                explain: "Áp dụng công thức thực hành SGK Bài 5: \\[ \\lambda_{\\text{H}_2\\text{O}} = \\frac{\\bar{P} \\tau_M}{m} = \\frac{14,24 \\cdot 600}{0,025} = 341\\,760\\text{ J/kg} \\approx 3,42 \\cdot 10^5\\text{ J/kg} \\]"
+            }
+        ];
+
+        function initQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = quizData.map((item, idx) => `
+                <div class="card" style="margin-bottom: 1rem; background: #f8fafc;">
+                    <p style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.75rem;">${item.q}</p>
+                    ${item.options.map((opt, oIdx) => `
+                        <label class="quiz-option" id="q${idx}-opt${oIdx}">
+                            <input type="radio" name="q${idx}" value="${oIdx}">
+                            <span>${opt}</span>
+                        </label>
+                    `).join('')}
+                    <div id="q${idx}-explain" class="alert-box" style="display: none; margin-top: 0.75rem;"></div>
+                </div>
+            `).join('');
+            renderAllMath(container);
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            quizData.forEach((item, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                const explainBox = document.getElementById(`q${idx}-explain`);
+                explainBox.style.display = 'block';
+
+                item.options.forEach((_, oIdx) => {
+                    const optEl = document.getElementById(`q${idx}-opt${oIdx}`);
+                    optEl.style.borderColor = '#cbd5e1';
+                    optEl.style.background = '#ffffff';
+                });
+
+                const correctEl = document.getElementById(`q${idx}-opt${item.correct}`);
+                correctEl.style.borderColor = '#16a34a';
+                correctEl.style.background = '#dcfce7';
+
+                if (selected && parseInt(selected.value) === item.correct) {
+                    score++;
+                    explainBox.className = 'alert-box alert-success';
+                    explainBox.innerHTML = `<strong>✔️ Chính xác!</strong> ${item.explain}`;
+                } else {
+                    if (selected) {
+                        const wrongEl = document.getElementById(`q${idx}-opt${selected.value}`);
+                        wrongEl.style.borderColor = '#dc2626';
+                        wrongEl.style.background = '#fee2e2';
+                    }
+                    explainBox.className = 'alert-box alert-danger';
+                    explainBox.innerHTML = `<strong>❌ Chưa đúng!</strong> ${item.explain}`;
+                }
+                renderAllMath(explainBox);
+            });
+
+            const banner = document.getElementById('quiz-score-banner');
+            banner.style.display = 'block';
+            banner.className = score === quizData.length ? 'alert-box alert-success' : 'alert-box alert-warning';
+            banner.innerHTML = `<h4>🏆 Kết quả Tự đánh giá: Bạn đạt ${score} / ${quizData.length} câu đúng (${(score / quizData.length * 10).toFixed(1)} điểm)</h4>`;
+            renderAllMath(banner);
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-score-banner').style.display = 'none';
+            initQuiz();
+        }
+
+        // ==================== 6. CLASSROOM TOOLS: VISUAL TIMER & LUCKY WHEEL ====================
+        let timerState = {
+            total: 180,
+            remaining: 180,
+            running: false,
+            interval: null
+        };
+
+        function setTimerPreset(sec) {
+            clearInterval(timerState.interval);
+            timerState.running = false;
+            timerState.total = sec;
+            timerState.remaining = sec;
+            document.getElementById('btn-timer-start').innerHTML = '▶️ Bắt đầu';
+            document.getElementById('timer-card').classList.remove('blink-alarm');
+            updateTimerUI();
+        }
+
+        function toggleTimer() {
+            if (timerState.running) {
+                clearInterval(timerState.interval);
+                timerState.running = false;
+                document.getElementById('btn-timer-start').innerHTML = '▶️ Tiếp tục';
+            } else {
+                if (timerState.remaining <= 0) timerState.remaining = timerState.total;
+                document.getElementById('timer-card').classList.remove('blink-alarm');
+                timerState.running = true;
+                document.getElementById('btn-timer-start').innerHTML = '⏸️ Tạm dừng';
+                timerState.interval = setInterval(() => {
+                    timerState.remaining--;
+                    updateTimerUI();
+                    if (timerState.remaining <= 0) {
+                        clearInterval(timerState.interval);
+                        timerState.running = false;
+                        document.getElementById('btn-timer-start').innerHTML = '▶️ Bắt đầu';
+                        document.getElementById('timer-card').classList.add('blink-alarm');
+                        playBeepAlarm();
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            setTimerPreset(timerState.total);
+        }
+
+        function updateTimerUI() {
+            const m = Math.floor(timerState.remaining / 60).toString().padStart(2, '0');
+            const s = (timerState.remaining % 60).toString().padStart(2, '0');
+            document.getElementById('timer-text').textContent = `${m}:${s}`;
+            drawTimerCircle(timerState.remaining / timerState.total);
+        }
+
+        function drawTimerCircle(ratio) {
+            const canvas = document.getElementById('timer-canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const cx = 120, cy = 120, r = 95;
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 14;
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.strokeStyle = ratio > 0.25 ? '#0f4c81' : '#dc2626';
+            ctx.lineWidth = 14;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2 * ratio));
+            ctx.stroke();
+        }
+
+        function playBeepAlarm() {
+            try {
+                const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctxAudio.createOscillator();
+                const gain = ctxAudio.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctxAudio.currentTime);
+                gain.gain.setValueAtTime(0.25, ctxAudio.currentTime);
+                osc.connect(gain);
+                gain.connect(ctxAudio.destination);
+                osc.start();
+                osc.stop(ctxAudio.currentTime + 0.6);
+            } catch (e) {}
+        }
+
+        // --- LUCKY WHEEL ---
+        const groupPresets = {
+            1: ["Nguyễn Minh An - Tổ 1", "Trần Hoàng Bách - Tổ 1", "Lê Ngọc Châu - Tổ 1", "Phạm Quốc Đạt - Tổ 1", "Hoàng Thị Hà - Tổ 1", "Vũ Đức Huy - Tổ 1"],
+            2: ["Đặng Gia Hưng - Tổ 2", "Bùi Khánh Linh - Tổ 2", "Ngô Nhật Minh - Tổ 2", "Đỗ Thảo Nguyên - Tổ 2", "Phan Anh Quân - Tổ 2", "Lý Thanh Tâm - Tổ 2"],
+            3: ["Trương Quốc Thái - Tổ 3", "Mai Bảo Trâm - Tổ 3", "Đinh Tuấn Tú - Tổ 3", "Võ Khánh Vy - Tổ 3", "Hồ Minh Khang - Tổ 3", "Dương Ngọc Ánh - Tổ 3"],
+            4: ["Lương Gia Bảo - Tổ 4", "Cao Mỹ Duyên - Tổ 4", "Tạ Minh Đức - Tổ 4", "Chu Thanh Hằng - Tổ 4", "Kiều Trọng Nghĩa - Tổ 4", "Từ Phương Thảo - Tổ 4"]
+        };
+
+        let wheelAngle = 0;
+        let wheelSpinning = false;
+
+        function loadGroupList(groupNum) {
+            document.getElementById('wheel-names').value = groupPresets[groupNum].join('\n');
+            drawWheel();
+        }
+
+        function getWheelList() {
+            return document.getElementById('wheel-names').value
+                .split('\n')
+                .map(s => s.trim())
+                .filter(s => s.length > 0);
+        }
+
+        function drawWheel() {
+            const canvas = document.getElementById('wheel-canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const names = getWheelList();
+            if (names.length === 0) return;
+
+            const cx = 150, cy = 150, r = 132;
+            const arc = (Math.PI * 2) / names.length;
+            const palette = ['#0f4c81', '#0284c7', '#0d9488', '#d97706', '#dc2626', '#7c3aed', '#2563eb', '#059669'];
+
+            names.forEach((name, i) => {
+                const start = wheelAngle + i * arc;
+                const end = start + arc;
+                ctx.fillStyle = palette[i % palette.length];
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, start, end);
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(start + arc / 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 12px Segoe UI';
+                ctx.textAlign = 'right';
+                ctx.fillText(name.slice(0, 18), r - 12, 4);
+                ctx.restore();
+            });
+
+            // Pointer arrow on right (angle = 0)
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.moveTo(295, 150 - 12);
+            ctx.lineTo(295, 150 + 12);
+            ctx.lineTo(272, 150);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function spinWheel() {
+            if (wheelSpinning) return;
+            const names = getWheelList();
+            if (names.length === 0) return;
+
+            wheelSpinning = true;
+            const spinDuration = 3500;
+            const startAngle = wheelAngle;
+            const totalRotation = (Math.PI * 2 * (5 + Math.random() * 4));
+            const startTime = performance.now();
+
+            function animateWheel(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(1, elapsed / spinDuration);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                wheelAngle = startAngle + totalRotation * easeOut;
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateWheel);
+                } else {
+                    wheelSpinning = false;
+                    const normAngle = ((2 * Math.PI - (wheelAngle % (2 * Math.PI))) + 2 * Math.PI) % (2 * Math.PI);
+                    const arc = (2 * Math.PI) / names.length;
+                    const idx = Math.floor(normAngle / arc) % names.length;
+                    document.getElementById('winner-name').textContent = names[idx];
+                    document.getElementById('winner-modal').style.display = 'flex';
+                }
+            }
+            requestAnimationFrame(animateWheel);
+        }
+
+        function closeWinnerModal() {
+            document.getElementById('winner-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
