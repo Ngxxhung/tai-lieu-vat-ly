@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vật lí 12 - Chủ đề 2: Nội Năng & Định Luật I Nhiệt Động Lực Học</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        physics: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#b9ddfe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#082f49',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- KaTeX CSS & JS with auto-render -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .tab-btn.active {
+            background-color: #0284c7;
+            color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.3);
+        }
+        .canvas-container {
+            position: relative;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        .badge-delta {
+            font-family: monospace;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <header class="bg-gradient-to-r from-physics-900 via-physics-800 to-slate-900 text-white shadow-lg border-b border-physics-700">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                <div>
+                    <span class="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-sky-500/20 text-sky-300 border border-sky-400/30 uppercase tracking-wider mb-1">
+                        Chương trình Vật lí 12 - GDPT 2018
+                    </span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2">
+                        <i class="fa-solid fa-fire-burner text-amber-400"></i>
+                        CHỦ ĐỀ 2: NỘI NĂNG & ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC
+                    </h1>
+                    <p class="text-sm font-medium text-sky-200 mt-0.5">
+                        © 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 self-start md:self-auto bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 text-xs text-slate-300">
+                    <i class="fa-solid fa-atom text-sky-400 text-base"></i>
+                    <span>Mô hình phân tử &bull; Định luật I &bull; Ứng dụng số</span>
+                </div>
+            </div>
+
+            <nav class="mt-4 flex space-x-1 sm:space-x-2 overflow-x-auto pb-2 scrollbar-thin" id="tabNav">
+                <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn active px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-150 flex items-center gap-1.5 bg-slate-800 text-slate-200 hover:bg-slate-700">
+                    <i class="fa-solid fa-rocket text-amber-400"></i> 1. Khởi động
+                </button>
+                <button onclick="switchTab(2)" id="tab-btn-2" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-150 flex items-center gap-1.5 bg-slate-800 text-slate-200 hover:bg-slate-700">
+                    <i class="fa-solid fa-book-open text-sky-400"></i> 2. Cốt lõi lý thuyết
+                </button>
+                <button onclick="switchTab(3)" id="tab-btn-3" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-150 flex items-center gap-1.5 bg-slate-800 text-slate-200 hover:bg-slate-700">
+                    <i class="fa-solid fa-flask-vial text-emerald-400"></i> 3. Mô phỏng thí nghiệm
+                </button>
+                <button onclick="switchTab(4)" id="tab-btn-4" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-150 flex items-center gap-1.5 bg-slate-800 text-slate-200 hover:bg-slate-700">
+                    <i class="fa-solid fa-calculator text-purple-400"></i> 4. Máy tính tham số
+                </button>
+                <button onclick="switchTab(5)" id="tab-btn-5" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-150 flex items-center gap-1.5 bg-slate-800 text-slate-200 hover:bg-slate-700">
+                    <i class="fa-solid fa-graduation-cap text-indigo-400"></i> 5. Luyện tập phân hóa
+                </button>
+                <button onclick="switchTab(6)" id="tab-btn-6" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-150 flex items-center gap-1.5 bg-slate-800 text-slate-200 hover:bg-slate-700">
+                    <i class="fa-solid fa-bullseye text-rose-400"></i> 6. Tự đánh giá
+                </button>
+                <button onclick="switchTab(7)" id="tab-btn-7" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-150 flex items-center gap-1.5 bg-slate-800 text-slate-200 hover:bg-slate-700">
+                    <i class="fa-solid fa-toolbox text-yellow-400"></i> 7. Tiện ích lớp học
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+
+        <!-- ================= TAB 1: KHỞI ĐỘNG & THỰC TIỄN ================= -->
+        <section id="tab-content-1" class="tab-panel space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="border-b border-slate-100 pb-4 mb-4">
+                    <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full uppercase">Thực tiễn & Mâu thuẫn nhận thức</span>
+                    <h2 class="text-xl font-bold text-slate-900 mt-2">Nhiệt lượng cung cấp khi nước sôi đã biến đi đâu?</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="space-y-4 text-slate-700 leading-relaxed text-sm sm:text-base">
+                        <div class="p-4 bg-sky-50 rounded-lg border-l-4 border-sky-500">
+                            <p class="font-semibold text-sky-900 mb-1"><i class="fa-solid fa-circle-question mr-1"></i> Tình huống nghịch lý:</p>
+                            Khi đun một ấm nước, nhiệt độ nước tăng dần từ nhiệt độ phòng lên \(100\text{ }^\circ\text{C}\). Nhưng khi nước đã sôi sùng sục, dù ngọn lửa bếp gas hay mâm nhiệt ấm điện vẫn liên tục cung cấp nhiệt năng khổng lồ, <strong>nhiệt kế vẫn đứng yên ở mức \(100\text{ }^\circ\text{C}\)</strong> cho đến khi cạn nước.
+                        </div>
+                        <p>
+                            Nhiệt lượng cung cấp cho khối nước lúc này đã biến đi đâu nếu không làm nước tăng thêm một độ nào? Nó có biến mất không?
+                        </p>
+                        <div class="p-4 bg-amber-50 rounded-lg border-l-4 border-amber-500">
+                            <p class="font-semibold text-amber-900 mb-1"><i class="fa-solid fa-lightbulb mr-1"></i> Bí ẩn chiếc bật lửa và ống tiêm:</p>
+                            Khi nén thật nhanh pit-tông của một ống nghiệm chứa mảnh giấy vụn (thí nghiệm cối đánh lửa khí nén), không hề có nguồn lửa từ bên ngoài, tại sao mẩu giấy lại bốc cháy dữ dội? Ngược lại, khi mở van xả nhanh một bình gas mini, tại sao van bình lại lạnh cóng, thậm chí bám tuyết trắng?
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 text-white p-5 rounded-xl border border-slate-800 space-y-3">
+                        <h3 class="text-base font-bold text-amber-300 flex items-center gap-2">
+                            <i class="fa-solid fa-compass-drafting"></i> Câu hỏi định hướng bài học
+                        </h3>
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-sky-400 font-bold">1.</span>
+                                <span>Nội năng là gì? Tại sao nói một vật luôn luôn có nội năng nhưng không thể nói vật "chứa một nhiệt lượng"?</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-sky-400 font-bold">2.</span>
+                                <span>Có những cách nào làm thay đổi nội năng của một hệ nhiệt động?</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-sky-400 font-bold">3.</span>
+                                <span>Quy ước dấu của công \(A\) và nhiệt lượng \(Q\) trong định luật I nhiệt động lực học có ý nghĩa vật lí bảo toàn năng lượng ra sao?</span>
+                            </li>
+                        </ul>
+                        <div class="pt-3">
+                            <button onclick="switchTab(2)" class="w-full py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-medium rounded-lg text-sm transition flex items-center justify-center gap-2 shadow">
+                                Khám phá Cốt lõi Lý thuyết ngay <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: CỐT LÕI LÝ THUYẾT & BẢN CHẤT VẬT LÍ ================= -->
+        <section id="tab-content-2" class="tab-panel hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Cột 1 & 2: Lý thuyết cốt lõi -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Khái niệm nội năng -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-lg font-bold text-physics-800 flex items-center gap-2 border-b pb-3 mb-4">
+                            <i class="fa-solid fa-cube text-sky-600"></i> I. Khái niệm Nội Năng (\(U\))
+                        </h3>
+                        <div class="space-y-3 text-slate-700 text-sm leading-relaxed">
+                            <p>
+                                <strong>Định nghĩa:</strong> Tổng động năng \(W_{\text{đ}}\) chuyển động nhiệt hỗn loạn và thế năng tương tác \(W_{\text{t}}\) của các phân tử cấu tạo nên vật được gọi là <strong>nội năng</strong> của vật.
+                            </p>
+                            <div class="bg-sky-50 p-3.5 rounded-lg border border-sky-200 text-center text-physics-900 font-semibold text-base">
+                                \[ U = \sum W_{\text{đ}} + \sum W_{\text{t}} \quad (\text{đơn vị: Joule - J}) \]
+                            </div>
+                            <ul class="list-disc list-inside space-y-1.5 text-slate-600">
+                                <li><strong>Động năng phân tử:</strong> Phụ thuộc vào tốc độ chuyển động nhiệt của các phân tử, do đó phụ thuộc vào <strong>nhiệt độ tuyệt đối (\(T\))</strong> của vật.</li>
+                                <li><strong>Thế năng phân tử:</strong> Phụ thuộc vào khoảng cách tương tác giữa các phân tử, do đó phụ thuộc vào <strong>thể tích (\(V\))</strong> của vật.</li>
+                                <li>Vì vậy, đối với khí thực và vật chất nói chung: \(U = f(T, V)\). Đối với <em>khí lí tưởng</em>, bỏ qua tương tác phân tử khi chưa va chạm nên thế năng triệt tiêu, nội năng chỉ phụ thuộc vào nhiệt độ: \(U = f(T)\).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Hai cách biến đổi nội năng -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-lg font-bold text-physics-800 flex items-center gap-2 border-b pb-3 mb-4">
+                            <i class="fa-solid fa-arrows-split-up-and-left text-amber-500"></i> II. Hai cách làm biến đổi nội năng
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-2">
+                                <h4 class="font-bold text-slate-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-hammer text-blue-600"></i> 1. Thực hiện công (\(A\))
+                                </h4>
+                                <p class="text-slate-600 text-xs leading-relaxed">
+                                    Có sự tham gia của ngoại lực, đi kèm sự dịch chuyển vĩ mô của hệ hoặc vật thể. Bản chất là <strong>quá trình chuyển hóa</strong> giữa cơ năng (hoặc dạng năng lượng khác) và nội năng.
+                                </p>
+                                <p class="text-xs italic text-slate-500">Ví dụ: Cọ xát miếng đồng lên mặt bàn; nén khí trong xi lanh.</p>
+                            </div>
+
+                            <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-2">
+                                <h4 class="font-bold text-slate-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-fire text-rose-500"></i> 2. Truyền nhiệt (\(Q\))
+                                </h4>
+                                <p class="text-slate-600 text-xs leading-relaxed">
+                                    Không có sự sinh công cơ học vĩ mô. Bản chất là sự truyền trực tiếp động năng hỗn loạn giữa các phân tử khi tiếp xúc vi mô qua chênh lệch nhiệt độ.
+                                </p>
+                                <p class="text-xs text-sky-800 font-medium">
+                                    \[ Q = m c \Delta T = m c (T_2 - T_1) \]
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Định luật I nhiệt động lực học -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-lg font-bold text-physics-800 flex items-center gap-2 border-b pb-3 mb-4">
+                            <i class="fa-solid fa-scale-balanced text-emerald-600"></i> III. Định luật I Nhiệt Động Lực Học
+                        </h3>
+                        <div class="space-y-4 text-sm text-slate-700">
+                            <p>
+                                <strong>Nội dung:</strong> Độ biến thiên nội năng \(\Delta U\) của một hệ nhiệt động bằng tổng đại số công \(A\) và nhiệt lượng \(Q\) mà hệ nhận được.
+                            </p>
+                            <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-300 text-center">
+                                <span class="text-emerald-950 font-bold text-lg">
+                                    \[ \Delta U = A + Q \]
+                                </span>
+                                <span class="text-xs text-emerald-800 block mt-1">Trong đó \(\Delta U, A, Q\) đều là các đại lượng đại số mang dấu.</span>
+                            </div>
+
+                            <!-- Bảng quy ước dấu chuẩn -->
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs sm:text-sm border-collapse border border-slate-200">
+                                    <thead>
+                                        <tr class="bg-slate-100 text-slate-800">
+                                            <th class="border border-slate-300 p-2 text-center">Đại lượng</th>
+                                            <th class="border border-slate-300 p-2 text-center text-emerald-700">Giá trị dương (\(> 0\))</th>
+                                            <th class="border border-slate-300 p-2 text-center text-rose-700">Giá trị âm (\(< 0\))</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border border-slate-300 p-2 font-semibold bg-slate-50 text-center">Nhiệt lượng \(Q\)</td>
+                                            <td class="border border-slate-300 p-2 text-emerald-700 font-medium">Hệ <strong>nhận</strong> nhiệt lượng từ môi trường</td>
+                                            <td class="border border-slate-300 p-2 text-rose-700 font-medium">Hệ <strong>truyền (tỏa)</strong> nhiệt lượng ra môi trường</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border border-slate-300 p-2 font-semibold bg-slate-50 text-center">Công \(A\)</td>
+                                            <td class="border border-slate-300 p-2 text-emerald-700 font-medium">Hệ <strong>nhận</strong> công từ ngoại lực (khí bị nén)</td>
+                                            <td class="border border-slate-300 p-2 text-rose-700 font-medium">Hệ <strong>thực hiện (sinh)</strong> công lên vật khác (khí dãn)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border border-slate-300 p-2 font-semibold bg-slate-50 text-center">\(\Delta U\)</td>
+                                            <td class="border border-slate-300 p-2 text-emerald-700 font-medium">Nội năng của hệ <strong>tăng</strong></td>
+                                            <td class="border border-slate-300 p-2 text-rose-700 font-medium">Nội năng của hệ <strong>giảm</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cột 3: Bảng biến số & Bẫy lý thuyết -->
+                <div class="space-y-6">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                        <h4 class="font-bold text-slate-900 border-b pb-2 mb-3 text-sm flex items-center gap-1.5">
+                            <i class="fa-solid fa-table-list text-sky-600"></i> Bảng đại lượng & Đơn vị SI
+                        </h4>
+                        <div class="space-y-2.5 text-xs">
+                            <div class="p-2 bg-slate-50 rounded border">
+                                <span class="font-bold text-sky-700">\(U\) / \(\Delta U\)</span>: Nội năng / Độ biến thiên nội năng <br>
+                                <span class="text-slate-500">Đơn vị: Joule (\(\text{J}\)) hoặc \(\text{kJ}\)</span>
+                            </div>
+                            <div class="p-2 bg-slate-50 rounded border">
+                                <span class="font-bold text-sky-700">\(A\)</span>: Công cơ học trao đổi <br>
+                                <span class="text-slate-500">Đơn vị: Joule (\(\text{J}\)), \(A = F s \cos\alpha\)</span>
+                            </div>
+                            <div class="p-2 bg-slate-50 rounded border">
+                                <span class="font-bold text-sky-700">\(Q\)</span>: Nhiệt lượng trao đổi <br>
+                                <span class="text-slate-500">Đơn vị: Joule (\(\text{J}\)), \(1\text{ cal} \approx 4,186\text{ J}\)</span>
+                            </div>
+                            <div class="p-2 bg-slate-50 rounded border">
+                                <span class="font-bold text-sky-700">\(c\)</span>: Nhiệt dung riêng của chất <br>
+                                <span class="text-slate-500">Đơn vị: \(\text{J}/(\text{kg}\cdot\text{K})\)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bẫy lý thuyết -->
+                    <div class="bg-amber-50/70 p-5 rounded-xl border border-amber-300 space-y-3">
+                        <h4 class="font-bold text-amber-900 text-sm flex items-center gap-1.5">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> BẪY LÝ THUYẾT CẦN TRÁNH
+                        </h4>
+                        <div class="space-y-2 text-xs text-amber-950 leading-relaxed">
+                            <div class="p-2 bg-white rounded border border-amber-200">
+                                <strong>Sai lầm 1:</strong> Đồng nhất <em>"Nội năng"</em> với <em>"Nhiệt lượng"</em>.<br>
+                                <span class="text-slate-600">&rarr; <strong>Sự thật:</strong> Vật luôn có nội năng ở mọi nhiệt độ \(T > 0\text{ K}\). Nhưng vật chỉ có nhiệt lượng khi và chỉ khi đang xảy ra quá trình truyền nhiệt. Không tồn tại "nhiệt lượng chứa trong vật".</span>
+                            </div>
+                            <div class="p-2 bg-white rounded border border-amber-200">
+                                <strong>Sai lầm 2:</strong> Quên đổi dấu khi đề bài nói "hệ sinh công".<br>
+                                <span class="text-slate-600">&rarr; <strong>Sự thật:</strong> Nếu đề ghi "khí thực hiện công \(200\text{ J}\)" thì trong biểu thức đại số phải thế \(A = -200\text{ J}\).</span>
+                            </div>
+                            <div class="p-2 bg-white rounded border border-amber-200">
+                                <strong>Sai lầm 3:</strong> Nghĩ rằng chuyển thể luôn làm đổi nhiệt độ.<br>
+                                <span class="text-slate-600">&rarr; <strong>Sự thật:</strong> Trong suốt quá trình nóng chảy hoặc sôi, nhiệt độ không đổi, nhưng nội năng vẫn tăng do thế năng tương tác phân tử thay đổi.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: MÔ PHỎNG THÍ NGHIỆM TƯƠNG TÁC (SIMULATION LAB) ================= -->
+        <section id="tab-content-3" class="tab-panel hidden space-y-6">
+            <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b pb-3 mb-4 gap-2">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Phòng thí nghiệm ảo 2D Real-time</span>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-900 mt-1">Mô phỏng Xilanh khí: Thực hiện công & Truyền nhiệt</h2>
+                    </div>
+                    <!-- Sub-tabs for multiple simulations -->
+                    <div class="flex space-x-2">
+                        <button onclick="setSimMode('piston')" id="btnSimPiston" class="px-3 py-1 text-xs font-semibold rounded bg-sky-600 text-white">
+                            TN 1: Piston khí nén & Đèn cồn
+                        </button>
+                        <button onclick="setSimMode('friction')" id="btnSimFriction" class="px-3 py-1 text-xs font-semibold rounded bg-slate-200 text-slate-700 hover:bg-slate-300">
+                            TN 2: Ma sát mài kim loại
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <!-- Khu vực Canvas -->
+                    <div class="lg:col-span-8 flex flex-col items-center">
+                        <div class="w-full canvas-container shadow-inner p-2 border border-slate-700">
+                            <canvas id="simCanvas" width="700" height="420" class="w-full h-auto block rounded-lg"></canvas>
+                        </div>
+                        <div class="w-full flex items-center justify-between text-xs text-slate-500 mt-2 px-1">
+                            <span><i class="fa-solid fa-circle-info text-sky-500 mr-1"></i> Các hạt phân tử chuyển động hỗn loạn Brown tuân theo nhiệt độ \(T\)</span>
+                            <span id="canvasFpsBadge" class="font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">60 FPS</span>
+                        </div>
+                    </div>
+
+                    <!-- Bảng điều khiển tham số (Inputs & Outputs) -->
+                    <div class="lg:col-span-4 bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4 text-xs sm:text-sm">
+                        <h3 class="font-bold text-slate-800 uppercase tracking-wide text-xs flex items-center gap-1.5 border-b pb-2">
+                            <i class="fa-solid fa-sliders text-sky-600"></i> Tham số điều khiển tương tác
+                        </h3>
+
+                        <!-- Điều khiển nén piston -->
+                        <div id="ctrlPiston" class="space-y-3">
+                            <div>
+                                <div class="flex justify-between font-medium text-slate-700 mb-1">
+                                    <span>Vị trí Pit-tông (Thể tích \(V\)):</span>
+                                    <span id="txtPistonPos" class="font-mono text-sky-700 font-bold">100%</span>
+                                </div>
+                                <input type="range" id="rngPiston" min="30" max="100" value="100" class="w-full accent-sky-600 cursor-pointer" oninput="updateSimPiston(this.value)">
+                                <div class="flex justify-between text-[10px] text-slate-500">
+                                    <span>Nén chặt (\(30\%\))</span>
+                                    <span>Ban đầu (\(100\%\))</span>
+                                </div>
+                            </div>
+
+                            <!-- Công suất ngọn lửa đèn cồn -->
+                            <div>
+                                <div class="flex justify-between font-medium text-slate-700 mb-1">
+                                    <span>Ngọn lửa đèn cồn (\(Q\) cấp vào):</span>
+                                    <span id="txtHeatPower" class="font-mono text-rose-600 font-bold">0 W (Tắt)</span>
+                                </div>
+                                <input type="range" id="rngHeat" min="0" max="100" value="0" step="10" class="w-full accent-rose-500 cursor-pointer" oninput="updateSimHeat(this.value)">
+                            </div>
+                        </div>
+
+                        <!-- Điều khiển TN2 ma sát -->
+                        <div id="ctrlFriction" class="space-y-3 hidden">
+                            <div>
+                                <div class="flex justify-between font-medium text-slate-700 mb-1">
+                                    <span>Tốc độ cọ xát cơ học:</span>
+                                    <span id="txtFricSpeed" class="font-mono text-purple-700 font-bold">0 m/s</span>
+                                </div>
+                                <input type="range" id="rngFricSpeed" min="0" max="100" value="0" class="w-full accent-purple-600 cursor-pointer" oninput="updateFricSpeed(this.value)">
+                            </div>
+                            <p class="text-xs text-slate-500 italic">Di chuyển thanh kim loại chà sát lên tấm đá mài để chuyển cơ năng thành nội năng.</p>
+                        </div>
+
+                        <div class="flex gap-2 pt-1">
+                            <button onclick="resetSimulation()" class="flex-1 py-2 px-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-rotate-left"></i> Thiết lập lại
+                            </button>
+                            <button onclick="toggleSimPause()" id="btnPause" class="flex-1 py-2 px-3 bg-sky-600 hover:bg-sky-500 text-white font-semibold rounded-lg transition flex items-center justify-center gap-1.5 shadow">
+                                <i class="fa-solid fa-pause"></i> Tạm dừng
+                            </button>
+                        </div>
+
+                        <!-- Bảng đầu ra Realtime -->
+                        <div class="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
+                            <h4 class="font-bold text-slate-800 text-xs uppercase flex items-center gap-1">
+                                <i class="fa-solid fa-chart-line text-emerald-600"></i> Trạng thái nhiệt động thời gian thực
+                            </h4>
+                            <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+                                <div class="p-1.5 bg-slate-50 rounded">Nhiệt độ \(T\): <span id="outTemp" class="text-rose-600 font-bold">300 K</span></div>
+                                <div class="p-1.5 bg-slate-50 rounded">Áp suất \(p\): <span id="outPress" class="text-sky-700 font-bold">1,00 atm</span></div>
+                                <div class="p-1.5 bg-slate-50 rounded">Công \(A\): <span id="outWork" class="text-emerald-700 font-bold">0 J</span></div>
+                                <div class="p-1.5 bg-slate-50 rounded">Nhiệt \(Q\): <span id="outQ" class="text-amber-600 font-bold">0 J</span></div>
+                            </div>
+                            <div class="p-2 bg-emerald-50 rounded border border-emerald-200 text-emerald-900 font-semibold text-xs flex justify-between items-center">
+                                <span>Độ biến thiên nội năng \(\Delta U\):</span>
+                                <span id="outDeltaU" class="text-sm font-mono font-bold">+0 J</span>
+                            </div>
+                        </div>
+
+                        <!-- Hướng dẫn thử & sai -->
+                        <div class="p-3 bg-blue-50/80 rounded-lg border border-blue-200 text-blue-950 text-xs space-y-1">
+                            <p class="font-bold"><i class="fa-solid fa-vial"></i> Nhiệm vụ khám phá:</p>
+                            <p>1. Kéo nhanh thanh trượt pit-tông từ 100% xuống 30% khi đèn cồn tắt: Quan sát vận tốc hạt phân tử và nhiệt độ \(T\) tăng vọt do nhận công (\(A > 0\)).</p>
+                            <p>2. Để pit-tông cố định, bật ngọn lửa đèn cồn: Khí nhận nhiệt (\(Q > 0\)), phân tử dao động cực mạnh làm nội năng \(\Delta U > 0\).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: MÁY TÍNH THAM SỐ VẬT LÍ (CALCULATOR MODULE) ================= -->
+        <section id="tab-content-4" class="tab-panel hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="border-b pb-3 mb-4">
+                    <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full uppercase">Công cụ giải toán tương tác</span>
+                    <h2 class="text-xl font-bold text-slate-900 mt-2">Máy tính Định luật I Nhiệt động lực học & Nhiệt lượng</h2>
+                    <p class="text-xs text-slate-500 mt-1">
+                        Nhập các giá trị đã biết và để trống đúng <strong>01 đại lượng</strong> cần tìm. Máy tính sẽ tự động lập luận dấu, tìm biến và in các bước giải KaTeX chi tiết.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Form tính toán Định luật I: Delta U = A + Q -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-atom text-purple-600"></i> Module 1: Định luật I (\(\Delta U = A + Q\))
+                            </h3>
+                            <button onclick="calcFirstLawPreset(1)" class="text-[11px] text-sky-600 hover:underline">Ví dụ mẫu</button>
+                        </div>
+
+                        <div class="space-y-3 text-xs sm:text-sm">
+                            <div>
+                                <label class="block font-medium text-slate-700 mb-1">Công cơ học \(A\) (J) [Dương: nhận công, Âm: sinh công]:</label>
+                                <input type="number" id="calcInputA" placeholder="Nhập A (để trống nếu cần tìm)" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono">
+                            </div>
+                            <div>
+                                <label class="block font-medium text-slate-700 mb-1">Nhiệt lượng \(Q\) (J) [Dương: nhận nhiệt, Âm: tỏa nhiệt]:</label>
+                                <input type="number" id="calcInputQ" placeholder="Nhập Q (để trống nếu cần tìm)" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono">
+                            </div>
+                            <div>
+                                <label class="block font-medium text-slate-700 mb-1">Độ biến thiên nội năng \(\Delta U\) (J):</label>
+                                <input type="number" id="calcInputDeltaU" placeholder="Nhập Delta U (để trống nếu cần tìm)" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono">
+                            </div>
+
+                            <button onclick="solveFirstLaw()" class="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-lg transition shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-calculator"></i> Phân tích & Giải chi tiết
+                            </button>
+                        </div>
+
+                        <!-- Khối hiển thị kết quả KaTeX Module 1 -->
+                        <div id="firstLawResultBox" class="p-4 bg-white rounded-lg border border-purple-200 hidden space-y-2 text-xs sm:text-sm">
+                            <h4 class="font-bold text-purple-900 border-b pb-1 text-xs uppercase flex items-center gap-1">
+                                <i class="fa-solid fa-square-check text-emerald-600"></i> Các bước biến đổi chi tiết
+                            </h4>
+                            <div id="firstLawSteps" class="text-slate-800 leading-relaxed font-sans"></div>
+                        </div>
+                    </div>
+
+                    <!-- Form tính nhiệt lượng: Q = mc Delta T -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-temperature-arrow-up text-rose-500"></i> Module 2: Nhiệt lượng (\(Q = m c \Delta T\))
+                            </h3>
+                            <button onclick="calcHeatPreset()" class="text-[11px] text-sky-600 hover:underline">Ví dụ đun nước</button>
+                        </div>
+
+                        <div class="space-y-3 text-xs sm:text-sm">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Khối lượng \(m\) (\(\text{kg}\)):</label>
+                                    <input type="number" id="calcHeatM" placeholder="m (kg)" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-400 font-mono">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nhiệt dung riêng \(c\) (\(\text{J}/\text{kg}\cdot\text{K}\)):</label>
+                                    <input type="number" id="calcHeatC" placeholder="c (J/kg.K)" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-400 font-mono">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nhiệt độ đầu \(T_1\) (\(^\circ\text{C}\)):</label>
+                                    <input type="number" id="calcHeatT1" placeholder="t1" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-400 font-mono">
+                                </div>
+                                <div>
+                                    <label class="block font-medium text-slate-700 mb-1">Nhiệt độ sau \(T_2\) (\(^\circ\text{C}\)):</label>
+                                    <input type="number" id="calcHeatT2" placeholder="t2" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-400 font-mono">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block font-medium text-slate-700 mb-1">Nhiệt lượng \(Q\) (\(\text{J}\)):</label>
+                                <input type="number" id="calcHeatQ" placeholder="Q (J) - để trống nếu cần tính" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-400 font-mono">
+                            </div>
+
+                            <button onclick="solveHeatExchange()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-lg transition shadow flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-calculator"></i> Tính toán & Khai triển
+                            </button>
+                        </div>
+
+                        <!-- Khối kết quả KaTeX Module 2 -->
+                        <div id="heatResultBox" class="p-4 bg-white rounded-lg border border-rose-200 hidden space-y-2 text-xs sm:text-sm">
+                            <h4 class="font-bold text-rose-900 border-b pb-1 text-xs uppercase flex items-center gap-1">
+                                <i class="fa-solid fa-square-check text-emerald-600"></i> Các bước biến đổi chi tiết
+                            </h4>
+                            <div id="heatSteps" class="text-slate-800 leading-relaxed font-sans"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: PHÒNG LUYỆN TẬP PHÂN HÓA ================= -->
+        <section id="tab-content-5" class="tab-panel hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="border-b pb-3 mb-6">
+                    <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full uppercase">Phân hóa 3 cấp độ năng lực</span>
+                    <h2 class="text-xl font-bold text-slate-900 mt-2">Hệ Thống Bài Tập Điển Hình Có Lời Giải & Gợi Ý Tư Duy</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Cấp 1: Nhận biết - Thông hiểu -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                        <div class="bg-sky-50 px-5 py-3 border-b border-sky-100 flex items-center justify-between">
+                            <span class="text-xs font-bold text-sky-800 uppercase tracking-wide flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> Cấp độ 1: Áp dụng trực tiếp định luật (Cơ bản)
+                            </span>
+                            <span class="text-xs bg-white text-sky-700 px-2 py-0.5 rounded border border-sky-200 font-medium">Nhận biết - Thông hiểu</span>
+                        </div>
+                        <div class="p-5 space-y-3 text-sm">
+                            <p class="font-medium text-slate-800">
+                                <strong>Bài toán 1:</strong> Người ta thực hiện một công \(A' = 200\text{ J}\) để nén một lượng khí chứa trong xi lanh. Trong quá trình đó, khí bị nóng lên và truyền ra môi trường xung quanh một nhiệt lượng \(Q' = 40\text{ J}\). Hãy xác định độ biến thiên nội năng \(\Delta U\) của khối khí và cho biết nội năng của khí tăng hay giảm?
+                            </p>
+                            <div class="flex items-center gap-3 pt-2">
+                                <button onclick="toggleHint('hint1')" class="text-xs text-sky-600 font-semibold hover:text-sky-800 flex items-center gap-1">
+                                    <i class="fa-solid fa-lightbulb"></i> Gợi ý tư duy
+                                </button>
+                                <button onclick="toggleSolution('sol1')" class="text-xs text-indigo-600 font-semibold hover:text-indigo-800 flex items-center gap-1">
+                                    <i class="fa-solid fa-eye"></i> Hiện / Ẩn lời giải chuẩn
+                                </button>
+                            </div>
+                            <div id="hint1" class="hidden p-3 bg-amber-50 rounded-lg text-xs text-amber-900 border border-amber-200">
+                                <strong>Gợi ý:</strong> Xác định đúng dấu của \(A\) và \(Q\) dựa trên từ khóa: "nén khí" &rarr; hệ nhận công (\(A > 0\)); "truyền nhiệt ra môi trường" &rarr; hệ tỏa nhiệt (\(Q < 0\)).
+                            </div>
+                            <div id="sol1" class="hidden p-4 bg-slate-50 rounded-lg text-xs sm:text-sm text-slate-800 border border-slate-200 space-y-2">
+                                <p class="font-bold text-physics-800">Lời giải chi tiết:</p>
+                                <p>&bull; Khối khí bị nén nên nhận công: \(A = +200\text{ J}\).</p>
+                                <p>&bull; Khối khí truyền nhiệt ra môi trường ngoài: \(Q = -40\text{ J}\).</p>
+                                <p>&bull; Áp dụng hệ thức định luật I nhiệt động lực học:</p>
+                                <div class="my-1 text-center font-semibold text-sky-800">
+                                    \[ \Delta U = A + Q = 200 + (-40) = +160\text{ J} \]
+                                </div>
+                                <p>&bull; <strong>Kết luận:</strong> Vì \(\Delta U = +160\text{ J} > 0\) nên nội năng của khối khí <strong>tăng một lượng \(160\text{ J}\)</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cấp 2: Vận dụng -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                        <div class="bg-indigo-50 px-5 py-3 border-b border-indigo-100 flex items-center justify-between">
+                            <span class="text-xs font-bold text-indigo-800 uppercase tracking-wide flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Cấp độ 2: Phối hợp công cơ học và nhiệt lượng (Vận dụng)
+                            </span>
+                            <span class="text-xs bg-white text-indigo-700 px-2 py-0.5 rounded border border-indigo-200 font-medium">Vận dụng liên môn</span>
+                        </div>
+                        <div class="p-5 space-y-3 text-sm">
+                            <p class="font-medium text-slate-800">
+                                <strong>Bài toán 2:</strong> Người ta cung cấp một nhiệt lượng \(Q\) cho chất khí đựng trong một xi lanh đặt nằm ngang. Chất khí nở ra đẩy pit-tông dịch chuyển đều một đoạn \(s = 5\text{ cm} = 0,05\text{ m}\) và nội năng của khối khí tăng \(\Delta U = 0,5\text{ J}\). Biết độ lớn lực ma sát giữa pit-tông và thành xi lanh là \(F_{\text{ms}} = 20\text{ N}\). Tính nhiệt lượng \(Q\) đã cung cấp cho khối khí.
+                            </p>
+                            <div class="flex items-center gap-3 pt-2">
+                                <button onclick="toggleHint('hint2')" class="text-xs text-sky-600 font-semibold hover:text-sky-800 flex items-center gap-1">
+                                    <i class="fa-solid fa-lightbulb"></i> Gợi ý tư duy
+                                </button>
+                                <button onclick="toggleSolution('sol2')" class="text-xs text-indigo-600 font-semibold hover:text-indigo-800 flex items-center gap-1">
+                                    <i class="fa-solid fa-eye"></i> Hiện / Ẩn lời giải chuẩn
+                                </button>
+                            </div>
+                            <div id="hint2" class="hidden p-3 bg-amber-50 rounded-lg text-xs text-amber-900 border border-amber-200">
+                                <strong>Gợi ý:</strong> Khí dãn nở sinh công thắng lực ma sát: \(|A| = F_{\text{ms}} \cdot s\). Vì khí sinh công (thực hiện công) nên \(A < 0\). Từ đó rút ra \(Q = \Delta U - A\).
+                            </div>
+                            <div id="sol2" class="hidden p-4 bg-slate-50 rounded-lg text-xs sm:text-sm text-slate-800 border border-slate-200 space-y-2">
+                                <p class="font-bold text-physics-800">Lời giải chi tiết:</p>
+                                <p>&bull; Độ lớn công cơ học chất khí thực hiện để thắng lực ma sát khi đẩy pit-tông đi một đoạn \(s\):</p>
+                                <div class="text-center font-medium">
+                                    \[ |A| = F_{\text{ms}} \cdot s = 20 \cdot 0,05 = 1\text{ J} \]
+                                </div>
+                                <p>&bull; Vì chất khí dãn nở đẩy pit-tông nên chất khí <strong>thực hiện công</strong>: \(A = -1\text{ J}\).</p>
+                                <p>&bull; Theo định luật I nhiệt động lực học: \(\Delta U = A + Q \implies Q = \Delta U - A\).</p>
+                                <div class="text-center font-semibold text-indigo-800 my-1">
+                                    \[ Q = 0,5 - (-1) = 0,5 + 1 = 1,5\text{ J} \]
+                                </div>
+                                <p>&bull; <strong>Kết luận:</strong> Nhiệt lượng đã cung cấp cho chất khí là \(Q = 1,5\text{ J}\) (\(Q > 0\): khí nhận nhiệt).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cấp 3: Vận dụng cao & Năng lực số / AI -->
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                        <div class="bg-purple-50 px-5 py-3 border-b border-purple-100 flex items-center justify-between">
+                            <span class="text-xs font-bold text-purple-800 uppercase tracking-wide flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span> Cấp độ 3: Bài toán bảo toàn năng lượng & Đánh giá năng lực số (Vận dụng cao)
+                            </span>
+                            <span class="text-xs bg-white text-purple-700 px-2 py-0.5 rounded border border-purple-200 font-medium">Khung năng lực số & AI</span>
+                        </div>
+                        <div class="p-5 space-y-3 text-sm">
+                            <p class="font-medium text-slate-800">
+                                <strong>Bài toán 3:</strong> Một quả bóng khối lượng \(m = 200\text{ g} = 0,2\text{ kg}\) rơi tự do từ độ cao \(h_1 = 15\text{ m}\) xuống sân cứng và nảy ngược lên tới độ cao cực đại \(h_2 = 10\text{ m}\). Lấy gia tốc rơi tự do \(g = 10\text{ m/s}^2\).
+                                <br>a) Tính độ biến thiên nội năng \(\Delta U\) của hệ (gồm bóng và mặt sân) sau va chạm.
+                                <br>b) [Gắn với năng lực AI/Số]: Hãy nêu thuật toán (dạng giả mã hoặc bước giải) để một trợ lý AI có thể tự động tính toán năng lượng hao tán thành nội năng khi có cảm biến IoT đo tọa độ rơi của vật theo thời gian.
+                            </p>
+                            <div class="flex items-center gap-3 pt-2">
+                                <button onclick="toggleHint('hint3')" class="text-xs text-sky-600 font-semibold hover:text-sky-800 flex items-center gap-1">
+                                    <i class="fa-solid fa-lightbulb"></i> Gợi ý tư duy
+                                </button>
+                                <button onclick="toggleSolution('sol3')" class="text-xs text-indigo-600 font-semibold hover:text-indigo-800 flex items-center gap-1">
+                                    <i class="fa-solid fa-eye"></i> Hiện / Ẩn lời giải chuẩn
+                                </button>
+                            </div>
+                            <div id="hint3" class="hidden p-3 bg-amber-50 rounded-lg text-xs text-amber-900 border border-amber-200">
+                                <strong>Gợi ý:</strong> Cơ năng ban đầu ở đỉnh rơi là \(W_1 = mgh_1\). Cơ năng tại đỉnh nảy lên là \(W_2 = mgh_2\). Phần cơ năng bị tiêu hao trong va chạm đã chuyển hóa hoàn toàn thành nội năng làm biến dạng và nóng bóng cùng mặt sàn.
+                            </div>
+                            <div id="sol3" class="hidden p-4 bg-slate-50 rounded-lg text-xs sm:text-sm text-slate-800 border border-slate-200 space-y-3">
+                                <p class="font-bold text-physics-800">Lời giải chi tiết:</p>
+                                <p><strong>a) Tính độ biến thiên nội năng:</strong></p>
+                                <p>&bull; Chọn mốc thế năng trọng trường tại mặt sân (\(z = 0\)).</p>
+                                <p>&bull; Cơ năng tại vị trí ban đầu: \(W_1 = m g h_1 = 0,2 \cdot 10 \cdot 15 = 30\text{ J}\).</p>
+                                <p>&bull; Cơ năng tại vị trí nảy lên cao nhất: \(W_2 = m g h_2 = 0,2 \cdot 10 \cdot 10 = 20\text{ J}\).</p>
+                                <p>&bull; Độ hụt cơ năng chuyển hóa thành độ tăng nội năng của hệ bóng và sàn:</p>
+                                <div class="text-center font-semibold text-purple-900 my-1">
+                                    \[ \Delta U = W_1 - W_2 = m g (h_1 - h_2) = 0,2 \cdot 10 \cdot (15 - 10) = 10\text{ J} \]
+                                </div>
+                                <div class="p-3 bg-white rounded border border-purple-200 space-y-1.5 text-xs text-slate-700">
+                                    <p class="font-bold text-purple-800"><i class="fa-solid fa-microchip"></i> b) Ứng dụng Năng lực Số & Trí tuệ Nhân tạo (AI):</p>
+                                    <p>&bull; <em>Input cảm biến:</em> Chuỗi dữ liệu tọa độ \((z_i, t_i)\) từ camera AI hoặc cảm biến siêu âm gắn trên trần.</p>
+                                    <p>&bull; <em>Logic xử lí thuật toán:</em> AI xác định các điểm cực trị đạo hàm \(v_z = \frac{dz}{dt} = 0\) để tìm đỉnh 1 (\(h_1\)) và đỉnh 2 (\(h_2\)). Sau đó tự động tính \(\Delta U = m g (h_1 - h_2)\) và phân loại độ cứng/độ đàn hồi của vật liệu thông qua hệ số phục hồi va chạm \(e = \sqrt{\frac{h_2}{h_1}} = \sqrt{\frac{10}{15}} \approx 0,816\).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 6: BÀI TỰ ĐÁNH GIÁ (INTERACTIVE QUIZ) ================= -->
+        <section id="tab-content-6" class="tab-panel hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b pb-3 mb-4 gap-2">
+                    <div>
+                        <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-full uppercase">Đánh giá nhanh mức độ hiểu bài</span>
+                        <h2 class="text-xl font-bold text-slate-900 mt-1">Bài Tự Đánh Giá 4 Câu Chuẩn Chương Trình</h2>
+                    </div>
+                    <div id="quizScoreBadge" class="hidden px-3 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-lg text-xs self-start sm:self-auto">
+                        Điểm số: <span id="quizScoreText">0/4</span>
+                    </div>
+                </div>
+
+                <form id="quizForm" class="space-y-6">
+                    <!-- Câu 1 -->
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
+                        <p class="font-semibold text-slate-900 text-sm">
+                            <span class="text-sky-600 font-bold">Câu 1:</span> Phát biểu nào sau đây về nội năng và nhiệt lượng là <strong>sai</strong>?
+                        </p>
+                        <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q1" value="A" class="accent-sky-600">
+                                <span>A. Nội năng là một dạng năng lượng nên có thể chuyển hóa thành các dạng năng lượng khác.</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q1" value="B" class="accent-sky-600">
+                                <span>B. Nội năng của một vật phụ thuộc vào nhiệt độ \(T\) và thể tích \(V\) của vật.</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q1" value="C" class="accent-sky-600">
+                                <span>C. Nội năng chính là nhiệt lượng của vật.</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q1" value="D" class="accent-sky-600">
+                                <span>D. Nội năng của vật có thể tăng hoặc giảm thông qua truyền nhiệt hoặc thực hiện công.</span>
+                            </label>
+                        </div>
+                        <div id="feedback-q1" class="hidden text-xs p-3 rounded-lg mt-2"></div>
+                    </div>
+
+                    <!-- Câu 2 -->
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
+                        <p class="font-semibold text-slate-900 text-sm">
+                            <span class="text-sky-600 font-bold">Câu 2:</span> Biểu thức diễn tả đúng quá trình chất khí trong xi lanh <strong>vừa nhận nhiệt lượng</strong> vừa <strong>nhận công</strong> là:
+                        </p>
+                        <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q2" value="A" class="accent-sky-600">
+                                <span>A. \(\Delta U = A + Q\) với \(Q > 0\) và \(A < 0\).</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q2" value="B" class="accent-sky-600">
+                                <span>B. \(\Delta U = Q\) với \(Q > 0\).</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q2" value="C" class="accent-sky-600">
+                                <span>C. \(\Delta U = Q + A\) với \(Q < 0\) và \(A > 0\).</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q2" value="D" class="accent-sky-600">
+                                <span>D. \(\Delta U = Q + A\) với \(Q > 0\) và \(A > 0\).</span>
+                            </label>
+                        </div>
+                        <div id="feedback-q2" class="hidden text-xs p-3 rounded-lg mt-2"></div>
+                    </div>
+
+                    <!-- Câu 3 -->
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
+                        <p class="font-semibold text-slate-900 text-sm">
+                            <span class="text-sky-600 font-bold">Câu 3:</span> Cung cấp cho một khối khí một công \(A' = 200\text{ J}\) do bị nén, nhưng khí đồng thời truyền nhiệt lượng \(Q' = 120\text{ J}\) thất thoát ra môi trường. Nội năng của khối khí biến thiên như thế nào?
+                        </p>
+                        <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q3" value="A" class="accent-sky-600">
+                                <span>A. Tăng \(80\text{ J}\).</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q3" value="B" class="accent-sky-600">
+                                <span>B. Giảm \(80\text{ J}\).</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q3" value="C" class="accent-sky-600">
+                                <span>C. Không thay đổi.</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q3" value="D" class="accent-sky-600">
+                                <span>D. Giảm \(320\text{ J}\).</span>
+                            </label>
+                        </div>
+                        <div id="feedback-q3" class="hidden text-xs p-3 rounded-lg mt-2"></div>
+                    </div>
+
+                    <!-- Câu 4 -->
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
+                        <p class="font-semibold text-slate-900 text-sm">
+                            <span class="text-sky-600 font-bold">Câu 4:</span> Một khối khí lí tưởng thực hiện công \(A' = 250\text{ J}\) để đẩy pit-tông và nội năng của nó bị giảm một lượng \(\Delta U = -100\text{ J}\). Nhiệt lượng mà khối khí đã trao đổi với môi trường là:
+                        </p>
+                        <div class="space-y-2 text-xs sm:text-sm text-slate-700">
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q4" value="A" class="accent-sky-600">
+                                <span>A. Nhận \(150\text{ J}\).</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q4" value="B" class="accent-sky-600">
+                                <span>B. Tỏa ra \(150\text{ J}\).</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q4" value="C" class="accent-sky-600">
+                                <span>C. Tỏa ra \(350\text{ J}\).</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-100 cursor-pointer">
+                                <input type="radio" name="q4" value="D" class="accent-sky-600">
+                                <span>D. Nhận \(350\text{ J}\).</span>
+                            </label>
+                        </div>
+                        <div id="feedback-q4" class="hidden text-xs p-3 rounded-lg mt-2"></div>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="button" onclick="submitQuiz()" class="flex-1 py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl transition shadow flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Nộp bài & Xem giải thích chi tiết
+                        </button>
+                        <button type="button" onclick="resetQuiz()" class="py-3 px-5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition">
+                            Làm lại
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ================= TAB 7: TIỆN ÍCH LỚP HỌC (CLASSROOM TOOLS) ================= -->
+        <section id="tab-content-7" class="tab-panel hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Tiện ích 1: Visual Timer -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center justify-between space-y-4">
+                    <div class="w-full text-center border-b pb-2">
+                        <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">Công cụ quản lý thời gian</span>
+                        <h3 class="font-bold text-slate-800 text-base mt-1 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-stopwatch text-amber-500"></i> Đồng Hồ Đếm Ngược Hoạt Động Lớp Học
+                        </h3>
+                    </div>
+
+                    <!-- Vòng tròn Canvas Timer -->
+                    <div class="relative flex items-center justify-center">
+                        <canvas id="timerCanvas" width="220" height="220" class="block"></canvas>
+                        <div class="absolute flex flex-col items-center justify-center text-center">
+                            <span id="timerDisplay" class="text-3xl font-mono font-extrabold text-slate-800">02:00</span>
+                            <span id="timerStatus" class="text-[11px] text-slate-500 font-medium">Sẵn sàng</span>
+                        </div>
+                    </div>
+
+                    <!-- Nút chọn nhanh thời gian -->
+                    <div class="w-full space-y-2">
+                        <div class="grid grid-cols-4 gap-2">
+                            <button onclick="setTimerPreset(30)" class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded text-xs font-medium text-slate-700">30s</button>
+                            <button onclick="setTimerPreset(60)" class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded text-xs font-medium text-slate-700">1 phút</button>
+                            <button onclick="setTimerPreset(120)" class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded text-xs font-medium text-slate-700">2 phút</button>
+                            <button onclick="setTimerPreset(300)" class="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 rounded text-xs font-medium text-slate-700">5 phút</button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="startTimer()" id="btnStartTimer" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg text-xs transition shadow flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-play"></i> Bắt đầu
+                            </button>
+                            <button onclick="pauseTimer()" class="py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-lg text-xs transition shadow">
+                                <i class="fa-solid fa-pause"></i>
+                            </button>
+                            <button onclick="resetTimer()" class="py-2.5 px-4 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg text-xs transition">
+                                <i class="fa-solid fa-rotate-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tiện ích 2: Lucky Wheel (Vòng quay may mắn 4 Tổ) -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center justify-between space-y-4">
+                    <div class="w-full text-center border-b pb-2">
+                        <span class="text-xs font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded">Khởi động & Trả lời câu hỏi</span>
+                        <h3 class="font-bold text-slate-800 text-base mt-1 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrows-spin text-sky-500"></i> Vòng Quay May Mắn (Gọi ngẫu nhiên)
+                        </h3>
+                    </div>
+
+                    <div class="relative flex items-center justify-center">
+                        <canvas id="wheelCanvas" width="220" height="220" class="block"></canvas>
+                        <!-- Kim chỉ -->
+                        <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-[14px] border-t-rose-600 z-10 drop-shadow"></div>
+                    </div>
+
+                    <!-- Bộ chọn tổ và danh sách -->
+                    <div class="w-full space-y-2 text-xs">
+                        <div class="flex items-center gap-2">
+                            <label class="font-semibold text-slate-700 whitespace-nowrap">Chọn tổ:</label>
+                            <select id="wheelGroupSelect" onchange="changeWheelGroup()" class="flex-1 py-1 px-2 border rounded-lg text-xs bg-slate-50 font-medium">
+                                <option value="all">Toàn bộ 4 Tổ học sinh</option>
+                                <option value="to1">Tổ 1 (Năng động)</option>
+                                <option value="to2">Tổ 2 (Sáng tạo)</option>
+                                <option value="to3">Tổ 3 (Khám phá)</option>
+                                <option value="to4">Tổ 4 (Bứt phá)</option>
+                            </select>
+                        </div>
+
+                        <button onclick="spinWheel()" id="btnSpin" class="w-full py-2.5 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-bold rounded-lg text-xs transition shadow flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-play"></i> QUAY NGAY HỌC SINH MAY MẮN
+                        </button>
+                    </div>
+
+                    <!-- Modal / Thông báo chúc mừng -->
+                    <div id="wheelWinnerBadge" class="hidden w-full p-2.5 bg-emerald-50 border border-emerald-300 rounded-lg text-center text-xs text-emerald-900 font-bold">
+                        🎉 Chúc mừng: <span id="txtWinnerName" class="text-rose-600 text-sm">...</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs sm:text-sm space-y-1">
+            <p class="font-medium text-slate-200">
+                © 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+            </p>
+            <p class="text-[11px] text-slate-500">
+                Ứng dụng số hóa học tập Vật lí tương tác 12 - Bộ sách Kết nối tri thức với cuộc sống & Sách bài tập
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        /* ----------------------- 1. TAB NAVIGATION CONTROLLER ----------------------- */
+        function switchTab(tabIndex) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            const targetPanel = document.getElementById(`tab-content-${tabIndex}`);
+            const targetBtn = document.getElementById(`tab-btn-${tabIndex}`);
+            if (targetPanel) targetPanel.classList.remove('hidden');
+            if (targetBtn) targetBtn.classList.add('active');
+
+            // Trigger specific renders if needed
+            if (tabIndex === 3) {
+                initSimCanvas();
+            } else if (tabIndex === 7) {
+                drawTimerArc();
+                drawWheel();
+            }
+
+            // Re-render math inside active panel
+            if (window.renderMathInElement && targetPanel) {
+                renderMathInElement(targetPanel, {
+                    delimiters: [
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false }
+                    ]
+                });
+            }
+        }
+
+        /* ----------------------- 2. KA-TEX INITIALIZATION ----------------------- */
+        document.addEventListener("DOMContentLoaded", function () {
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false }
+                    ]
+                });
+            }
+            initSimCanvas();
+            initTimer();
+            initWheel();
+        });
+
+        /* ----------------------- 3. SIMULATION 2D ENGINE (TAB 3) ----------------------- */
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let simMode = 'piston'; // 'piston' | 'friction'
+        let isSimPaused = false;
+        let pistonPercent = 100; // 30 -> 100
+        let heatPower = 0; // 0 -> 100
+        let fricSpeed = 0;
+        let gasTemp = 300; // Kelvin
+        let initialTemp = 300;
+        let particles = [];
+        const numParticles = 48;
+        let workDone = 0; // J
+        let heatAdded = 0; // J
+
+        function setSimMode(mode) {
+            simMode = mode;
+            document.getElementById('btnSimPiston').className = mode === 'piston' 
+                ? 'px-3 py-1 text-xs font-semibold rounded bg-sky-600 text-white' 
+                : 'px-3 py-1 text-xs font-semibold rounded bg-slate-200 text-slate-700 hover:bg-slate-300';
+            document.getElementById('btnSimFriction').className = mode === 'friction' 
+                ? 'px-3 py-1 text-xs font-semibold rounded bg-sky-600 text-white' 
+                : 'px-3 py-1 text-xs font-semibold rounded bg-slate-200 text-slate-700 hover:bg-slate-300';
+            
+            if (mode === 'piston') {
+                document.getElementById('ctrlPiston').classList.remove('hidden');
+                document.getElementById('ctrlFriction').classList.add('hidden');
+            } else {
+                document.getElementById('ctrlPiston').classList.add('hidden');
+                document.getElementById('ctrlFriction').classList.remove('hidden');
+            }
+            resetSimulation();
+        }
+
+        function initParticles() {
+            particles = [];
+            const boxRight = 150 + (pistonPercent / 100) * 360;
+            for (let i = 0; i < numParticles; i++) {
+                particles.push({
+                    x: 160 + Math.random() * (boxRight - 180),
+                    y: 70 + Math.random() * 200,
+                    vx: (Math.random() - 0.5) * 3,
+                    vy: (Math.random() - 0.5) * 3,
+                    radius: 4.5,
+                    color: '#38bdf8'
+                });
+            }
+        }
+
+        function initSimCanvas() {
+            initParticles();
+            requestAnimationFrame(simLoop);
+        }
+
+        function updateSimPiston(val) {
+            const oldP = pistonPercent;
+            pistonPercent = parseFloat(val);
+            document.getElementById('txtPistonPos').innerText = `${pistonPercent}%`;
+
+            // Nén khí -> nhận công
+            const deltaV = (oldP - pistonPercent);
+            if (deltaV > 0) {
+                // Nhận công -> nhiệt độ tăng
+                workDone += deltaV * 1.5;
+                gasTemp += deltaV * 0.9;
+            } else if (deltaV < 0) {
+                // Giãn khí -> sinh công
+                workDone += deltaV * 1.5;
+                gasTemp += deltaV * 0.9;
+            }
+            if (gasTemp < 200) gasTemp = 200;
+        }
+
+        function updateSimHeat(val) {
+            heatPower = parseFloat(val);
+            document.getElementById('txtHeatPower').innerText = heatPower === 0 ? "0 W (Tắt)" : `${heatPower * 10} W`;
+        }
+
+        function updateFricSpeed(val) {
+            fricSpeed = parseFloat(val);
+            document.getElementById('txtFricSpeed').innerText = `${(fricSpeed * 0.05).toFixed(2)} m/s`;
+        }
+
+        function toggleSimPause() {
+            isSimPaused = !isSimPaused;
+            document.getElementById('btnPause').innerHTML = isSimPaused 
+                ? '<i class="fa-solid fa-play"></i> Tiếp tục' 
+                : '<i class="fa-solid fa-pause"></i> Tạm dừng';
+        }
+
+        function resetSimulation() {
+            pistonPercent = 100;
+            heatPower = 0;
+            fricSpeed = 0;
+            gasTemp = 300;
+            workDone = 0;
+            heatAdded = 0;
+            document.getElementById('rngPiston').value = 100;
+            document.getElementById('txtPistonPos').innerText = '100%';
+            document.getElementById('rngHeat').value = 0;
+            document.getElementById('txtHeatPower').innerText = '0 W (Tắt)';
+            document.getElementById('rngFricSpeed').value = 0;
+            document.getElementById('txtFricSpeed').innerText = '0 m/s';
+            initParticles();
+        }
+
+        /* Vòng lặp mô phỏng Canvas */
+        function simLoop() {
+            if (!isSimPaused) {
+                // Cập nhật nhiệt lượng cấp từ đèn cồn
+                if (heatPower > 0) {
+                    const qInc = (heatPower * 0.08);
+                    heatAdded += qInc;
+                    gasTemp += qInc * 0.2;
+                }
+                // Thoát nhiệt chậm ra môi trường nếu nhiệt độ cao
+                if (gasTemp > initialTemp && heatPower === 0) {
+                    gasTemp -= 0.08;
+                }
+
+                // Cọ xát sinh công trong TN2
+                if (simMode === 'friction' && fricSpeed > 0) {
+                    const wInc = fricSpeed * 0.1;
+                    workDone += wInc;
+                    gasTemp += wInc * 0.15;
+                }
+
+                // Cập nhật bảng kết quả
+                const pressure = (gasTemp / 300) * (100 / pistonPercent);
+                const deltaU = workDone + heatAdded;
+                document.getElementById('outTemp').innerText = `${Math.round(gasTemp)} K`;
+                document.getElementById('outPress').innerText = `${pressure.toFixed(2)} atm`;
+                document.getElementById('outWork').innerText = `${Math.round(workDone)} J`;
+                document.getElementById('outQ').innerText = `${Math.round(heatAdded)} J`;
+                document.getElementById('outDeltaU').innerText = `${deltaU >= 0 ? '+' : ''}${Math.round(deltaU)} J`;
+            }
+
+            // Vẽ Canvas
+            renderCanvas();
+            requestAnimationFrame(simLoop);
+        }
+
+        function renderCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (simMode === 'piston') {
+                renderPistonScene();
+            } else {
+                renderFrictionScene();
+            }
+        }
+
+        function renderPistonScene() {
+            const cylinderX = 140;
+            const cylinderY = 60;
+            const cylinderH = 220;
+            const maxW = 380;
+            const currentW = (pistonPercent / 100) * maxW;
+            const pistonX = cylinderX + currentW;
+
+            // 1. Vẽ thân xilanh
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.moveTo(cylinderX + maxW + 20, cylinderY);
+            ctx.lineTo(cylinderX, cylinderY);
+            ctx.lineTo(cylinderX, cylinderY + cylinderH);
+            ctx.lineTo(cylinderX + maxW + 20, cylinderY + cylinderH);
+            ctx.stroke();
+
+            // 2. Nền chất khí trong xi lanh
+            const hue = Math.min(360, Math.max(180, 200 - (gasTemp - 300) * 0.5));
+            ctx.fillStyle = `hsla(${hue}, 80%, 50%, 0.15)`;
+            ctx.fillRect(cylinderX + 3, cylinderY + 3, currentW - 3, cylinderH - 6);
+
+            // 3. Cập nhật và vẽ các hạt phân tử
+            const speedFactor = Math.sqrt(gasTemp / 300);
+            particles.forEach(p => {
+                if (!isSimPaused) {
+                    p.x += p.vx * speedFactor;
+                    p.y += p.vy * speedFactor;
+
+                    // Va chạm thành trái
+                    if (p.x - p.radius <= cylinderX + 4) {
+                        p.x = cylinderX + 4 + p.radius;
+                        p.vx = -p.vx;
+                    }
+                    // Va chạm pit-tông
+                    if (p.x + p.radius >= pistonX - 8) {
+                        p.x = pistonX - 8 - p.radius;
+                        p.vx = -p.vx;
+                    }
+                    // Va chạm thành trên / dưới
+                    if (p.y - p.radius <= cylinderY + 4) {
+                        p.y = cylinderY + 4 + p.radius;
+                        p.vy = -p.vy;
+                    }
+                    if (p.y + p.radius >= cylinderY + cylinderH - 4) {
+                        p.y = cylinderY + cylinderH - 4 - p.radius;
+                        p.vy = -p.vy;
+                    }
+                }
+
+                // Vẽ hạt
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = gasTemp > 380 ? '#fb7185' : '#38bdf8';
+                ctx.shadowColor = ctx.fillStyle;
+                ctx.shadowBlur = 4;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            });
+
+            // 4. Vẽ Pit-tông
+            ctx.fillStyle = '#64748b';
+            ctx.fillRect(pistonX - 10, cylinderY + 4, 18, cylinderH - 8);
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(pistonX + 8, cylinderY + cylinderH / 2 - 10, 160, 20);
+
+            // Tay cầm pit-tông
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(pistonX + 160, cylinderY + cylinderH / 2 - 30, 15, 60);
+
+            // Mũi tên chỉ lực nén
+            if (pistonPercent < 95) {
+                ctx.fillStyle = '#38bdf8';
+                ctx.font = 'bold 12px Inter';
+                ctx.fillText('Ngoại lực F (Công A > 0)', pistonX + 40, cylinderY + cylinderH / 2 - 20);
+                drawArrow(ctx, pistonX + 150, cylinderY + cylinderH / 2, pistonX + 100, cylinderY + cylinderH / 2, '#38bdf8');
+            }
+
+            // 5. Ngọn lửa đèn cồn nếu bật nhiệt
+            if (heatPower > 0) {
+                const flameX = cylinderX + currentW / 2;
+                const flameY = cylinderY + cylinderH + 25;
+                drawFlame(ctx, flameX, flameY, heatPower);
+            }
+        }
+
+        function renderFrictionScene() {
+            // Khối kim loại và bàn mài
+            ctx.fillStyle = '#cbd5e1';
+            ctx.fillRect(100, 260, 500, 30);
+            ctx.fillStyle = '#64748b';
+            ctx.font = '12px Inter';
+            ctx.fillText('Mặt phẳng cọ xát / Đá mài', 280, 310);
+
+            // Miếng kim loại dao động qua lại
+            const posX = 300 + Math.sin(Date.now() * 0.01 * (fricSpeed / 20)) * (fricSpeed * 0.8);
+            ctx.fillStyle = gasTemp > 350 ? '#f43f5e' : '#0284c7';
+            ctx.fillRect(posX - 40, 220, 80, 40);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 11px Inter';
+            ctx.fillText('Kim loại', posX - 22, 245);
+
+            if (fricSpeed > 0) {
+                // Vẽ tia lửa điện / nhiệt
+                ctx.fillStyle = '#f59e0b';
+                for (let k = 0; k < 6; k++) {
+                    ctx.fillRect(posX - 30 + Math.random() * 60, 258 + Math.random() * 5, 3, 3);
+                }
+            }
+        }
+
+        function drawFlame(ctx, x, y, p) {
+            const h = (p / 100) * 35 + 10;
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(x - 14, y);
+            ctx.quadraticCurveTo(x, y - h, x, y - h);
+            ctx.quadraticCurveTo(x, y - h, x + 14, y);
+            ctx.closePath();
+            ctx.fillStyle = '#f97316';
+            ctx.fill();
+
+            // Lõi vàng
+            ctx.beginPath();
+            ctx.moveTo(x - 8, y);
+            ctx.quadraticCurveTo(x, y - h * 0.7, x, y - h * 0.7);
+            ctx.quadraticCurveTo(x, y - h * 0.7, x + 8, y);
+            ctx.closePath();
+            ctx.fillStyle = '#fde047';
+            ctx.fill();
+            ctx.restore();
+
+            // Đèn cồn thân
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(x - 22, y + 2, 44, 30);
+        }
+
+        function drawArrow(ctx, fromx, fromy, tox, toy, color) {
+            const headlen = 10;
+            const dx = tox - fromx;
+            const dy = toy - fromy;
+            const angle = Math.atan2(dy, dx);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(fromx, fromy);
+            ctx.lineTo(tox, toy);
+            ctx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.moveTo(tox, toy);
+            ctx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.stroke();
+        }
+
+        /* ----------------------- 4. CALCULATOR SOLVER LOGIC (TAB 4) ----------------------- */
+        function solveFirstLaw() {
+            const inputA = document.getElementById('calcInputA').value.trim();
+            const inputQ = document.getElementById('calcInputQ').value.trim();
+            const inputU = document.getElementById('calcInputDeltaU').value.trim();
+            const resBox = document.getElementById('firstLawResultBox');
+            const stepsDiv = document.getElementById('firstLawSteps');
+
+            const emptyCount = (inputA === '' ? 1 : 0) + (inputQ === '' ? 1 : 0) + (inputU === '' ? 1 : 0);
+            if (emptyCount !== 1) {
+                alertModal("Vui lòng điền 2 trong 3 ô và để trống đúng 1 đại lượng cần tìm!");
+                return;
+            }
+
+            resBox.classList.remove('hidden');
+            let latexHTML = "";
+
+            if (inputU === '') {
+                // Tìm Delta U
+                const A = parseFloat(inputA);
+                const Q = parseFloat(inputQ);
+                const deltaU = A + Q;
+                latexHTML = `
+                    <p><strong>1. Nhận dạng đại lượng:</strong> Công \(A = ${A}\\text{ J}\); Nhiệt lượng \(Q = ${Q}\\text{ J}\).</p>
+                    <p><strong>2. Áp dụng định luật I nhiệt động lực học:</strong></p>
+                    <div class="text-center my-2 text-purple-900 font-bold">\\[ \\Delta U = A + Q = (${A}) + (${Q}) = ${deltaU}\\text{ J} \\]</div>
+                    <p><strong>3. Biện luận bản chất:</strong> Nội năng của hệ <strong>${deltaU >= 0 ? "tăng thêm" : "giảm đi"} ${Math.abs(deltaU)}\\text{ J}</strong>.</p>
+                `;
+            } else if (inputA === '') {
+                // Tìm A
+                const Q = parseFloat(inputQ);
+                const deltaU = parseFloat(inputU);
+                const A = deltaU - Q;
+                latexHTML = `
+                    <p><strong>1. Nhận dạng đại lượng:</strong> Độ biến thiên nội năng \(\\Delta U = ${deltaU}\\text{ J}\); Nhiệt lượng \(Q = ${Q}\\text{ J}\).</p>
+                    <p><strong>2. Biến đổi công thức:</strong></p>
+                    <div class="text-center my-2 text-purple-900 font-bold">\\[ A = \\Delta U - Q = (${deltaU}) - (${Q}) = ${A}\\text{ J} \\]</div>
+                    <p><strong>3. Biện luận công:</strong> Vì \(A = ${A}\\text{ J}\) mang giá trị <strong>${A >= 0 ? "dương &rarr; Hệ nhận công" : "âm &rarr; Hệ thực hiện (sinh) công ra bên ngoài"}</strong> với độ lớn \(|A| = ${Math.abs(A)}\\text{ J}\).</p>
+                `;
+            } else if (inputQ === '') {
+                // Tìm Q
+                const A = parseFloat(inputA);
+                const deltaU = parseFloat(inputU);
+                const Q = deltaU - A;
+                latexHTML = `
+                    <p><strong>1. Nhận dạng đại lượng:</strong> Độ biến thiên nội năng \(\\Delta U = ${deltaU}\\text{ J}\); Công \(A = ${A}\\text{ J}\).</p>
+                    <p><strong>2. Biến đổi công thức:</strong></p>
+                    <div class="text-center my-2 text-purple-900 font-bold">\\[ Q = \\Delta U - A = (${deltaU}) - (${A}) = ${Q}\\text{ J} \\]</div>
+                    <p><strong>3. Biện luận nhiệt lượng:</strong> Vì \(Q = ${Q}\\text{ J}\) mang giá trị <strong>${Q >= 0 ? "dương &rarr; Hệ nhận nhiệt lượng từ môi trường" : "âm &rarr; Hệ truyền (tỏa) nhiệt lượng ra môi trường"}</strong> với độ lớn \(|Q| = ${Math.abs(Q)}\\text{ J}\).</p>
+                `;
+            }
+
+            stepsDiv.innerHTML = latexHTML;
+            if (window.renderMathInElement) {
+                renderMathInElement(stepsDiv, {
+                    delimiters: [
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false }
+                    ]
+                });
+            }
+        }
+
+        function calcFirstLawPreset(type) {
+            document.getElementById('calcInputA').value = "500";
+            document.getElementById('calcInputQ').value = "-200";
+            document.getElementById('calcInputDeltaU').value = "";
+            solveFirstLaw();
+        }
+
+        function solveHeatExchange() {
+            const m = parseFloat(document.getElementById('calcHeatM').value);
+            const c = parseFloat(document.getElementById('calcHeatC').value);
+            const t1 = parseFloat(document.getElementById('calcHeatT1').value);
+            const t2 = parseFloat(document.getElementById('calcHeatT2').value);
+            const qInput = document.getElementById('calcHeatQ').value.trim();
+
+            const resBox = document.getElementById('heatResultBox');
+            const stepsDiv = document.getElementById('heatSteps');
+
+            if (isNaN(m) || isNaN(c) || isNaN(t1) || isNaN(t2)) {
+                alertModal("Vui lòng nhập đầy đủ m, c, t1 và t2 để tính nhiệt lượng Q!");
+                return;
+            }
+
+            const deltaT = t2 - t1;
+            const Q = m * c * deltaT;
+
+            resBox.classList.remove('hidden');
+            stepsDiv.innerHTML = `
+                <p><strong>1. Độ biến thiên nhiệt độ:</strong> \(\\Delta T = T_2 - T_1 = ${t2} - ${t1} = ${deltaT}\\text{ K (hoặc } ^\\circ\\text{C)}\).</p>
+                <p><strong>2. Áp dụng công thức tính nhiệt lượng:</strong></p>
+                <div class="text-center my-2 text-rose-800 font-bold">
+                    \\[ Q = m \\cdot c \\cdot \\Delta T = ${m} \\cdot ${c} \\cdot (${deltaT}) = ${Q.toLocaleString('vi-VN')}\\text{ J} = ${(Q / 1000).toFixed(2)}\\text{ kJ} \\]
+                </div>
+                <p><strong>3. Bản chất:</strong> ${Q >= 0 ? "Vật nhận nhiệt lượng để tăng nhiệt độ." : "Vật tỏa nhiệt lượng ra môi trường làm hạ nhiệt độ."}</p>
+            `;
+
+            if (window.renderMathInElement) {
+                renderMathInElement(stepsDiv, {
+                    delimiters: [
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false }
+                    ]
+                });
+            }
+        }
+
+        function calcHeatPreset() {
+            document.getElementById('calcHeatM').value = "3";
+            document.getElementById('calcHeatC').value = "4200";
+            document.getElementById('calcHeatT1').value = "25";
+            document.getElementById('calcHeatT2').value = "100";
+            document.getElementById('calcHeatQ').value = "";
+            solveHeatExchange();
+        }
+
+        /* ----------------------- 5. GUIDED PRACTICE TOGGLES (TAB 5) ----------------------- */
+        function toggleHint(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
+        }
+
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
+            if (window.renderMathInElement) {
+                renderMathInElement(el, {
+                    delimiters: [
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false }
+                    ]
+                });
+            }
+        }
+
+        /* ----------------------- 6. QUIZ SYSTEM (TAB 6) ----------------------- */
+        const quizAnswers = {
+            q1: { correct: 'C', exp: 'Nội năng là tổng năng lượng vi mô \\(U = \\sum W_{\\text{đ}} + \\sum W_{\\text{t}}\\). Còn nhiệt lượng \\(Q\\) chỉ là số đo phần nội năng trao đổi trong quá trình truyền nhiệt. Vật không "chứa nhiệt lượng".' },
+            q2: { correct: 'D', exp: 'Theo quy ước dấu chuẩn quốc tế: Vật nhận nhiệt \\(Q > 0\\); Vật nhận công (bị nén) \\(A > 0\\). Do đó hệ thức là \\(\\Delta U = Q + A\\) với \\(Q > 0, A > 0\\).' },
+            q3: { correct: 'A', exp: 'Khí nhận công \\(A = +200\\text{ J}\\), truyền nhiệt ra ngoài \\(Q = -120\\text{ J}\\). Ta có: \\(\\Delta U = A + Q = 200 - 120 = +80\\text{ J}\\) (tăng \\(80\\text{ J}\\)).' },
+            q4: { correct: 'A', exp: 'Khí sinh công \\(A = -250\\text{ J}\\), nội năng giảm \\(\\Delta U = -100\\text{ J}\\). Theo định luật I: \\(Q = \\Delta U - A = -100 - (-250) = +150\\text{ J}\\). Dấu dương chứng tỏ hệ đã nhận \\(150\\text{ J}\\) nhiệt lượng.' }
+        };
+
+        function submitQuiz() {
+            let score = 0;
+            const form = document.getElementById('quizForm');
+
+            for (let q in quizAnswers) {
+                const selected = form.querySelector(`input[name="${q}"]:checked`);
+                const feedbackEl = document.getElementById(`feedback-${q}`);
+                feedbackEl.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-900', 'border-emerald-300', 'bg-rose-50', 'text-rose-900', 'border-rose-300');
+
+                if (!selected) {
+                    feedbackEl.className = "text-xs p-3 rounded-lg mt-2 bg-amber-50 text-amber-900 border border-amber-300";
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> Bạn chưa chọn đáp án cho câu hỏi này. Đáp án đúng là <strong>${quizAnswers[q].correct}</strong>.<br>${quizAnswers[q].exp}`;
+                } else if (selected.value === quizAnswers[q].correct) {
+                    score++;
+                    feedbackEl.className = "text-xs p-3 rounded-lg mt-2 bg-emerald-50 text-emerald-900 border border-emerald-300";
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> <strong>Chính xác!</strong> ${quizAnswers[q].exp}`;
+                } else {
+                    feedbackEl.className = "text-xs p-3 rounded-lg mt-2 bg-rose-50 text-rose-900 border border-rose-300";
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1"></i> <strong>Chưa đúng!</strong> Bạn chọn ${selected.value}, đáp án đúng là <strong>${quizAnswers[q].correct}</strong>.<br>${quizAnswers[q].exp}`;
+                }
+
+                if (window.renderMathInElement) {
+                    renderMathInElement(feedbackEl, {
+                        delimiters: [
+                            { left: "\\[", right: "\\]", display: true },
+                            { left: "\\(", right: "\\)", display: false }
+                        ]
+                    });
+                }
+            }
+
+            const badge = document.getElementById('quizScoreBadge');
+            badge.classList.remove('hidden');
+            document.getElementById('quizScoreText').innerText = `${score}/4 (${(score * 2.5).toFixed(1)} điểm)`;
+        }
+
+        function resetQuiz() {
+            document.getElementById('quizForm').reset();
+            for (let q in quizAnswers) {
+                const feedbackEl = document.getElementById(`feedback-${q}`);
+                feedbackEl.classList.add('hidden');
+            }
+            document.getElementById('quizScoreBadge').classList.add('hidden');
+        }
+
+        /* ----------------------- 7. CLASSROOM TOOLS: TIMER & LUCKY WHEEL ----------------------- */
+        // Timer Logic
+        let timerDuration = 120; // seconds
+        let timerRemaining = 120;
+        let timerInterval = null;
+        let isTimerRunning = false;
+        const timerCanvas = document.getElementById('timerCanvas');
+        const timerCtx = timerCanvas.getContext('2d');
+
+        function initTimer() {
+            drawTimerArc();
+        }
+
+        function setTimerPreset(sec) {
+            pauseTimer();
+            timerDuration = sec;
+            timerRemaining = sec;
+            updateTimerDisplay();
+            drawTimerArc();
+        }
+
+        function startTimer() {
+            if (isTimerRunning) return;
+            isTimerRunning = true;
+            document.getElementById('timerStatus').innerText = "Đang tính giờ...";
+            document.getElementById('timerStatus').className = "text-[11px] text-emerald-600 font-bold";
+
+            timerInterval = setInterval(() => {
+                timerRemaining--;
+                updateTimerDisplay();
+                drawTimerArc();
+
+                if (timerRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    isTimerRunning = false;
+                    document.getElementById('timerStatus').innerText = "Hết giờ!";
+                    document.getElementById('timerStatus').className = "text-[11px] text-rose-600 font-extrabold animate-bounce";
+                    playTimerBeep();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            isTimerRunning = false;
+            document.getElementById('timerStatus').innerText = "Đã tạm dừng";
+            document.getElementById('timerStatus').className = "text-[11px] text-amber-600 font-medium";
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timerRemaining = timerDuration;
+            updateTimerDisplay();
+            drawTimerArc();
+            document.getElementById('timerStatus').innerText = "Sẵn sàng";
+            document.getElementById('timerStatus').className = "text-[11px] text-slate-500 font-medium";
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timerRemaining / 60);
+            const s = timerRemaining % 60;
+            document.getElementById('timerDisplay').innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function drawTimerArc() {
+            timerCtx.clearRect(0, 0, timerCanvas.width, timerCanvas.height);
+            const centerX = timerCanvas.width / 2;
+            const centerY = timerCanvas.height / 2;
+            const radius = 90;
+
+            // Vòng nền xám
+            timerCtx.beginPath();
+            timerCtx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            timerCtx.strokeStyle = '#e2e8f0';
+            timerCtx.lineWidth = 12;
+            timerCtx.stroke();
+
+            // Vòng tiến trình
+            const progress = timerRemaining / timerDuration;
+            const startAngle = -Math.PI / 2;
+            const endAngle = startAngle + (Math.PI * 2 * progress);
+
+            timerCtx.beginPath();
+            timerCtx.arc(centerX, centerY, radius, startAngle, endAngle);
+            timerCtx.strokeStyle = progress > 0.25 ? '#0284c7' : '#ef4444';
+            timerCtx.lineWidth = 12;
+            timerCtx.lineCap = 'round';
+            timerCtx.stroke();
+        }
+
+        function playTimerBeep() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // nốt A5
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.6);
+            } catch (e) {
+                console.log("Audio not supported or blocked");
+            }
+        }
+
+        // Lucky Wheel Logic
+        const wheelCanvas = document.getElementById('wheelCanvas');
+        const wheelCtx = wheelCanvas.getContext('2d');
+        let currentWheelAngle = 0;
+        let isSpinning = false;
+
+        const classGroups = {
+            all: ["Tổ 1: Gia Huy", "Tổ 1: Thu Hà", "Tổ 2: Minh Quân", "Tổ 2: Bảo Ngọc", "Tổ 3: Hoàng Long", "Tổ 3: Ánh Tuyết", "Tổ 4: Văn Nam", "Tổ 4: Thảo Vy"],
+            to1: ["Gia Huy", "Thu Hà", "Tuấn Kiệt", "Mai Anh", "Đức Trọng", "Lan Hương"],
+            to2: ["Minh Quân", "Bảo Ngọc", "Thành Đạt", "Phương Linh", "Quốc Bảo"],
+            to3: ["Hoàng Long", "Ánh Tuyết", "Hữu Phước", "Kim Ngân", "Trọng Tấn"],
+            to4: ["Văn Nam", "Thảo Vy", "Tiến Dũng", "Hồng Hạnh", "Minh Triết"]
+        };
+
+        const sliceColors = ['#0284c7', '#0d9488', '#e11d48', '#d97706', '#7c3aed', '#2563eb', '#059669', '#ca8a04'];
+
+        function initWheel() {
+            drawWheel();
+        }
+
+        function changeWheelGroup() {
+            drawWheel();
+            document.getElementById('wheelWinnerBadge').classList.add('hidden');
+        }
+
+        function drawWheel() {
+            const groupKey = document.getElementById('wheelGroupSelect').value;
+            const names = classGroups[groupKey] || classGroups.all;
+            const numSlices = names.length;
+            const arc = (Math.PI * 2) / numSlices;
+            const cx = wheelCanvas.width / 2;
+            const cy = wheelCanvas.height / 2;
+            const r = 100;
+
+            wheelCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+
+            for (let i = 0; i < numSlices; i++) {
+                const angle = currentWheelAngle + i * arc;
+                wheelCtx.beginPath();
+                wheelCtx.fillStyle = sliceColors[i % sliceColors.length];
+                wheelCtx.moveTo(cx, cy);
+                wheelCtx.arc(cx, cy, r, angle, angle + arc);
+                wheelCtx.lineTo(cx, cy);
+                wheelCtx.fill();
+                wheelCtx.strokeStyle = '#ffffff';
+                wheelCtx.lineWidth = 1.5;
+                wheelCtx.stroke();
+
+                // Chữ trên múi
+                wheelCtx.save();
+                wheelCtx.translate(cx, cy);
+                wheelCtx.rotate(angle + arc / 2);
+                wheelCtx.textAlign = "right";
+                wheelCtx.fillStyle = "#ffffff";
+                wheelCtx.font = "bold 9.5px Inter";
+                wheelCtx.fillText(names[i], r - 10, 4);
+                wheelCtx.restore();
+            }
+
+            // Tâm trục giữa
+            wheelCtx.beginPath();
+            wheelCtx.arc(cx, cy, 14, 0, Math.PI * 2);
+            wheelCtx.fillStyle = '#1e293b';
+            wheelCtx.fill();
+            wheelCtx.strokeStyle = '#f8fafc';
+            wheelCtx.lineWidth = 2;
+            wheelCtx.stroke();
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            document.getElementById('wheelWinnerBadge').classList.add('hidden');
+            document.getElementById('btnSpin').disabled = true;
+
+            const groupKey = document.getElementById('wheelGroupSelect').value;
+            const names = classGroups[groupKey] || classGroups.all;
+
+            const spinRotations = 5 + Math.random() * 5; // Số vòng quay
+            const spinAngle = spinRotations * Math.PI * 2 + Math.random() * Math.PI * 2;
+            const duration = 4000;
+            const start = performance.now();
+            const initialAngle = currentWheelAngle;
+
+            function animateSpin(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                // Hàm giảm tốc Cubic ease-out
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+
+                currentWheelAngle = initialAngle + spinAngle * easeOut;
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateSpin);
+                } else {
+                    isSpinning = false;
+                    document.getElementById('btnSpin').disabled = false;
+                    announceWheelWinner(names);
+                }
+            }
+            requestAnimationFrame(animateSpin);
+        }
+
+        function announceWheelWinner(names) {
+            const numSlices = names.length;
+            const arc = (Math.PI * 2) / numSlices;
+            // Kim chỉ nằm ở góc -PI/2 (hướng 12 giờ)
+            let normalizedAngle = ((-Math.PI / 2 - currentWheelAngle) % (Math.PI * 2));
+            if (normalizedAngle < 0) normalizedAngle += Math.PI * 2;
+
+            const winningIndex = Math.floor(normalizedAngle / arc);
+            const winner = names[winningIndex];
+
+            const badge = document.getElementById('wheelWinnerBadge');
+            document.getElementById('txtWinnerName').innerText = winner;
+            badge.classList.remove('hidden');
+        }
+
+        // Custom Safe Alert Modal (Không dùng window.alert)
+        function alertModal(msg) {
+            const modal = document.createElement('div');
+            modal.className = "fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4";
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl max-w-sm w-full p-5 shadow-2xl space-y-4 border border-slate-200">
+                    <div class="flex items-center gap-2 text-rose-600 font-bold text-sm">
+                        <i class="fa-solid fa-circle-exclamation text-lg"></i>
+                        <span>Thông báo hệ thống</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${msg}</p>
+                    <button onclick="this.closest('.fixed').remove()" class="w-full py-2 bg-sky-600 hover:bg-sky-500 text-white font-semibold rounded-lg text-xs transition">
+                        Đã hiểu
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+    </script>
+</body>
+</html>
