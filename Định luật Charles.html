@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chủ đề 3: Định luật Charles - Vật lý 12</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-light: #1e6bc4;
+            --secondary: #334155;
+            --accent: #0284c7;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --bg-light: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(135deg, #092c4c 0%, var(--primary) 60%, var(--accent) 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        header h1 {
+            font-size: 2rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+        header .subtitle {
+            font-size: 1.05rem;
+            color: #e0f2fe;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+        header .copyright-header {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            padding: 0.35rem 1.2rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #bae6fd;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        /* Navigation Tabs */
+        .nav-container {
+            background: var(--secondary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            max-width: 1400px;
+            margin: 0 auto;
+            scrollbar-width: thin;
+        }
+        .nav-tab {
+            flex: 1;
+            min-width: max-content;
+            padding: 0.9rem 1.1rem;
+            color: #e2e8f0;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .nav-tab:hover {
+            background: rgba(255,255,255,0.08);
+            color: #ffffff;
+        }
+        .nav-tab.active {
+            background: rgba(255,255,255,0.14);
+            color: #38bdf8;
+            border-bottom-color: #38bdf8;
+        }
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 1360px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.2rem;
+        }
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Cards & Grid */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+            border: 1px solid var(--border-color);
+        }
+        .card-title {
+            font-size: 1.25rem;
+            color: var(--primary);
+            border-left: 5px solid var(--accent);
+            padding-left: 0.75rem;
+            margin-bottom: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 1.5rem;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+        /* Highlight Boxes */
+        .info-box {
+            background: #f0f9ff;
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.2rem;
+            border-radius: 6px;
+            margin: 0.8rem 0;
+        }
+        .warning-box {
+            background: #fffbeb;
+            border-left: 4px solid var(--warning);
+            padding: 1rem 1.2rem;
+            border-radius: 6px;
+            margin: 0.8rem 0;
+        }
+        .danger-box {
+            background: #fef2f2;
+            border-left: 4px solid var(--danger);
+            padding: 1rem 1.2rem;
+            border-radius: 6px;
+            margin: 0.8rem 0;
+        }
+        .success-box {
+            background: #f0fdf4;
+            border-left: 4px solid var(--success);
+            padding: 1rem 1.2rem;
+            border-radius: 6px;
+            margin: 0.8rem 0;
+        }
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.96rem;
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        th {
+            background: #e2e8f0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        /* Buttons & Inputs */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--primary);
+            color: white;
+        }
+        .btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+        }
+        .btn-secondary { background: #64748b; }
+        .btn-secondary:hover { background: #475569; }
+        .btn-success { background: var(--success); }
+        .btn-success:hover { background: #15803d; }
+        .btn-warning { background: var(--warning); }
+        .btn-warning:hover { background: #b45309; }
+        .btn-danger { background: var(--danger); }
+        .btn-danger:hover { background: #b91c1c; }
+
+        /* Sub-tabs for Simulation */
+        .sub-nav {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+        }
+        .sub-btn {
+            padding: 0.65rem 1.25rem;
+            border-radius: 8px;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .sub-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        .sim-panel { display: none; }
+        .sim-panel.active { display: block; }
+
+        /* Simulation Controls */
+        .control-group {
+            margin-bottom: 1rem;
+            background: #f8fafc;
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--secondary);
+        }
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+        input[type="number"], input[type="text"], select, textarea {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        canvas {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            width: 100%;
+            display: block;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .stat-card {
+            background: #f1f5f9;
+            padding: 0.7rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #cbd5e1;
+        }
+        .stat-card .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .stat-card .stat-val {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 0.2rem;
+        }
+        /* Practice & Quiz */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.65rem;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+        }
+        .badge-lv1 { background: var(--success); }
+        .badge-lv2 { background: var(--warning); }
+        .badge-lv3 { background: var(--danger); }
+
+        .hidden-box {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border-color);
+        }
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.7rem 1rem;
+            margin: 0.45rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .quiz-option:hover {
+            background: #f0f9ff;
+            border-color: var(--accent);
+        }
+        /* Classroom Tools */
+        .timer-svg-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .timer-blink {
+            animation: blinkRed 0.6s infinite alternate;
+        }
+        @keyframes blinkRed {
+            from { background-color: #fee2e2; }
+            to { background-color: #ef4444; color: white; }
+        }
+        /* Modal Popup */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 14px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-top: 6px solid var(--accent);
+        }
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 1.25rem;
+            margin-top: auto;
+            font-size: 0.95rem;
+            border-top: 3px solid var(--accent);
+        }
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.45rem; }
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>CHỦ ĐỀ 3: ĐỊNH LUẬT CHARLES & QUÁ TRÌNH ĐẲNG ÁP</h1>
+        <div class="subtitle">Chương II: Khí lí tưởng — Vật lý 12 (Chương trình GDPT 2018)</div>
+        <div class="copyright-header" id="header-copyright">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+    </header>
+
+    <div class="nav-container">
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('tab1')">🚀 1. Khởi động & Thực tiễn</button>
+            <button class="nav-tab" onclick="switchTab('tab2')">📖 2. Cốt lõi Lý thuyết</button>
+            <button class="nav-tab" onclick="switchTab('tab3')">🔬 3. Mô phỏng Tương tác</button>
+            <button class="nav-tab" onclick="switchTab('tab4')">🧮 4. Máy tính Tham số</button>
+            <button class="nav-tab" onclick="switchTab('tab5')">📝 5. Luyện tập Phân hóa</button>
+            <button class="nav-tab" onclick="switchTab('tab6')">🎯 6. Bài Tự đánh giá</button>
+            <button class="nav-tab" onclick="switchTab('tab7')">🛠️ 7. Tiện ích Lớp học</button>
+        </nav>
+    </div>
+
+    <main>
+        <!-- ==================== TAB 1: WARM-UP ==================== -->
+        <section id="tab1" class="tab-panel active">
+            <div class="card">
+                <h2 class="card-title">🚀 Khởi động: Những nghịch lý nhiệt học trong đời sống</h2>
+                <p>Xung quanh chúng ta, không khí dãn nở hay co lại khi thay đổi nhiệt độ dẫn đến rất nhiều hiện tượng thú vị nhưng cũng ẩn chứa các mâu thuẫn nhận thức sâu sắc. Hãy cùng khám phá 3 tình huống thực tế dưới đây!</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="card">
+                    <h3 style="color:var(--primary); margin-bottom:0.5rem;">🎈 Tình huống 1: Khinh khí cầu bay lên</h3>
+                    <p>Một khinh khí cầu khổng lồ có vỏ mở ở đáy (thông với khí quyển nên áp suất bên trong luôn bằng áp suất khí quyển \( p_{0} = 1\text{ atm} \)). Khi phi công bật ngọn lửa đốt nóng không khí bên trong vòm cầu từ \( 20\text{ }^\circ\text{C} \) lên \( 110\text{ }^\circ\text{C} \), khí cầu từ từ bay bổng lên bầu trời.</p>
+                    <div class="warning-box">
+                        <strong>❓ Câu hỏi mâu thuẫn nhận thức:</strong><br>
+                        Đáy khí cầu để hở hoàn toàn, tại sao khi đun nóng không khí không đơn giản là "tràn hết ra ngoài" làm xẹp khí cầu, mà lại giúp khí cầu căng phồng và tạo ra lực nâng thắng được trọng lực của cả giỏ chở người nặng hàng trăm kilôgam?
+                    </div>
+                    <button class="btn" onclick="toggleElement('warmup-ans1')">💡 Xem giải đáp Vật lý</button>
+                    <div id="warmup-ans1" class="hidden-box info-box">
+                        Khi đun nóng đẳng áp (\( p = \text{hằng số} \)), thể tích của một lượng khí tỉ lệ thuận với nhiệt độ tuyệt đối \( T \). Khí nở ra làm một phần không khí thoát ra qua lỗ đáy, dẫn đến khối lượng riêng \( \rho = \frac{m}{V} \) của khí nóng bên trong nhỏ hơn khối lượng riêng của không khí lạnh bên ngoài. Lực đẩy Archimedes \( F_{A} = \rho_{\text{ngoài}} g V \) lớn hơn tổng trọng lượng giúp khí cầu bay lên!
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="color:var(--primary); margin-bottom:0.5rem;">🏓 Tình huống 2: Quả bóng bàn bị bẹp</h3>
+                    <p>Một quả bóng bàn bị giẫm bẹp (nhưng không nứt vỡ). Theo kinh nghiệm dân gian, chỉ cần thả quả bóng bẹp này vào một bát nước nóng già, vỏ bóng sẽ tự động phồng tròn trở lại như cũ.</p>
+                    <div class="warning-box">
+                        <strong>❓ Tranh luận khoa học (SBT Vật lí 12):</strong><br>
+                        Nhiều người lấy hiện tượng quả bóng bàn phồng lên trong nước nóng làm ví dụ minh họa trực tiếp cho <em>quá trình đẳng áp (Định luật Charles)</em>. Theo em, nhận định này <strong>Đúng hay Sai</strong>? Vì sao?
+                    </div>
+                    <button class="btn" onclick="toggleElement('warmup-ans2')">💡 Xem giải đáp Vật lý</button>
+                    <div id="warmup-ans2" class="hidden-box danger-box">
+                        <strong>Phản biện chuẩn xác:</strong> Đây <strong>KHÔNG PHẢI</strong> là quá trình đẳng áp! Muốn đẩy vỏ nhựa cứng đang bị bẹp phồng trở lại, áp lực của khí bên trong phải lớn hơn tổng áp lực khí quyển bên ngoài và lực đàn hồi của vỏ bóng. Do đó, trong quá trình bóng phồng lên, cả 3 thông số \( p, V, T \) đều thay đổi! Quá trình đẳng áp chỉ xảy ra khi vật chắn (như pit-tông hay giọt thủy ngân) dịch chuyển tự do không ma sát.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="color:var(--primary); margin-bottom:0.5rem;">🌡️ Tình huống 3: Nhiệt kế khí của Galileo</h3>
+                    <p>Một bình cầu thủy tinh chứa không khí nối với một ống nhỏ nằm ngang có một giọt thủy ngân ngăn cách với bên ngoài. Chỉ cần áp bàn tay ấm vào bình cầu, giọt thủy ngân lập tức chạy vọt đi một đoạn dài tới vài chục centimet!</p>
+                    <div class="warning-box">
+                        <strong>❓ Câu hỏi mâu thuẫn nhận thức:</strong><br>
+                        Nếu tăng nhiệt độ của một khối khí từ \( 20\text{ }^\circ\text{C} \) lên \( 40\text{ }^\circ\text{C} \) (gấp đôi số chỉ trên nhiệt kế Celsius) ở áp suất không đổi, tại sao thể tích khí lại <strong>không tăng gấp đôi</strong> mà chỉ tăng thêm khoảng \( 6,8\% \)?
+                    </div>
+                    <button class="btn" onclick="toggleElement('warmup-ans3')">💡 Xem giải đáp Vật lý</button>
+                    <div id="warmup-ans3" class="hidden-box info-box">
+                        Vì gốc \( 0\text{ }^\circ\text{C} \) chỉ là mốc nước đá đang tan chứ không phải trạng thái phân tử ngừng chuyển động nhiệt! Thể tích khí tỉ lệ thuận với <strong>nhiệt độ tuyệt đối \( T\text{ (K)} \)</strong> chứ không tỉ lệ thuận với \( t\text{ (}^\circ\text{C)} \):
+                        \[ \frac{V_{2}}{V_{1}} = \frac{T_{2}}{T_{1}} = \frac{40 + 273}{20 + 273} = \frac{313}{293} \approx 1,068 \text{ (tăng } 6,8\%) \]
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: CORE THEORY ==================== -->
+        <section id="tab2" class="tab-panel">
+            <div class="grid-2">
+                <div class="card">
+                    <h2 class="card-title">📖 1. Quá trình đẳng áp & Định luật Charles</h2>
+                    <div class="info-box">
+                        <p><strong>🔹 Quá trình đẳng áp:</strong> Là quá trình biến đổi trạng thái của một khối lượng khí xác định khi giữ <strong>áp suất không đổi</strong> (\( p = \text{hằng số} \)).</p>
+                    </div>
+                    <p style="margin-top:0.8rem;"><strong>🔹 Nghiên cứu thực nghiệm của Charles (1787):</strong> Khi tăng nhiệt độ của một khối lượng khí xác định từ \( t_{0} = 0\text{ }^\circ\text{C} \) (thể tích \( V_{0} \)) lên \( t\text{ }^\circ\text{C} \) (thể tích \( V \)) ở áp suất không đổi, mọi chất khí đều có hệ số nở đẳng áp \( \alpha = \frac{1}{273}\text{ K}^{-1} \):</p>
+                    \[ \frac{V - V_{0}}{V_{0} \Delta t} = \frac{1}{273} \implies V = V_{0}\left(1 + \frac{t}{273}\right) = \frac{V_{0}}{273}(t + 273) \]
+                    <p>Đặt \( T\text{ (K)} = t\text{ (}^\circ\text{C)} + 273 \) là <strong>nhiệt độ tuyệt đối</strong>, ta thu được nội dung <strong>Định luật Charles</strong>:</p>
+                    <div class="success-box">
+                        <p><em>"Khi áp suất của một khối lượng khí xác định giữ không đổi thì thể tích của khí tỉ lệ thuận với nhiệt độ tuyệt đối của nó."</em></p>
+                        \[ \frac{V}{T} = \text{hằng số} \iff \frac{V_{1}}{T_{1}} = \frac{V_{2}}{T_{2}} \]
+                    </div>
+                    <p style="margin-top:0.8rem;"><strong>🔹 Bản chất vi mô (Thuyết động học phân tử):</strong> Khi nhiệt độ \( T \) tăng, tốc độ chuyển động nhiệt trung bình \( \bar{v} \) của các phân tử tăng lên, làm các phân tử va chạm vào thành bình mạnh hơn. Để giữ áp suất \( p \) không đổi, thể tích bình chứa \( V \) bắt buộc phải dãn nở ra để làm giảm mật độ phân tử \( \mu = \frac{N}{V} \), bù trừ lại sự tăng động năng va chạm.</p>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">📊 2. Đồ thị đường đẳng áp & Độ không tuyệt đối</h2>
+                    <p>Đường biểu diễn sự biến thiên của thể tích theo nhiệt độ khi áp suất không đổi gọi là <strong>đường đẳng áp</strong>:</p>
+                    <canvas id="theoryGraphCanvas" width="520" height="240" style="margin: 0.8rem 0;"></canvas>
+                    <ul style="padding-left:1.3rem;">
+                        <li><strong>Trong hệ tọa độ \( (V, T) \):</strong> Đường đẳng áp là đường thẳng kéo dài đi qua gốc tọa độ \( O(0\text{ K}, 0) \). (Lưu ý: Phần gần gốc tọa độ vẽ nét đứt vì ở nhiệt độ rất thấp khí đã hóa lỏng).</li>
+                        <li><strong>So sánh 2 đường đẳng áp \( p_{1} \) và \( p_{2} \) trên đồ thị \( (V, T) \):</strong> Kẻ đường đẳng nhiệt \( T = \text{hằng số} \), đường nào nằm cao hơn có thể tích lớn hơn nên áp suất nhỏ hơn: \( V_{1} > V_{2} \implies p_{1} < p_{2} \).</li>
+                        <li><strong>Trong hệ tọa độ \( (V, t\text{ }^\circ\text{C}) \):</strong> Đường thẳng cắt trục tung tại \( V_{0} \) và nếu kéo dài sẽ cắt trục hoành tại \( -273\text{ }^\circ\text{C} \) (chính xác là \( -273,15\text{ }^\circ\text{C} \)). Đó chính là <strong>Độ không tuyệt đối (\( 0\text{ K} \))</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">📐 3. Hệ thống Công thức Cốt lõi & Mở rộng Nhiệt động lực học</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Công thức Vật lý</th>
+                            <th>Tên đại lượng & Ý nghĩa vật lý</th>
+                            <th>Đơn vị chuẩn SI / Thông dụng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>\[ \frac{V_{1}}{T_{1}} = \frac{V_{2}}{T_{2}} \]</td>
+                            <td>\( V_{1}, V_{2} \): Thể tích ở trạng thái (1) và (2)<br>\( T_{1}, T_{2} \): Nhiệt độ tuyệt đối ở trạng thái (1) và (2)</td>
+                            <td>\( V \): \( \text{m}^3 \), \( \text{dm}^3\text{ (lít)} \), \( \text{cm}^3 \) (cùng đơn vị)<br>\( T \): Bắt buộc dùng \( \text{K} \) (\( T = t + 273 \))</td>
+                        </tr>
+                        <tr>
+                            <td>\[ \frac{\rho_{1}}{\rho_{2}} = \frac{V_{2}}{V_{1}} = \frac{T_{2}}{T_{1}} \]</td>
+                            <td>\( \rho = \frac{m}{V} \): Khối lượng riêng của chất khí.<br>Đẳng áp với khối lượng \( m \) xác định thì \( \rho \) tỉ lệ nghịch với \( T \).</td>
+                            <td>\( \rho \): \( \text{kg/m}^3 \) hoặc \( \text{g/lít} \)</td>
+                        </tr>
+                        <tr>
+                            <td>\[ \frac{l_{1}}{T_{1}} = \frac{l_{2}}{T_{2}} \]</td>
+                            <td>\( l_{1}, l_{2} \): Chiều dài (hoặc độ cao \( h \)) cột khí trong ống hình trụ hoặc xi lanh có tiết diện đều \( S \) (\( V = S \cdot l \)).</td>
+                            <td>\( l, h \): \( \text{m} \) hoặc \( \text{cm} \)</td>
+                        </tr>
+                        <tr>
+                            <td>\[ |A| = p|\Delta V| = p|V_{2} - V_{1}| \]</td>
+                            <td>\( |A| \): Độ lớn công do khối khí thực hiện (khi dãn nở) hoặc nhận được (khi bị nén) trong quá trình đẳng áp.</td>
+                            <td>\( A \): \( \text{J} \) (Khi đó \( p \) tính bằng \( \text{Pa} \), \( V \) tính bằng \( \text{m}^3 \))</td>
+                        </tr>
+                        <tr>
+                            <td>\[ \Delta U = n \cdot c \cdot (T_{2} - T_{1}) \]</td>
+                            <td>\( \Delta U \): Độ biến thiên nội năng của \( n\text{ mol} \) khí lí tưởng.<br>\( c \): Nhiệt dung riêng phân tử (đẳng tích) của chất khí.<br>Định luật I NĐLH: \( \Delta U = A + Q \).</td>
+                            <td>\( \Delta U, Q \): \( \text{J} \)<br>\( n \): \( \text{mol} \)<br>\( c \): \( \mathrm{J/(mol \cdot K)} \)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">⚠️ 4. Bẫy Lý thuyết & Sai lầm Học sinh hay mắc phải</h2>
+                <div class="grid-2">
+                    <div class="danger-box">
+                        <strong>❌ Bẫy 1: Quên đổi nhiệt độ từ \( ^\circ\text{C} \) sang Kelvin (\( \text{K} \))</strong><br>
+                        Học sinh hay viết sai: \( \frac{V_{1}}{t_{1}} = \frac{V_{2}}{t_{2}} \). Ví dụ nhiệt độ tăng từ \( 25\text{ }^\circ\text{C} \) lên \( 50\text{ }^\circ\text{C} \) thì kết luận nhầm thể tích tăng gấp đôi!<br>
+                        <strong>✅ Khắc phục:</strong> Luôn đổi \( T = t + 273 \) ngay khi đọc đề. Đối với độ biến thiên thì \( \Delta T\text{ (K)} = \Delta t\text{ (}^\circ\text{C)} \).
+                    </div>
+                    <div class="danger-box">
+                        <strong>❌ Bẫy 2: Nhầm dấu của Công \( A \) trong Định luật I NĐLH</strong><br>
+                        Theo quy ước SGK Vật lí 12: \( \Delta U = A + Q \). Khi đun nóng đẳng áp, khí dãn nở đẩy pit-tông (khí thực hiện công) nên \( A < 0 \): \( A = -p(V_{2} - V_{1}) \). Nếu đề hỏi "nhiệt lượng khí nhận được", phải dùng \( Q = \Delta U - A = \Delta U + |A| \).
+                    </div>
+                    <div class="warning-box">
+                        <strong>❌ Bẫy 3: Tính áp suất cột khí bị giam bởi giọt thủy ngân</strong><br>
+                        - Ống đặt nằm ngang: \( p = p_{0} \).<br>
+                        - Ống thẳng đứng miệng hướng lên: \( p = p_{0} + \rho_{\text{Hg}} g h_{\text{Hg}} \).<br>
+                        - Ống thẳng đứng miệng hướng xuống: \( p = p_{0} - \rho_{\text{Hg}} g h_{\text{Hg}} \).<br>
+                        Mọi trường hợp trên khi hơ nóng từ từ đều có \( p = \text{hằng số} \) (đẳng áp).
+                    </div>
+                    <div class="warning-box">
+                        <strong>❌ Bẫy 4: Bài toán không khí thoát ra khỏi phòng hở</strong><br>
+                        Căn phòng có thể tích cố định \( V_{1} \). Khi nhiệt độ tăng từ \( T_{1} \) lên \( T_{2} \) ở áp suất khí quyển \( p_{0} \), toàn bộ lượng khí ban đầu dãn nở thành \( V_{2} = V_{1}\frac{T_{2}}{T_{1}} \). Thể tích khí thoát ra là \( \Delta V = V_{2} - V_{1} \), nhưng khi tính khối lượng thoát ra phải nhân với <strong>khối lượng riêng \( \rho_{2} \) ở nhiệt độ lúc sau \( T_{2} \)</strong>: \( \Delta m = \Delta V \cdot \rho_{2} \).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: SIMULATION LAB ==================== -->
+        <section id="tab3" class="tab-panel">
+            <div class="card">
+                <h2 class="card-title">🔬 Phòng Thí nghiệm Ảo Tương tác (Simulation Lab)</h2>
+                <p>Chọn một trong hai mô hình thí nghiệm kinh điển dưới đây để khảo sát trực quan bản chất quá trình đẳng áp:</p>
+                <div class="sub-nav" style="margin-top:0.8rem;">
+                    <button class="sub-btn active" id="btn-simA" onclick="switchSim('simA')">Thí nghiệm 3A: Xi lanh Pit-tông tự do & Động học phân tử</button>
+                    <button class="sub-btn" id="btn-simB" onclick="switchSim('simB')">Thí nghiệm 3B: Nhiệt kế khí Bình cầu & Giọt thủy ngân (Câu 11 & SBT)</button>
+                </div>
+
+                <!-- SUB-TAB 3A -->
+                <div id="simA" class="sim-panel active">
+                    <div class="info-box">
+                        <strong>🧭 Hướng dẫn thao tác ("Thử và Sai"):</strong>
+                        <ul style="padding-left:1.2rem; margin-top:0.3rem;">
+                            <li>1. Giữ áp suất không đổi (\( p = 1,0\text{ atm} \)), kéo thanh trượt tăng nhiệt độ tuyệt đối \( T \) từ \( 250\text{ K} \) lên \( 500\text{ K} \) (gấp đôi). Quan sát thể tích \( V \), độ cao cột khí \( h \) và khối lượng riêng \( \rho \) thay đổi như thế nào?</li>
+                            <li>2. Quan sát các vector lực trên nắp pit-tông: Tại sao khi đun nóng, các phân tử chuyển động nhanh hơn nhưng tổng áp lực khí \( \vec{F}_{k} \) hướng lên vẫn cân bằng với \( \vec{P}_{pt} + \vec{F}_{0} \) hướng xuống?</li>
+                        </ul>
+                    </div>
+
+                    <div class="grid-2" style="margin-top:1rem;">
+                        <div>
+                            <canvas id="canvasSimA" width="600" height="400"></canvas>
+                            <div class="stat-grid">
+                                <div class="stat-card">
+                                    <div class="stat-label">Nhiệt độ \( T\text{ (K)} \)</div>
+                                    <div class="stat-val" id="simA-out-T">300 K (27 °C)</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Thể tích \( V\text{ (lít)} \)</div>
+                                    <div class="stat-val" id="simA-out-V">6,00 lít</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Khối lượng riêng \( \rho \)</div>
+                                    <div class="stat-val" id="simA-out-rho">2,00 g/lít</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Công thực hiện \( |A| \)</div>
+                                    <div class="stat-val" id="simA-out-A">0 J</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Độ biến thiên \( \Delta U \)</div>
+                                    <div class="stat-val" id="simA-out-dU">0 J</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="control-group">
+                                <label>
+                                    <span>🔥 Nhiệt độ tuyệt đối \( T \):</span>
+                                    <span id="simA-lbl-T" style="color:var(--danger);">300 K (27 °C)</span>
+                                </label>
+                                <input type="range" id="simA-slider-T" min="150" max="600" step="5" value="300" oninput="updateSimA()">
+                            </div>
+
+                            <div class="control-group">
+                                <label>
+                                    <span>⚖️ Áp suất không đổi \( p \) (Gia trọng trên pit-tông):</span>
+                                    <span id="simA-lbl-P" style="color:var(--primary);">1,0 atm</span>
+                                </label>
+                                <input type="range" id="simA-slider-P" min="0.5" max="2.0" step="0.1" value="1.0" oninput="resetBaseSimA()">
+                            </div>
+
+                            <div class="control-group">
+                                <label>
+                                    <span>🧪 Khối lượng khí \( m \) trong xi lanh:</span>
+                                    <span id="simA-lbl-m">12,0 g</span>
+                                </label>
+                                <input type="range" id="simA-slider-m" min="6" max="24" step="2" value="12" oninput="resetBaseSimA()">
+                            </div>
+
+                            <div style="display:flex; gap:0.75rem; margin-bottom:1rem;">
+                                <button class="btn" onclick="setSimATemp(250)">Đặt \( T = 250\text{ K} \)</button>
+                                <button class="btn btn-warning" onclick="setSimATemp(500)">Tăng gấp đôi (\( T = 500\text{ K} \))</button>
+                                <button class="btn btn-secondary" onclick="resetSimA()">🔄 Đặt lại chuẩn</button>
+                            </div>
+
+                            <div class="info-box" style="font-size:0.9rem;">
+                                <strong>📌 Giải thích trạng thái tức thời:</strong>
+                                <p id="simA-explain">Ở \( T = 300\text{ K} \) (\( 27\text{ }^\circ\text{C} \)), pit-tông cân bằng dưới tác dụng của trọng lực \(\vec{P}_{pt}\), áp lực khí quyển \(\vec{F}_{0}\) hướng xuống và áp lực khí \(\vec{F}_{k}\) hướng lên: \( \vec{F}_{k} + \vec{P}_{pt} + \vec{F}_{0} = \vec{0} \).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-TAB 3B -->
+                <div id="simB" class="sim-panel">
+                    <div class="info-box">
+                        <strong>🧭 Mô hình Áp kế / Nhiệt kế khí Bình cầu gắn ống nằm ngang AB (Câu 11 Đề Luyện tập):</strong><br>
+                        Một bình cầu thủy tinh dung tích \( V_{\text{bình}} \) gắn với ống nhỏ \( AB \) nằm ngang có tiết diện \( S = 0,1\text{ cm}^2 \). Một giọt thủy ngân (\(\text{Hg}\)) ngăn cách khí trong bình với khí quyển bên ngoài (đầu \( B \) để hở nên \( p = p_{0} = \text{hằng số} \)). Hãy điều chỉnh nhiệt độ từ \( 0\text{ }^\circ\text{C} \) lên \( 10\text{ }^\circ\text{C} \) để kiểm chứng độ dịch chuyển \( \Delta x = 100\text{ cm} \)!
+                    </div>
+
+                    <div class="grid-2" style="margin-top:1rem;">
+                        <div>
+                            <canvas id="canvasSimB" width="600" height="320"></canvas>
+                            <div class="stat-grid">
+                                <div class="stat-card">
+                                    <div class="stat-label">Thể tích ở \( 0\text{ }^\circ\text{C} \) (\( V_{1} \))</div>
+                                    <div class="stat-val" id="simB-out-V1">273,0 cm³</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Thể tích hiện tại (\( V_{2} \))</div>
+                                    <div class="stat-val" id="simB-out-V2">273,0 cm³</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Vị trí cách A (\( x \))</div>
+                                    <div class="stat-val" id="simB-out-x">30,0 cm</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Độ dịch chuyển \( \Delta x \)</div>
+                                    <div class="stat-val" id="simB-out-dx" style="color:var(--danger);">0,0 cm</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="control-group">
+                                <label>
+                                    <span>🌡️ Nhiệt độ trong bình \( t\text{ (}^\circ\text{C)} \):</span>
+                                    <span id="simB-lbl-t" style="color:var(--danger);">0,0 °C (273,0 K)</span>
+                                </label>
+                                <input type="range" id="simB-slider-t" min="-2" max="15" step="0.5" value="0" oninput="updateSimB()">
+                            </div>
+
+                            <div class="control-group">
+                                <label>
+                                    <span>🔮 Dung tích bình cầu \( V_{\text{bình}} \):</span>
+                                    <span id="simB-lbl-Vb">270 cm³</span>
+                                </label>
+                                <input type="range" id="simB-slider-Vb" min="200" max="300" step="10" value="270" oninput="updateSimB()">
+                            </div>
+
+                            <div class="control-group">
+                                <label>
+                                    <span>📏 Vị trí giọt Hg cách A ở \( 0\text{ }^\circ\text{C} \) (\( x_{0} \)):</span>
+                                    <span id="simB-lbl-x0">30 cm</span>
+                                </label>
+                                <input type="range" id="simB-slider-x0" min="10" max="50" step="5" value="30" oninput="updateSimB()">
+                            </div>
+
+                            <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:1rem;">
+                                <button class="btn" onclick="setPresetSimB(270, 30, 0)">Trạng thái 1 (\( 0\text{ }^\circ\text{C} \))</button>
+                                <button class="btn btn-warning" onclick="setPresetSimB(270, 30, 10)">Giải Câu 11 (\( 10\text{ }^\circ\text{C} \))</button>
+                                <button class="btn btn-success" onclick="setPresetSimB(250, 50, 15)">Giải Câu 1 Đ/S (\( V_b=250, t=15\text{ }^\circ\text{C} \))</button>
+                            </div>
+
+                            <div class="success-box" id="simB-math-box">
+                                <strong>📐 Phương trình kiểm chứng:</strong><br>
+                                Ở \( t_{1} = 0\text{ }^\circ\text{C} \implies T_{1} = 273\text{ K} \), thể tích khí: \( V_{1} = V_{\text{bình}} + S \cdot x_{0} = 273\text{ cm}^3 \).<br>
+                                Khi hơ nóng đẳng áp đến \( T_{2} \), độ dịch chuyển \( \Delta x = \frac{V_{2} - V_{1}}{S} \).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: CALCULATOR MODULE ==================== -->
+        <section id="tab4" class="tab-panel">
+            <div class="card">
+                <h2 class="card-title">🧮 Máy tính Tham số Vật lý & Giải chi tiết từng bước</h2>
+                <p>Nhập <strong>3 trong 4 đại lượng</strong> của quá trình đẳng áp và <strong>bỏ trống đại lượng cần tìm</strong>. Hệ thống sẽ tự động đổi đơn vị nhiệt độ chuẩn SI, giải phương trình và trình bày lời giải từng bước bằng KaTeX.</p>
+
+                <div class="grid-2" style="margin-top:1.2rem;">
+                    <div class="card" style="background:#f8fafc; margin-bottom:0;">
+                        <h3 style="color:var(--primary); margin-bottom:0.8rem;">Trạng thái (1) - Ban đầu</h3>
+                        <div style="margin-bottom:0.9rem;">
+                            <label style="font-weight:600; display:block; margin-bottom:0.3rem;">Thể tích \( V_{1} \) (hoặc chiều dài cột khí \( l_{1} \)):</label>
+                            <div style="display:flex; gap:0.5rem;">
+                                <input type="number" id="calc-V1" placeholder="Bỏ trống nếu cần tìm V₁" step="any" value="15">
+                                <select id="calc-unitV" style="width:130px;">
+                                    <option value="lít">lít (dm³)</option>
+                                    <option value="cm³">cm³ (mL)</option>
+                                    <option value="m³">m³</option>
+                                    <option value="cm">cm (chiều dài l)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="font-weight:600; display:block; margin-bottom:0.3rem;">Nhiệt độ trạng thái 1 (\( T_{1} \) hoặc \( t_{1} \)):</label>
+                            <div style="display:flex; gap:0.5rem;">
+                                <input type="number" id="calc-T1" placeholder="Bỏ trống nếu cần tìm T₁" step="any" value="27">
+                                <select id="calc-unitT1" style="width:130px;">
+                                    <option value="C">°C (Celsius)</option>
+                                    <option value="K">K (Kelvin)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="background:#f8fafc; margin-bottom:0;">
+                        <h3 style="color:var(--primary); margin-bottom:0.8rem;">Trạng thái (2) - Lúc sau</h3>
+                        <div style="margin-bottom:0.9rem;">
+                            <label style="font-weight:600; display:block; margin-bottom:0.3rem;">Thể tích \( V_{2} \) (hoặc chiều dài cột khí \( l_{2} \)):</label>
+                            <div style="display:flex; gap:0.5rem;">
+                                <input type="number" id="calc-V2" placeholder="Bỏ trống nếu cần tìm V₂" step="any" value="">
+                            </div>
+                        </div>
+                        <div>
+                            <label style="font-weight:600; display:block; margin-bottom:0.3rem;">Nhiệt độ trạng thái 2 (\( T_{2} \) hoặc \( t_{2} \)):</label>
+                            <div style="display:flex; gap:0.5rem;">
+                                <input type="number" id="calc-T2" placeholder="Bỏ trống nếu cần tìm T₂" step="any" value="87">
+                                <select id="calc-unitT2" style="width:130px;">
+                                    <option value="C">°C (Celsius)</option>
+                                    <option value="K">K (Kelvin)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="background:#f0f9ff; margin-top:1rem;">
+                    <h4 style="color:var(--primary); margin-bottom:0.6rem;">⚙️ Tham số phụ (Tùy chọn để tính Khối lượng riêng \(\rho\), Công \(A\), Độ biến thiên nội năng \(\Delta U\)):</h4>
+                    <div class="grid-3">
+                        <div>
+                            <label style="font-size:0.88rem; font-weight:600;">Khối lượng khí \( m\text{ (g)} \):</label>
+                            <input type="number" id="calc-m" placeholder="VD: 14" step="any" value="14">
+                        </div>
+                        <div>
+                            <label style="font-size:0.88rem; font-weight:600;">Áp suất đẳng áp \( p\text{ (Pa)} \):</label>
+                            <input type="number" id="calc-p" placeholder="VD: 100000" step="any" value="100000">
+                        </div>
+                        <div>
+                            <label style="font-size:0.88rem; font-weight:600;">Số mol \( n\text{ (mol)} \) (với \( c = 20,8\text{ J/mol}\cdot\text{K} \)):</label>
+                            <input type="number" id="calc-n" placeholder="VD: 0.5" step="any" value="0.5">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:0.8rem; margin-top:1rem; flex-wrap:wrap;">
+                    <button class="btn btn-success" onclick="solveCharlesCalculator()">🧮 Phân tích & Tính toán chi tiết</button>
+                    <button class="btn btn-secondary" onclick="clearCalculator()">🧹 Xóa trống ô cần tìm</button>
+                </div>
+
+                <div id="calc-result-box" class="info-box" style="margin-top:1.2rem; display:none;"></div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: GUIDED PRACTICE ==================== -->
+        <section id="tab5" class="tab-panel">
+            <div class="card">
+                <h2 class="card-title">📝 Phòng Luyện tập Phân hóa (3 Cấp độ Tư duy)</h2>
+                <p>Hệ thống bài tập trích xuất từ tài liệu <em>Chủ đề 3: Định luật Charles</em> và <em>Sách Bài tập Vật lí 12 - Kết nối tri thức</em>, phân hóa theo 3 cấp độ năng lực kèm hướng dẫn tư duy.</p>
+            </div>
+
+            <!-- LEVEL 1 -->
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.8rem;">
+                    <span class="badge badge-lv1">CẤP ĐỘ 1: NHẬN BIẾT – THÔNG HIỂU</span>
+                    <span style="color:var(--text-muted); font-size:0.9rem;">Áp dụng trực tiếp Định luật Charles & Khối lượng riêng</span>
+                </div>
+                <p><strong>Bài toán 1 (Câu 14 - Đề Luyện tập):</strong> Một lượng khí có khối lượng \( m = 14\text{ g} \) chiếm thể tích \( V_{1} = 5\text{ lít} \) ở nhiệt độ \( t_{1} = 27\text{ }^\circ\text{C} \). Nung nóng đẳng áp khối khí tới nhiệt độ \( t_{2} = 177\text{ }^\circ\text{C} \). Tìm thể tích \( V_{2} \) và khối lượng riêng \( \rho_{2} \) của khối khí sau khi nung nóng.</p>
+                <div style="display:flex; gap:0.6rem; margin-top:0.9rem;">
+                    <button class="btn btn-warning" onclick="toggleElement('prac1-hint')">💡 Gợi ý tư duy</button>
+                    <button class="btn" onclick="toggleElement('prac1-sol')">📖 Xem lời giải chi tiết</button>
+                </div>
+                <div id="prac1-hint" class="hidden-box warning-box">
+                    <strong>Gợi ý tư duy:</strong> Đổi nhiệt độ \( t_{1}, t_{2} \) sang thang Kelvin (\( T = t + 273 \)). Tính thể tích \( V_{2} \) theo định luật Charles \( \frac{V_{1}}{T_{1}} = \frac{V_{2}}{T_{2}} \), sau đó áp dụng công thức khối lượng riêng \( \rho_{2} = \frac{m}{V_{2}} \).
+                </div>
+                <div id="prac1-sol" class="hidden-box success-box">
+                    <strong>Lời giải chi tiết:</strong>
+                    <ul style="padding-left:1.2rem; margin-top:0.4rem;">
+                        <li>Trạng thái (1): \( V_{1} = 5\text{ lít} \), \( T_{1} = 27 + 273 = 300\text{ K} \).</li>
+                        <li>Trạng thái (2): \( V_{2} = ? \), \( T_{2} = 177 + 273 = 450\text{ K} \).</li>
+                        <li>Áp dụng định luật Charles cho quá trình đẳng áp:
+                            \[ \frac{V_{1}}{T_{1}} = \frac{V_{2}}{T_{2}} \implies V_{2} = V_{1}\frac{T_{2}}{T_{1}} = 5 \cdot \frac{450}{300} = 7,5\text{ lít} \]
+                        </li>
+                        <li>Khối lượng riêng của khối khí ở trạng thái (2):
+                            \[ \rho_{2} = \frac{m}{V_{2}} = \frac{14\text{ g}}{7,5\text{ lít}} \approx 1,87\text{ g/lít} \]
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- LEVEL 2 -->
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.8rem;">
+                    <span class="badge badge-lv2">CẤP ĐỘ 2: VẬN DỤNG</span>
+                    <span style="color:var(--text-muted); font-size:0.9rem;">Phối hợp Định luật Charles, Công cơ học & Định luật I Nhiệt động lực học</span>
+                </div>
+                <p><strong>Bài toán 2 (Câu 4 Đúng/Sai & Câu 6 Trả lời ngắn):</strong></p>
+                <p><strong>Phần A:</strong> Cho \( n = 0,02\text{ mol} \) khí lí tưởng nhốt trong một xi lanh thẳng đứng có pit-tông kín ở áp suất không đổi \( p = 10^{5}\text{ Pa} \), tiết diện xi lanh \( S = 20\text{ cm}^2 \). Ban đầu chiều cao cột khí là \( h_{1} = 25\text{ cm} \), nhiệt độ \( t_{1} = 27\text{ }^\circ\text{C} \). Hơ nóng đẳng áp đến khi nhiệt độ khí là \( t_{2} = 97\text{ }^\circ\text{C} \). Biết nhiệt dung riêng phân tử đẳng tích của khí là \( c = 20,8\mathrm{ J/(mol\cdot K)} \). Tính chiều cao cột khí \( h_{2} \), công khối khí thực hiện và độ biến thiên nội năng \( \Delta U \).</p>
+                <p style="margin-top:0.4rem;"><strong>Phần B:</strong> Một bình thủy tinh dung tích \( V_{1} = 14\text{ cm}^3 \) chứa không khí ở \( 77\text{ }^\circ\text{C} \) nối với ống nằm ngang chứa đầy thủy ngân (\( \rho_{\text{Hg}} = 13,6\text{ g/cm}^3 \)), đầu kia để hở. Làm lạnh bình đến \( 27\text{ }^\circ\text{C} \) thì có bao nhiêu gam thủy ngân chảy vào bình?</p>
+                <div style="display:flex; gap:0.6rem; margin-top:0.9rem;">
+                    <button class="btn btn-warning" onclick="toggleElement('prac2-hint')">💡 Gợi ý tư duy</button>
+                    <button class="btn" onclick="toggleElement('prac2-sol')">📖 Xem lời giải chi tiết</button>
+                </div>
+                <div id="prac2-hint" class="hidden-box warning-box">
+                    <strong>Gợi ý tư duy:</strong><br>
+                    - Phần A: Thể tích \( V = S \cdot h \implies \frac{h_{2}}{h_{1}} = \frac{T_{2}}{T_{1}} \). Công độ lớn \( |A| = p(V_{2} - V_{1}) \) (nhớ đổi \( V \) ra \( \text{m}^3 \)). Nội năng biến thiên \( \Delta U = n \cdot c \cdot (T_{2} - T_{1}) \).<br>
+                    - Phần B: Khi làm lạnh đẳng áp, thể tích khí co lại còn \( V_{2} \). Thể tích thủy ngân chảy vào bình chiếm chỗ phần khí co lại: \( \Delta V = V_{1} - V_{2} \).
+                </div>
+                <div id="prac2-sol" class="hidden-box success-box">
+                    <strong>Lời giải chi tiết:</strong><br>
+                    <strong>🔹 Giải Phần A:</strong>
+                    \[ T_{1} = 27 + 273 = 300\text{ K}; \quad T_{2} = 97 + 273 = 370\text{ K} \]
+                    - Chiều cao cột khí sau khi nung nóng:
+                    \[ \frac{h_{2}}{h_{1}} = \frac{T_{2}}{T_{1}} \implies h_{2} = 25 \cdot \frac{370}{300} \approx 30,83\text{ cm} \]
+                    - Thể tích ban đầu \( V_{1} = S \cdot h_{1} = 20 \cdot 25 = 500\text{ cm}^3 = 5 \cdot 10^{-4}\text{ m}^3 \).<br>
+                    - Thể tích lúc sau \( V_{2} = V_{1}\frac{370}{300} \approx 6,167 \cdot 10^{-4}\text{ m}^3 \).<br>
+                    - Độ lớn công do khối khí dãn nở thực hiện:
+                    \[ |A| = p(V_{2} - V_{1}) = 10^{5} \cdot (6,167 - 5,0) \cdot 10^{-4} \approx 11,67\text{ J} \quad (\text{Quy ước dấu: } A = -11,67\text{ J}) \]
+                    - Độ biến thiên nội năng của khối khí:
+                    \[ \Delta U = n \cdot c \cdot (T_{2} - T_{1}) = 0,02 \cdot 20,8 \cdot (370 - 300) = 29,12\text{ J} \]
+                    <strong>🔹 Giải Phần B:</strong>
+                    \[ T_{1} = 77 + 273 = 350\text{ K}; \quad T_{2} = 27 + 273 = 300\text{ K} \]
+                    \[ V_{2} = V_{1}\frac{T_{2}}{T_{1}} = 14 \cdot \frac{300}{350} = 12\text{ cm}^3 \implies \Delta V_{\text{Hg}} = V_{1} - V_{2} = 14 - 12 = 2\text{ cm}^3 \]
+                    Khối lượng thủy ngân chảy vào bình: \( m_{\text{Hg}} = \rho_{\text{Hg}} \cdot \Delta V_{\text{Hg}} = 13,6 \cdot 2 = 27,2\text{ g} \).
+                </div>
+            </div>
+
+            <!-- LEVEL 3 -->
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.8rem;">
+                    <span class="badge badge-lv3">CẤP ĐỘ 3: VẬN DỤNG CAO & NĂNG LỰC SỐ / AI</span>
+                    <span style="color:var(--text-muted); font-size:0.9rem;">Khảo sát Đồ thị đa quá trình & Xử lý dữ liệu thực nghiệm bằng công cụ số</span>
+                </div>
+                <p><strong>Bài toán 3 (Tích hợp Câu 6 Tự luyện & Câu 5 Thực nghiệm số):</strong></p>
+                <p><strong>1. Bài toán Đồ thị chuyển trạng thái:</strong> Một khối khí xác định biến đổi từ trạng thái \( (1) \) có \( V_{1} = 5\text{ lít}, T_{1} = 300\text{ K}, p_{1} \) sang trạng thái \( (2) \) có \( T_{2} = 500\text{ K} \) và áp suất \( p_{2} = 2p_{1} \). Bằng phương pháp dựng trạng thái trung gian \( (3) \) trên đồ thị \( (V, T) \) (dãn đẳng áp từ \( (1) \to (3) \) rồi nén đẳng nhiệt từ \( (3) \to (2) \)), hãy tính thể tích \( V_{2} \).</p>
+                <p style="margin-top:0.4rem;"><strong>2. Bài toán Năng lực số / Kiểm chứng AI:</strong> Một nhóm học sinh đo chiều cao cột không khí \( h\text{ (cm)} \) trong ống thủy tinh tiết diện đều theo nhiệt độ và thu được bảng số liệu:
+                Lần 1 (\( 293\text{ K} \to 25,00\text{ cm} \)); Lần 2 (\( 303\text{ K} \to 25,83\text{ cm} \)); Lần 3 (\( 313\text{ K} \to 26,70\text{ cm} \)); Lần 4 (\( 323\text{ K} \to 27,60\text{ cm} \)); Lần 5 (\( 333\text{ K} \to 28,53\text{ cm} \)). Một trợ lý AI phát biểu rằng: <em>"Hệ số tỉ lệ \( k = \frac{T}{h} \) trung bình bằng \( 11,5\text{ K/cm} \) và ở \( 80\text{ }^\circ\text{C} \) cột khí cao \( 32,5\text{ cm} \)"</em>. Hãy dùng thuật toán xử lý số liệu để <strong>kiểm chứng và bắt lỗi sai của AI</strong>!</p>
+
+                <div style="display:flex; gap:0.6rem; margin-top:0.9rem;">
+                    <button class="btn btn-warning" onclick="toggleElement('prac3-hint')">💡 Gợi ý tư duy & Phương pháp số</button>
+                    <button class="btn" onclick="toggleElement('prac3-sol')">📖 Xem lời giải & Code kiểm chứng AI</button>
+                </div>
+                <div id="prac3-hint" class="hidden-box warning-box">
+                    <strong>Gợi ý tư duy:</strong><br>
+                    - Ý 1: Xét quá trình trung gian \( (1) \xrightarrow{\text{đẳng áp } p_1} (3) \) ở cùng nhiệt độ \( T_{3} = T_{2} = 500\text{ K} \), tìm \( V_{3} \). Sau đó xét quá trình đẳng nhiệt \( (3) \xrightarrow{T_2 = 500\text{ K}} (2) \) với \( p_{3} = p_{1} \) và \( p_{2} = 2p_{1} \).<br>
+                    - Ý 2: Tính tỉ số \( k_{i} = \frac{T_{i}}{h_{i}} \) ở cả 5 lần đo rồi lấy trung bình cộng \( \bar{k} \). Từ đó suy ra \( h_{80} = \frac{80+273}{\bar{k}} \).
+                </div>
+                <div id="prac3-sol" class="hidden-box success-box">
+                    <strong>Lời giải chi tiết:</strong><br>
+                    <strong>🔹 1. Giải bài toán đồ thị qua trạng thái trung gian (3):</strong>
+                    <ul style="padding-left:1.2rem;">
+                        <li>Quá trình \( (1) \to (3) \) là dãn đẳng áp (\( p_{3} = p_{1} \)) từ \( T_{1} = 300\text{ K} \) lên \( T_{3} = T_{2} = 500\text{ K} \):
+                            \[ \frac{V_{3}}{V_{1}} = \frac{T_{3}}{T_{1}} \implies V_{3} = 5 \cdot \frac{500}{300} = \frac{25}{3}\text{ lít} \]
+                        </li>
+                        <li>Quá trình \( (3) \to (2) \) là nén đẳng nhiệt (\( T_{3} = T_{2} = 500\text{ K} \)) từ áp suất \( p_{3} = p_{1} \) lên \( p_{2} = 2p_{1} \) (Định luật Boyle):
+                            \[ p_{2}V_{2} = p_{3}V_{3} \implies V_{2} = \frac{p_{1}}{2p_{1}} V_{3} = \frac{1}{2} \cdot \frac{25}{3} = \frac{25}{6} \approx 4,17\text{ lít (hoặc } 4,16\text{ lít)} \]
+                        </li>
+                    </ul>
+                    <strong>🔹 2. Đánh giá Năng lực số & Kiểm chứng nhận định của AI:</strong>
+                    <p>Tính tỉ số \( k_{i} = \frac{T_{i}}{h_{i}} \) cho 5 lần đo: \( k_{1} = \frac{293}{25,00} = 11,72 \); \( k_{2} = \frac{303}{25,83} \approx 11,73 \); \( k_{3} = \frac{313}{26,70} \approx 11,72 \); \( k_{4} = \frac{323}{27,60} \approx 11,70 \); \( k_{5} = \frac{333}{28,53} \approx 11,67 \). Giá trị trung bình thực nghiệm là:</p>
+                    \[ \bar{k} = \frac{11,72 + 11,73 + 11,72 + 11,70 + 11,67}{5} \approx 11,71\text{ K/cm} \neq 11,5\text{ K/cm} \]
+                    <p>Ở \( t = 80\text{ }^\circ\text{C} \implies T_{80} = 353\text{ K} \), chiều cao cột khí dự đoán theo hệ số thực nghiệm \( \bar{k} = 11,7\text{ K/cm} \) là:</p>
+                    \[ h_{80} = \frac{353}{11,7} \approx 30,17\text{ cm} \quad (\text{Độ tăng thêm so với } 40\text{ }^\circ\text{C là } \Delta h = 30,17 - 26,70 \approx 3,5\text{ cm}) \]
+                    <p><strong>Kết luận:</strong> Nhận định của AI bị sai số ảo giác (hallucination). Học sinh cần luôn kiểm chứng lại số liệu của AI bằng công thức vật lý và bảng tính!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: INTERACTIVE QUIZ ==================== -->
+        <section id="tab6" class="tab-panel">
+            <div class="card">
+                <h2 class="card-title">🎯 Bài Tự Đánh Giá Trực Tuyến (Interactive Quiz)</h2>
+                <p>Hoàn thành 4 câu hỏi trắc nghiệm trọng tâm dưới đây và bấm <strong>"Nộp bài & Xem giải thích"</strong> để kiểm tra mức độ nắm vững kiến thức.</p>
+
+                <div id="quiz-container" style="margin-top:1.2rem;"></div>
+
+                <div style="display:flex; gap:0.8rem; margin-top:1.2rem;">
+                    <button class="btn btn-success" onclick="submitQuiz()">✅ Nộp bài & Xem kết quả</button>
+                    <button class="btn btn-secondary" onclick="renderQuiz()">🔄 Làm lại đề</button>
+                </div>
+
+                <div id="quiz-summary" class="info-box" style="margin-top:1.2rem; display:none;"></div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 7: CLASSROOM TOOLS ==================== -->
+        <section id="tab7" class="tab-panel">
+            <div class="grid-2">
+                <!-- VISUAL TIMER -->
+                <div class="card" id="timer-card">
+                    <h2 class="card-title">⏱️ Đồng hồ Đếm ngược Thảo luận Nhóm</h2>
+                    <div class="timer-svg-wrap">
+                        <svg width="230" height="230" viewBox="0 0 220 220">
+                            <circle cx="110" cy="110" r="95" fill="none" stroke="#e2e8f0" stroke-width="14"/>
+                            <circle id="timer-progress" cx="110" cy="110" r="95" fill="none" stroke="#0284c7" stroke-width="14"
+                                stroke-linecap="round" stroke-dasharray="596.9" stroke-dashoffset="0"
+                                transform="rotate(-90 110 110)" style="transition: stroke-dashoffset 0.3s linear;"/>
+                            <text id="timer-text" x="110" y="122" text-anchor="middle" font-size="40" font-weight="700" fill="#0f4c81">02:00</text>
+                        </svg>
+
+                        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:center; margin:0.8rem 0;">
+                            <button class="btn btn-secondary" onclick="setTimerSeconds(60)">1 Phút</button>
+                            <button class="btn btn-secondary" onclick="setTimerSeconds(120)">2 Phút</button>
+                            <button class="btn btn-secondary" onclick="setTimerSeconds(180)">3 Phút</button>
+                            <button class="btn btn-secondary" onclick="setTimerSeconds(300)">5 Phút</button>
+                        </div>
+
+                        <div style="display:flex; gap:0.75rem; margin-top:0.5rem;">
+                            <button class="btn btn-success" id="btn-timer-start" onclick="toggleTimer()">▶️ Bắt đầu</button>
+                            <button class="btn btn-danger" onclick="resetTimer()">🔄 Đặt lại</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LUCKY WHEEL -->
+                <div class="card">
+                    <h2 class="card-title">🎡 Vòng quay May mắn (Gọi tên theo 4 Tổ)</h2>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; align-items:center;">
+                        <div style="position:relative; display:flex; justify-content:center;">
+                            <canvas id="wheelCanvas" width="280" height="280" style="max-width:280px; border:none; background:transparent;"></canvas>
+                        </div>
+                        <div>
+                            <label style="font-weight:700; display:block; margin-bottom:0.4rem;">Chọn Tổ học tập:</label>
+                            <select id="wheel-group-select" onchange="loadGroupStudents()" style="margin-bottom:0.75rem;">
+                                <option value="all">Tất cả 4 Tổ (Đại diện)</option>
+                                <option value="to1">Tổ 1</option>
+                                <option value="to2">Tổ 2</option>
+                                <option value="to3">Tổ 3</option>
+                                <option value="to4">Tổ 4</option>
+                            </select>
+
+                            <label style="font-weight:700; display:block; margin-bottom:0.4rem;">Danh sách học sinh (mỗi dòng 1 tên):</label>
+                            <textarea id="wheel-names" rows="5" oninput="drawWheel()"></textarea>
+
+                            <button class="btn btn-warning" style="width:100%; margin-top:0.75rem; font-size:1.05rem;" onclick="spinWheel()">🎯 QUAY NGẪU NHIÊN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Winner Modal -->
+    <div class="modal-overlay" id="winner-modal">
+        <div class="modal-content">
+            <div style="font-size:3rem; margin-bottom:0.5rem;">🎉🏆🎉</div>
+            <h3 style="color:var(--primary); font-size:1.35rem;">XIN CHÚC MỪNG BẠN</h3>
+            <div id="winner-name" style="font-size:1.8rem; font-weight:800; color:var(--danger); margin:1rem 0;">Nguyễn Văn A</div>
+            <p style="color:var(--text-muted); margin-bottom:1.2rem;">Mời bạn đại diện trả lời câu hỏi Vật lý của thầy!</p>
+            <button class="btn" onclick="closeModal()">Đóng thông báo</button>
+        </div>
+    </div>
+
+    <footer>
+        <div id="footer-copyright">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+    </footer>
+
+    <script>
+        // ==================== KATEX CONFIGURATION ====================
+        const katexConfig = {
+            delimiters: [
+                {left: "\\[", right: "\\]", display: true},
+                {left: "\\(", right: "\\)", display: false}
+            ],
+            throwOnError: false
+        };
+
+        function triggerMathRender(element = document.body) {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(element, katexConfig);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentYear = new Date().getFullYear();
+            const copyText = `© ${currentYear} - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng`;
+            document.getElementById('header-copyright').textContent = copyText;
+            document.getElementById('footer-copyright').textContent = copyText;
+
+            triggerMathRender();
+            drawTheoryGraphs();
+            initSimA();
+            updateSimB();
+            renderQuiz();
+            loadGroupStudents();
+            updateTimerDisplay();
+        });
+
+        // ==================== TAB NAVIGATION ====================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            const btns = document.querySelectorAll('.nav-tab');
+            const idx = parseInt(tabId.replace('tab', '')) - 1;
+            if (btns[idx]) btns[idx].classList.add('active');
+            triggerMathRender(document.getElementById(tabId));
+        }
+
+        function switchSim(simId) {
+            document.querySelectorAll('.sim-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(simId).classList.add('active');
+            document.getElementById('btn-' + simId).classList.add('active');
+            if (simId === 'simB') updateSimB();
+            triggerMathRender(document.getElementById(simId));
+        }
+
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+            if (el.style.display === 'block') triggerMathRender(el);
+        }
+
+        // ==================== TAB 2: STATIC THEORY GRAPHS ====================
+        function drawTheoryGraphs() {
+            const canvas = document.getElementById('theoryGraphCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Left Graph: (V, T) with p1 < p2
+            const ox1 = 45, oy1 = 200;
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(ox1, 25); ctx.lineTo(ox1, oy1); ctx.lineTo(235, oy1);
+            ctx.stroke();
+
+            ctx.fillStyle = '#1e293b';
+            ctx.font = 'bold 13px Segoe UI';
+            ctx.fillText('V', ox1 - 18, 35);
+            ctx.fillText('T (K)', 195, oy1 + 22);
+            ctx.fillText('O', ox1 - 16, oy1 + 16);
+
+            // Line p1 (steeper -> lower pressure)
+            ctx.strokeStyle = '#0284c7';
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath(); ctx.moveTo(ox1, oy1); ctx.lineTo(ox1 + 45, oy1 - 40); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.beginPath(); ctx.moveTo(ox1 + 45, oy1 - 40); ctx.lineTo(ox1 + 160, oy1 - 142); ctx.stroke();
+            ctx.fillStyle = '#0284c7';
+            ctx.fillText('p₁', ox1 + 165, oy1 - 140);
+
+            // Line p2 (less steep -> higher pressure)
+            ctx.strokeStyle = '#dc2626';
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath(); ctx.moveTo(ox1, oy1); ctx.lineTo(ox1 + 50, oy1 - 22); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.beginPath(); ctx.moveTo(ox1 + 50, oy1 - 22); ctx.lineTo(ox1 + 170, oy1 - 75); ctx.stroke();
+            ctx.fillStyle = '#dc2626';
+            ctx.fillText('p₂ (p₂ > p₁)', ox1 + 145, oy1 - 82);
+
+            // Right Graph: (V, t °C)
+            const ox2 = 360, oy2 = 200;
+            ctx.strokeStyle = '#334155';
+            ctx.beginPath();
+            ctx.moveTo(265, oy2); ctx.lineTo(500, oy2); // t axis
+            ctx.moveTo(ox2, 25); ctx.lineTo(ox2, oy2 + 10); // V axis
+            ctx.stroke();
+
+            ctx.fillStyle = '#1e293b';
+            ctx.fillText('V', ox2 - 18, 35);
+            ctx.fillText('t (°C)', 460, oy2 + 22);
+            ctx.fillText('0', ox2 - 12, oy2 + 16);
+            ctx.fillText('-273', 268, oy2 + 16);
+            ctx.fillText('V₀', ox2 - 22, oy2 - 68);
+
+            // Line from -273 to positive t
+            ctx.strokeStyle = '#16a34a';
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath(); ctx.moveTo(280, oy2); ctx.lineTo(ox2, oy2 - 70); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.beginPath(); ctx.moveTo(ox2, oy2 - 70); ctx.lineTo(480, oy2 - 175); ctx.stroke();
+        }
+
+        // ==================== TAB 3A: PISTON & PARTICLES SIMULATION ====================
+        let particlesA = [];
+        let simAHistory = [];
+        const baseT_A = 300;
+        let baseV_A = 6.0;
+
+        function initSimA() {
+            particlesA = [];
+            for (let i = 0; i < 38; i++) {
+                particlesA.push({
+                    x: 65 + Math.random() * 130,
+                    y: 220 + Math.random() * 110,
+                    vx: (Math.random() - 0.5) * 3,
+                    vy: (Math.random() - 0.5) * 3
+                });
+            }
+            resetBaseSimA();
+            requestAnimationFrame(animateSimA);
+        }
+
+        function resetBaseSimA() {
+            const P = parseFloat(document.getElementById('simA-slider-P').value);
+            const m = parseFloat(document.getElementById('simA-slider-m').value);
+            // At T=300K, P=1atm, m=12g => V=6.0L
+            baseV_A = (6.0 * (m / 12.0)) / P;
+            simAHistory = [];
+            updateSimA();
+        }
+
+        function setSimATemp(val) {
+            document.getElementById('simA-slider-T').value = val;
+            updateSimA();
+        }
+
+        function resetSimA() {
+            document.getElementById('simA-slider-T').value = 300;
+            document.getElementById('simA-slider-P').value = 1.0;
+            document.getElementById('simA-slider-m').value = 12;
+            resetBaseSimA();
+        }
+
+        function updateSimA() {
+            const T = parseFloat(document.getElementById('simA-slider-T').value);
+            const P = parseFloat(document.getElementById('simA-slider-P').value);
+            const m = parseFloat(document.getElementById('simA-slider-m').value);
+            const tC = T - 273;
+
+            const V = baseV_A * (T / baseT_A);
+            const rho = m / V;
+            // Work A = p * (V - V_base) (1 atm = 101325 Pa, 1 L = 1e-3 m3 => 1 atm*L = 101.325 J)
+            const workA = P * 100 * (V - baseV_A); // taking 1 atm ≈ 10^5 Pa => 100 J/(atm.L)
+            const nMol = m / 28; // N2 gas M=28g/mol
+            const dU = nMol * 20.8 * (T - baseT_A);
+
+            document.getElementById('simA-lbl-T').textContent = `${T} K (${tC >= 0 ? '+' + tC : tC} °C)`;
+            document.getElementById('simA-lbl-P').textContent = `${P.toFixed(1)} atm`;
+            document.getElementById('simA-lbl-m').textContent = `${m.toFixed(1)} g`;
+
+            document.getElementById('simA-out-T').textContent = `${T} K (${tC} °C)`;
+            document.getElementById('simA-out-V').textContent = `${V.toFixed(2)} lít`;
+            document.getElementById('simA-out-rho').textContent = `${rho.toFixed(2)} g/lít`;
+            document.getElementById('simA-out-A').textContent = `${Math.abs(workA).toFixed(1)} J`;
+            document.getElementById('simA-out-dU').textContent = `${dU >= 0 ? '+' : ''}${dU.toFixed(1)} J`;
+
+            simAHistory.push({ T, V });
+            if (simAHistory.length > 40) simAHistory.shift();
+        }
+
+        function drawArrow(ctx, x1, y1, x2, y2, color, label) {
+            const headlen = 8;
+            const angle = Math.atan2(y2 - y1, x2 - x1);
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headlen * Math.cos(angle - Math.PI / 6), y2 - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - headlen * Math.cos(angle + Math.PI / 6), y2 - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+
+            if (label) {
+                ctx.font = 'bold 12px Segoe UI';
+                ctx.fillText(label, x2 + 6, y2 + 4);
+            }
+        }
+
+        function animateSimA() {
+            const canvas = document.getElementById('canvasSimA');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const T = parseFloat(document.getElementById('simA-slider-T').value);
+                const P = parseFloat(document.getElementById('simA-slider-P').value);
+                const V = baseV_A * (T / baseT_A);
+
+                // Cylinder geometry
+                const cylX = 55, cylBottom = 340, cylWidth = 150, cylMaxH = 260;
+                const gasHeight = Math.min(230, Math.max(40, V * 16));
+                const pistonY = cylBottom - gasHeight;
+
+                // Gas background
+                const grad = ctx.createLinearGradient(0, pistonY, 0, cylBottom);
+                const heatRatio = (T - 150) / 450;
+                grad.addColorStop(0, `rgba(${Math.round(50 + 200 * heatRatio)}, ${Math.round(180 - 100 * heatRatio)}, 240, 0.25)`);
+                grad.addColorStop(1, `rgba(${Math.round(50 + 200 * heatRatio)}, ${Math.round(140 - 90 * heatRatio)}, 220, 0.45)`);
+                ctx.fillStyle = grad;
+                ctx.fillRect(cylX, pistonY, cylWidth, gasHeight);
+
+                // Cylinder walls
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(cylX, cylBottom - cylMaxH);
+                ctx.lineTo(cylX, cylBottom);
+                ctx.lineTo(cylX + cylWidth, cylBottom);
+                ctx.lineTo(cylX + cylWidth, cylBottom - cylMaxH);
+                ctx.stroke();
+
+                // Piston plate & handle
+                ctx.fillStyle = '#64748b';
+                ctx.fillRect(cylX + 2, pistonY - 18, cylWidth - 4, 18);
+                ctx.fillStyle = '#94a3b8';
+                ctx.fillRect(cylX + cylWidth / 2 - 6, pistonY - 65, 12, 47);
+                ctx.fillRect(cylX + cylWidth / 2 - 30, pistonY - 75, 60, 10);
+
+                // Force Vectors on Piston (Balanced in isobaric process)
+                const vecLen = 28 + P * 14;
+                drawArrow(ctx, cylX + 45, pistonY - 18, cylX + 45, pistonY - 18 + vecLen, '#dc2626', 'P_pt + F₀');
+                drawArrow(ctx, cylX + 105, pistonY, cylX + 105, pistonY - vecLen, '#16a34a', 'F_khí');
+
+                // Burner flame at bottom
+                const flameH = 8 + heatRatio * 24;
+                ctx.fillStyle = heatRatio > 0.35 ? '#f97316' : '#38bdf8';
+                ctx.beginPath();
+                ctx.moveTo(cylX + 55, cylBottom + 32);
+                ctx.quadraticCurveTo(cylX + 75, cylBottom + 32 - flameH * 1.6, cylX + 95, cylBottom + 32);
+                ctx.fill();
+                ctx.fillStyle = '#475569';
+                ctx.fillRect(cylX + 45, cylBottom + 32, 60, 14);
+
+                // Update & draw gas molecules
+                const speedScale = Math.sqrt(T / 300) * 1.45;
+                ctx.fillStyle = heatRatio > 0.5 ? '#dc2626' : '#0284c7';
+                particlesA.forEach(pt => {
+                    pt.x += pt.vx * speedScale;
+                    pt.y += pt.vy * speedScale;
+
+                    if (pt.x < cylX + 6) { pt.x = cylX + 6; pt.vx *= -1; }
+                    if (pt.x > cylX + cylWidth - 6) { pt.x = cylX + cylWidth - 6; pt.vx *= -1; }
+                    if (pt.y > cylBottom - 6) { pt.y = cylBottom - 6; pt.vy *= -1; }
+                    if (pt.y < pistonY + 6) { pt.y = pistonY + 6; pt.vy = Math.abs(pt.vy); }
+
+                    ctx.beginPath();
+                    ctx.arc(pt.x, pt.y, 3.5, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                // Real-time V-T Graph on Right Half of Canvas
+                const gx = 290, gy = 330, gw = 275, gh = 250;
+                ctx.strokeStyle = '#334155';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(gx, gy - gh);
+                ctx.lineTo(gx, gy);
+                ctx.lineTo(gx + gw, gy);
+                ctx.stroke();
+
+                ctx.fillStyle = '#1e293b';
+                ctx.font = 'bold 12px Segoe UI';
+                ctx.fillText('V (lít)', gx - 15, gy - gh - 8);
+                ctx.fillText('T (K)', gx + gw - 30, gy + 20);
+                ctx.fillText('0', gx - 12, gy + 14);
+
+                // Grid & theoretical Charles line through O
+                const maxT = 650, maxV = 24;
+                const curPx = gx + (T / maxT) * gw;
+                const curPy = gy - (V / maxV) * gh;
+
+                ctx.strokeStyle = '#94a3b8';
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(gx, gy);
+                ctx.lineTo(gx + gw, gy - ((baseV_A * (maxT / baseT_A)) / maxV) * gh);
+                ctx.stroke();
+
+                // Projection lines
+                ctx.strokeStyle = '#cbd5e1';
+                ctx.beginPath();
+                ctx.moveTo(curPx, gy); ctx.lineTo(curPx, curPy);
+                ctx.moveTo(gx, curPy); ctx.lineTo(curPx, curPy);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Current state point
+                ctx.fillStyle = '#dc2626';
+                ctx.beginPath();
+                ctx.arc(curPx, curPy, 6, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillText(`(${T} K; ${V.toFixed(1)} L)`, curPx - 35, curPy - 10);
+            }
+            requestAnimationFrame(animateSimA);
+        }
+
+        // ==================== TAB 3B: MERCURY DROP THERMOMETER SIMULATION ====================
+        function setPresetSimB(Vb, x0, t) {
+            document.getElementById('simB-slider-Vb').value = Vb;
+            document.getElementById('simB-slider-x0').value = x0;
+            document.getElementById('simB-slider-t').value = t;
+            updateSimB();
+        }
+
+        function updateSimB() {
+            const t = parseFloat(document.getElementById('simB-slider-t').value);
+            const Vb = parseFloat(document.getElementById('simB-slider-Vb').value);
+            const x0 = parseFloat(document.getElementById('simB-slider-x0').value);
+            const S = 0.1; // cm^2
+
+            const T0 = 273.0;
+            const T = t + 273.0;
+            const V1 = Vb + S * x0; // volume at 0°C
+            const V2 = V1 * (T / T0);
+            const x = (V2 - Vb) / S;
+            const dx = x - x0;
+
+            document.getElementById('simB-lbl-t').textContent = `${t.toFixed(1)} °C (${T.toFixed(1)} K)`;
+            document.getElementById('simB-lbl-Vb').textContent = `${Vb} cm³`;
+            document.getElementById('simB-lbl-x0').textContent = `${x0} cm`;
+
+            document.getElementById('simB-out-V1').textContent = `${V1.toFixed(2)} cm³`;
+            document.getElementById('simB-out-V2').textContent = `${V2.toFixed(2)} cm³`;
+            document.getElementById('simB-out-x').textContent = `${x.toFixed(1)} cm`;
+            document.getElementById('simB-out-dx').textContent = `${dx >= 0 ? '+' : ''}${dx.toFixed(1)} cm`;
+
+            drawSimBCanvas(Vb, x0, x, dx, t);
+        }
+
+        function drawSimBCanvas(Vb, x0, x, dx, t) {
+            const canvas = document.getElementById('canvasSimB');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const bulbX = 95, bulbY = 150, bulbR = 62;
+            const tubeStartX = bulbX + bulbR - 4;
+            const tubeEndX = 570;
+            const tubeY = bulbY - 12, tubeH = 24;
+
+            // Gas fill inside bulb & tube
+            ctx.fillStyle = t > 0 ? 'rgba(251, 146, 60, 0.25)' : 'rgba(56, 189, 248, 0.25)';
+            ctx.beginPath();
+            ctx.arc(bulbX, bulbY, bulbR, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Map x (0 to 180 cm) to pixel position along tube
+            const scalePx = 2.1; // 1 cm = 2.1 px
+            const hgPx = Math.min(tubeEndX - 30, Math.max(tubeStartX + 5, tubeStartX + x * scalePx));
+            const x0Px = tubeStartX + x0 * scalePx;
+
+            ctx.fillRect(tubeStartX, tubeY, hgPx - tubeStartX, tubeH);
+
+            // Glass Bulb outline
+            ctx.strokeStyle = '#0f4c81';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(bulbX, bulbY, bulbR, 0.2, Math.PI * 2 - 0.2);
+            ctx.stroke();
+
+            // Horizontal Tube AB
+            ctx.beginPath();
+            ctx.moveTo(tubeStartX, tubeY); ctx.lineTo(tubeEndX, tubeY);
+            ctx.moveTo(tubeStartX, tubeY + tubeH); ctx.lineTo(tubeEndX, tubeY + tubeH);
+            ctx.stroke();
+
+            // Initial position marker x0
+            ctx.strokeStyle = '#94a3b8';
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(x0Px, tubeY - 25); ctx.lineTo(x0Px, tubeY + tubeH + 25);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillStyle = '#64748b';
+            ctx.font = '12px Segoe UI';
+            ctx.fillText(`x₀ = ${x0} cm (ở 0°C)`, x0Px - 35, tubeY - 30);
+
+            // Mercury Drop (Green/Silver)
+            ctx.fillStyle = '#16a34a';
+            ctx.beginPath();
+            ctx.roundRect(hgPx, tubeY + 2, 24, tubeH - 4, 8);
+            ctx.fill();
+            ctx.fillStyle = '#15803d';
+            ctx.font = 'bold 12px Segoe UI';
+            ctx.fillText('Hg', hgPx + 4, tubeY + tubeH + 18);
+
+            // Labels A and B
+            ctx.fillStyle = '#0f4c81';
+            ctx.font = 'bold 14px Segoe UI';
+            ctx.fillText('A', tubeStartX - 5, tubeY - 8);
+            ctx.fillText('B (Hở: p = p₀)', tubeEndX - 85, tubeY - 8);
+            ctx.fillText(`V_bình = ${Vb} cm³`, bulbX - 45, bulbY + 5);
+
+            // Ruler ticks along tube
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 1;
+            for (let cm = 0; cm <= 180; cm += 20) {
+                const tx = tubeStartX + cm * scalePx;
+                if (tx <= tubeEndX) {
+                    ctx.beginPath();
+                    ctx.moveTo(tx, tubeY + tubeH);
+                    ctx.lineTo(tx, tubeY + tubeH + 6);
+                    ctx.stroke();
+                    ctx.fillStyle = '#475569';
+                    ctx.font = '10px Segoe UI';
+                    ctx.fillText(`${cm}`, tx - 6, tubeY + tubeH + 17);
+                }
+            }
+
+            // Displacement arrow
+            if (Math.abs(dx) > 0.1) {
+                drawArrow(ctx, x0Px, tubeY + tubeH + 42, hgPx, tubeY + tubeH + 42, '#dc2626', `Δx = ${dx.toFixed(1)} cm`);
+            }
+        }
+
+        // ==================== TAB 4: CALCULATOR MODULE ====================
+        function clearCalculator() {
+            document.getElementById('calc-V2').value = '';
+            document.getElementById('calc-result-box').style.display = 'none';
+        }
+
+        function solveCharlesCalculator() {
+            const rawV1 = document.getElementById('calc-V1').value.trim();
+            const rawT1 = document.getElementById('calc-T1').value.trim();
+            const rawV2 = document.getElementById('calc-V2').value.trim();
+            const rawT2 = document.getElementById('calc-T2').value.trim();
+
+            const unitV = document.getElementById('calc-unitV').value;
+            const unitT1 = document.getElementById('calc-unitT1').value;
+            const unitT2 = document.getElementById('calc-unitT2').value;
+
+            const m = parseFloat(document.getElementById('calc-m').value) || 0;
+            const p = parseFloat(document.getElementById('calc-p').value) || 0;
+            const n = parseFloat(document.getElementById('calc-n').value) || 0;
+
+            const emptyCount = [rawV1, rawT1, rawV2, rawT2].filter(v => v === '').length;
+            const resBox = document.getElementById('calc-result-box');
+            resBox.style.display = 'block';
+
+            if (emptyCount !== 1) {
+                resBox.innerHTML = `<span style="color:var(--danger); font-weight:700;">⚠️ Lỗi nhập liệu:</span> Vui lòng nhập đúng <strong>3 đại lượng đã biết</strong> và <strong>bỏ trống duy nhất 1 đại lượng cần tìm</strong> trong 4 ô \\( (V_{1}, T_{1}, V_{2}, T_{2}) \\)!`;
+                triggerMathRender(resBox);
+                return;
+            }
+
+            let V1 = rawV1 !== '' ? parseFloat(rawV1) : null;
+            let valT1 = rawT1 !== '' ? parseFloat(rawT1) : null;
+            let V2 = rawV2 !== '' ? parseFloat(rawV2) : null;
+            let valT2 = rawT2 !== '' ? parseFloat(rawT2) : null;
+
+            let T1 = valT1 !== null ? (unitT1 === 'C' ? valT1 + 273 : valT1) : null;
+            let T2 = valT2 !== null ? (unitT2 === 'C' ? valT2 + 273 : valT2) : null;
+
+            if ((T1 !== null && T1 <= 0) || (T2 !== null && T2 <= 0)) {
+                resBox.innerHTML = `<span style="color:var(--danger); font-weight:700;">⚠️ Lỗi Vật lý:</span> Nhiệt độ tuyệt đối \\( T \\) phải lớn hơn \\( 0\\text{ K} \\) (tức lớn hơn \\( -273\\text{ }^\\circ\\text{C} \\))!`;
+                triggerMathRender(resBox);
+                return;
+            }
+
+            let stepsHTML = `<h3 style="color:var(--primary); margin-bottom:0.6rem;">✅ Bài giải chi tiết từng bước:</h3>`;
+
+            // Step 1: Convert temperatures
+            stepsHTML += `<p><strong>Bước 1: Chuẩn hóa nhiệt độ tuyệt đối (thang Kelvin):</strong></p><ul style="padding-left:1.3rem;">`;
+            if (T1 !== null) {
+                stepsHTML += `<li>Trạng thái (1): \\( T_{1} = ${unitT1 === 'C' ? `${valT1} + 273 = ${T1.toFixed(2)}` : `${T1.toFixed(2)}`}\\text{ K} \\)</li>`;
+            }
+            if (T2 !== null) {
+                stepsHTML += `<li>Trạng thái (2): \\( T_{2} = ${unitT2 === 'C' ? `${valT2} + 273 = ${T2.toFixed(2)}` : `${T2.toFixed(2)}`}\\text{ K} \\)</li>`;
+            }
+            stepsHTML += `</ul>`;
+
+            // Step 2: Solve missing variable
+            stepsHTML += `<p style="margin-top:0.6rem;"><strong>Bước 2: Áp dụng biểu thức Định luật Charles cho quá trình đẳng áp:</strong></p>`;
+            if (V2 === null) {
+                V2 = V1 * (T2 / T1);
+                document.getElementById('calc-V2').value = V2.toFixed(3);
+                stepsHTML += `\\[ \\frac{V_{1}}{T_{1}} = \\frac{V_{2}}{T_{2}} \\implies V_{2} = V_{1} \\cdot \\frac{T_{2}}{T_{1}} = ${V1} \\cdot \\frac{${T2.toFixed(2)}}{${T1.toFixed(2)}} \\approx ${V2.toFixed(3)}\\text{ ${unitV}} \\]`;
+            } else if (V1 === null) {
+                V1 = V2 * (T1 / T2);
+                document.getElementById('calc-V1').value = V1.toFixed(3);
+                stepsHTML += `\\[ \\frac{V_{1}}{T_{1}} = \\frac{V_{2}}{T_{2}} \\implies V_{1} = V_{2} \\cdot \\frac{T_{1}}{T_{2}} = ${V2} \\cdot \\frac{${T1.toFixed(2)}}{${T2.toFixed(2)}} \\approx ${V1.toFixed(3)}\\text{ ${unitV}} \\]`;
+            } else if (T2 === null) {
+                T2 = T1 * (V2 / V1);
+                const t2C = T2 - 273;
+                document.getElementById('calc-T2').value = (unitT2 === 'C' ? t2C : T2).toFixed(2);
+                stepsHTML += `\\[ \\frac{V_{1}}{T_{1}} = \\frac{V_{2}}{T_{2}} \\implies T_{2} = T_{1} \\cdot \\frac{V_{2}}{V_{1}} = ${T1.toFixed(2)} \\cdot \\frac{${V2}}{${V1}} \\approx ${T2.toFixed(2)}\\text{ K} \\implies t_{2} = T_{2} - 273 \\approx ${t2C.toFixed(2)}\\text{ }^\\circ\\text{C} \\]`;
+            } else if (T1 === null) {
+                T1 = T2 * (V1 / V2);
+                const t1C = T1 - 273;
+                document.getElementById('calc-T1').value = (unitT1 === 'C' ? t1C : T1).toFixed(2);
+                stepsHTML += `\\[ \\frac{V_{1}}{T_{1}} = \\frac{V_{2}}{T_{2}} \\implies T_{1} = T_{2} \\cdot \\frac{V_{1}}{V_{2}} = ${T2.toFixed(2)} \\cdot \\frac{${V1}}{${V2}} \\approx ${T1.toFixed(2)}\\text{ K} \\implies t_{1} = T_{1} - 273 \\approx ${t1C.toFixed(2)}\\text{ }^\\circ\\text{C} \\]`;
+            }
+
+            // Step 3: Extended physical quantities
+            const pctChange = ((V2 - V1) / V1) * 100;
+            stepsHTML += `<p style="margin-top:0.6rem;"><strong>Bước 3: Các thông số mở rộng:</strong></p><ul style="padding-left:1.3rem;">`;
+            stepsHTML += `<li>Độ biến thiên thể tích: \\( \\Delta V = V_{2} - V_{1} = ${(V2 - V1).toFixed(3)}\\text{ ${unitV}} \\) (Thay đổi \\( ${pctChange >= 0 ? '+' : ''}${pctChange.toFixed(2)}\\% \\)).</li>`;
+            if (m > 0 && unitV !== 'cm') {
+                stepsHTML += `<li>Khối lượng riêng: \\( \\rho_{1} = \\frac{m}{V_{1}} \\approx ${(m / V1).toFixed(3)}\\text{ g/${unitV}} \\); \\( \\rho_{2} = \\frac{m}{V_{2}} \\approx ${(m / V2).toFixed(3)}\\text{ g/${unitV}} \\).</li>`;
+            }
+            if (p > 0 && unitV !== 'cm') {
+                let factorM3 = unitV === 'lít' ? 1e-3 : (unitV === 'cm³' ? 1e-6 : 1);
+                let dVm3 = (V2 - V1) * factorM3;
+                let work = p * dVm3;
+                stepsHTML += `<li>Độ lớn công thực hiện: \\( |A| = p|\\Delta V| = ${p} \\cdot |${dVm3.toExponential(3)}| \\approx ${Math.abs(work).toFixed(2)}\\text{ J} \\).</li>`;
+            }
+            if (n > 0) {
+                let dU = n * 20.8 * (T2 - T1);
+                stepsHTML += `<li>Độ biến thiên nội năng (với \\( c = 20,8\\mathrm{ J/(mol\\cdot K)} \\)): \\( \\Delta U = n \\cdot c \\cdot (T_{2} - T_{1}) \\approx ${dU.toFixed(2)}\\text{ J} \\).</li>`;
+            }
+            stepsHTML += `</ul>`;
+
+            resBox.innerHTML = stepsHTML;
+            triggerMathRender(resBox);
+        }
+
+        // ==================== TAB 6: INTERACTIVE QUIZ ====================
+        const quizData = [
+            {
+                q: "Câu 1: Trên đồ thị \\( (V - T) \\) vẽ hai đường đẳng áp \\( p_{1} \\) và \\( p_{2} \\) của cùng một khối lượng khí xác định. Biết đường \\( p_{1} \\) nằm cao hơn (có độ dốc lớn hơn) đường \\( p_{2} \\). Hệ thức đúng là:",
+                options: [
+                    "A. \\( p_{1} > p_{2} \\)",
+                    "B. \\( p_{1} < p_{2} \\)",
+                    "C. \\( p_{1} = p_{2} \\)",
+                    "D. \\( p_{1} \\ge p_{2} \\)"
+                ],
+                correct: 1,
+                explain: "Xét cùng một nhiệt độ tuyệt đối \\( T \\), trạng thái trên đường \\( p_{1} \\) có thể tích lớn hơn trạng thái trên đường \\( p_{2} \\) (\\( V_{1} > V_{2} \\)). Theo định luật Boyle cho quá trình đẳng nhiệt: \\( \\frac{p_{1}}{p_{2}} = \\frac{V_{2}}{V_{1}} < 1 \\implies p_{1} < p_{2} \\)."
+            },
+            {
+                q: "Câu 2: Giữ áp suất của một khối lượng khí nhất định không đổi và giảm nhiệt độ tuyệt đối đi \\( 2 \\) lần thì khối lượng riêng \\( \\rho \\) và khoảng cách trung bình giữa các phân tử khí thay đổi như thế nào?",
+                options: [
+                    "A. Khối lượng riêng \\( \\rho \\) tăng \\( 2 \\) lần, khoảng cách giữa các phân tử giảm.",
+                    "B. Khối lượng riêng \\( \\rho \\) giảm \\( 2 \\) lần, khoảng cách giữa các phân tử tăng.",
+                    "C. Khối lượng riêng \\( \\rho \\) không đổi, khoảng cách giữa các phân tử giảm.",
+                    "D. Khối lượng riêng \\( \\rho \\) tăng \\( 2 \\) lần, khoảng cách giữa các phân tử tăng."
+                ],
+                correct: 0,
+                explain: "Trong quá trình đẳng áp: \\( \\frac{V_{2}}{V_{1}} = \\frac{T_{2}}{T_{1}} = \\frac{1}{2} \\). Vì khối lượng \\( m \\) không đổi nên khối lượng riêng \\( \\rho = \\frac{m}{V} \\) tỉ lệ nghịch với \\( T \\): \\( \\frac{\\rho_{2}}{\\rho_{1}} = \\frac{T_{1}}{T_{2}} = 2 \\) (tăng \\( 2 \\) lần), đồng thời thể tích giảm nên khoảng cách trung bình giữa các phân tử giảm."
+            },
+            {
+                q: "Câu 3: Khi tăng nhiệt độ của một lượng khí xác định từ \\( 32\\text{ }^\\circ\\text{C} \\) lên \\( 117\\text{ }^\\circ\\text{C} \\) và giữ áp suất không đổi thì thể tích khí tăng thêm \\( 1,7\\text{ lít} \\). Thể tích ban đầu \\( V_{1} \\) của lượng khí bằng:",
+                options: [
+                    "A. \\( 6,1\\text{ lít} \\)",
+                    "B. \\( 7,8\\text{ lít} \\)",
+                    "C. \\( 3,4\\text{ lít} \\)",
+                    "D. \\( 5,2\\text{ lít} \\)"
+                ],
+                correct: 0,
+                explain: "Ta có \\( T_{1} = 32 + 273 = 305\\text{ K} \\); \\( T_{2} = 117 + 273 = 390\\text{ K} \\) và \\( V_{2} = V_{1} + 1,7\\text{ lít} \\). Áp dụng định luật Charles: \\[ \\frac{V_{1}}{305} = \\frac{V_{1} + 1,7}{390} \\implies 85 V_{1} = 305 \\cdot 1,7 \\implies V_{1} = 6,1\\text{ lít}. \\]"
+            },
+            {
+                q: "Câu 4: Một căn phòng thông với bên ngoài có dung tích \\( V_{1} = 100\\text{ m}^3 \\) chứa không khí ở \\( 10\\text{ }^\\circ\\text{C} \\) và áp suất \\( 1\\text{ atm} \\). Khi nhiệt độ trong phòng tăng đến \\( 30\\text{ }^\\circ\\text{C} \\) (áp suất khí quyển không đổi), khối lượng không khí đã thoát ra ngoài gần nhất với giá trị nào? Biết khối lượng riêng của không khí ở ĐKTC (\\( 0\\text{ }^\\circ\\text{C}, 1\\text{ atm} \\)) là \\( \\rho_{0} = 1,29\\text{ kg/m}^3 \\).",
+                options: [
+                    "A. \\( 9,1\\text{ kg} \\)",
+                    "B. \\( 8,5\\text{ kg} \\)",
+                    "C. \\( 7,1\\text{ kg} \\)",
+                    "D. \\( 6,4\\text{ kg} \\)"
+                ],
+                correct: 1,
+                explain: "Ở \\( T_{1} = 283\\text{ K} \\), \\( V_{1} = 100\\text{ m}^3 \\). Khi tăng lên \\( T_{2} = 303\\text{ K} \\), lượng khí này dãn nở thành \\( V_{2} = 100 \\cdot \\frac{303}{283} \\approx 107,07\\text{ m}^3 \\implies \\Delta V = 7,07\\text{ m}^3 \\). Khối lượng riêng ở \\( 30\\text{ }^\\circ\\text{C} \\) là \\( \\rho_{2} = \\rho_{0}\\frac{T_{0}}{T_{2}} = 1,29 \\cdot \\frac{273}{303} \\approx 1,162\\text{ kg/m}^3 \\). Khối lượng khí thoát ra: \\( \\Delta m = \\Delta V \\cdot \\rho_{2} \\approx 7,07 \\cdot 1,162 \\approx 8,5\\text{ kg} \\)."
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            const summary = document.getElementById('quiz-summary');
+            summary.style.display = 'none';
+
+            let html = '';
+            quizData.forEach((item, idx) => {
+                html += `
+                <div class="card" style="margin-bottom:1rem; background:#f8fafc;">
+                    <div style="font-weight:700; color:var(--primary); margin-bottom:0.6rem;">${item.q}</div>
+                    <div>
+                        ${item.options.map((opt, oIdx) => `
+                            <label class="quiz-option" id="q${idx}-opt${oIdx}">
+                                <input type="radio" name="q${idx}" value="${oIdx}">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="q${idx}-explain" class="hidden-box" style="margin-top:0.8rem;"></div>
+                </div>`;
+            });
+            container.innerHTML = html;
+            triggerMathRender(container);
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            quizData.forEach((item, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                const expBox = document.getElementById(`q${idx}-explain`);
+                expBox.style.display = 'block';
+
+                const userVal = selected ? parseInt(selected.value) : -1;
+                if (userVal === item.correct) {
+                    score++;
+                    expBox.className = 'success-box';
+                    expBox.innerHTML = `<strong>✅ Chính xác!</strong> ${item.explain}`;
+                } else {
+                    expBox.className = 'danger-box';
+                    expBox.innerHTML = `<strong>❌ Chưa chính xác (Đáp án đúng là phương án ${['A','B','C','D'][item.correct]}).</strong><br>${item.explain}`;
+                }
+                // Immediately render math in explanation box as required
+                renderMathInElement(expBox, katexConfig);
+            });
+
+            const summary = document.getElementById('quiz-summary');
+            summary.style.display = 'block';
+            summary.innerHTML = `<h4>🏆 Kết quả đánh giá: Bạn đạt \\( ${score} / ${quizData.length} \\) câu đúng (${(score / quizData.length * 10).toFixed(1)} điểm).</h4>`;
+            renderMathInElement(summary, katexConfig);
+        }
+
+        // ==================== TAB 7: CLASSROOM TOOLS ====================
+        // 1. Visual Timer
+        let totalSeconds = 120;
+        let remainingSeconds = 120;
+        let timerInterval = null;
+        const circumference = 2 * Math.PI * 95; // ~596.9
+
+        function setTimerSeconds(sec) {
+            pauseTimer();
+            totalSeconds = sec;
+            remainingSeconds = sec;
+            document.getElementById('timer-card').classList.remove('timer-blink');
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+            const secs = (remainingSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('timer-text').textContent = `${mins}:${secs}`;
+
+            const offset = circumference * (1 - remainingSeconds / totalSeconds);
+            document.getElementById('timer-progress').style.strokeDashoffset = offset;
+        }
+
+        function playBeep() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.6);
+            } catch (e) {}
+        }
+
+        function toggleTimer() {
+            if (timerInterval) {
+                pauseTimer();
+            } else {
+                if (remainingSeconds <= 0) remainingSeconds = totalSeconds;
+                document.getElementById('btn-timer-start').textContent = '⏸️ Tạm dừng';
+                timerInterval = setInterval(() => {
+                    remainingSeconds--;
+                    updateTimerDisplay();
+                    if (remainingSeconds <= 0) {
+                        pauseTimer();
+                        document.getElementById('timer-card').classList.add('timer-blink');
+                        playBeep();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            document.getElementById('btn-timer-start').textContent = '▶️ Bắt đầu';
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            remainingSeconds = totalSeconds;
+            document.getElementById('timer-card').classList.remove('timer-blink');
+            updateTimerDisplay();
+        }
+
+        // 2. Lucky Wheel
+        const groupLists = {
+            all: ["Tổ 1 - Minh Anh", "Tổ 1 - Quốc Bảo", "Tổ 2 - Hoàng Châu", "Tổ 2 - Tuấn Kiệt", "Tổ 3 - Ngọc Lan", "Tổ 3 - Đức Minh", "Tổ 4 - Phương Nghi", "Tổ 4 - Gia Phúc"],
+            to1: ["Nguyễn Minh Anh", "Trần Quốc Bảo", "Lê Hoàng Cường", "Phạm Thùy Dung", "Võ Tuấn Đạt", "Đặng Khánh Hà"],
+            to2: ["Bùi Hoàng Châu", "Ngô Tuấn Kiệt", "Đỗ Bảo Khánh", "Hồ Mỹ Linh", "Lý Hoàng Nam", "Mai Hồng Ngọc"],
+            to3: ["Phan Ngọc Lan", "Vũ Đức Minh", "Trương Bảo Ngân", "Đinh Quốc Phong", "Lâm Thanh Thảo", "Trịnh Minh Trí"],
+            to4: ["Lương Phương Nghi", "Cao Gia Phúc", "Đoàn Minh Quân", "Tạ Thanh Tâm", "Huỳnh Bảo Trân", "Nguyễn Hải Yến"]
+        };
+        const wheelColors = ['#0284c7', '#16a34a', '#d97706', '#dc2626', '#7c3aed', '#0d9488', '#db2777', '#2563eb'];
+        let currentWheelAngle = 0;
+        let isSpinning = false;
+
+        function loadGroupStudents() {
+            const grp = document.getElementById('wheel-group-select').value;
+            document.getElementById('wheel-names').value = groupLists[grp].join('\n');
+            drawWheel();
+        }
+
+        function getWheelNames() {
+            return document.getElementById('wheel-names').value
+                .split('\n')
+                .map(s => s.trim())
+                .filter(s => s.length > 0);
+        }
+
+        function drawWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const names = getWheelNames();
+            const N = Math.max(1, names.length);
+            const arc = (Math.PI * 2) / N;
+            const cx = 140, cy = 140, r = 122;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < N; i++) {
+                const startAngle = currentWheelAngle + i * arc;
+                const endAngle = startAngle + arc;
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(startAngle + arc / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 12px Segoe UI';
+                const label = names[i] ? (names[i].length > 16 ? names[i].slice(0, 15) + '…' : names[i]) : 'Trống';
+                ctx.fillText(label, r - 12, 4);
+                ctx.restore();
+            }
+
+            // Center hub
+            ctx.beginPath();
+            ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.strokeStyle = '#0f4c81';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            // Pointer on right side (angle = 0)
+            ctx.beginPath();
+            ctx.moveTo(cx + r + 12, cy - 10);
+            ctx.lineTo(cx + r - 8, cy);
+            ctx.lineTo(cx + r + 12, cy + 10);
+            ctx.closePath();
+            ctx.fillStyle = '#dc2626';
+            ctx.fill();
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            const names = getWheelNames();
+            if (names.length === 0) return;
+
+            isSpinning = true;
+            const spinDuration = 3500;
+            const startAngle = currentWheelAngle;
+            const totalRotation = (Math.PI * 2 * (5 + Math.random() * 4));
+            const startTime = performance.now();
+
+            function animateWheel(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(1, elapsed / spinDuration);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                currentWheelAngle = startAngle + totalRotation * easeOut;
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateWheel);
+                } else {
+                    isSpinning = false;
+                    const normalized = ((2 * Math.PI - (currentWheelAngle % (2 * Math.PI))) + 2 * Math.PI) % (2 * Math.PI);
+                    const arc = (2 * Math.PI) / names.length;
+                    const winnerIdx = Math.floor(normalized / arc) % names.length;
+                    showWinner(names[winnerIdx]);
+                }
+            }
+            requestAnimationFrame(animateWheel);
+        }
+
+        function showWinner(name) {
+            playBeep();
+            document.getElementById('winner-name').textContent = name;
+            document.getElementById('winner-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('winner-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
