@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vật Lí 12: Từ Thông & Hiện Tượng Cảm Ứng Điện Từ</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-light: #1e6bc4;
+            --primary-dark: #092c4c;
+            --secondary: #008080;
+            --accent: #e65100;
+            --bg-light: #f4f7fa;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --success: #15803d;
+            --danger: #b91c1c;
+            --warning: #b45309;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary), var(--primary-light));
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        header .subtitle {
+            font-size: 1rem;
+            color: #e2e8f0;
+            margin-bottom: 0.6rem;
+        }
+
+        header .copyright-header {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        /* Navigation Tabs */
+        .nav-container {
+            background-color: var(--bg-card);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            max-width: 1400px;
+            margin: 0 auto;
+            list-style: none;
+            scrollbar-width: thin;
+        }
+
+        .nav-tabs li {
+            flex: 1 0 auto;
+        }
+
+        .nav-btn {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: none;
+            background: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .nav-btn:hover {
+            color: var(--primary);
+            background-color: #f8fafc;
+        }
+
+        .nav-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background-color: #eff6ff;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.2rem;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards & Grid */
+        .card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(15, 76, 129, 0.08);
+            border: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            color: var(--primary-dark);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        /* Sub-tabs for Simulation */
+        .sim-subtabs {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .sim-subbtn {
+            padding: 0.65rem 1.2rem;
+            border-radius: 8px;
+            border: 1px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sim-subbtn:hover {
+            background: #eff6ff;
+        }
+
+        .sim-subbtn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 6px rgba(15, 76, 129, 0.3);
+        }
+
+        .sim-pane {
+            display: none;
+        }
+
+        .sim-pane.active {
+            display: block;
+        }
+
+        /* Simulation Layout */
+        .sim-layout {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 960px) {
+            .sim-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .control-group {
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+            color: var(--primary-dark);
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .canvas-wrapper {
+            background: #0f172a;
+            border-radius: 10px;
+            padding: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #334155;
+            position: relative;
+        }
+
+        canvas {
+            max-width: 100%;
+            border-radius: 6px;
+            background: #1e293b;
+        }
+
+        /* Readouts & Badges */
+        .readout-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.8rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .readout-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary);
+            padding: 0.6rem 0.8rem;
+            border-radius: 6px;
+        }
+
+        .readout-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .readout-val {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-top: 0.2rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Callout Boxes */
+        .alert-box {
+            padding: 1rem 1.2rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 5px solid;
+        }
+
+        .alert-info {
+            background-color: #eff6ff;
+            border-left-color: var(--primary-light);
+        }
+
+        .alert-warning {
+            background-color: #fffbeb;
+            border-left-color: var(--warning);
+        }
+
+        .alert-danger {
+            background-color: #fef2f2;
+            border-left-color: var(--danger);
+        }
+
+        .alert-success {
+            background-color: #f0fdf4;
+            border-left-color: var(--success);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.92rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background-color: #bf360c;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: #eff6ff;
+        }
+
+        /* Calculator Form */
+        .calc-input-group {
+            margin-bottom: 1rem;
+        }
+
+        .calc-input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .calc-input-group input, .calc-input-group select {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        /* Practice & Quiz */
+        .solution-box {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+        }
+
+        .quiz-option {
+            display: block;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            background-color: #f1f5f9;
+            border-color: var(--primary-light);
+        }
+
+        .quiz-option input {
+            margin-right: 0.6rem;
+        }
+
+        /* Classroom Tools */
+        .timer-display {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            font-variant-numeric: tabular-nums;
+            text-align: center;
+        }
+
+        .blink-alarm {
+            animation: blinkRed 0.6s infinite alternate;
+        }
+
+        @keyframes blinkRed {
+            from { background-color: #fef2f2; border-color: #ef4444; }
+            to { background-color: #fee2e2; border-color: #b91c1c; transform: scale(1.01); }
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-dark);
+            color: #cbd5e1;
+            text-align: center;
+            padding: 1.2rem;
+            margin-top: auto;
+            font-size: 0.95rem;
+            border-top: 3px solid var(--primary-light);
+        }
+
+        /* Modal Popup */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>CHƯƠNG III: TỪ TRƯỜNG – CHỦ ĐỀ 3: TỪ THÔNG & HIỆN TƯỢNG CẢM ỨNG ĐIỆN TỪ</h1>
+        <div class="subtitle">Hệ thống Học tập Tương tác & Thí nghiệm Ảo Vật lí 12 (CTGDPT 2018)</div>
+        <div class="copyright-header" id="header-copyright">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+    </header>
+
+    <div class="nav-container">
+        <ul class="nav-tabs">
+            <li><button class="nav-btn active" onclick="switchTab('tab1')">🚀 1. KHỞI ĐỘNG</button></li>
+            <li><button class="nav-btn" onclick="switchTab('tab2')">📖 2. LÝ THUYẾT</button></li>
+            <li><button class="nav-btn" onclick="switchTab('tab3')">🔬 3. MÔ PHỎNG LAB</button></li>
+            <li><button class="nav-btn" onclick="switchTab('tab4')">🧮 4. MÁY TÍNH</button></li>
+            <li><button class="nav-btn" onclick="switchTab('tab5')">📝 5. LUYỆN TẬP</button></li>
+            <li><button class="nav-btn" onclick="switchTab('tab6')">🎯 6. TỰ ĐÁNH GIÁ</button></li>
+            <li><button class="nav-btn" onclick="switchTab('tab7')">🛠️ 7. TIỆN ÍCH LỚP HỌC</button></li>
+        </ul>
+    </div>
+
+    <main>
+        <!-- ==================== TAB 1: KHỞI ĐỘNG & THỰC TIỄN ==================== -->
+        <section id="tab1" class="tab-pane active">
+            <div class="card">
+                <h2 class="card-title">🚀 Khởi động: Những nghịch lý kỹ thuật trong đời sống hiện đại</h2>
+                <p style="margin-bottom: 1rem;">Năm 1820, Oersted phát hiện dòng điện sinh ra từ trường. Suốt 11 năm sau đó, nhà bác học Michael Faraday luôn trăn trở câu hỏi ngược lại: <strong>"Liệu từ trường có thể sinh ra dòng điện hay không?"</strong>. Câu trả lời của ông vào năm 1831 đã làm thay đổi hoàn toàn nền văn minh nhân loại. Hãy cùng khám phá 3 tình huống thực tế dưới đây:</p>
+
+                <div class="grid-3">
+                    <div class="card" style="margin-bottom:0; border-top: 4px solid var(--primary);">
+                        <h3 style="color:var(--primary); margin-bottom:0.5rem;">🍲 1. Bí ẩn chiếc Bếp từ</h3>
+                        <p style="font-size:0.93rem;">Khi bật bếp từ, mặt kính bếp hoàn toàn mát lạnh (nếu chưa đặt nồi), nhưng chỉ sau 30 giây đặt nồi inox có đáy nhiễm từ lên, nước trong nồi đã sôi sùng sục. Ngược lại, nếu đặt nồi thủy tinh hay nồi nhôm thông thường, bếp lại không thể đun nóng!</p>
+                        <div class="alert-box alert-warning" style="margin-top:0.8rem; margin-bottom:0; font-size:0.88rem;">
+                            <strong>❓ Câu hỏi mâu thuẫn:</strong> Không có ngọn lửa, mặt bếp không truyền nhiệt trực tiếp, vậy năng lượng đã truyền qua lớp kính cách điện vào đáy nồi bằng cơ chế vật lý nào?
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:0; border-top: 4px solid var(--secondary);">
+                        <h3 style="color:var(--secondary); margin-bottom:0.5rem;">📱 2. Sạc không dây & Đai hô hấp</h3>
+                        <p style="font-size:0.93rem;">Đặt điện thoại lên đế sạc không cần cắm cáp, pin vẫn đầy. Trong y khoa, bác sĩ quấn một đai gồm \( N = 250 \) vòng dây mảnh quanh ngực bệnh nhân; chỉ cần bệnh nhân hít thở làm lồng ngực nở ra trong từ trường Trái Đất (\( B \approx 56 \text{ }\mu\text{T} \)), máy đo đã ghi nhận được tín hiệu điện!</p>
+                        <div class="alert-box alert-info" style="margin-top:0.8rem; margin-bottom:0; font-size:0.88rem;">
+                            <strong>❓ Câu hỏi mâu thuẫn:</strong> Tại sao khi bệnh nhân nín thở thì tín hiệu điện bằng \( 0 \text{ V} \), còn khi hít vào hoặc thở ra lại xuất hiện suất điện động?
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:0; border-top: 4px solid var(--accent);">
+                        <h3 style="color:var(--accent); margin-bottom:0.5rem;">⚡ 3. Sét đánh & Cầu chì cháy</h3>
+                        <p style="font-size:0.93rem;">Thực tế ghi nhận: Ở gần nơi sét đánh, dù tia sét không hề đánh trúng đường dây điện trong nhà, nhưng nhiều cầu chì vẫn bị chảy đứt và các thiết bị đo điện nhạy cảm bị cháy hỏng hoàn toàn.</p>
+                        <div class="alert-box alert-danger" style="margin-top:0.8rem; margin-bottom:0; font-size:0.88rem;">
+                            <strong>❓ Câu hỏi mâu thuẫn:</strong> Nếu dòng điện của tia sét không truyền trực tiếp vào mạch điện gia đình, "thủ phạm vô hình" nào đã tạo ra dòng điện cực lớn làm cháy mạch?
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">💡 Chìa khóa giải mã vấn đề</h2>
+                <p>Để giải thích trọn vẹn cả 3 hiện tượng trên, chúng ta không chỉ quan tâm đến từ trường mạnh hay yếu (\( \vec{B} \)), mà phải định lượng được <strong>số đường sức từ xuyên qua một diện tích</strong> (gọi là <strong>Từ thông \( \Phi \)</strong>) và <strong>tốc độ biến thiên của từ thông</strong> theo thời gian (\( \frac{\Delta \Phi}{\Delta t} \)). Hãy chuyển sang <strong>Tab 2 (Lý thuyết)</strong> và <strong>Tab 3 (Mô phỏng Lab)</strong> để trực tiếp kiểm chứng!</p>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: CỐT LÕI LÝ THUYẾT & BẢN CHẤT ==================== -->
+        <section id="tab2" class="tab-pane">
+            <div class="grid-2">
+                <div class="card">
+                    <h2 class="card-title">1. Từ thông (Magnetic Flux)</h2>
+                    <p>Xét một vòng dây dẫn phẳng kín \( (C) \) có diện tích \( S \) đặt trong từ trường đều có vectơ cảm ứng từ \( \vec{B} \). Vẽ vectơ pháp tuyến đơn vị \( \vec{n} \) vuông góc với mặt phẳng khung dây (\(\left|\vec{n}\right| = 1\)). Góc hợp bởi \( \vec{B} \) và \( \vec{n} \) là \( \alpha \).</p>
+                    <div class="alert-box alert-info" style="text-align:center; margin: 1rem 0;">
+                        \[ \Phi = B S \cos\alpha \quad \text{(Với cuộn dây } N \text{ vòng: } \Phi = N B S \cos\alpha \text{)} \]
+                    </div>
+                    <ul style="padding-left: 1.2rem; font-size:0.95rem;">
+                        <li><strong>Ý nghĩa vật lý:</strong> Từ thông diễn tả <em>lượng đường sức từ xuyên qua diện tích \( S \)</em>.</li>
+                        <li><strong>Tính chất:</strong> Là đại lượng <strong>vô hướng</strong> nhưng có giá trị <strong>đại số</strong> (phụ thuộc vào việc chọn chiều của \( \vec{n} \)):
+                            <ul style="padding-left: 1.2rem;">
+                                <li>Góc nhọn (\( 0^\circ \le \alpha < 90^\circ \)) \(\Rightarrow \cos\alpha > 0 \Rightarrow \Phi > 0\).</li>
+                                <li>Góc tù (\( 90^\circ < \alpha \le 180^\circ \)) \(\Rightarrow \cos\alpha < 0 \Rightarrow \Phi < 0\).</li>
+                                <li>Đường sức từ song song mặt phẳng khung (\( \alpha = 90^\circ \)) \(\Rightarrow \cos 90^\circ = 0 \Rightarrow \Phi = 0\).</li>
+                                <li>Đường sức từ vuông góc mặt phẳng khung (\( \alpha = 0^\circ \) hoặc \( 180^\circ \)) \(\Rightarrow \left|\Phi\right|_{\max} = N B S\).</li>
+                            </ul>
+                        </li>
+                        <li><strong>Đơn vị SI:</strong> Vêbe (Weber), kí hiệu \(\text{Wb}\), với \( 1\text{ Wb} = 1\text{ T}\cdot\text{m}^2 \).</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">2. Hiện tượng Cảm ứng điện từ & Định luật Lenz</h2>
+                    <p><strong>Bản chất hiện tượng:</strong> Khi từ thông \( \Phi \) qua một mạch kín \( (C) \) <strong>biến thiên</strong> (do thay đổi \( B \), \( S \), hoặc góc \( \alpha \)) thì trong mạch kín xuất hiện <strong>dòng điện cảm ứng \( i_{c} \)</strong>. Hiện tượng chỉ tồn tại trong khoảng thời gian từ thông biến thiên.</p>
+                    <div class="alert-box alert-success" style="margin-top:0.8rem;">
+                        <strong>Định luật Lenz (Xác định chiều dòng điện cảm ứng):</strong><br>
+                        <em>"Dòng điện cảm ứng xuất hiện trong mạch kín có chiều sao cho từ trường cảm ứng \( \vec{B}_{c} \) do nó sinh ra có tác dụng <strong>chống lại sự biến thiên</strong> của từ thông ban đầu qua mạch kín đó."</em>
+                    </div>
+                    <p style="font-size:0.93rem;"><strong>Quy trình 3 bước xác định chiều \( i_{c} \):</strong></p>
+                    <ol style="padding-left: 1.4rem; font-size:0.93rem;">
+                        <li>Xác định chiều của từ trường ban đầu \( \vec{B}_{0} \) (Vào Nam ra Bắc đối với nam châm, hoặc quy tắc nắm tay phải với dòng điện).</li>
+                        <li>Nhận xét từ thông \( \Phi \) qua mạch đang <strong>Tăng</strong> hay <strong>Giảm</strong>:
+                            <br>• Nếu \( \Phi \) <strong>tăng</strong> \(\Rightarrow \vec{B}_{c} \uparrow\downarrow \vec{B}_{0}\) (ngược chiều).
+                            <br>• Nếu \( \Phi \) <strong>giảm</strong> \(\Rightarrow \vec{B}_{c} \uparrow\uparrow \vec{B}_{0}\) (cùng chiều).
+                        </li>
+                        <li>Dùng <strong>quy tắc nắm bàn tay phải</strong> theo chiều \( \vec{B}_{c} \) để suy ra chiều dòng điện cảm ứng \( i_{c} \).</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">3. Định luật Faraday & Đoạn dây chuyển động trong từ trường</h2>
+                <div class="grid-2">
+                    <div>
+                        <h3 style="color:var(--primary); font-size:1.05rem;">a) Biểu thức tổng quát Định luật Faraday</h3>
+                        <p style="font-size:0.94rem;">Độ lớn suất điện động cảm ứng tỉ lệ thuận với tốc độ biến thiên của từ thông:</p>
+                        \[ e_{c} = -N \frac{\Delta \Phi}{\Delta t} \implies \left|e_{c}\right| = N \left|\frac{\Delta \Phi}{\Delta t}\right| \]
+                        <p style="font-size:0.92rem;">Cường độ dòng điện cảm ứng trong mạch kín có tổng điện trở \( R \):</p>
+                        \[ I_{c} = \frac{\left|e_{c}\right|}{R} = \frac{N}{R} \left|\frac{\Delta \Phi}{\Delta t}\right| \quad ; \quad \text{Điện lượng: } \Delta q = I_{c} \Delta t = \frac{N \left|\Delta \Phi\right|}{R} \]
+                    </div>
+                    <div>
+                        <h3 style="color:var(--secondary); font-size:1.05rem;">b) Đoạn dây dẫn chuyển động cắt đường sức từ</h3>
+                        <p style="font-size:0.94rem;">Khi đoạn dây chiều dài \( l \) chuyển động với vận tốc \( \vec{v} \) (cùng vuông góc với đoạn dây, và \( (\vec{B}, \vec{v}) = \theta \)):</p>
+                        \[ \left|e_{c}\right| = B l v \sin\theta \]
+                        <p style="font-size:0.92rem;"><strong>Quy tắc bàn tay phải:</strong> Đặt bàn tay phải hứng các đường sức từ \( \vec{B} \) xuyên vào lòng bàn tay, ngón cái choãi ra \( 90^\circ \) chỉ chiều chuyển động \( \vec{v} \), chiều từ cổ tay đến bốn ngón tay chỉ chiều dòng điện cảm ứng \( I_{c} \) (từ cực âm sang cực dương của nguồn điện tương đương).</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top:1.2rem; color:var(--primary-dark);">Bảng Hệ thống Công thức và Đơn vị chuẩn SI</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kí hiệu</th>
+                            <th>Tên đại lượng</th>
+                            <th>Công thức liên hệ</th>
+                            <th>Đơn vị chuẩn (SI)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>\( \Phi \)</td>
+                            <td>Từ thông qua khung dây</td>
+                            <td>\( \Phi = N B S \cos\alpha \)</td>
+                            <td>Weber (\(\text{Wb}\)), \( 1\text{ Wb} = 1\text{ T}\cdot\text{m}^2 \)</td>
+                        </tr>
+                        <tr>
+                            <td>\( \vec{B} \)</td>
+                            <td>Vectơ cảm ứng từ</td>
+                            <td>\( B = \frac{\Phi}{N S \cos\alpha} \)</td>
+                            <td>Tesla (\(\text{T}\))</td>
+                        </tr>
+                        <tr>
+                            <td>\( S \)</td>
+                            <td>Diện tích 1 vòng dây</td>
+                            <td>Tròn: \( \pi r^2 = \frac{\pi d^2}{4} \) ; Chữ nhật: \( a \cdot b \)</td>
+                            <td>Mét vuông (\(\text{m}^2\))</td>
+                        </tr>
+                        <tr>
+                            <td>\( \frac{\Delta \Phi}{\Delta t} \)</td>
+                            <td>Tốc độ biến thiên từ thông</td>
+                            <td>\( \frac{\Phi_{2} - \Phi_{1}}{\Delta t} \)</td>
+                            <td>\(\text{Wb/s}\) hoặc Volt (\(\text{V}\))</td>
+                        </tr>
+                        <tr>
+                            <td>\( e_{c} \)</td>
+                            <td>Suất điện động cảm ứng</td>
+                            <td>\( e_{c} = -N \frac{\Delta \Phi}{\Delta t} \) hoặc \( \left|e_{c}\right| = B l v \sin\theta \)</td>
+                            <td>Volt (\(\text{V}\))</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">⚠️ Bẫy Lý Thuyết Học Sinh Hay Mắc Phải</h2>
+                <div class="grid-3">
+                    <div class="alert-box alert-danger" style="margin-bottom:0;">
+                        <strong>Bẫy 1: Nhầm góc của mặt phẳng khung dây với góc pháp tuyến \( \alpha \)</strong><br>
+                        Đề bài thường cho góc hợp bởi \( \vec{B} \) và <em>mặt phẳng khung dây</em> là \( \beta \). Học sinh hay thay trực tiếp \( \cos\beta \) vào công thức!
+                        <br>✅ <strong>Chuẩn xác:</strong> Phải đổi sang góc pháp tuyến: \( \alpha = 90^\circ - \beta \) (hoặc dùng \( \Phi = N B S \sin\beta \)).
+                    </div>
+                    <div class="alert-box alert-warning" style="margin-bottom:0;">
+                        <strong>Bẫy 2: Nhầm "Từ thông lớn" với "Tốc độ biến thiên lớn"</strong><br>
+                        Khi từ thông đạt cực đại (\(\Phi = \Phi_{0}\)) trên đồ thị hình sin, độ dốc tiếp tuyến bằng \( 0 \) nên \( e_{c} = 0\text{ V} \). Ngược lại, khi \( \Phi = 0 \) thì tốc độ biến thiên lớn nhất nên \( \left|e_{c}\right| = E_{0} \).
+                    </div>
+                    <div class="alert-box alert-info" style="margin-bottom:0;">
+                        <strong>Bẫy 3: Quên đổi đơn vị diện tích & đường kính</strong><br>
+                        • \( 1\text{ cm}^2 = 10^{-4}\text{ m}^2 \) (không phải \( 10^{-2}\text{ m}^2 \)).<br>
+                        • \( 1\text{ dm}^2 = 10^{-2}\text{ m}^2 \).<br>
+                        • Khi đề cho đường kính \( d \), bán kính là \( r = \frac{d}{2} \).<br>
+                        • Từ thông không phụ thuộc vào tiết diện sợi dây đồng mà phụ thuộc diện tích mặt phẳng vòng dây \( S \).
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: MÔ PHỎNG TƯƠNG TÁC (SIMULATION LAB) ==================== -->
+        <section id="tab3" class="tab-pane">
+            <div class="card">
+                <h2 class="card-title">🔬 Phòng Thí Nghiệm Ảo Tương Tác (3 Mô Hình Thí Nghiệm Độc Lập)</h2>
+                <div class="sim-subtabs">
+                    <button class="sim-subbtn active" onclick="switchSim('simA')">📐 Tab 3A: Mô phỏng Từ thông \(\Phi = N B S \cos\alpha\)</button>
+                    <button class="sim-subbtn" onclick="switchSim('simB')">🧲 Tab 3B: Thí nghiệm Faraday & Định luật Lenz</button>
+                    <button class="sim-subbtn" onclick="switchSim('simC')">⚡ Tab 3C: Thanh dẫn trượt trên ray trong từ trường</button>
+                </div>
+
+                <!-- SUB-TAB 3A: TỪ THÔNG -->
+                <div id="simA" class="sim-pane active">
+                    <div class="sim-layout">
+                        <div class="card" style="margin-bottom:0; background:#f8fafc;">
+                            <h3 style="margin-bottom:0.8rem; color:var(--primary-dark);">Bảng điều khiển Tham số</h3>
+                            <div class="control-group">
+                                <label><span>Cảm ứng từ \( B \):</span> <span id="val-simA-B">0.50 T</span></label>
+                                <input type="range" id="simA-B" min="0.1" max="1.5" step="0.05" value="0.5" oninput="updateSimA()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Diện tích khung \( S \):</span> <span id="val-simA-S">0.04 m²</span></label>
+                                <input type="range" id="simA-S" min="0.01" max="0.10" step="0.01" value="0.04" oninput="updateSimA()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Góc \( \alpha = (\vec{B}, \vec{n}) \):</span> <span id="val-simA-alpha">30°</span></label>
+                                <input type="range" id="simA-alpha" min="0" max="180" step="1" value="30" oninput="updateSimA()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Số vòng dây \( N \):</span> <span id="val-simA-N">10 vòng</span></label>
+                                <input type="range" id="simA-N" min="1" max="50" step="1" value="10" oninput="updateSimA()">
+                            </div>
+                            <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.8rem;">
+                                <button class="btn btn-outline" style="font-size:0.82rem; padding:0.4rem 0.6rem;" onclick="setSimAAngle(0)">\(\alpha = 0^\circ\) (\(\Phi_{\max}\))</button>
+                                <button class="btn btn-outline" style="font-size:0.82rem; padding:0.4rem 0.6rem;" onclick="setSimAAngle(60)">\(\alpha = 60^\circ\)</button>
+                                <button class="btn btn-outline" style="font-size:0.82rem; padding:0.4rem 0.6rem;" onclick="setSimAAngle(90)">\(\alpha = 90^\circ\) (\(\Phi = 0\))</button>
+                                <button class="btn btn-outline" style="font-size:0.82rem; padding:0.4rem 0.6rem;" onclick="setSimAAngle(120)">\(\alpha = 120^\circ\) (\(\Phi < 0\))</button>
+                            </div>
+                            <div class="alert-box alert-info" style="margin-top:1rem; margin-bottom:0; font-size:0.86rem;">
+                                <strong>🔍 Hướng dẫn thử và sai:</strong><br>
+                                1. Đưa góc \( \alpha \) về \( 90^\circ \), quan sát hình chiếu của khung dây vuông góc với đường sức từ và số đường sức xuyên qua.<br>
+                                2. Tăng góc \( \alpha > 90^\circ \), giải thích vì sao từ thông mang dấu âm!
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="canvas-wrapper">
+                                <canvas id="canvasSimA" width="680" height="360"></canvas>
+                            </div>
+                            <div class="readout-grid">
+                                <div class="readout-box">
+                                    <div class="readout-label">Hệ số góc \(\cos\alpha\)</div>
+                                    <div class="readout-val" id="out-simA-cos">0.866</div>
+                                </div>
+                                <div class="readout-box">
+                                    <div class="readout-label">Góc hợp với mặt khung \(\beta\)</div>
+                                    <div class="readout-val" id="out-simA-beta">60°</div>
+                                </div>
+                                <div class="readout-box" style="border-left-color: var(--accent);">
+                                    <div class="readout-label">Từ thông \(\Phi = N B S \cos\alpha\)</div>
+                                    <div class="readout-val" id="out-simA-phi" style="color:var(--accent);">0.1732 Wb</div>
+                                </div>
+                                <div class="readout-box" style="border-left-color: var(--secondary);">
+                                    <div class="readout-label">Trạng thái Từ thông</div>
+                                    <div class="readout-val" id="out-simA-state" style="font-size:0.95rem;">Dương (\(\alpha < 90^\circ\))</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-TAB 3B: THÍ NGHIỆM FARADAY & ĐỊNH LUẬT LENZ -->
+                <div id="simB" class="sim-pane">
+                    <div class="sim-layout">
+                        <div class="card" style="margin-bottom:0; background:#f8fafc;">
+                            <h3 style="margin-bottom:0.8rem; color:var(--primary-dark);">Điều khiển Nam châm & Cuộn dây</h3>
+                            <div class="control-group">
+                                <label><span>Vị trí Nam châm \( x \):</span> <span id="val-simB-x">-140 px</span></label>
+                                <input type="range" id="simB-x" min="-220" max="0" step="2" value="-140">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Số vòng dây \( N \):</span> <span id="val-simB-N">100 vòng</span></label>
+                                <input type="range" id="simB-N" min="20" max="200" step="20" value="100">
+                            </div>
+                            <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1rem;">
+                                <button class="btn btn-primary" onclick="animateMagnet(1)">⏩ Đưa lại gần nhanh</button>
+                                <button class="btn btn-accent" onclick="animateMagnet(-1)">⏪ Kéo ra xa nhanh</button>
+                                <button class="btn btn-outline" onclick="flipMagnet()">🔄 Đảo cực Nam châm (N ↔ S)</button>
+                            </div>
+                            <div class="alert-box alert-warning" style="margin-bottom:0; font-size:0.86rem;">
+                                <strong>🔍 Hướng dẫn thử và sai:</strong><br>
+                                • Kéo thanh trượt <em>Vị trí Nam châm</em> thật nhanh rồi dừng lại đột ngột. Quan sát kim điện kế \( G \) khi nam châm đứng yên!<br>
+                                • So sánh chiều của vectơ \( \vec{B}_{0} \) (xanh lam) và từ trường cảm ứng \( \vec{B}_{c} \) (màu cam) khi đưa nam châm lại gần và ra xa.
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="canvas-wrapper">
+                                <canvas id="canvasSimB" width="680" height="360"></canvas>
+                            </div>
+                            <div class="readout-grid">
+                                <div class="readout-box">
+                                    <div class="readout-label">Từ thông \(\Phi\) hiện tại</div>
+                                    <div class="readout-val" id="out-simB-phi">0.025 Wb</div>
+                                </div>
+                                <div class="readout-box">
+                                    <div class="readout-label">Vận tốc dịch chuyển \(v\)</div>
+                                    <div class="readout-val" id="out-simB-v">0.0 m/s</div>
+                                </div>
+                                <div class="readout-box" style="border-left-color: var(--accent);">
+                                    <div class="readout-label">Suất điện động \(e_{c}\)</div>
+                                    <div class="readout-val" id="out-simB-ec" style="color:var(--accent);">0.00 V</div>
+                                </div>
+                                <div class="readout-box" style="border-left-color: var(--success);">
+                                    <div class="readout-label">Quy tắc Lenz (\(\vec{B}_{c}\) vs \(\vec{B}_{0}\))</div>
+                                    <div class="readout-val" id="out-simB-lenz" style="font-size:0.9rem;">Đứng yên (\(i_{c} = 0\))</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-TAB 3C: THANH DẪN TRƯỢT TRÊN RAY -->
+                <div id="simC" class="sim-pane">
+                    <div class="sim-layout">
+                        <div class="card" style="margin-bottom:0; background:#f8fafc;">
+                            <h3 style="margin-bottom:0.8rem; color:var(--primary-dark);">Tham số Hệ Ray & Thanh MN</h3>
+                            <div class="control-group">
+                                <label><span>Cảm ứng từ \( B \):</span> <span id="val-simC-B">0.80 T</span></label>
+                                <input type="range" id="simC-B" min="0.2" max="2.0" step="0.1" value="0.8" oninput="updateSimCParams()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Chiều dài thanh \( l \):</span> <span id="val-simC-l">0.40 m</span></label>
+                                <input type="range" id="simC-l" min="0.1" max="0.8" step="0.05" value="0.4" oninput="updateSimCParams()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Vận tốc thanh \( v \):</span> <span id="val-simC-v">2.5 m/s</span></label>
+                                <input type="range" id="simC-v" min="-5.0" max="5.0" step="0.5" value="2.5" oninput="updateSimCParams()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Điện trở mạch \( R \):</span> <span id="val-simC-R">2.0 Ω</span></label>
+                                <input type="range" id="simC-R" min="0.5" max="10.0" step="0.5" value="2.0" oninput="updateSimCParams()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Hướng từ trường \(\vec{B}\):</span></label>
+                                <select id="simC-Bdir" onchange="updateSimCParams()" style="width:100%; padding:0.4rem; border-radius:6px;">
+                                    <option value="in">⊗ Hướng từ ngoài vào trong mặt phẳng</option>
+                                    <option value="out">⊙ Hướng từ trong ra ngoài mặt phẳng</option>
+                                </select>
+                            </div>
+                            <div style="display:flex; gap:0.5rem;">
+                                <button class="btn btn-primary" id="btn-simC-toggle" onclick="toggleSimCRun()">⏸️ Tạm dừng</button>
+                                <button class="btn btn-outline" onclick="resetSimCPos()">🔄 Đặt lại vị trí</button>
+                            </div>
+                            <div class="alert-box alert-info" style="margin-top:0.8rem; margin-bottom:0; font-size:0.85rem;">
+                                <strong>🔍 Hướng dẫn thử và sai:</strong><br>
+                                • Áp dụng <strong>quy tắc bàn tay phải</strong> kiểm tra chiều dòng điện \( I_{c} \) trên thanh \( MN \).<br>
+                                • Nhận xét chiều của lực từ cản \( \vec{F}_{t} \) so với vận tốc \( \vec{v} \).
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="canvas-wrapper">
+                                <canvas id="canvasSimC" width="680" height="360"></canvas>
+                            </div>
+                            <div class="readout-grid">
+                                <div class="readout-box">
+                                    <div class="readout-label">Suất điện động \(\left|e_{c}\right| = B l \left|v\right|\)</div>
+                                    <div class="readout-val" id="out-simC-ec">0.800 V</div>
+                                </div>
+                                <div class="readout-box" style="border-left-color: var(--accent);">
+                                    <div class="readout-label">Dòng điện cảm ứng \(I_{c} = \frac{\left|e_{c}\right|}{R}\)</div>
+                                    <div class="readout-val" id="out-simC-ic" style="color:var(--accent);">0.400 A</div>
+                                </div>
+                                <div class="readout-box" style="border-left-color: var(--danger);">
+                                    <div class="readout-label">Lực từ cản \(F_{t} = B I_{c} l\)</div>
+                                    <div class="readout-val" id="out-simC-ft" style="color:var(--danger);">0.128 N</div>
+                                </div>
+                                <div class="readout-box" style="border-left-color: var(--success);">
+                                    <div class="readout-label">Chiều dòng điện qua MN</div>
+                                    <div class="readout-val" id="out-simC-dir" style="font-size:0.95rem;">Từ M → N</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: MÁY TÍNH THAM SỐ VẬT LÝ ==================== -->
+        <section id="tab4" class="tab-pane">
+            <div class="card">
+                <h2 class="card-title">🧮 Máy Tính Giải Nhanh & Biến Đổi Công Thức Từng Bước (KaTeX)</h2>
+                <p style="margin-bottom: 1rem;">Chọn chế độ bài toán, nhập các đại lượng đã biết và <strong>BỎ TRỐNG (để rỗng) duy nhất 1 ô đại lượng cần tìm</strong>. Hệ thống sẽ tự động suy luận công thức và trình bày lời giải chi tiết.</p>
+
+                <div class="calc-input-group" style="max-width: 500px;">
+                    <label>Chế độ tính toán:</label>
+                    <select id="calc-mode" onchange="switchCalcMode()">
+                        <option value="mode1">Chế độ 1: Bài toán Từ thông (Φ = N·B·S·cosα)</option>
+                        <option value="mode2">Chế độ 2: Định luật Faraday (|e_c| = N·|ΔΦ| / Δt)</option>
+                        <option value="mode3">Chế độ 3: Đoạn dây chuyển động trong từ trường (|e_c| = B·l·v·sinθ)</option>
+                    </select>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card" style="margin-bottom:0; background:#f8fafc;">
+                        <!-- Mode 1 Inputs -->
+                        <div id="calc-form-mode1">
+                            <div class="calc-input-group">
+                                <label>Từ thông \( \Phi \) (\(\text{Wb}\)):</label>
+                                <input type="number" step="any" id="m1-phi" placeholder="Bỏ trống nếu cần tìm Φ">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>Số vòng dây \( N \) (vòng):</label>
+                                <input type="number" step="any" id="m1-N" value="1" placeholder="Nhập N (Mặc định = 1)">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>Cảm ứng từ \( B \) (\(\text{T}\)):</label>
+                                <input type="number" step="any" id="m1-B" value="0.02" placeholder="Bỏ trống nếu cần tìm B">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>Diện tích 1 vòng dây \( S \) (\(\text{m}^2\)):</label>
+                                <input type="number" step="any" id="m1-S" value="0.0064" placeholder="Bỏ trống nếu cần tìm S">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>Góc pháp tuyến \( \alpha = (\vec{B}, \vec{n}) \) (độ \(^\circ\)):</label>
+                                <input type="number" step="any" id="m1-alpha" value="30" placeholder="Bỏ trống nếu cần tìm góc α">
+                            </div>
+                        </div>
+
+                        <!-- Mode 2 Inputs -->
+                        <div id="calc-form-mode2" style="display:none;">
+                            <div class="calc-input-group">
+                                <label>Độ lớn suất điện động cảm ứng \( \left|e_{c}\right| \) (\(\text{V}\)):</label>
+                                <input type="number" step="any" id="m2-ec" placeholder="Bỏ trống nếu cần tìm |e_c|">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>Số vòng dây \( N \) (vòng):</label>
+                                <input type="number" step="any" id="m2-N" value="200" placeholder="Bỏ trống nếu cần tìm N">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>Độ biến thiên từ thông 1 vòng \( \left|\Delta \Phi\right| \) (\(\text{Wb}\)):</label>
+                                <input type="number" step="any" id="m2-dphi" value="0.0004" placeholder="Bỏ trống nếu cần tìm |ΔΦ|">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>Thời gian biến thiên \( \Delta t \) (\(\text{s}\)):</label>
+                                <input type="number" step="any" id="m2-dt" value="0.01" placeholder="Bỏ trống nếu cần tìm Δt">
+                            </div>
+                        </div>
+
+                        <!-- Mode 3 Inputs -->
+                        <div id="calc-form-mode3" style="display:none;">
+                            <div class="calc-input-group">
+                                <label>Độ lớn suất điện động \( \left|e_{c}\right| \) (\(\text{V}\)):</label>
+                                <input type="number" step="any" id="m3-ec" placeholder="Bỏ trống nếu cần tìm |e_c|">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>Cảm ứng từ \( B \) (\(\text{T}\)):</label>
+                                <input type="number" step="any" id="m3-B" value="0.5" placeholder="Bỏ trống nếu cần tìm B">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>Chiều dài đoạn dây \( l \) (\(\text{m}\)):</label>
+                                <input type="number" step="any" id="m3-l" value="0.2" placeholder="Bỏ trống nếu cần tìm l">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>Tốc độ chuyển động \( v \) (\(\text{m/s}\)):</label>
+                                <input type="number" step="any" id="m3-v" value="5" placeholder="Bỏ trống nếu cần tìm v">
+                            </div>
+                            <div class="calc-input-group">
+                                <label>Góc \( \theta = (\vec{B}, \vec{v}) \) (độ \(^\circ\)):</label>
+                                <input type="number" step="any" id="m3-theta" value="90" placeholder="Nhập góc θ (mặc định 90°)">
+                            </div>
+                        </div>
+
+                        <div style="display:flex; gap:0.6rem; margin-top:1rem;">
+                            <button class="btn btn-primary" onclick="solvePhysicsCalc()">🧮 Phân tích & Tính toán</button>
+                            <button class="btn btn-outline" onclick="clearCalcUnknown()">🧹 Xóa ô kết quả</button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:0;">
+                        <h3 style="color:var(--primary-dark); margin-bottom:0.8rem;">📑 Các bước biến đổi & Kết quả</h3>
+                        <div id="calc-output" class="alert-box alert-info" style="min-height: 220px;">
+                            Bấm nút <strong>"Phân tích & Tính toán"</strong> để xem hướng dẫn giải tự động bằng KaTeX.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: PHÒNG LUYỆN TẬP PHÂN HÓA ==================== -->
+        <section id="tab5" class="tab-pane">
+            <div class="card">
+                <h2 class="card-title">📝 Phòng Luyện Tập Phân Hóa Theo 3 Cấp Độ Năng Lực</h2>
+
+                <!-- CẤP ĐỘ 1 -->
+                <div class="card" style="border-left: 5px solid var(--success);">
+                    <h3 style="color:var(--success); margin-bottom:0.5rem;">🟢 Cấp độ 1 (Nhận biết - Thông hiểu): Tính từ thông khi biết góc với mặt khung</h3>
+                    <p><strong>Đề bài:</strong> Một khung dây dẫn kín hình tròn có bán kính \( r = 3\text{ cm} \), đặt trong từ trường đều có độ lớn cảm ứng từ \( B = 10^{-4}\text{ T} \). Biết <em>mặt phẳng khung dây</em> hợp với vectơ cảm ứng từ \( \vec{B} \) một góc \( 30^\circ \). Hãy tính từ thông qua khung dây khi đó.</p>
+                    <div style="margin-top:0.8rem; display:flex; gap:0.6rem;">
+                        <button class="btn btn-outline" onclick="toggleBox('hint1')">💡 Gợi ý tư duy</button>
+                        <button class="btn btn-primary" onclick="toggleBox('sol1')">📖 Xem lời giải chi tiết</button>
+                    </div>
+                    <div id="hint1" class="solution-box">
+                        <strong>Gợi ý:</strong> Đổi bán kính \( r = 3\text{ cm} = 0,03\text{ m} \). Lưu ý góc \( 30^\circ \) là góc giữa \( \vec{B} \) và <em>mặt phẳng khung dây</em>, do đó góc hợp bởi \( \vec{B} \) và pháp tuyến \( \vec{n} \) là \( \alpha = 90^\circ - 30^\circ = 60^\circ \).
+                    </div>
+                    <div id="sol1" class="solution-box">
+                        <strong>Hướng dẫn giải chi tiết:</strong>
+                        <p>• Diện tích của khung dây hình tròn là:</p>
+                        \[ S = \pi r^2 = \pi \cdot (0,03)^2 \approx 2,83 \cdot 10^{-3}\text{ m}^2 \]
+                        <p>• Góc hợp bởi vectơ pháp tuyến \( \vec{n} \) và vectơ cảm ứng từ \( \vec{B} \) là:</p>
+                        \[ \alpha = 90^\circ - 30^\circ = 60^\circ \]
+                        <p>• Từ thông xuyên qua khung dây là:</p>
+                        \[ \Phi = B S \cos\alpha = 10^{-4} \cdot \pi \cdot (0,03)^2 \cdot \cos 60^\circ \approx 1,41 \cdot 10^{-7}\text{ Wb} \]
+                    </div>
+                </div>
+
+                <!-- CẤP ĐỘ 2 -->
+                <div class="card" style="border-left: 5px solid var(--primary);">
+                    <h3 style="color:var(--primary); margin-bottom:0.5rem;">🔵 Cấp độ 2 (Vận dụng): Đai cảm biến theo dõi hô hấp bệnh nhân trong Y khoa</h3>
+                    <p><strong>Đề bài:</strong> Để giám sát quá trình hô hấp của bệnh nhân, các nhân viên y tế sử dụng một đai mỏng gồm \( N = 250 \) vòng dây kim loại quấn liên tiếp nhau được buộc xung quanh ngực bệnh nhân. Khi bệnh nhân hít vào, diện tích của các vòng dây tăng lên một lượng \( \Delta S = 45\text{ cm}^2 \). Biết từ trường Trái Đất tại vị trí đang xét được xem gần đúng là đều và có độ lớn cảm ứng từ xấp xỉ \( B = 56\text{ }\mu\text{T} \), các đường sức từ hợp với mặt phẳng cuộn dây một góc \( 32^\circ \). Giả sử thời gian để bệnh nhân hít vào là \( \Delta t = 1,5\text{ s} \), hãy xác định độ lớn suất điện động cảm ứng trung bình sinh ra bởi cuộn dây trong quá trình trên.</p>
+                    <div style="margin-top:0.8rem; display:flex; gap:0.6rem;">
+                        <button class="btn btn-outline" onclick="toggleBox('hint2')">💡 Gợi ý tư duy</button>
+                        <button class="btn btn-primary" onclick="toggleBox('sol2')">📖 Xem lời giải chi tiết</button>
+                    </div>
+                    <div id="hint2" class="solution-box">
+                        <strong>Gợi ý:</strong> Ở bài toán này, \( B \) và góc \( \alpha \) không đổi, chỉ có diện tích \( S \) biến thiên một lượng \( \Delta S = 45 \cdot 10^{-4}\text{ m}^2 \). Xác định góc pháp tuyến \( \alpha = 90^\circ - 32^\circ = 58^\circ \), sau đó áp dụng định luật Faraday.
+                    </div>
+                    <div id="sol2" class="solution-box">
+                        <strong>Hướng dẫn giải chi tiết:</strong>
+                        <p>• Đổi đơn vị chuẩn SI: \( \Delta S = 45\text{ cm}^2 = 45 \cdot 10^{-4}\text{ m}^2 \) ; \( B = 56\text{ }\mu\text{T} = 56 \cdot 10^{-6}\text{ T} \).</p>
+                        <p>• Góc hợp bởi vectơ đơn vị pháp tuyến \( \vec{n} \) của vòng dây với vectơ cảm ứng từ \( \vec{B} \):</p>
+                        \[ \alpha = 90^\circ - 32^\circ = 58^\circ \]
+                        <p>• Độ lớn suất điện động cảm ứng trung bình sinh ra bởi cuộn dây khi bệnh nhân hít vào:</p>
+                        \[ \left|e_{c}\right| = N \left|\frac{\Delta \Phi}{\Delta t}\right| = N \frac{B \cdot \left|\Delta S\right| \cdot \cos\alpha}{\Delta t} = 250 \cdot \frac{56 \cdot 10^{-6} \cdot 45 \cdot 10^{-4} \cdot \cos 58^\circ}{1,5} \approx 2,2 \cdot 10^{-5}\text{ V} = 22\text{ }\mu\text{V} \]
+                    </div>
+                </div>
+
+                <!-- CẤP ĐỘ 3 -->
+                <div class="card" style="border-left: 5px solid var(--accent); margin-bottom:0;">
+                    <h3 style="color:var(--accent); margin-bottom:0.5rem;">🟠 Cấp độ 3 (Vận dụng cao - Tích hợp Năng lực số & AI): Bài toán Cơ - Điện từ & Cảm biến</h3>
+                    <p><strong>Đề bài:</strong> Đoạn dây dẫn \( MN \) dài \( l = 0,2\text{ m} \) có điện trở \( R = 100\text{ }\Omega \) trượt không ma sát trên hai thanh ray song song nằm ngang (điện trở ray không đáng kể) nối kín ở đầu \( PQ \). Hệ thống đặt trong từ trường đều \( \vec{B} \) vuông góc với mặt phẳng khung ray, độ lớn \( B = 1,2\text{ T} \). Người ta kéo thanh \( MN \) chuyển động thẳng đều về bên phải với tốc độ không đổi \( v = 2\text{ m/s} \).<br>
+                    a) Tìm cường độ dòng điện cảm ứng và độ lớn lực kéo \( F_{\text{kéo}} \) cần thiết để duy trì tốc độ không đổi này.<br>
+                    b) <em>(Tư duy Năng lực số / Kiểm chứng AI)</em>: Một học sinh dùng công cụ AI giải câu (a) và nhận được kết quả từ AI là \( F_{\text{kéo}} = 1,2\text{ N} \). Em hãy dùng nguyên lý bảo toàn và chuyển hóa năng lượng (so sánh công suất cơ học \( \mathcal{P}_{\text{cơ}} = F_{\text{kéo}} \cdot v \) và công suất tỏa nhiệt Joule \( \mathcal{P}_{\text{nhiệt}} = I_{c}^2 R \)) để kiểm tra xem AI giải đúng hay bị "ảo giác số học" (hallucination)!</p>
+                    <div style="margin-top:0.8rem; display:flex; gap:0.6rem;">
+                        <button class="btn btn-outline" onclick="toggleBox('hint3')">💡 Gợi ý tư duy</button>
+                        <button class="btn btn-primary" onclick="toggleBox('sol3')">📖 Xem lời giải chi tiết</button>
+                    </div>
+                    <div id="hint3" class="solution-box">
+                        <strong>Gợi ý:</strong> Để thanh chuyển động thẳng đều (\(\vec{a} = \vec{0}\)), lực kéo ngoại lực phải cân bằng với lực từ cản: \( F_{\text{kéo}} = F_{t} = B I_{c} l \). Hãy tính \( I_{c} = \frac{B l v}{R} \) rồi suy ra \( F_{\text{kéo}} \).
+                    </div>
+                    <div id="sol3" class="solution-box">
+                        <strong>Hướng dẫn giải chi tiết:</strong>
+                        <p><strong>a) Tính dòng điện cảm ứng và lực kéo:</strong></p>
+                        <p>• Độ lớn suất điện động cảm ứng xuất hiện trong thanh \( MN \):</p>
+                        \[ \left|e_{c}\right| = B l v = 1,2 \cdot 0,2 \cdot 2 = 0,48\text{ V} \]
+                        <p>• Cường độ dòng điện cảm ứng trong mạch:</p>
+                        \[ I_{c} = \frac{\left|e_{c}\right|}{R} = \frac{0,48}{100} = 4,8 \cdot 10^{-3}\text{ A} \]
+                        <p>• Khi có dòng điện \( I_{c} \), từ trường tác dụng lực từ cản \( \vec{F}_{t} \) ngược chiều chuyển động. Để thanh chuyển động với tốc độ không đổi, lực kéo phải cân bằng với lực từ:</p>
+                        \[ F_{\text{kéo}} = F_{t} = B I_{c} l = \frac{B^2 l^2 v}{R} = \frac{1,2^2 \cdot 0,2^2 \cdot 2}{100} = 1,152 \cdot 10^{-3}\text{ N} \approx 1,2\text{ mN} \]
+                        <p><strong>b) Đánh giá kết quả AI bằng định luật Bảo toàn năng lượng (Năng lực số):</strong></p>
+                        <p>• Công suất tỏa nhiệt trên điện trở \( R \): \( \mathcal{P}_{\text{nhiệt}} = I_{c}^2 R = (4,8 \cdot 10^{-3})^2 \cdot 100 = 2,304 \cdot 10^{-3}\text{ W} \).</p>
+                        <p>• Công suất cơ học của lực kéo: \( \mathcal{P}_{\text{cơ}} = F_{\text{kéo}} \cdot v = 1,152 \cdot 10^{-3} \cdot 2 = 2,304 \cdot 10^{-3}\text{ W} = \mathcal{P}_{\text{nhiệt}} \) (Hoàn toàn khớp!).</p>
+                        <p>• Như vậy, con số \( 1,2\text{ N} \) mà AI đưa ra đã bị <strong>sai lệch đơn vị gấp \( 1000 \) lần</strong> (nhầm từ mili-Newton \(\text{mN}\) sang Newton \(\text{N}\)). Khi sử dụng AI hỗ trợ học tập, ta luôn phải kiểm tra lại thứ nguyên và quy luật vật lý!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: BÀI TỰ ĐÁNH GIÁ (INTERACTIVE QUIZ) ==================== -->
+        <section id="tab6" class="tab-pane">
+            <div class="card">
+                <h2 class="card-title">🎯 Bài Tự Đánh Giá Trắc Nghiệm (4 Câu Hỏi Trọng Tâm)</h2>
+                <p style="margin-bottom: 1rem;">Chọn đáp án đúng nhất cho từng câu hỏi dưới đây và nhấn <strong>"Nộp bài & Xem giải thích"</strong>.</p>
+
+                <div id="quiz-container"></div>
+
+                <div style="margin-top: 1.2rem; display:flex; gap: 0.8rem;">
+                    <button class="btn btn-primary" onclick="submitQuiz()">✅ Nộp bài & Xem giải thích</button>
+                    <button class="btn btn-outline" onclick="resetQuiz()">🔄 Làm lại bài</button>
+                </div>
+
+                <div id="quiz-result-box" style="margin-top: 1.5rem; display:none;"></div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 7: TIỆN ÍCH LỚP HỌC (CLASSROOM TOOLS) ==================== -->
+        <section id="tab7" class="tab-pane">
+            <div class="grid-2">
+                <!-- ĐỒNG HỒ ĐẾM NGƯỢC -->
+                <div class="card" id="timer-card">
+                    <h2 class="card-title">⏱️ Đồng Hồ Đếm Ngược Thảo Luận Nhóm</h2>
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 1rem 0;">
+                        <div style="position:relative; width:220px; height:220px; display:flex; align-items:center; justify-content:center;">
+                            <svg width="220" height="220" style="transform: rotate(-90deg); position:absolute; top:0; left:0;">
+                                <circle cx="110" cy="110" r="96" stroke="#e2e8f0" stroke-width="14" fill="none"></circle>
+                                <circle id="timer-ring" cx="110" cy="110" r="96" stroke="#0f4c81" stroke-width="14" fill="none"
+                                    stroke-dasharray="603.18" stroke-dashoffset="0" stroke-linecap="round"
+                                    style="transition: stroke-dashoffset 0.3s linear;"></circle>
+                            </svg>
+                            <div class="timer-display" id="timer-text">03:00</div>
+                        </div>
+
+                        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin: 1.2rem 0;">
+                            <button class="btn btn-outline" onclick="setTimerSec(60)">1 Phút</button>
+                            <button class="btn btn-outline" onclick="setTimerSec(180)">3 Phút</button>
+                            <button class="btn btn-outline" onclick="setTimerSec(300)">5 Phút</button>
+                            <button class="btn btn-outline" onclick="setTimerSec(600)">10 Phút</button>
+                        </div>
+
+                        <div style="display:flex; gap:0.8rem;">
+                            <button class="btn btn-primary" id="btn-timer-start" onclick="toggleTimer()">▶️ Bắt đầu</button>
+                            <button class="btn btn-accent" onclick="resetTimer()">🔄 Đặt lại</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VÒNG QUAY MAY MẮN -->
+                <div class="card">
+                    <h2 class="card-title">🎡 Vòng Quay May Mắn Gọi Tên Học Sinh Theo Tổ</h2>
+                    <div class="grid-2" style="gap: 1rem; align-items:center;">
+                        <div style="display:flex; flex-direction:column; align-items:center;">
+                            <div style="position:relative;">
+                                <canvas id="wheelCanvas" width="280" height="280" style="background:transparent;"></canvas>
+                            </div>
+                            <button class="btn btn-accent" style="margin-top:0.8rem; width:100%;" onclick="spinWheel()">🎯 QUAY NGẪU NHIÊN</button>
+                        </div>
+
+                        <div>
+                            <label style="font-weight:600; font-size:0.9rem;">Chọn Tổ / Nhóm học tập:</label>
+                            <select id="group-select" onchange="loadGroupList()" style="width:100%; padding:0.5rem; margin:0.4rem 0 0.8rem; border-radius:6px; border:1px solid var(--border-color);">
+                                <option value="to1">Tổ 1</option>
+                                <option value="to2">Tổ 2</option>
+                                <option value="to3">Tổ 3</option>
+                                <option value="to4">Tổ 4</option>
+                            </select>
+                            <label style="font-weight:600; font-size:0.9rem;">Danh sách học sinh (mỗi dòng 1 tên):</label>
+                            <textarea id="wheel-names" rows="7" style="width:100%; padding:0.6rem; border-radius:6px; border:1px solid var(--border-color); margin-top:0.3rem; font-family:inherit;" oninput="drawWheel()"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Popup Chúc mừng Vòng quay -->
+    <div class="modal-overlay" id="winner-modal">
+        <div class="modal-box">
+            <h2 style="color:var(--primary); margin-bottom:0.5rem;">🎉 XIN CHÚC MỪNG!</h2>
+            <p style="color:var(--text-muted);">Học sinh được mời trả lời câu hỏi:</p>
+            <div id="winner-name" style="font-size:1.8rem; font-weight:800; color:var(--accent); margin: 1.2rem 0; padding:0.8rem; background:#fff7ed; border-radius:8px; border: 2px dashed var(--accent);"></div>
+            <button class="btn btn-primary" onclick="closeWinnerModal()">Đóng thông báo</button>
+        </div>
+    </div>
+
+    <footer>
+        <div id="footer-copyright">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        // 1. Cấu hình KaTeX chuẩn bắt buộc
+        const katexConfig = {
+            delimiters: [
+                {left: "\\[", right: "\\]", display: true},
+                {left: "\\(", right: "\\)", display: false}
+            ],
+            throwOnError: false
+        };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentYear = new Date().getFullYear();
+            const copyText = `© ${currentYear} - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng`;
+            document.getElementById("header-copyright").textContent = copyText;
+            document.getElementById("footer-copyright").textContent = copyText;
+
+            if (typeof renderMathInElement === "function") {
+                renderMathInElement(document.body, katexConfig);
+            }
+
+            // Khởi tạo các module
+            updateSimA();
+            initSimB();
+            initSimC();
+            renderQuiz();
+            loadGroupList();
+            updateTimerUI();
+        });
+
+        // Điều hướng 7 Tab chính
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            const buttons = document.querySelectorAll('.nav-btn');
+            const idx = parseInt(tabId.replace('tab', '')) - 1;
+            if (buttons[idx]) buttons[idx].classList.add('active');
+
+            if (typeof renderMathInElement === "function") {
+                renderMathInElement(document.getElementById(tabId), katexConfig);
+            }
+        }
+
+        // Điều hướng Sub-tab Mô phỏng
+        function switchSim(simId) {
+            document.querySelectorAll('.sim-pane').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.sim-subbtn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(simId).classList.add('active');
+            const mapIdx = { 'simA': 0, 'simB': 1, 'simC': 2 };
+            document.querySelectorAll('.sim-subbtn')[mapIdx[simId]].classList.add('active');
+
+            if (typeof renderMathInElement === "function") {
+                renderMathInElement(document.getElementById(simId), katexConfig);
+            }
+        }
+
+        // Hàm vẽ mũi tên Vector trên Canvas
+        function drawArrow(ctx, fromX, fromY, toX, toY, color, label = "", width = 2.5) {
+            const headlen = 10;
+            const dx = toX - fromX;
+            const dy = toY - fromY;
+            const angle = Math.atan2(dy, dx);
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = width;
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+
+            if (label) {
+                ctx.font = "bold 14px Segoe UI";
+                ctx.fillText(label, toX + 8 * Math.cos(angle), toY + 8 * Math.sin(angle));
+            }
+            ctx.restore();
+        }
+
+        /* =========================================================================
+           MÔ PHỎNG 3A: TỪ THÔNG \Phi = N B S \cos\alpha
+           ========================================================================= */
+        function setSimAAngle(deg) {
+            document.getElementById('simA-alpha').value = deg;
+            updateSimA();
+        }
+
+        function updateSimA() {
+            const B = parseFloat(document.getElementById('simA-B').value);
+            const S = parseFloat(document.getElementById('simA-S').value);
+            const alphaDeg = parseFloat(document.getElementById('simA-alpha').value);
+            const N = parseInt(document.getElementById('simA-N').value);
+
+            document.getElementById('val-simA-B').textContent = B.toFixed(2) + " T";
+            document.getElementById('val-simA-S').textContent = S.toFixed(2) + " m²";
+            document.getElementById('val-simA-alpha').textContent = alphaDeg + "°";
+            document.getElementById('val-simA-N').textContent = N + " vòng";
+
+            const alphaRad = alphaDeg * Math.PI / 180;
+            const cosAlpha = Math.cos(alphaRad);
+            const phi = N * B * S * cosAlpha;
+            const betaDeg = Math.abs(90 - alphaDeg);
+
+            document.getElementById('out-simA-cos').textContent = cosAlpha.toFixed(3);
+            document.getElementById('out-simA-beta').textContent = betaDeg + "°";
+            document.getElementById('out-simA-phi').textContent = phi.toFixed(4) + " Wb";
+
+            const stateEl = document.getElementById('out-simA-state');
+            if (Math.abs(cosAlpha) < 0.001) {
+                stateEl.textContent = "Bằng 0 (α = 90°)";
+                stateEl.style.color = "#64748b";
+            } else if (cosAlpha > 0) {
+                stateEl.textContent = "Dương (Φ > 0)";
+                stateEl.style.color = "#15803d";
+            } else {
+                stateEl.textContent = "Âm (Φ < 0)";
+                stateEl.style.color = "#b91c1c";
+            }
+
+            drawSimACanvas(B, S, alphaDeg, alphaRad, phi);
+        }
+
+        function drawSimACanvas(B, S, alphaDeg, alphaRad, phi) {
+            const canvas = document.getElementById('canvasSimA');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            // Vẽ các đường sức từ \vec{B} nằm ngang
+            const numLines = Math.round(5 + B * 8);
+            const spacing = 280 / (numLines - 1);
+            for (let i = 0; i < numLines; i++) {
+                const y = (cy - 140) + i * spacing;
+                drawArrow(ctx, 50, y, 630, y, "rgba(56, 189, 248, 0.45)", i === 0 ? "B" : "", 1.8);
+            }
+
+            // Kích thước khung dây theo S
+            const halfLen = 60 + S * 750;
+            // Pháp tuyến \vec{n} hợp với trục ngang góc alphaRad (ngược chiều kim đồng hồ)
+            // Mặt phẳng khung dây vuông góc với \vec{n}, tức tạo góc (alphaRad + PI/2)
+            const frameAngle = -alphaRad + Math.PI / 2;
+
+            const x1 = cx - halfLen * Math.cos(frameAngle);
+            const y1 = cy - halfLen * Math.sin(frameAngle);
+            const x2 = cx + halfLen * Math.cos(frameAngle);
+            const y2 = cy + halfLen * Math.sin(frameAngle);
+
+            // Vẽ hình chiếu hiệu dụng vuông góc với đường sức từ
+            const projHalf = Math.abs(halfLen * Math.cos(alphaRad));
+            ctx.save();
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = "#facc15";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(cx + 150, cy - projHalf);
+            ctx.lineTo(cx + 150, cy + projHalf);
+            ctx.stroke();
+            ctx.fillStyle = "#facc15";
+            ctx.font = "12px Segoe UI";
+            ctx.fillText("S·|cosα|", cx + 158, cy + 4);
+            ctx.restore();
+
+            // Vẽ khung dây 3D giả lập (Elip nghiêng)
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(frameAngle);
+            ctx.beginPath();
+            ctx.ellipse(0, 0, halfLen, 28, 0, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(249, 115, 22, 0.22)";
+            ctx.fill();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "#f97316";
+            ctx.stroke();
+            ctx.restore();
+
+            // Vẽ vectơ cảm ứng từ \vec{B} tại tâm
+            drawArrow(ctx, cx, cy, cx + 110, cy, "#38bdf8", "B", 3.5);
+
+            // Vẽ vectơ pháp tuyến \vec{n} tại tâm
+            const nx = cx + 100 * Math.cos(-alphaRad);
+            const ny = cy + 100 * Math.sin(-alphaRad);
+            drawArrow(ctx, cx, cy, nx, ny, "#4ade80", "n", 3.5);
+
+            // Vẽ cung góc alpha
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(cx, cy, 42, -alphaRad, 0, false);
+            ctx.strokeStyle = "#fde047";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = "#fde047";
+            ctx.font = "bold 13px Segoe UI";
+            ctx.fillText(`α = ${alphaDeg}°`, cx + 48 * Math.cos(-alphaRad / 2), cy + 48 * Math.sin(-alphaRad / 2));
+            ctx.restore();
+        }
+
+        /* =========================================================================
+           MÔ PHỎNG 3B: THÍ NGHIỆM FARADAY & ĐỊNH LUẬT LENZ
+           ========================================================================= */
+        let simBState = {
+            x: -140,
+            prevX: -140,
+            v: 0,
+            northRight: true, // true: cực N quay về phía cuộn dây (bên phải)
+            animTarget: null
+        };
+
+        function initSimB() {
+            const sliderX = document.getElementById('simB-x');
+            sliderX.addEventListener('input', () => {
+                simBState.animTarget = null;
+                simBState.x = parseFloat(sliderX.value);
+            });
+            requestAnimationFrame(loopSimB);
+        }
+
+        function flipMagnet() {
+            simBState.northRight = !simBState.northRight;
+        }
+
+        function animateMagnet(dir) {
+            simBState.animTarget = dir > 0 ? -25 : -210;
+        }
+
+        function loopSimB() {
+            if (simBState.animTarget !== null) {
+                const diff = simBState.animTarget - simBState.x;
+                if (Math.abs(diff) < 2) {
+                    simBState.x = simBState.animTarget;
+                    simBState.animTarget = null;
+                } else {
+                    simBState.x += diff * 0.12;
+                }
+                document.getElementById('simB-x').value = Math.round(simBState.x);
+            }
+
+            const N = parseInt(document.getElementById('simB-N').value);
+            document.getElementById('val-simB-x').textContent = Math.round(simBState.x) + " px";
+            document.getElementById('val-simB-N').textContent = N + " vòng";
+
+            // Vận tốc tức thời
+            const rawV = (simBState.x - simBState.prevX);
+            simBState.v = simBState.v * 0.7 + rawV * 0.3;
+            simBState.prevX = simBState.x;
+
+            // Khoảng cách từ nam châm đến tâm cuộn dây (tâm cuộn ở x = 0)
+            const dist = Math.max(35, Math.abs(simBState.x) + 40);
+            const polarity = simBState.northRight ? 1 : -1; // +1: B0 hướng sang phải, -1: B0 hướng sang trái
+            const B0 = polarity * (1800 / (dist * dist));
+            const phi = N * B0 * 0.015;
+
+            // Tốc độ biến thiên từ thông tỉ lệ với vận tốc v
+            const ec = -N * polarity * (3600 / Math.pow(dist, 3)) * simBState.v * 0.08;
+
+            document.getElementById('out-simB-phi').textContent = Math.abs(phi).toFixed(3) + " Wb";
+            document.getElementById('out-simB-v').textContent = (simBState.v * 0.5).toFixed(2) + " m/s";
+            document.getElementById('out-simB-ec').textContent = ec.toFixed(2) + " V";
+
+            const lenzEl = document.getElementById('out-simB-lenz');
+            if (Math.abs(simBState.v) < 0.08) {
+                lenzEl.textContent = "Đứng yên (i_c = 0)";
+                lenzEl.style.color = "#64748b";
+            } else if (simBState.v > 0) {
+                lenzEl.textContent = "Φ tăng ⇒ B_c ↑↓ B_0 (Đẩy nhau)";
+                lenzEl.style.color = "#e65100";
+            } else {
+                lenzEl.textContent = "Φ giảm ⇒ B_c ↑↑ B_0 (Hút nhau)";
+                lenzEl.style.color = "#15803d";
+            }
+
+            drawSimBCanvas(simBState.x, simBState.v, simBState.northRight, ec);
+            requestAnimationFrame(loopSimB);
+        }
+
+        function drawSimBCanvas(magOffset, v, northRight, ec) {
+            const canvas = document.getElementById('canvasSimB');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const coilX = 430;
+            const coilY = 200;
+            const magX = coilX + magOffset - 90;
+            const magY = coilY;
+
+            // Vẽ các đường sức từ cong từ nam châm qua cuộn dây
+            ctx.save();
+            ctx.strokeStyle = "rgba(56, 189, 248, 0.35)";
+            ctx.lineWidth = 1.5;
+            for (let spread of [-65, -30, 0, 30, 65]) {
+                ctx.beginPath();
+                ctx.moveTo(magX + 70, magY + spread * 0.2);
+                ctx.quadraticCurveTo(coilX - 20, coilY + spread * 0.8, coilX + 140, coilY + spread * 1.4);
+                ctx.stroke();
+            }
+            ctx.restore();
+
+            // Vẽ Thanh Nam Châm
+            ctx.save();
+            const magW = 140, magH = 44;
+            const leftColor = northRight ? "#0284c7" : "#dc2626";
+            const rightColor = northRight ? "#dc2626" : "#0284c7";
+            const leftText = northRight ? "S" : "N";
+            const rightText = northRight ? "N" : "S";
+
+            ctx.fillStyle = leftColor;
+            ctx.fillRect(magX - magW / 2, magY - magH / 2, magW / 2, magH);
+            ctx.fillStyle = rightColor;
+            ctx.fillRect(magX, magY - magH / 2, magW / 2, magH);
+            ctx.strokeStyle = "#f8fafc";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(magX - magW / 2, magY - magH / 2, magW, magH);
+
+            ctx.fillStyle = "white";
+            ctx.font = "bold 20px Segoe UI";
+            ctx.fillText(leftText, magX - magW / 4 - 7, magY + 7);
+            ctx.fillText(rightText, magX + magW / 4 - 7, magY + 7);
+
+            // Vẽ mũi tên vận tốc nam châm nếu đang di chuyển
+            if (Math.abs(v) >= 0.08) {
+                const vLen = Math.min(70, Math.max(-70, v * 14));
+                drawArrow(ctx, magX, magY - 38, magX + vLen, magY - 38, "#facc15", "v", 3);
+            }
+            ctx.restore();
+
+            // Vẽ Cuộn dây (Khung dây tròn nối với Điện kế G)
+            ctx.save();
+            ctx.beginPath();
+            ctx.ellipse(coilX, coilY, 28, 85, 0, 0, Math.PI * 2);
+            ctx.strokeStyle = "#d97706";
+            ctx.lineWidth = 5;
+            ctx.stroke();
+
+            // Dây nối lên Điện kế G
+            const galvX = 550, galvY = 95;
+            ctx.strokeStyle = "#94a3b8";
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(coilX - 6, coilY - 83);
+            ctx.lineTo(coilX - 6, galvY + 45);
+            ctx.lineTo(galvX - 25, galvY + 45);
+            ctx.moveTo(coilX + 6, coilY - 83);
+            ctx.lineTo(coilX + 6, galvY + 55);
+            ctx.lineTo(galvX + 25, galvY + 55);
+            ctx.stroke();
+
+            // Vẽ Điện kế G
+            ctx.fillStyle = "#f8fafc";
+            ctx.strokeStyle = "#334155";
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.roundRect(galvX - 55, galvY - 45, 110, 95, 8);
+            ctx.fill();
+            ctx.stroke();
+
+            // Mặt chia độ điện kế
+            ctx.beginPath();
+            ctx.arc(galvX, galvY + 20, 42, Math.PI * 1.15, Math.PI * 1.85);
+            ctx.strokeStyle = "#0f4c81";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = "#0f172a";
+            ctx.font = "bold 13px Segoe UI";
+            ctx.fillText("-", galvX - 38, galvY + 5);
+            ctx.fillText("0", galvX - 4, galvY - 25);
+            ctx.fillText("+", galvX + 28, galvY + 5);
+            ctx.fillText("G", galvX - 5, galvY + 38);
+
+            // Kim điện kế lệch theo e_c
+            const clampedAngle = Math.max(-0.9, Math.min(0.9, ec * 0.15));
+            const needleAngle = -Math.PI / 2 + clampedAngle;
+            drawArrow(ctx, galvX, galvY + 20, galvX + 38 * Math.cos(needleAngle), galvY + 20 + 38 * Math.sin(needleAngle), "#dc2626", "", 2.5);
+            ctx.restore();
+
+            // Vẽ Vector \vec{B}_0 tại tâm cuộn dây
+            const b0Dir = northRight ? 1 : -1;
+            drawArrow(ctx, coilX, coilY, coilX + b0Dir * 85, coilY, "#38bdf8", "B₀", 3.5);
+
+            // Vẽ Vector cảm ứng \vec{B}_c khi có dòng cảm ứng
+            if (Math.abs(v) >= 0.08) {
+                // Nếu lại gần (v > 0) -> Bc ngược chiều B0; Nếu ra xa (v < 0) -> Bc cùng chiều B0
+                const bcDir = (v > 0) ? -b0Dir : b0Dir;
+                drawArrow(ctx, coilX, coilY + 22, coilX + bcDir * 70, coilY + 22, "#fb923c", "B_c", 3.5);
+
+                // Hiển thị chiều i_c trên khung dây
+                ctx.fillStyle = "#4ade80";
+                ctx.font = "bold 14px Segoe UI";
+                ctx.fillText(`i_c ≠ 0`, coilX - 20, coilY + 110);
+            }
+        }
+
+        /* =========================================================================
+           MÔ PHỎNG 3C: THANH DẪN TRƯỢT TRÊN RAY TRONG TỪ TRƯỜNG
+           ========================================================================= */
+        let simCState = {
+            rodX: 280,
+            running: true
+        };
+
+        function initSimC() {
+            updateSimCParams();
+            requestAnimationFrame(loopSimC);
+        }
+
+        function toggleSimCRun() {
+            simCState.running = !simCState.running;
+            document.getElementById('btn-simC-toggle').textContent = simCState.running ? "⏸️ Tạm dừng" : "▶️ Tiếp tục";
+        }
+
+        function resetSimCPos() {
+            simCState.rodX = 280;
+        }
+
+        function updateSimCParams() {
+            const B = parseFloat(document.getElementById('simC-B').value);
+            const l = parseFloat(document.getElementById('simC-l').value);
+            const v = parseFloat(document.getElementById('simC-v').value);
+            const R = parseFloat(document.getElementById('simC-R').value);
+            const Bdir = document.getElementById('simC-Bdir').value;
+
+            document.getElementById('val-simC-B').textContent = B.toFixed(2) + " T";
+            document.getElementById('val-simC-l').textContent = l.toFixed(2) + " m";
+            document.getElementById('val-simC-v').textContent = v.toFixed(1) + " m/s";
+            document.getElementById('val-simC-R').textContent = R.toFixed(1) + " Ω";
+
+            const ec = B * l * Math.abs(v);
+            const ic = ec / R;
+            const ft = B * ic * l;
+
+            document.getElementById('out-simC-ec').textContent = ec.toFixed(3) + " V";
+            document.getElementById('out-simC-ic').textContent = ic.toFixed(3) + " A";
+            document.getElementById('out-simC-ft').textContent = ft.toFixed(3) + " N";
+
+            // Quy tắc bàn tay phải: M ở trên, N ở dưới
+            // Nếu B hướng vào (in) và v > 0 (sang phải) -> Ngón cái sang phải, B đâm vào lòng bàn tay -> Chiều từ cổ tay đến ngón tay hướng từ N lên M
+            const dirEl = document.getElementById('out-simC-dir');
+            if (Math.abs(v) < 0.05) {
+                dirEl.textContent = "I_c = 0 (Đứng yên)";
+                dirEl.style.color = "#64748b";
+            } else {
+                const isNtoM = (Bdir === 'in' && v > 0) || (Bdir === 'out' && v < 0);
+                dirEl.textContent = isNtoM ? "Từ N → M (Đi lên)" : "Từ M → N (Đi xuống)";
+                dirEl.style.color = "#15803d";
+            }
+        }
+
+        function loopSimC() {
+            const v = parseFloat(document.getElementById('simC-v').value);
+            const Bdir = document.getElementById('simC-Bdir').value;
+
+            if (simCState.running && Math.abs(v) > 0.05) {
+                simCState.rodX += v * 0.45;
+                if (simCState.rodX > 560) simCState.rodX = 180;
+                if (simCState.rodX < 180) simCState.rodX = 560;
+            }
+
+            drawSimCCanvas(simCState.rodX, v, Bdir);
+            requestAnimationFrame(loopSimC);
+        }
+
+        function drawSimCCanvas(rodX, v, Bdir) {
+            const canvas = document.getElementById('canvasSimC');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const railTop = 80, railBot = 280, railLeft = 110, railRight = 610;
+
+            // Vẽ lưới ký hiệu từ trường \vec{B} (⊗ hoặc ⊙)
+            ctx.save();
+            ctx.strokeStyle = "rgba(56, 189, 248, 0.35)";
+            ctx.fillStyle = "rgba(56, 189, 248, 0.45)";
+            ctx.lineWidth = 1.5;
+            for (let x = 150; x <= 580; x += 55) {
+                for (let y = 110; y <= 255; y += 48) {
+                    ctx.beginPath();
+                    ctx.arc(x, y, 8, 0, Math.PI * 2);
+                    ctx.stroke();
+                    if (Bdir === 'in') {
+                        ctx.beginPath();
+                        ctx.moveTo(x - 5, y - 5); ctx.lineTo(x + 5, y + 5);
+                        ctx.moveTo(x + 5, y - 5); ctx.lineTo(x - 5, y + 5);
+                        ctx.stroke();
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+            ctx.restore();
+
+            // Vẽ vùng diện tích mạch kín MNPQ
+            ctx.fillStyle = "rgba(16, 185, 129, 0.12)";
+            ctx.fillRect(railLeft, railTop, rodX - railLeft, railBot - railTop);
+
+            // Vẽ hai thanh ray song song
+            ctx.strokeStyle = "#cbd5e1";
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(railLeft, railTop); ctx.lineTo(railRight, railTop);
+            ctx.moveTo(railLeft, railBot); ctx.lineTo(railRight, railBot);
+            ctx.moveTo(railLeft, railTop); ctx.lineTo(railLeft, railBot);
+            ctx.stroke();
+
+            // Vẽ Điện trở R ở cạnh trái PQ
+            ctx.fillStyle = "#1e293b";
+            ctx.strokeStyle = "#facc15";
+            ctx.lineWidth = 3;
+            ctx.fillRect(railLeft - 14, 150, 28, 60);
+            ctx.strokeRect(railLeft - 14, 150, 28, 60);
+            ctx.fillStyle = "#facc15";
+            ctx.font = "bold 14px Segoe UI";
+            ctx.fillText("R", railLeft - 6, 185);
+            ctx.fillStyle = "#e2e8f0";
+            ctx.fillText("Q", railLeft - 18, railTop - 10);
+            ctx.fillText("P", railLeft - 18, railBot + 22);
+
+            // Vẽ Thanh kim loại MN
+            ctx.strokeStyle = "#f97316";
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.moveTo(rodX, railTop - 12);
+            ctx.lineTo(rodX, railBot + 12);
+            ctx.stroke();
+
+            ctx.fillStyle = "#fb923c";
+            ctx.font = "bold 16px Segoe UI";
+            ctx.fillText("M", rodX - 8, railTop - 18);
+            ctx.fillText("N", rodX - 8, railBot + 30);
+
+            // Vẽ các vector v, I_c, F_t nếu v != 0
+            if (Math.abs(v) >= 0.05) {
+                const vDir = v > 0 ? 1 : -1;
+                // Vector vận tốc v
+                drawArrow(ctx, rodX, 155, rodX + vDir * 65, 155, "#4ade80", "v", 3);
+                // Vector lực từ cản F_t (luôn ngược chiều v)
+                drawArrow(ctx, rodX, 205, rodX - vDir * 55, 205, "#f87171", "F_t", 3);
+
+                // Vector dòng điện cảm ứng I_c trên thanh MN
+                const isNtoM = (Bdir === 'in' && v > 0) || (Bdir === 'out' && v < 0);
+                if (isNtoM) {
+                    drawArrow(ctx, rodX + 16, 235, rodX + 16, 125, "#fde047", "I_c", 2.5);
+                } else {
+                    drawArrow(ctx, rodX + 16, 125, rodX + 16, 235, "#fde047", "I_c", 2.5);
+                }
+            }
+        }
+
+        /* =========================================================================
+           TAB 4: MÁY TÍNH THAM SỐ VẬT LÝ (CALCULATOR MODULE)
+           ========================================================================= */
+        function switchCalcMode() {
+            const mode = document.getElementById('calc-mode').value;
+            document.getElementById('calc-form-mode1').style.display = mode === 'mode1' ? 'block' : 'none';
+            document.getElementById('calc-form-mode2').style.display = mode === 'mode2' ? 'block' : 'none';
+            document.getElementById('calc-form-mode3').style.display = mode === 'mode3' ? 'block' : 'none';
+        }
+
+        function clearCalcUnknown() {
+            const mode = document.getElementById('calc-mode').value;
+            if (mode === 'mode1') document.getElementById('m1-phi').value = '';
+            if (mode === 'mode2') document.getElementById('m2-ec').value = '';
+            if (mode === 'mode3') document.getElementById('m3-ec').value = '';
+        }
+
+        function solvePhysicsCalc() {
+            const mode = document.getElementById('calc-mode').value;
+            const outEl = document.getElementById('calc-output');
+            let html = "";
+
+            if (mode === 'mode1') {
+                const phiVal = document.getElementById('m1-phi').value.trim();
+                const nVal = document.getElementById('m1-N').value.trim();
+                const bVal = document.getElementById('m1-B').value.trim();
+                const sVal = document.getElementById('m1-S').value.trim();
+                const aVal = document.getElementById('m1-alpha').value.trim();
+
+                const N = nVal === "" ? 1 : parseFloat(nVal);
+                const B = parseFloat(bVal);
+                const S = parseFloat(sVal);
+                const alpha = parseFloat(aVal);
+                const phi = parseFloat(phiVal);
+
+                if (phiVal === "" && !isNaN(B) && !isNaN(S) && !isNaN(alpha)) {
+                    const res = N * B * S * Math.cos(alpha * Math.PI / 180);
+                    document.getElementById('m1-phi').value = res.toExponential(4);
+                    html = `<p><strong>1. Công thức gốc:</strong> \\[ \\Phi = N B S \\cos\\alpha \\]</p>
+                            <p><strong>2. Thay số chuẩn SI:</strong> \\[ \\Phi = ${N} \\cdot ${B} \\cdot ${S} \\cdot \\cos(${alpha}^\\circ) \\]</p>
+                            <p><strong>3. Kết quả:</strong> \\[ \\Phi \\approx ${res.toExponential(4)}\\text{ Wb} \\]</p>`;
+                } else if (bVal === "" && !isNaN(phi) && !isNaN(S) && !isNaN(alpha)) {
+                    const res = phi / (N * S * Math.cos(alpha * Math.PI / 180));
+                    document.getElementById('m1-B').value = res.toExponential(4);
+                    html = `<p><strong>1. Rút biến \\( B \\) từ công thức từ thông:</strong> \\[ B = \\frac{\\Phi}{N S \\cos\\alpha} \\]</p>
+                            <p><strong>2. Thay số:</strong> \\[ B = \\frac{${phi}}{${N} \\cdot ${S} \\cdot \\cos(${alpha}^\\circ)} \\approx ${res.toExponential(4)}\\text{ T} \\]</p>`;
+                } else if (sVal === "" && !isNaN(phi) && !isNaN(B) && !isNaN(alpha)) {
+                    const res = phi / (N * B * Math.cos(alpha * Math.PI / 180));
+                    document.getElementById('m1-S').value = res.toExponential(4);
+                    html = `<p><strong>1. Rút diện tích \\( S \\):</strong> \\[ S = \\frac{\\Phi}{N B \\cos\\alpha} \\]</p>
+                            <p><strong>2. Thay số:</strong> \\[ S = \\frac{${phi}}{${N} \\cdot ${B} \\cdot \\cos(${alpha}^\\circ)} \\approx ${res.toExponential(4)}\\text{ m}^2 \\]</p>`;
+                } else if (aVal === "" && !isNaN(phi) && !isNaN(B) && !isNaN(S)) {
+                    const cosA = phi / (N * B * S);
+                    if (Math.abs(cosA) > 1) {
+                        html = `<p style="color:var(--danger);">⚠️ Lỗi toán học: \\( \\left|\\cos\\alpha\\right| = ${Math.abs(cosA).toFixed(3)} > 1 \\). Vui lòng kiểm tra lại bộ số liệu!</p>`;
+                    } else {
+                        const deg = Math.acos(cosA) * 180 / Math.PI;
+                        document.getElementById('m1-alpha').value = deg.toFixed(2);
+                        html = `<p><strong>1. Tìm \\( \\cos\\alpha \\):</strong> \\[ \\cos\\alpha = \\frac{\\Phi}{N B S} = \\frac{${phi}}{${N} \\cdot ${B} \\cdot ${S}} = ${cosA.toFixed(4)} \\]</p>
+                                <p><strong>2. Suy ra góc \\( \\alpha \\):</strong> \\[ \\alpha = \\arccos(${cosA.toFixed(4)}) \\approx ${deg.toFixed(2)}^\\circ \\]</p>`;
+                    }
+                } else {
+                    html = `<p style="color:var(--warning);">⚠️ Vui lòng để trống <strong>đúng 1 ô cần tìm</strong> và điền đầy đủ các ô còn lại!</p>`;
+                }
+            } else if (mode === 'mode2') {
+                const ecVal = document.getElementById('m2-ec').value.trim();
+                const nVal = document.getElementById('m2-N').value.trim();
+                const dpVal = document.getElementById('m2-dphi').value.trim();
+                const dtVal = document.getElementById('m2-dt').value.trim();
+
+                const ec = parseFloat(ecVal);
+                const N = parseFloat(nVal);
+                const dphi = parseFloat(dpVal);
+                const dt = parseFloat(dtVal);
+
+                if (ecVal === "" && !isNaN(N) && !isNaN(dphi) && !isNaN(dt)) {
+                    const res = N * Math.abs(dphi) / dt;
+                    document.getElementById('m2-ec').value = res.toFixed(4);
+                    html = `<p><strong>1. Định luật Faraday:</strong> \\[ \\left|e_{c}\\right| = N \\left|\\frac{\\Delta \\Phi}{\\Delta t}\\right| \\]</p>
+                            <p><strong>2. Thay số:</strong> \\[ \\left|e_{c}\\right| = ${N} \\cdot \\frac{${Math.abs(dphi)}}{${dt}} = ${res.toFixed(4)}\\text{ V} \\]</p>`;
+                } else if (dtVal === "" && !isNaN(ec) && !isNaN(N) && !isNaN(dphi)) {
+                    const res = N * Math.abs(dphi) / ec;
+                    document.getElementById('m2-dt').value = res.toFixed(5);
+                    html = `<p><strong>1. Rút thời gian \\( \\Delta t \\):</strong> \\[ \\Delta t = \\frac{N \\left|\\Delta \\Phi\\right|}{\\left|e_{c}\\right|} \\]</p>
+                            <p><strong>2. Thay số:</strong> \\[ \\Delta t = \\frac{${N} \\cdot ${Math.abs(dphi)}}{${ec}} = ${res.toFixed(5)}\\text{ s} \\]</p>`;
+                } else if (dpVal === "" && !isNaN(ec) && !isNaN(N) && !isNaN(dt)) {
+                    const res = ec * dt / N;
+                    document.getElementById('m2-dphi').value = res.toExponential(4);
+                    html = `<p><strong>1. Rút độ biến thiên từ thông 1 vòng \\( \\left|\\Delta \\Phi\\right| \\):</strong> \\[ \\left|\\Delta \\Phi\\right| = \\frac{\\left|e_{c}\\right| \\cdot \\Delta t}{N} \\]</p>
+                            <p><strong>2. Thay số:</strong> \\[ \\left|\\Delta \\Phi\\right| = \\frac{${ec} \\cdot ${dt}}{${N}} = ${res.toExponential(4)}\\text{ Wb} \\]</p>`;
+                } else if (nVal === "" && !isNaN(ec) && !isNaN(dphi) && !isNaN(dt)) {
+                    const res = Math.round(ec * dt / Math.abs(dphi));
+                    document.getElementById('m2-N').value = res;
+                    html = `<p><strong>1. Rút số vòng dây \\( N \\):</strong> \\[ N = \\frac{\\left|e_{c}\\right| \\cdot \\Delta t}{\\left|\\Delta \\Phi\\right|} = ${res}\\text{ vòng} \\]</p>`;
+                } else {
+                    html = `<p style="color:var(--warning);">⚠️ Vui lòng bỏ trống đúng 1 đại lượng cần tìm!</p>`;
+                }
+            } else if (mode === 'mode3') {
+                const ecVal = document.getElementById('m3-ec').value.trim();
+                const bVal = document.getElementById('m3-B').value.trim();
+                const lVal = document.getElementById('m3-l').value.trim();
+                const vVal = document.getElementById('m3-v').value.trim();
+                const thVal = document.getElementById('m3-theta').value.trim();
+
+                const ec = parseFloat(ecVal);
+                const B = parseFloat(bVal);
+                const l = parseFloat(lVal);
+                const v = parseFloat(vVal);
+                const theta = thVal === "" ? 90 : parseFloat(thVal);
+                const sinTh = Math.sin(theta * Math.PI / 180);
+
+                if (ecVal === "" && !isNaN(B) && !isNaN(l) && !isNaN(v)) {
+                    const res = B * l * v * sinTh;
+                    document.getElementById('m3-ec').value = res.toFixed(4);
+                    html = `<p><strong>1. Suất điện động cảm ứng trong đoạn dây chuyển động:</strong> \\[ \\left|e_{c}\\right| = B l v \\sin\\theta \\]</p>
+                            <p><strong>2. Thay số:</strong> \\[ \\left|e_{c}\\right| = ${B} \\cdot ${l} \\cdot ${v} \\cdot \\sin(${theta}^\\circ) = ${res.toFixed(4)}\\text{ V} \\]</p>`;
+                } else if (vVal === "" && !isNaN(ec) && !isNaN(B) && !isNaN(l)) {
+                    const res = ec / (B * l * sinTh);
+                    document.getElementById('m3-v').value = res.toFixed(3);
+                    html = `<p><strong>1. Rút vận tốc \\( v \\):</strong> \\[ v = \\frac{\\left|e_{c}\\right|}{B l \\sin\\theta} = \\frac{${ec}}{${B} \\cdot ${l} \\cdot \\sin(${theta}^\\circ)} = ${res.toFixed(3)}\\text{ m/s} \\]</p>`;
+                } else if (bVal === "" && !isNaN(ec) && !isNaN(l) && !isNaN(v)) {
+                    const res = ec / (l * v * sinTh);
+                    document.getElementById('m3-B').value = res.toFixed(4);
+                    html = `<p><strong>1. Rút cảm ứng từ \\( B \\):</strong> \\[ B = \\frac{\\left|e_{c}\\right|}{l v \\sin\\theta} = ${res.toFixed(4)}\\text{ T} \\]</p>`;
+                } else {
+                    html = `<p style="color:var(--warning);">⚠️ Vui lòng bỏ trống ô \\( \\left|e_{c}\\right| \\), \\( v \\) hoặc \\( B \\) cần tìm!</p>`;
+                }
+            }
+
+            outEl.innerHTML = html;
+            if (typeof renderMathInElement === "function") {
+                renderMathInElement(outEl, katexConfig);
+            }
+        }
+
+        /* =========================================================================
+           TAB 5: ẨN/HIỆN LỜI GIẢI LUYỆN TẬP
+           ========================================================================= */
+        function toggleBox(id) {
+            const box = document.getElementById(id);
+            box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+            if (box.style.display === 'block' && typeof renderMathInElement === "function") {
+                renderMathInElement(box, katexConfig);
+            }
+        }
+
+        /* =========================================================================
+           TAB 6: BÀI TỰ ĐÁNH GIÁ (INTERACTIVE QUIZ)
+           ========================================================================= */
+        const quizData = [
+            {
+                q: "Câu 1: Phát biểu nào sau đây là ĐÚNG khi nói về từ thông \\( \\Phi \\) và hiện tượng cảm ứng điện từ?",
+                options: [
+                    "A. Từ thông là một đại lượng vectơ, có đơn vị trong hệ SI là Tesla (\\(\\text{T}\\)).",
+                    "B. Hiện tượng cảm ứng điện từ chỉ tồn tại trong khoảng thời gian từ thông qua mạch kín biến thiên.",
+                    "C. Từ thông qua mạch kín phụ thuộc trực tiếp vào tiết diện sợi dây đồng làm khung dây.",
+                    "D. Khi khung dây đặt vuông góc với các đường sức từ thì từ thông qua khung luôn bằng \\( 0 \\)."
+                ],
+                correct: 1,
+                explain: "Từ thông \\( \\Phi = B S \\cos\\alpha \\) là đại lượng vô hướng (đơn vị \\(\\text{Wb}\\)), không phụ thuộc đường kính sợi dây dẫn. Dòng điện cảm ứng chỉ xuất hiện trong khoảng thời gian từ thông qua mạch kín biến thiên (\\( \\Delta\\Phi \\neq 0 \\))."
+            },
+            {
+                q: "Câu 2: Một hình vuông cạnh \\( a = 5\\text{ cm} \\) đặt trong từ trường đều có cảm ứng từ \\( B = 8 \\cdot 10^{-4}\\text{ T} \\). Từ thông qua hình vuông đó bằng \\( 10^{-6}\\text{ Wb} \\). Góc hợp bởi vectơ cảm ứng từ \\( \\vec{B} \\) với MẶT PHẲNG của hình vuông đó là:",
+                options: [
+                    "A. \\( 30^\\circ \\)",
+                    "B. \\( 60^\\circ \\)",
+                    "C. \\( 45^\\circ \\)",
+                    "D. \\( 0^\\circ \\)"
+                ],
+                correct: 0,
+                explain: "Ta có diện tích hình vuông \\( S = 0,05^2 = 2,5 \\cdot 10^{-3}\\text{ m}^2 \\). Từ công thức \\( \\Phi = B S \\cos\\alpha \\implies \\cos\\alpha = \\frac{\\Phi}{B S} = \\frac{10^{-6}}{8 \\cdot 10^{-4} \\cdot 2,5 \\cdot 10^{-3}} = 0,5 \\implies \\alpha = (\\vec{B}, \\vec{n}) = 60^\\circ \\). Vậy góc hợp bởi \\( \\vec{B} \\) và mặt phẳng khung hình vuông là \\( \\beta = 90^\\circ - 60^\\circ = 30^\\circ \\)."
+            },
+            {
+                q: "Câu 3: Một khung dây phẳng diện tích \\( S = 20\\text{ cm}^2 \\) gồm \\( N = 50 \\) vòng dây đặt trong từ trường đều, vectơ cảm ứng từ \\( \\vec{B} \\) hợp với mặt phẳng khung dây một góc \\( 30^\\circ \\) và có độ lớn \\( B = 2 \\cdot 10^{-4}\\text{ T} \\). Người ta làm cho từ trường giảm đều đến \\( 0 \\) trong khoảng thời gian \\( \\Delta t = 0,01\\text{ s} \\). Độ lớn suất điện động cảm ứng xuất hiện trong khung là:",
+                options: [
+                    "A. \\( 10^{-3}\\text{ V} \\)",
+                    "B. \\( 1,73 \\cdot 10^{-3}\\text{ V} \\)",
+                    "C. \\( 2 \\cdot 10^{-3}\\text{ V} \\)",
+                    "D. \\( 5 \\cdot 10^{-4}\\text{ V} \\)"
+                ],
+                correct: 0,
+                explain: "Đổi \\( S = 20 \\cdot 10^{-4}\\text{ m}^2 \\). Góc giữa \\( \\vec{B} \\) và mặt phẳng khung là \\( 30^\\circ \\implies \\alpha = (\\vec{B}, \\vec{n}) = 90^\\circ - 30^\\circ = 60^\\circ \\). Độ lớn suất điện động cảm ứng: \\[ \\left|e_{c}\\right| = N \\frac{\\left|\\Delta B\\right| S \\cos 60^\\circ}{\\Delta t} = 50 \\cdot \\frac{2 \\cdot 10^{-4} \\cdot 20 \\cdot 10^{-4} \\cdot 0,5}{0,01} = 10^{-3}\\text{ V} \\]"
+            },
+            {
+                q: "Câu 4: Thanh dẫn điện \\( CD \\) dài \\( l = 20\\text{ cm} \\), điện trở \\( r = 0,5\\text{ }\\Omega \\) trượt đều trên hai thanh ray với vận tốc \\( v = 10\\text{ m/s} \\) vuông góc với các đường sức của từ trường đều \\( B = 0,2\\text{ T} \\). Hai đầu ray nối với điện trở \\( R = 1,5\\text{ }\\Omega \\) tạo thành mạch kín (bỏ qua điện trở của ray). Cường độ dòng điện cảm ứng trong mạch là:",
+                options: [
+                    "A. \\( 0,8\\text{ A} \\)",
+                    "B. \\( 0,4\\text{ A} \\)",
+                    "C. \\( 0,2\\text{ A} \\)",
+                    "D. \\( 0,267\\text{ A} \\)"
+                ],
+                correct: 2,
+                explain: "Suất điện động cảm ứng xuất hiện trong thanh \\( CD \\) đóng vai trò nguồn điện: \\[ \\left|e_{c}\\right| = B l v = 0,2 \\cdot 0,2 \\cdot 10 = 0,4\\text{ V} \\] Cường độ dòng điện cảm ứng trong toàn mạch kín: \\[ I_{c} = \\frac{\\left|e_{c}\\right|}{R + r} = \\frac{0,4}{1,5 + 0,5} = 0,2\\text{ A} \\]"
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            let html = "";
+            quizData.forEach((item, idx) => {
+                html += `<div class="card" style="background:#f8fafc; margin-bottom:1rem;">
+                            <p style="font-weight:700; margin-bottom:0.8rem; color:var(--primary-dark);">${item.q}</p>`;
+                item.options.forEach((opt, oIdx) => {
+                    html += `<label class="quiz-option">
+                                <input type="radio" name="q${idx}" value="${oIdx}">
+                                <span>${opt}</span>
+                             </label>`;
+                });
+                html += `</div>`;
+            });
+            container.innerHTML = html;
+            if (typeof renderMathInElement === "function") {
+                renderMathInElement(container, katexConfig);
+            }
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            let detailHtml = `<h3 style="color:var(--primary-dark); margin-bottom:1rem;">📊 Kết quả & Giải thích chi tiết</h3>`;
+
+            quizData.forEach((item, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                const userAns = selected ? parseInt(selected.value) : -1;
+                const isCorrect = (userAns === item.correct);
+                if (isCorrect) score++;
+
+                const statusClass = isCorrect ? "alert-success" : "alert-danger";
+                const badge = isCorrect ? "✔️ Chính xác" : `❌ Chưa đúng (Đáp án đúng: ${item.options[item.correct]})`;
+
+                detailHtml += `<div class="alert-box ${statusClass}">
+                                  <div style="font-weight:700; margin-bottom:0.4rem;">Câu ${idx + 1}: ${badge}</div>
+                                  <div style="font-size:0.93rem;"><strong>Giải thích:</strong> ${item.explain}</div>
+                               </div>`;
+            });
+
+            const resBox = document.getElementById('quiz-result-box');
+            resBox.style.display = "block";
+            resBox.innerHTML = `<div class="alert-box alert-info" style="font-size:1.15rem; font-weight:700;">
+                                    Điểm số của bạn: ${score} / ${quizData.length} (${(score / quizData.length * 10).toFixed(1)} điểm)
+                                </div>` + detailHtml;
+
+            // BẮT BUỘC gọi lại renderMathInElement ngay sau khi in kết quả
+            if (typeof renderMathInElement === "function") {
+                renderMathInElement(resBox, katexConfig);
+            }
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('#quiz-container input[type="radio"]').forEach(r => r.checked = false);
+            const resBox = document.getElementById('quiz-result-box');
+            resBox.style.display = "none";
+            resBox.innerHTML = "";
+        }
+
+        /* =========================================================================
+           TAB 7: TIỆN ÍCH LỚP HỌC (TIMER & LUCKY WHEEL)
+           ========================================================================= */
+        let timerState = {
+            totalSec: 180,
+            remainSec: 180,
+            interval: null,
+            running: false
+        };
+
+        function setTimerSec(sec) {
+            pauseTimer();
+            timerState.totalSec = sec;
+            timerState.remainSec = sec;
+            document.getElementById('timer-card').classList.remove('blink-alarm');
+            updateTimerUI();
+        }
+
+        function toggleTimer() {
+            if (timerState.running) {
+                pauseTimer();
+            } else {
+                if (timerState.remainSec <= 0) timerState.remainSec = timerState.totalSec;
+                timerState.running = true;
+                document.getElementById('btn-timer-start').textContent = "⏸️ Tạm dừng";
+                document.getElementById('timer-card').classList.remove('blink-alarm');
+                timerState.interval = setInterval(() => {
+                    timerState.remainSec--;
+                    updateTimerUI();
+                    if (timerState.remainSec <= 0) {
+                        pauseTimer();
+                        document.getElementById('timer-card').classList.add('blink-alarm');
+                        playBeepAlarm();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            timerState.running = false;
+            clearInterval(timerState.interval);
+            document.getElementById('btn-timer-start').textContent = "▶️ Bắt đầu";
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timerState.remainSec = timerState.totalSec;
+            document.getElementById('timer-card').classList.remove('blink-alarm');
+            updateTimerUI();
+        }
+
+        function updateTimerUI() {
+            const m = Math.floor(timerState.remainSec / 60);
+            const s = timerState.remainSec % 60;
+            document.getElementById('timer-text').textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+            const circumference = 603.18;
+            const ratio = timerState.totalSec > 0 ? (timerState.remainSec / timerState.totalSec) : 0;
+            const offset = circumference * (1 - ratio);
+            document.getElementById('timer-ring').style.strokeDashoffset = offset;
+        }
+
+        function playBeepAlarm() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.6);
+            } catch (e) {}
+        }
+
+        // Vòng quay may mắn theo 4 Tổ
+        const defaultGroups = {
+            to1: ["Nguyễn Minh An", "Trần Quốc Bảo", "Lê Hoàng Châu", "Phạm Gia Hân", "Hoàng Đức Kiên", "Vũ Thảo Ly"],
+            to2: ["Đặng Tuấn Anh", "Bùi Khánh Duy", "Ngô Phương Linh", "Đỗ Nhật Minh", "Lý Thanh Ngân", "Hồ Trọng Phúc"],
+            to3: ["Trương Quốc Cường", "Phan Ánh Dương", "Võ Hoàng Giang", "Mai Thiên Hương", "Đinh Trung Kiên", "Lâm Bảo Ngọc"],
+            to4: ["Nguyễn Hải Đăng", "Trần Thu Hà", "Lê Minh Khôi", "Phạm Ngọc Mai", "Vương Quốc Nam", "Đoàn Thanh Trúc"]
+        };
+
+        let wheelAngle = 0;
+        let wheelSpinning = false;
+
+        function loadGroupList() {
+            const grp = document.getElementById('group-select').value;
+            document.getElementById('wheel-names').value = defaultGroups[grp].join("\n");
+            drawWheel();
+        }
+
+        function getWheelNames() {
+            const raw = document.getElementById('wheel-names').value.split("\n").map(s => s.trim()).filter(s => s.length > 0);
+            return raw.length > 0 ? raw : ["Học sinh 1", "Học sinh 2"];
+        }
+
+        function drawWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const names = getWheelNames();
+            const num = names.length;
+            const arc = (Math.PI * 2) / num;
+            const colors = ["#0f4c81", "#008080", "#e65100", "#2563eb", "#15803d", "#9333ea", "#b91c1c", "#d97706"];
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const radius = 125;
+
+            for (let i = 0; i < num; i++) {
+                const startA = wheelAngle + i * arc;
+                const endA = startA + arc;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, radius, startA, endA);
+                ctx.closePath();
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Vẽ tên học sinh
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(startA + arc / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 12px Segoe UI";
+                const shortName = names[i].length > 16 ? names[i].substring(0, 15) + "…" : names[i];
+                ctx.fillText(shortName, radius - 12, 4);
+                ctx.restore();
+            }
+
+            // Vẽ kim chỉ bên phải (góc 0 rad)
+            ctx.save();
+            ctx.fillStyle = "#dc2626";
+            ctx.strokeStyle = "#ffffff";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(cx + radius - 8, cy);
+            ctx.lineTo(cx + radius + 14, cy - 10);
+            ctx.lineTo(cx + radius + 14, cy + 10);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function spinWheel() {
+            if (wheelSpinning) return;
+            wheelSpinning = true;
+            const names = getWheelNames();
+            const spinDuration = 3200;
+            const startAngle = wheelAngle;
+            const totalRotation = (Math.PI * 2 * (5 + Math.random() * 4));
+            const startTime = performance.now();
+
+            function animateWheel(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(1, elapsed / spinDuration);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                wheelAngle = startAngle + totalRotation * easeOut;
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateWheel);
+                } else {
+                    wheelSpinning = false;
+                    const normAngle = ((wheelAngle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+                    const arc = (Math.PI * 2) / names.length;
+                    const index = Math.floor(((Math.PI * 2 - normAngle) % (Math.PI * 2)) / arc) % names.length;
+                    document.getElementById('winner-name').textContent = names[index];
+                    document.getElementById('winner-modal').style.display = "flex";
+                }
+            }
+            requestAnimationFrame(animateWheel);
+        }
+
+        function closeWinnerModal() {
+            document.getElementById('winner-modal').style.display = "none";
+        }
+    </script>
+</body>
+</html>
