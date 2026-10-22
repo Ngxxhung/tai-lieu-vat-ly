@@ -1,0 +1,2266 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài 15: Định Luật II Newton - Vật Lý 10</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-light: #1e6bc4;
+            --secondary: #0088cc;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --bg-main: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --radius: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #092c4c 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-bottom: 4px solid var(--accent);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        header .subtitle {
+            font-size: 1rem;
+            color: #e2e8f0;
+            margin-bottom: 0.5rem;
+        }
+
+        .copyright-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            padding: 0.35rem 1rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ffd166;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* NAVIGATION */
+        .nav-container {
+            background: var(--bg-card);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            max-width: 1400px;
+            margin: 0 auto;
+            scrollbar-width: thin;
+        }
+
+        .tab-btn {
+            flex: 1 0 auto;
+            padding: 0.9rem 1.2rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+            background-color: #f8fafc;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background-color: #eff6ff;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.2rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CARDS & GRIDS */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* CALLOUTS & BOXES */
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 5px solid var(--primary);
+            padding: 1.2rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 1rem;
+        }
+
+        .warning-box {
+            background: #fef2f2;
+            border-left: 5px solid var(--danger);
+            padding: 1.2rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 1rem;
+        }
+
+        .tip-box {
+            background: #fffbeb;
+            border-left: 5px solid var(--accent);
+            padding: 1.2rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 1rem;
+        }
+
+        .ai-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #7dd3fc;
+            border-left: 5px solid #0284c7;
+            padding: 1.2rem;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+        }
+
+        /* TABLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+        }
+
+        th, td {
+            padding: 0.85rem 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* SIMULATION SUB-TABS & CONTROLS */
+        .sim-subtabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .subtab-btn {
+            flex: 1;
+            padding: 0.85rem 1.2rem;
+            background: #e2e8f0;
+            border: 2px solid transparent;
+            border-radius: var(--radius);
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .subtab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .sim-panel {
+            display: none;
+        }
+
+        .sim-panel.active {
+            display: block;
+        }
+
+        .sim-layout {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .sim-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .control-group {
+            margin-bottom: 1.1rem;
+            background: #f8fafc;
+            padding: 0.85rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.65rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-light); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-warning { background: var(--accent); color: white; }
+        .btn-warning:hover { background: #d97706; }
+        .btn-secondary { background: #64748b; color: white; }
+        .btn-secondary:hover { background: #475569; }
+
+        canvas.sim-canvas {
+            width: 100%;
+            background: #ffffff;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .telemetry-item {
+            background: #0f172a;
+            color: #38bdf8;
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        .telemetry-item .lbl {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            display: block;
+            font-family: 'Segoe UI', sans-serif;
+            margin-bottom: 0.2rem;
+        }
+
+        .telemetry-item .val {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        /* CALCULATOR */
+        .calc-input-group {
+            margin-bottom: 1rem;
+        }
+
+        .calc-input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .calc-input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .calc-input-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        /* PRACTICE & QUIZ */
+        .practice-level-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .bg-lv1 { background: var(--success); }
+        .bg-lv2 { background: var(--primary-light); }
+        .bg-lv3 { background: #7c3aed; }
+
+        .hidden-box {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border: 1px dashed var(--primary);
+            border-radius: 8px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 0.6rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .quiz-option.selected {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: #ecfdf5;
+        }
+
+        .quiz-option.wrong {
+            border-color: var(--danger);
+            background: #fef2f2;
+        }
+
+        /* CLASSROOM TOOLS */
+        .timer-display-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes pulseAlert {
+            0%, 100% { transform: scale(1); background-color: #ffffff; }
+            50% { transform: scale(1.03); background-color: #fee2e2; }
+        }
+
+        .timer-finished {
+            animation: pulseAlert 0.7s infinite;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 340px;
+            height: 340px;
+            margin: 0 auto 1rem auto;
+        }
+
+        textarea.student-list {
+            width: 100%;
+            height: 110px;
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+
+        /* MODAL POPUP */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 1rem;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: 12px;
+            max-width: 480px;
+            width: 100%;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 1.2rem;
+            margin-top: auto;
+            font-size: 0.95rem;
+            border-top: 3px solid var(--primary-light);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <h1>BÀI 15: ĐỊNH LUẬT II NEWTON</h1>
+        <div class="subtitle">Chuyên đề Động lực học - Vật lý 10 (Chương trình GDPT 2018)</div>
+        <div class="copyright-badge">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+    </header>
+
+    <!-- NAVIGATION TABS (7 TABS) -->
+    <nav class="nav-container">
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('tab1')">🚀 1. Khởi động & Thực tiễn</button>
+            <button class="tab-btn" onclick="switchTab('tab2')">📖 2. Cốt lõi Lý thuyết</button>
+            <button class="tab-btn" onclick="switchTab('tab3')">🔬 3. Mô phỏng Tương tác</button>
+            <button class="tab-btn" onclick="switchTab('tab4')">🧮 4. Máy tính Tham số</button>
+            <button class="tab-btn" onclick="switchTab('tab5')">📝 5. Luyện tập Phân hóa</button>
+            <button class="tab-btn" onclick="switchTab('tab6')">🎯 6. Bài Tự đánh giá</button>
+            <button class="tab-btn" onclick="switchTab('tab7')">🛠️ 7. Tiện ích Lớp học</button>
+        </div>
+    </nav>
+
+    <!-- MAIN WORKSPACE -->
+    <main>
+
+        <!-- ==================== TAB 1: KHỞI ĐỘNG & THỰC TIỄN ==================== -->
+        <section id="tab1" class="tab-content active">
+            <div class="card">
+                <h2 class="card-title">🚀 Khởi động: Nghịch lý Chuyển động và Quán tính trong Thực tiễn</h2>
+                <p>Trong cuộc sống hằng ngày cũng như trong kỹ thuật hàng không, giao thông, chúng ta luôn bắt gặp những tình huống đòi hỏi phải giải thích mối liên hệ giữa <strong>Lực tác dụng \(\vec{F}\)</strong>, <strong>Khối lượng \(m\)</strong> và <strong>Gia tốc \(\vec{a}\)</strong> của vật.</p>
+                
+                <div class="grid-3" style="margin-top: 1.2rem;">
+                    <div class="highlight-box">
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">🛒 Tình huống 1: Xe đẩy siêu thị</h3>
+                        <p>Khi đi siêu thị, lúc xe đẩy còn trống rỗng, bạn chỉ cần đẩy nhẹ một lực \(\vec{F}\) là xe tăng tốc rất nhanh. Nhưng khi xe đã chất đầy hàng hóa (khối lượng \(m\) tăng lên gấp nhiều lần), cũng với lực đẩy \(\vec{F}\) đó, xe lại tăng tốc vô cùng chậm chạp. Nếu muốn xe đầy hàng tăng tốc nhanh như lúc đầu, bạn phải làm gì?</p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">✈️ Tình huống 2: Đường băng máy bay</h3>
+                        <p>Một máy bay chở khách cỡ lớn như Boeing 777 có tổng khối lượng cất cánh lên tới \(300\text{ tấn}\) (\(m = 300\,000\text{ kg}\)). Lực đẩy tối đa của các động cơ phản lực là \(F_{k} = 340\text{ kN}\) và lực ma sát lăn trên mặt đường băng là \(F_{ms} = 10\text{ kN}\). Tại sao máy bay khối lượng càng lớn lại bắt buộc phải có đường băng rất dài (khoảng \(3\text{ km}\)) mới đạt đủ tốc độ cất cánh \(v = 285\text{ km/h}\)?</p>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">🚗 Tình huống 3: Phanh tự động AI (AEB)</h3>
+                        <p>Một xe bán tải nặng \(2,5\text{ tấn}\) đang chạy trên cao tốc với tốc độ \(90\text{ km/h}\) (\(25\text{ m/s}\)) thì radar AI phát hiện chướng ngại vật cách \(70\text{ m}\). Tại sao hệ thống AI trên xe tải hạng nặng luôn phải kích hoạt phanh khẩn cấp sớm hơn rất nhiều so với một chiếc xe con chỉ nặng \(1\text{ tấn}\) dù cả hai có cùng phanh hiệu suất cao?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">💡 Câu hỏi Mâu thuẫn Nhận thức (Tư duy Vật lý)</h2>
+                <div class="grid-2">
+                    <div class="warning-box">
+                        <h4>❓ Mâu thuẫn 1: "Vật luôn chuyển động theo hướng của lực tác dụng?"</h4>
+                        <p style="margin-top:0.4rem;">Nhiều người lầm tưởng lực tác dụng hướng nào thì vật phải di chuyển theo hướng đó. Hãy suy nghĩ: Khi một chiếc ô tô đang chạy về phía trước với vận tốc \(\vec{v}\) và tài xế đạp phanh, hợp lực hãm phanh \(\vec{F}_{h}\) hướng về phía sau, nhưng chiếc xe vẫn đang tiến về phía trước! Vậy hướng của hợp lực \(\vec{F}\) thực chất quyết định hướng của đại lượng vật lý nào?</p>
+                    </div>
+                    <div class="tip-box">
+                        <h4>❓ Mâu thuẫn 2: "Có lực tác dụng thì vận tốc của vật phải tăng?"</h4>
+                        <p style="margin-top:0.4rem;">Nhà triết học cổ đại Aristotle từng nghĩ phải có lực mới duy trì được chuyển động. Nhưng nếu hợp lực tác dụng lên vật có độ lớn không đổi (\(\vec{F} = \text{hằng số}\)), liệu vật có chuyển động với vận tốc không đổi hay không? Hay đại lượng nào mới thực sự không đổi?</p>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="btn btn-primary" onclick="switchTab('tab2')">Khám phá Bản chất ở Tab 2 ➔</button>
+                    <button class="btn btn-success" onclick="switchTab('tab3')">Kiểm chứng bằng Thí nghiệm ảo ở Tab 3 ➔</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: CỐT LÕI LÝ THUYẾT ==================== -->
+        <section id="tab2" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">📖 1. Phát biểu & Hệ thức Định luật II Newton</h2>
+                <div class="highlight-box">
+                    <p style="font-size: 1.1rem; font-weight: 600; color: var(--primary);">
+                        "Gia tốc của một vật cùng hướng với lực tác dụng lên vật. Độ lớn của gia tốc tỉ lệ thuận với độ lớn của lực và tỉ lệ nghịch với khối lượng của vật."
+                    </p>
+                    <div style="font-size: 1.25rem; text-align: center; margin: 1rem 0;">
+                        \[\vec{a} = \frac{\vec{F}}{m} \quad \text{hay} \quad \vec{F} = m\vec{a}\]
+                    </div>
+                    <p>Trong trường hợp vật chịu tác dụng của nhiều lực \(\vec{F}_{1}, \vec{F}_{2}, \vec{F}_{3}, \dots\) thì \(\vec{F}\) là <strong>hợp lực</strong> của tất cả các lực đó:</p>
+                    \[\vec{F} = \vec{F}_{hl} = \vec{F}_{1} + \vec{F}_{2} + \vec{F}_{3} + \dots\]
+                </div>
+
+                <h3 style="margin: 1.2rem 0 0.6rem 0; color: var(--primary);">Bảng Giải thích Đại lượng và Đơn vị Chuẩn SI</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ký hiệu</th>
+                            <th>Tên đại lượng</th>
+                            <th>Tính chất Vật lý</th>
+                            <th>Đơn vị chuẩn (SI)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>\(\vec{F}\) (hoặc \(\vec{F}_{hl}\))</td>
+                            <td>Hợp lực tác dụng lên vật</td>
+                            <td>Đại lượng vectơ, gây ra gia tốc cho vật (\(\vec{F} \uparrow\uparrow \vec{a}\))</td>
+                            <td>\(\text{N}\) (Newton), với \(1\text{ N} = 1\text{ kg}\cdot\text{m/s}^2\)</td>
+                        </tr>
+                        <tr>
+                            <td>\(m\)</td>
+                            <td>Khối lượng của vật (Khối lượng quán tính)</td>
+                            <td>Đại lượng vô hướng, luôn dương (\(m > 0\)), không đổi, có tính cộng được; đặc trưng cho <strong>mức quán tính</strong></td>
+                            <td>\(\text{kg}\) (kilôgam)</td>
+                        </tr>
+                        <tr>
+                            <td>\(\vec{a}\)</td>
+                            <td>Gia tốc của vật</td>
+                            <td>Đại lượng vectơ, đặc trưng cho tốc độ biến thiên vận tốc (\(\vec{a} = \frac{\Delta \vec{v}}{\Delta t}\)), luôn cùng hướng với hợp lực \(\vec{F}\)</td>
+                            <td>\(\mathrm{m/s^2}\) (mét trên giây bình phương)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h2 class="card-title">⚖️ 2. Khối lượng và Mức quán tính</h2>
+                    <ul style="padding-left: 1.2rem;">
+                        <li style="margin-bottom: 0.6rem;"><strong>Quán tính:</strong> Là tính chất của mọi vật có xu hướng bảo toàn trạng thái vận tốc đang có (cả về hướng và độ lớn).</li>
+                        <li style="margin-bottom: 0.6rem;"><strong>Mức quán tính:</strong> Dưới tác dụng của cùng một hợp lực \(F\), từ công thức \(a = \frac{F}{m}\), vật nào có khối lượng \(m\) càng lớn thì thu được gia tốc \(a\) càng nhỏ (tức là vận tốc càng khó thay đổi).</li>
+                        <li><strong>Kết luận cốt lõi:</strong> Khối lượng \(m\) là đại lượng đặc trưng cho <em>mức quán tính</em> của vật. Vật có khối lượng càng lớn thì mức quán tính càng lớn và ngược lại.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">🧭 3. Phương pháp Động lực học (4 Bước)</h2>
+                    <ol style="padding-left: 1.2rem;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Bước 1:</strong> Chọn vật khảo sát, xác định tất cả các lực tác dụng lên vật (trọng lực \(\vec{P}\), phản lực \(\vec{N}\), lực kéo \(\vec{F}_{k}\), lực ma sát \(\vec{F}_{ms}\)...) và biểu diễn trên hình vẽ.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Bước 2:</strong> Chọn hệ trục tọa độ \(Oxy\) vuông góc (\(Ox\) cùng chiều chuyển động, \(Oy\) vuông góc với mặt đường) và viết phương trình vectơ:
+                        \[\vec{P} + \vec{N} + \vec{F}_{k} + \vec{F}_{ms} = m\vec{a}\]</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Bước 3:</strong> Chiếu phương trình vectơ lên hai trục tọa độ:
+                        \[\begin{cases} Ox: F_{k} - F_{ms} = ma \\ Oy: N - P = 0 \Rightarrow N = P = mg \end{cases}\]</li>
+                        <li><strong>Bước 4:</strong> Kết hợp các công thức động học (\(v = v_{0} + at\), \(v^2 - v_{0}^2 = 2ad\), \(d = v_{0}t + \frac{1}{2}at^2\)) để giải bài toán.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">⚠️ 4. Bẫy Lý thuyết & Sai lầm Học sinh hay mắc phải</h2>
+                <div class="grid-3">
+                    <div class="warning-box">
+                        <h4 style="color: var(--danger);">❌ Bẫy 1: Nhầm hướng của \(\vec{F}\) và \(\vec{v}\)</h4>
+                        <p><strong>Sai lầm:</strong> Cho rằng vectơ hợp lực \(\vec{F}\) luôn cùng hướng với vectơ vận tốc \(\vec{v}\) (hướng chuyển động).</p>
+                        <p><strong>Bản chất đúng:</strong> Hợp lực \(\vec{F}\) luôn cùng hướng với <strong>gia tốc \(\vec{a}\)</strong> (\(\vec{F} \uparrow\uparrow \vec{a}\)). Trong chuyển động thẳng chậm dần đều, \(\vec{F}\) và \(\vec{a}\) ngược chiều với vận tốc \(\vec{v}\).</p>
+                    </div>
+                    <div class="warning-box">
+                        <h4 style="color: var(--danger);">❌ Bẫy 2: Cách viết ký hiệu Vectơ</h4>
+                        <p><strong>Sai lầm:</strong> Viết sai bản chất toán học như \(\vec{F} = ma\) (một vế là vectơ, một vế là vô hướng) hoặc \(\vec{F} = -m\vec{a}\).</p>
+                        <p><strong>Bản chất đúng:</strong> Vì \(m > 0\) nên bắt buộc phải viết đúng dạng vectơ \(\vec{F} = m\vec{a}\) hoặc dạng độ lớn \(F = m|a|\).</p>
+                    </div>
+                    <div class="warning-box">
+                        <h4 style="color: var(--danger);">❌ Bẫy 3: Ngộ nhận "Chuyển động nhanh dần đều thì gia tốc tăng dần"</h4>
+                        <p><strong>Sai lầm:</strong> Thấy tên gọi "nhanh dần đều" nên nghĩ gia tốc \(a\) và hợp lực \(F\) tăng dần theo thời gian.</p>
+                        <p><strong>Bản chất đúng:</strong> Trong chuyển động thẳng biến đổi đều (nhanh dần đều hoặc chậm dần đều), vận tốc thay đổi đều nhưng <strong>gia tốc \(\vec{a}\) và hợp lực \(\vec{F}\) là hằng số (không đổi)</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: MÔ PHỎNG TƯƠNG TÁC ==================== -->
+        <section id="tab3" class="tab-content">
+            <div class="sim-subtabs">
+                <button class="subtab-btn active" id="btn-simA" onclick="switchSimTab('simA')">
+                    🔬 Tab 3A: Hệ Băng Đệm Khí & Ròng Rọc (SGK Vật lý 10)
+                </button>
+                <button class="subtab-btn" id="btn-simB" onclick="switchSimTab('simB')">
+                    🚗 Tab 3B: Động Lực Học Mặt Phẳng Ngang (Kéo & Hãm Phanh)
+                </button>
+            </div>
+
+            <!-- SUB-TAB 3A: THÍ NGHIỆM BĂNG ĐỆM KHÍ SGK -->
+            <div id="simA" class="sim-panel active">
+                <div class="card">
+                    <h2 class="card-title">🔬 Mô phỏng 3A: Thí nghiệm Băng đệm khí & Cổng quang điện (Hình 15.2 SGK)</h2>
+                    <p style="margin-bottom: 1rem;">
+                        <strong>Mô hình vật lý:</strong> Xe trượt khối lượng \(M\) đặt trên băng đệm khí nằm ngang (triệt tiêu ma sát), nối bằng dây nhẹ không dãn qua ròng rọc với các quả nặng tổng khối lượng \(m\). Tấm chắn sáng gắn trên xe đi từ sát cổng quang điện \(E\) (\(v_{0} = 0\)) đến cổng quang điện \(F\) cách nhau đoạn \(d\). Hệ vật chịu lực kéo \(F = P_{\text{quả nặng}} = mg\), tổng khối lượng hệ chuyển động là \(M + m\). Gia tốc lý thuyết là \(a = \frac{F}{M + m}\) và thời gian đo bởi đồng hồ hiện số là \(t = \sqrt{\frac{2d}{a}}\).
+                    </p>
+
+                    <div class="sim-layout">
+                        <!-- Controls 3A -->
+                        <div>
+                            <div class="control-group">
+                                <label><span>Khối lượng xe trượt \(M\):</span> <span id="val-simA-M">0,20 kg</span></label>
+                                <input type="range" id="slider-simA-M" min="0.10" max="0.80" step="0.05" value="0.20" oninput="updateSimAParams()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Khối lượng quả nặng \(m\):</span> <span id="val-simA-m">0,10 kg</span></label>
+                                <input type="range" id="slider-simA-m" min="0.05" max="0.50" step="0.05" value="0.10" oninput="updateSimAParams()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Khoảng cách 2 cổng quang \(d\):</span> <span id="val-simA-d">0,50 m</span></label>
+                                <input type="range" id="slider-simA-d" min="0.30" max="0.80" step="0.05" value="0.50" oninput="updateSimAParams()">
+                            </div>
+
+                            <div class="highlight-box" style="font-size: 0.9rem;">
+                                <div>• Trọng lượng kéo: \(F = mg = \) <strong id="lbl-simA-F">0,98 N</strong></div>
+                                <div>• Tổng khối lượng hệ: \(M + m = \) <strong id="lbl-simA-totalM">0,30 kg</strong></div>
+                                <div>• Gia tốc hệ: \(a = \frac{F}{M+m} = \) <strong id="lbl-simA-a">3,27 m/s²</strong></div>
+                            </div>
+
+                            <div class="btn-group">
+                                <button class="btn btn-success" onclick="startSimA()">▶ Thả xe</button>
+                                <button class="btn btn-warning" onclick="pauseSimA()">⏸ Tạm dừng</button>
+                                <button class="btn btn-secondary" onclick="resetSimA()">🔄 Đặt lại</button>
+                                <button class="btn btn-primary" onclick="recordSimAData()">📌 Ghi số liệu</button>
+                            </div>
+
+                            <div class="tip-box" style="margin-top: 1rem; font-size: 0.88rem;">
+                                <strong>💡 Hướng dẫn "Thử và Sai":</strong><br>
+                                1. Giữ nguyên tổng khối lượng \(M + m = 0,50\text{ kg}\) (bằng cách bớt \(M\) và tăng \(m\)), quan sát xem khi lực kéo \(F\) tăng gấp đôi thì gia tốc \(a\) thay đổi thế nào?<br>
+                                2. Giữ nguyên \(m = 0,10\text{ kg}\) (lực kéo \(F\) không đổi), tăng \(M\) để tổng khối lượng tăng gấp đôi, kiểm tra xem thời gian \(t\) và gia tốc \(a\) biến đổi ra sao?
+                            </div>
+                        </div>
+
+                        <!-- Canvas & Outputs 3A -->
+                        <div>
+                            <div class="telemetry-grid">
+                                <div class="telemetry-item">
+                                    <span class="lbl">ĐỒNG HỒ HIỆN SỐ MC964</span>
+                                    <span class="val" id="out-simA-t" style="color: #ef4444;">0,000 s</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="lbl">QUÃNG ĐƯỜNG ĐI</span>
+                                    <span class="val" id="out-simA-x">0,00 m</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="lbl">VẬN TỐC TỨC THỜI \(v\)</span>
+                                    <span class="val" id="out-simA-v">0,00 m/s</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="lbl">ĐỘNG NĂNG \(W_{d}\)</span>
+                                    <span class="val" id="out-simA-wd">0,00 J</span>
+                                </div>
+                            </div>
+
+                            <canvas id="canvasSimA" class="sim-canvas" width="760" height="290"></canvas>
+
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h4 style="color: var(--primary);">📊 Bảng Ghi Số Liệu Thí Nghiệm Thực Nghiệm</h4>
+                                <button class="btn btn-danger" style="padding: 0.35rem 0.8rem; font-size: 0.82rem;" onclick="clearSimATable()">Xóa bảng</button>
+                            </div>
+                            <div style="overflow-x: auto;">
+                                <table id="table-simA" style="font-size: 0.9rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>Lần đo</th>
+                                            <th>Lực kéo \(F\text{ (N)}\)</th>
+                                            <th>Tổng khối lượng \(M+m\text{ (kg)}\)</th>
+                                            <th>Khoảng cách \(d\text{ (m)}\)</th>
+                                            <th>Thời gian \(t\text{ (s)}\)</th>
+                                            <th>Gia tốc \(a = \frac{2d}{t^2}\text{ (m/s}^2\text{)}\)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody-simA">
+                                        <tr>
+                                            <td colspan="6" style="text-align: center; color: var(--text-muted);">Chưa có dữ liệu. Hãy bấm "Thả xe" hoặc "Ghi số liệu" để thu thập!</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUB-TAB 3B: ĐỘNG LỰC HỌC MẶT PHẲNG NGANG -->
+            <div id="simB" class="sim-panel">
+                <div class="card">
+                    <h2 class="card-title">🚗 Mô phỏng 3B: Khảo sát Động lực học trên Mặt phẳng ngang & Đồ thị Thời gian thực</h2>
+                    <p style="margin-bottom: 1rem;">
+                        <strong>Mô hình vật lý:</strong> Khảo sát một vật (xe/khối hộp) có khối lượng \(m\), vận tốc đầu \(v_{0}\) chuyển động trên mặt phẳng ngang dưới tác dụng của lực phát động \(\vec{F}_{k}\) (cùng chiều dương \(Ox\)) và lực ma sát trượt \(\vec{F}_{ms}\) (ngược chiều chuyển động, với \(F_{ms} = \mu mg\)). Quan sát trực quan 4 vectơ lực \(\vec{P}, \vec{N}, \vec{F}_{k}, \vec{F}_{ms}\), vectơ gia tốc \(\vec{a}\) và đồ thị vận tốc \(v(t)\) theo thời gian thực.
+                    </p>
+
+                    <div class="sim-layout">
+                        <!-- Controls 3B -->
+                        <div>
+                            <div class="control-group">
+                                <label><span>Khối lượng vật \(m\):</span> <span id="val-simB-m">2,0 kg</span></label>
+                                <input type="range" id="slider-simB-m" min="0.5" max="10.0" step="0.5" value="2.0" oninput="updateSimBParams()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Lực kéo phát động \(F_{k}\):</span> <span id="val-simB-Fk">12,0 N</span></label>
+                                <input type="range" id="slider-simB-Fk" min="0" max="40" step="1" value="12" oninput="updateSimBParams()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Hệ số ma sát trượt \(\mu\):</span> <span id="val-simB-mu">0,20</span></label>
+                                <input type="range" id="slider-simB-mu" min="0.00" max="0.60" step="0.05" value="0.20" oninput="updateSimBParams()">
+                            </div>
+                            <div class="control-group">
+                                <label><span>Vận tốc ban đầu \(v_{0}\):</span> <span id="val-simB-v0">2,0 m/s</span></label>
+                                <input type="range" id="slider-simB-v0" min="0" max="15" step="1" value="2" oninput="updateSimBParams()">
+                            </div>
+
+                            <div class="btn-group">
+                                <button class="btn btn-success" onclick="startSimB()">▶ Chạy mô phỏng</button>
+                                <button class="btn btn-warning" onclick="pauseSimB()">⏸ Tạm dừng</button>
+                                <button class="btn btn-danger" onclick="cutEngineSimB()">🛑 Ngắt lực kéo (\(F_{k}=0\))</button>
+                                <button class="btn btn-secondary" onclick="resetSimB()">🔄 Đặt lại</button>
+                            </div>
+
+                            <div class="tip-box" style="margin-top: 1rem; font-size: 0.88rem;">
+                                <strong>💡 Hướng dẫn "Thử và Sai":</strong><br>
+                                1. Cho xe đang tăng tốc với \(F_{k} = 15\text{ N}\), sau đó bấm nút <strong>"Ngắt lực kéo (\(F_{k}=0\))"</strong>: Quan sát chiều của vectơ gia tốc \(\vec{a}\) và độ dốc của đồ thị \(v - t\).<br>
+                                2. Điều chỉnh sao cho \(F_{k} = F_{ms}\) (ví dụ \(m=2\text{ kg}, \mu=0,20 \Rightarrow F_{ms}=4\text{ N}, F_{k}=4\text{ N}\)) với \(v_{0} = 5\text{ m/s}\): Xe sẽ chuyển động như thế nào?
+                            </div>
+                        </div>
+
+                        <!-- Canvas & Graph 3B -->
+                        <div>
+                            <div class="telemetry-grid">
+                                <div class="telemetry-item">
+                                    <span class="lbl">HỢP LỰC \(F_{hlx}\)</span>
+                                    <span class="val" id="out-simB-Fhl">8,00 N</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="lbl">GIA TỐC \(a_{x}\)</span>
+                                    <span class="val" id="out-simB-a">4,00 m/s²</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="lbl">VẬN TỐC \(v\)</span>
+                                    <span class="val" id="out-simB-v">2,00 m/s</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="lbl">ĐỘ DỊCH CHUYỂN \(d\)</span>
+                                    <span class="val" id="out-simB-x">0,00 m</span>
+                                </div>
+                                <div class="telemetry-item">
+                                    <span class="lbl">ĐỘNG NĂNG \(W_{d}\)</span>
+                                    <span class="val" id="out-simB-wd">4,00 J</span>
+                                </div>
+                            </div>
+
+                            <canvas id="canvasSimB" class="sim-canvas" width="760" height="230"></canvas>
+                            <canvas id="canvasGraphB" class="sim-canvas" width="760" height="170"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: MÁY TÍNH THAM SỐ VẬT LÝ ==================== -->
+        <section id="tab4" class="tab-content">
+            <div class="grid-2">
+                <!-- Calculator 1: F, m, a, Fk, Fc -->
+                <div class="card">
+                    <h2 class="card-title">🧮 Chế độ 1: Giải Phương trình Động lực học \(\vec{F} = m\vec{a}\)</h2>
+                    <p style="margin-bottom: 1rem; font-size: 0.92rem; color: var(--text-muted);">
+                        Nhập các đại lượng đã biết và <strong>bỏ trống duy nhất 1 ô cần tìm</strong> trong nhóm \((F_{hl}, m, a)\). Bạn cũng có thể nhập \(F_{k}\) và \(F_{c}\) để hệ thống tự tổng hợp \(F_{hl} = F_{k} - F_{c}\).
+                    </p>
+                    <div class="calc-input-group">
+                        <label>Lực kéo / Lực phát động \(F_{k}\text{ (N)}\) (Tùy chọn):</label>
+                        <input type="number" id="calc1-Fk" step="any" placeholder="Nhập Fk (nếu có)...">
+                    </div>
+                    <div class="calc-input-group">
+                        <label>Lực cản / Lực ma sát \(F_{c}\text{ (N)}\) (Tùy chọn):</label>
+                        <input type="number" id="calc1-Fc" step="any" placeholder="Nhập Fc (nếu có)...">
+                    </div>
+                    <hr style="margin: 1rem 0; border-color: #e2e8f0;">
+                    <div class="calc-input-group">
+                        <label>Hợp lực tác dụng \(F_{hl}\text{ (N)}\):</label>
+                        <input type="number" id="calc1-F" step="any" placeholder="Bỏ trống nếu cần tính F_hl...">
+                    </div>
+                    <div class="calc-input-group">
+                        <label>Khối lượng của vật \(m\text{ (kg)}\):</label>
+                        <input type="number" id="calc1-m" step="any" placeholder="Bỏ trống nếu cần tính m...">
+                    </div>
+                    <div class="calc-input-group">
+                        <label>Gia tốc của vật \(a\text{ (m/s}^2\text{)}\):</label>
+                        <input type="number" id="calc1-a" step="any" placeholder="Bỏ trống nếu cần tính a...">
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="solveCalc1()">⚡ Tính toán & Biến đổi</button>
+                        <button class="btn btn-secondary" onclick="clearCalc1()">Xóa trắng</button>
+                    </div>
+                    <div id="res-calc1" class="highlight-box" style="margin-top: 1.2rem; display: none;"></div>
+                </div>
+
+                <!-- Calculator 2: Kết hợp Động học & Động lực học -->
+                <div class="card">
+                    <h2 class="card-title">🚀 Chế độ 2: Bài toán Tích hợp Động học & Định luật II Newton</h2>
+                    <p style="margin-bottom: 1rem; font-size: 0.92rem; color: var(--text-muted);">
+                        Giải bài toán tìm Hợp lực \(F_{hl}\) hoặc Lực kéo \(F_{k}\) khi biết khối lượng \(m\) và các thông số chuyển động thẳng biến đổi đều \((v_{0}, v, t \text{ hoặc } d)\).
+                    </p>
+                    <div class="grid-2" style="gap: 0.8rem;">
+                        <div class="calc-input-group">
+                            <label>Khối lượng \(m\text{ (kg)}\) (*):</label>
+                            <input type="number" id="calc2-m" step="any" placeholder="VD: 1500" value="1500">
+                        </div>
+                        <div class="calc-input-group">
+                            <label>Lực cản \(F_{c}\text{ (N)}\) (Mặc định 0):</label>
+                            <input type="number" id="calc2-Fc" step="any" placeholder="VD: 1500" value="0">
+                        </div>
+                        <div class="calc-input-group">
+                            <label>Vận tốc đầu \(v_{0}\text{ (m/s)}\) (*):</label>
+                            <input type="number" id="calc2-v0" step="any" placeholder="VD: 15" value="15">
+                        </div>
+                        <div class="calc-input-group">
+                            <label>Vận tốc sau \(v\text{ (m/s)}\) (*):</label>
+                            <input type="number" id="calc2-v" step="any" placeholder="VD: 0" value="0">
+                        </div>
+                        <div class="calc-input-group">
+                            <label>Thời gian \(\Delta t\text{ (s)}\) (Nhập \(\Delta t\) hoặc \(d\)):</label>
+                            <input type="number" id="calc2-t" step="any" placeholder="VD: 5">
+                        </div>
+                        <div class="calc-input-group">
+                            <label>Độ dịch chuyển \(d\text{ (m)}\) (Nhập \(d\) hoặc \(\Delta t\)):</label>
+                            <input type="number" id="calc2-d" step="any" placeholder="VD: 37.5" value="37.5">
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="solveCalc2()">⚡ Giải bài toán tích hợp</button>
+                        <button class="btn btn-secondary" onclick="clearCalc2()">Xóa trắng</button>
+                    </div>
+                    <div id="res-calc2" class="highlight-box" style="margin-top: 1.2rem; display: none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: PHÒNG LUYỆN TẬP PHÂN HÓA ==================== -->
+        <section id="tab5" class="tab-content">
+            <!-- Cấp độ 1 -->
+            <div class="card">
+                <span class="practice-level-badge bg-lv1">CẤP ĐỘ 1: NHẬN BIẾT - THÔNG HIỂU</span>
+                <h2 class="card-title">Bài toán 1: Xác định Lực tác dụng từ Biến thiên Vận tốc</h2>
+                <p><strong>Đề bài:</strong> Một lực không đổi tác dụng vào một vật có khối lượng \(m = 2,5\text{ kg}\) làm vận tốc của nó tăng dần đều từ \(v_{0} = 2\text{ m/s}\) đến \(v = 6\text{ m/s}\) trong khoảng thời gian \(\Delta t = 2\text{ s}\). Bỏ qua ma sát và các lực cản. Tính gia tốc của vật và độ lớn của lực tác dụng vào vật.</p>
+                
+                <div class="btn-group">
+                    <button class="btn btn-warning" onclick="toggleBox('hint-p1')">💡 Gợi ý tư duy</button>
+                    <button class="btn btn-primary" onclick="toggleBox('sol-p1')">📖 Xem Lời giải chi tiết</button>
+                </div>
+
+                <div id="hint-p1" class="hidden-box">
+                    <strong>Gợi ý tư duy:</strong><br>
+                    • Bước 1: Dùng công thức định nghĩa gia tốc \(a = \frac{v - v_{0}}{\Delta t}\) để tìm gia tốc của vật.<br>
+                    • Bước 2: Áp dụng trực tiếp độ lớn định luật II Newton \(F = ma\).
+                </div>
+
+                <div id="sol-p1" class="hidden-box">
+                    <strong>Hướng dẫn giải chi tiết:</strong><br>
+                    Chọn chiều dương là chiều chuyển động của vật.<br>
+                    1. Gia tốc mà vật thu được trong thời gian \(\Delta t = 2\text{ s}\) là:
+                    \[a = \frac{v - v_{0}}{\Delta t} = \frac{6 - 2}{2} = 2\text{ m/s}^2\]
+                    2. Theo định luật II Newton, độ lớn của hợp lực tác dụng vào vật là:
+                    \[F = ma = 2,5 \cdot 2 = 5\text{ N}\]
+                    <strong>Đáp số:</strong> \(a = 2\text{ m/s}^2\); \(F = 5\text{ N}\).
+                </div>
+            </div>
+
+            <!-- Cấp độ 2 -->
+            <div class="card">
+                <span class="practice-level-badge bg-lv2">CẤP ĐỘ 2: VẬN DỤNG (KẾT HỢP NHIỀU GIAI ĐOẠN & CÁC LỰC CƠ HỌC)</span>
+                <h2 class="card-title">Bài toán 2: Chuyển động 2 giai đoạn của Thuyền máy trên sông</h2>
+                <p><strong>Đề bài:</strong> Một chiếc thuyền máy có khối lượng \(m = 200\text{ kg}\) đang chạy về phía Tây dọc theo một con sông. Lực đẩy gây ra bởi động cơ là \(F_{d} = 500\text{ N}\) hướng về phía Tây. Lực ma sát giữa thuyền và mặt nước là \(F_{ms} = 150\text{ N}\), lực cản của không khí lên thuyền là \(F_{c} = 50\text{ N}\) (cả hai lực cản đều hướng về phía Đông).<br>
+                a) Tính độ lớn hợp lực tác dụng lên thuyền và gia tốc của thuyền khi động cơ đang hoạt động.<br>
+                b) Khi thuyền đạt vận tốc \(v_{0} = 20\text{ m/s}\) thì động cơ bất ngờ bị hỏng (ngừng tạo lực đẩy). Hỏi từ lúc động cơ hỏng, thuyền đi thêm được quãng đường bao nhiêu mét thì dừng lại hẳn?</p>
+
+                <div class="btn-group">
+                    <button class="btn btn-warning" onclick="toggleBox('hint-p2')">💡 Gợi ý tư duy</button>
+                    <button class="btn btn-primary" onclick="toggleBox('sol-p2')">📖 Xem Lời giải chi tiết</button>
+                </div>
+
+                <div id="hint-p2" class="hidden-box">
+                    <strong>Gợi ý tư duy:</strong><br>
+                    • Chọn chiều dương là chiều chuyển động của thuyền (hướng Tây).<br>
+                    • Giai đoạn 1 (động cơ hoạt động): Hợp lực \(F_{1} = F_{d} - F_{ms} - F_{c}\).<br>
+                    • Giai đoạn 2 (động cơ hỏng \(F_{d} = 0\)): Thuyền chỉ còn chịu tác dụng của hai lực cản ngược chiều chuyển động nên hợp lực \(F_{2} = -(F_{ms} + F_{c})\), gây ra gia tốc âm \(a_{2} < 0\). Dùng hệ thức độc lập thời gian \(v^2 - v_{0}^2 = 2a_{2}s\) để tìm quãng đường đi thêm.
+                </div>
+
+                <div id="sol-p2" class="hidden-box">
+                    <strong>Hướng dẫn giải chi tiết:</strong><br>
+                    Chọn trục tọa độ \(Ox\) có chiều dương hướng về phía Tây (chiều chuyển động của thuyền).<br>
+                    <strong>a) Khi động cơ hoạt động:</strong><br>
+                    • Chiếu phương trình định luật II Newton lên chiều dương:
+                    \[F_{hl1} = F_{d} - F_{ms} - F_{c} = 500 - 150 - 50 = 300\text{ N}\]
+                    • Gia tốc của thuyền trong giai đoạn tăng tốc:
+                    \[a_{1} = \frac{F_{hl1}}{m} = \frac{300}{200} = 1,5\text{ m/s}^2\]
+                    <strong>b) Khi động cơ bị hỏng (\(F_{d} = 0\)):</strong><br>
+                    • Hợp lực tác dụng lên thuyền lúc này chỉ gồm các lực cản:
+                    \[F_{hl2} = -F_{ms} - F_{c} = -150 - 50 = -200\text{ N}\]
+                    • Gia tốc của thuyền sau khi động cơ hỏng:
+                    \[a_{2} = \frac{F_{hl2}}{m} = \frac{-200}{200} = -1\text{ m/s}^2\]
+                    • Quãng đường thuyền đi thêm từ lúc có vận tốc \(v_{0} = 20\text{ m/s}\) đến khi dừng lại (\(v = 0\)):
+                    \[v^2 - v_{0}^2 = 2a_{2}s \Rightarrow s = \frac{0^2 - 20^2}{2 \cdot (-1)} = 200\text{ m}\]
+                    <strong>Đáp số:</strong> a) \(F_{hl1} = 300\text{ N}\), \(a_{1} = 1,5\text{ m/s}^2\); b) \(s = 200\text{ m}\).
+                </div>
+            </div>
+
+            <!-- Cấp độ 3 -->
+            <div class="card">
+                <span class="practice-level-badge bg-lv3">CẤP ĐỘ 3: VẬN DỤNG CAO (THỰC TIỄN AN TOÀN GIAO THÔNG & TÍCH HỢP NĂNG LỰC SỐ / AI)</span>
+                <h2 class="card-title">Bài toán 3: Tối ưu hóa Thuật toán Phanh tự động AI trên Mặt đường Trơn trượt</h2>
+                <p><strong>Đề bài:</strong> Trên mặt đường khô ráo, một xe ô tô có trang bị hệ thống hỗ trợ lái thông minh đang di chuyển với tốc độ \(v\) thì camera AI nhận diện đèn xanh ở ngã tư phía trước chỉ còn \(3\text{ s}\). Hệ thống lập tức điều khiển hãm phanh để xe chuyển động thẳng chậm dần đều. Biết sau khi hết đèn xanh, đèn vàng sẽ sáng trong \(2\text{ s}\) rồi chuyển sang đèn đỏ; khi đèn vừa chuyển sang đỏ thì xe cũng vừa dừng lại sát vạch dừng.<br>
+                Trong điều kiện trời mưa làm đường trơn trượt, hệ số bám giảm nên độ lớn hợp lực hãm phanh tối đa chỉ bằng \(\frac{5}{8}\) lần so với khi đường khô ráo. Biết thời gian đèn vàng vẫn là \(2\text{ s}\) và xe vẫn đang chạy với cùng tốc độ ban đầu \(v\).<br>
+                <strong>Yêu cầu:</strong><br>
+                1. Hỏi thuật toán AI hoặc người lái xe phải bắt đầu kích hoạt hãm phanh kể từ khi nhìn thấy đèn xanh còn lại bao nhiêu giây để xe vừa dừng lại an toàn ngay khi đèn đỏ bật sáng?<br>
+                2. <em>(Góc Năng lực AI & Năng lực số - Khung GDPT 2018):</em> Phân tích dữ liệu đầu vào mà hệ thống AI trên xe cần thu thập để ra quyết định phanh và nêu lý do vì sao con người vẫn phải giữ quyền kiểm soát tối cao (trách nhiệm giải trình) khi vận hành xe có hỗ trợ AI?</p>
+
+                <div class="btn-group">
+                    <button class="btn btn-warning" onclick="toggleBox('hint-p3')">💡 Gợi ý tư duy</button>
+                    <button class="btn btn-primary" onclick="toggleBox('sol-p3')">📖 Xem Lời giải & Phân tích AI</button>
+                </div>
+
+                <div id="hint-p3" class="hidden-box">
+                    <strong>Gợi ý tư duy:</strong><br>
+                    • Gọi \(t_{1}\) là tổng thời gian hãm phanh khi đường khô ráo: \(t_{1} = t_{\text{xanh 1}} + t_{\text{vàng}} = 3 + 2 = 5\text{ s}\).<br>
+                    • Vì tốc độ ban đầu \(v\) không đổi và xe dừng hẳn (\(v_{\text{cuối}} = 0\)), độ lớn gia tốc hãm phanh tỉ lệ nghịch với tổng thời gian hãm phanh: \(|a| = \frac{v}{t}\).<br>
+                    • Theo Định luật II Newton, \(|a| = \frac{F_{h}}{m}\), suy ra \(\frac{|a_{2}|}{|a_{1}|} = \frac{F_{h2}}{F_{h1}} = \frac{5}{8}\). Từ đó tìm tổng thời gian hãm phanh \(t_{2}\) khi đường trơn trượt.
+                </div>
+
+                <div id="sol-p3" class="hidden-box">
+                    <strong>Hướng dẫn giải chi tiết:</strong><br>
+                    <strong>1. Giải bài toán Vật lý:</strong><br>
+                    • <em>Khi đường khô ráo:</em> Tổng thời gian từ lúc hãm phanh đến khi dừng hẳn ngay lúc đèn đỏ bật là:
+                    \[t_{1} = t_{x1} + t_{v} = 3 + 2 = 5\text{ s}\]
+                    Độ lớn gia tốc hãm phanh khi đường khô ráo là: \(|a_{1}| = \frac{v}{t_{1}} = \frac{v}{5}\).<br>
+                    • <em>Khi đường trơn trượt:</em> Theo định luật II Newton (\(F = m|a|\)), do khối lượng \(m\) của xe không đổi nên độ lớn gia tốc tỉ lệ thuận với độ lớn hợp lực hãm phanh:
+                    \[\frac{|a_{2}|}{|a_{1}|} = \frac{F_{2}}{F_{1}} = \frac{5}{8} \Rightarrow |a_{2}| = \frac{5}{8}|a_{1}|\]
+                    • Vì xe vẫn giảm tốc từ cùng tốc độ \(v\) về \(0\), tổng thời gian hãm phanh khi đường trơn trượt là:
+                    \[t_{2} = \frac{v}{|a_{2}|} = \frac{v}{\frac{5}{8}|a_{1}|} = \frac{8}{5}t_{1} = \frac{8}{5} \cdot 5 = 8\text{ s}\]
+                    • Do thời gian đèn vàng không đổi (\(t_{v} = 2\text{ s}\)), thời gian đèn xanh còn lại lúc bắt đầu phải đạp phanh là:
+                    \[t_{x2} = t_{2} - t_{v} = 8 - 2 = 6\text{ s}\]
+
+                    <div class="ai-box">
+                        <strong>🤖 2. Phân tích Tích hợp Năng lực Số & Năng lực AI (Theo Khung năng lực AI Lớp 10 - Bộ GD&ĐT):</strong><br>
+                        • <strong>Cấu trúc dữ liệu hệ thống AI (Miền NLc & NLd):</strong> Để dự đoán khoảng cách và thời điểm phanh chính xác, mô hình AI cần thu thập dữ liệu đầu vào (Inputs) từ đa cảm biến: tốc độ tức thời \(v\), khối lượng tải trọng \(m\) (qua cảm biến áp suất lốp/giảm xóc), hệ số ma sát mặt đường \(\mu\) (qua cảm biến độ ẩm, nhiệt độ, độ trượt bánh xe ABS) và camera thị giác máy tính (Computer Vision) nhận diện bộ đếm đèn tín hiệu.<br>
+                        • <strong>Tư duy lấy con người làm trung tâm & Đạo đức AI (Miền NLa & NLb - Yêu cầu 10.A1.2):</strong> Cảm biến và thuật toán AI có thể gặp sai số hoặc "ảo giác" khi sương mù dày đặc, mưa lớn che khuất camera hoặc mặt đường có vết dầu loang cục bộ làm \(\mu\) giảm đột ngột. Do đó, người lái xe tuyệt đối không được phó mặc 100% cho chế độ tự hành mà phải luôn giám sát, làm chủ tốc độ và chịu trách nhiệm pháp lý, đạo đức cuối cùng khi tham gia giao thông.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: BÀI TỰ ĐÁNH GIÁ (INTERACTIVE QUIZ) ==================== -->
+        <section id="tab6" class="tab-content">
+            <div class="card">
+                <h2 class="card-title">🎯 Bài Tự Đánh Giá Trực Tuyến (4 Câu Hỏi Trọng Tâm)</h2>
+                <p style="margin-bottom: 1rem;">Hãy chọn phương án đúng nhất cho từng câu hỏi dưới đây và nhấn nút <strong>"Nộp bài & Xem kết quả"</strong> để kiểm tra mức độ nắm vững bài học.</p>
+
+                <div id="quiz-container"></div>
+
+                <div class="btn-group" style="margin-top: 1.5rem;">
+                    <button class="btn btn-primary" onclick="submitQuiz()">✅ Nộp bài & Xem kết quả</button>
+                    <button class="btn btn-secondary" onclick="resetQuiz()">🔄 Làm lại bài</button>
+                </div>
+
+                <div id="quiz-result-box" class="highlight-box" style="margin-top: 1.5rem; display: none;"></div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 7: TIỆN ÍCH LỚP HỌC ==================== -->
+        <section id="tab7" class="tab-content">
+            <div class="grid-2">
+                <!-- Visual Timer -->
+                <div class="card" id="timer-card">
+                    <h2 class="card-title">⏱️ Đồng Hồ Đếm Ngược Trực Quan (Visual Timer)</h2>
+                    <div class="timer-display-wrap">
+                        <svg width="250" height="250" viewBox="0 0 250 250">
+                            <circle cx="125" cy="125" r="105" fill="none" stroke="#e2e8f0" stroke-width="14"/>
+                            <circle id="timer-ring" cx="125" cy="125" r="105" fill="none" stroke="#0f4c81" stroke-width="14"
+                                    stroke-dasharray="659.73" stroke-dashoffset="0" stroke-linecap="round"
+                                    transform="rotate(-90 125 125)" style="transition: stroke-dashoffset 0.3s linear, stroke 0.3s;"/>
+                            <text id="timer-text" x="125" y="138" text-anchor="middle" font-size="44" font-weight="800" fill="#1e293b" font-family="Courier New, monospace">03:00</text>
+                        </svg>
+
+                        <div class="btn-group" style="justify-content: center; margin-top: 0.5rem;">
+                            <button class="btn btn-secondary" onclick="setTimerPreset(60)">1 Phút</button>
+                            <button class="btn btn-secondary" onclick="setTimerPreset(180)">3 Phút</button>
+                            <button class="btn btn-secondary" onclick="setTimerPreset(300)">5 Phút</button>
+                            <button class="btn btn-secondary" onclick="setTimerPreset(600)">10 Phút</button>
+                        </div>
+
+                        <div class="btn-group" style="justify-content: center; margin-top: 1rem;">
+                            <button class="btn btn-success" onclick="startTimer()">▶ Bắt đầu</button>
+                            <button class="btn btn-warning" onclick="pauseTimer()">⏸ Tạm dừng</button>
+                            <button class="btn btn-danger" onclick="resetTimer()">🔄 Đặt lại</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lucky Wheel -->
+                <div class="card">
+                    <h2 class="card-title">🎡 Vòng Quay May Mắn (Gọi Tên Học Sinh Theo 4 Tổ)</h2>
+                    <div class="grid-2" style="gap: 1rem; align-items: center;">
+                        <div class="wheel-container">
+                            <canvas id="wheelCanvas" width="340" height="340"></canvas>
+                        </div>
+                        <div>
+                            <div style="margin-bottom: 0.8rem;">
+                                <label style="font-weight: 700; display: block; margin-bottom: 0.3rem;">Chọn Tổ để gọi tên:</label>
+                                <div class="btn-group" style="margin-top: 0;">
+                                    <button class="btn btn-primary" id="btn-group-1" onclick="selectGroup(1)">Tổ 1</button>
+                                    <button class="btn btn-secondary" id="btn-group-2" onclick="selectGroup(2)">Tổ 2</button>
+                                    <button class="btn btn-secondary" id="btn-group-3" onclick="selectGroup(3)">Tổ 3</button>
+                                    <button class="btn btn-secondary" id="btn-group-4" onclick="selectGroup(4)">Tổ 4</button>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 0.8rem;">
+                                <label style="font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 0.3rem;">
+                                    Danh sách học sinh <span id="lbl-current-group">Tổ 1</span> (mỗi tên 1 dòng):
+                                </label>
+                                <textarea id="student-textarea" class="student-list" oninput="updateStudentListFromTextarea()"></textarea>
+                            </div>
+
+                            <button class="btn btn-warning" style="width: 100%; font-size: 1.05rem; padding: 0.8rem;" onclick="spinWheel()">
+                                🎲 QUAY NGẪU NHIÊN!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL POPUP FOR LUCKY WHEEL -->
+    <div id="winner-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🎉🏆🎉</div>
+            <h3 style="color: var(--primary); font-size: 1.4rem; margin-bottom: 0.5rem;">XIN CHÚC MỪNG BẠN</h3>
+            <div id="winner-name" style="font-size: 2rem; font-weight: 800; color: var(--danger); margin: 1rem 0; padding: 0.8rem; background: #fef2f2; border-radius: 8px; border: 2px dashed var(--danger);">
+                Nguyễn Văn A
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Hãy sẵn sàng trả lời câu hỏi Vật lý từ thầy giáo nhé!</p>
+            <button class="btn btn-primary" onclick="closeWinnerModal()">Đã rõ, đóng cửa sổ</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div><strong>© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</strong></div>
+        <div style="font-size: 0.82rem; color: #94a3b8; margin-top: 0.25rem;">Hệ thống Học liệu Tương tác Vật lý 10 - Chuẩn Chương trình GDPT 2018</div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* =========================================================
+           1. CẤU HÌNH KATEX AUTO-RENDER CHUẨN
+           ========================================================= */
+        const katexConfig = {
+            delimiters: [
+                {left: "\\[", right: "\\]", display: true},
+                {left: "\\(", right: "\\)", display: false}
+            ],
+            throwOnError: false
+        };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, katexConfig);
+            initSimA();
+            initSimB();
+            renderQuiz();
+            initTimer();
+            initWheel();
+        });
+
+        /* =========================================================
+           2. ĐIỀU HƯỚNG TABS & SUBTABS
+           ========================================================= */
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            const buttons = document.querySelectorAll('.tab-btn');
+            const idx = parseInt(tabId.replace('tab', '')) - 1;
+            if (buttons[idx]) buttons[idx].classList.add('active');
+
+            if (tabId === 'tab3') {
+                drawSimA();
+                drawSimB();
+                drawGraphB();
+            }
+        }
+
+        function switchSimTab(simId) {
+            document.querySelectorAll('.sim-panel').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.subtab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(simId).classList.add('active');
+            document.getElementById('btn-' + simId).classList.add('active');
+            if (simId === 'simA') drawSimA();
+            if (simId === 'simB') { drawSimB(); drawGraphB(); }
+        }
+
+        function toggleBox(boxId) {
+            const box = document.getElementById(boxId);
+            if (box.style.display === 'block') {
+                box.style.display = 'none';
+            } else {
+                box.style.display = 'block';
+                renderMathInElement(box, katexConfig);
+            }
+        }
+
+        /* =========================================================
+           3. TAB 3A: MÔ PHỎNG BĂNG ĐỆM KHÍ & RÒNG RỌC (SGK)
+           ========================================================= */
+        let simA = {
+            M: 0.20,
+            m: 0.10,
+            d: 0.50,
+            g: 9.8,
+            x: 0,
+            v: 0,
+            t: 0,
+            running: false,
+            finishedGate: false,
+            gateTime: 0,
+            animId: null,
+            recordCount: 0
+        };
+
+        function initSimA() {
+            updateSimAParams();
+        }
+
+        function updateSimAParams() {
+            if (simA.running) pauseSimA();
+            simA.M = parseFloat(document.getElementById('slider-simA-M').value);
+            simA.m = parseFloat(document.getElementById('slider-simA-m').value);
+            simA.d = parseFloat(document.getElementById('slider-simA-d').value);
+
+            document.getElementById('val-simA-M').textContent = simA.M.toFixed(2).replace('.', ',') + ' kg';
+            document.getElementById('val-simA-m').textContent = simA.m.toFixed(2).replace('.', ',') + ' kg';
+            document.getElementById('val-simA-d').textContent = simA.d.toFixed(2).replace('.', ',') + ' m';
+
+            const F = simA.m * simA.g;
+            const totalM = simA.M + simA.m;
+            const a = F / totalM;
+
+            document.getElementById('lbl-simA-F').textContent = F.toFixed(2).replace('.', ',') + ' N';
+            document.getElementById('lbl-simA-totalM').textContent = totalM.toFixed(2).replace('.', ',') + ' kg';
+            document.getElementById('lbl-simA-a').textContent = a.toFixed(2).replace('.', ',') + ' m/s²';
+
+            resetSimA();
+        }
+
+        function startSimA() {
+            if (simA.x >= simA.d) resetSimA();
+            if (!simA.running) {
+                simA.running = true;
+                let lastTime = performance.now();
+                function loop(now) {
+                    if (!simA.running) return;
+                    const dt = Math.min((now - lastTime) / 1000, 0.04);
+                    lastTime = now;
+
+                    const F = simA.m * simA.g;
+                    const a = F / (simA.M + simA.m);
+
+                    simA.t += dt;
+                    simA.x = 0.5 * a * simA.t * simA.t;
+                    simA.v = a * simA.t;
+
+                    if (simA.x >= simA.d) {
+                        simA.x = simA.d;
+                        simA.t = Math.sqrt((2 * simA.d) / a);
+                        simA.v = a * simA.t;
+                        simA.gateTime = simA.t;
+                        simA.finishedGate = true;
+                        simA.running = false;
+                    }
+
+                    updateSimATelemetry();
+                    drawSimA();
+
+                    if (simA.running) {
+                        simA.animId = requestAnimationFrame(loop);
+                    }
+                }
+                simA.animId = requestAnimationFrame(loop);
+            }
+        }
+
+        function pauseSimA() {
+            simA.running = false;
+            if (simA.animId) cancelAnimationFrame(simA.animId);
+        }
+
+        function resetSimA() {
+            pauseSimA();
+            simA.x = 0;
+            simA.v = 0;
+            simA.t = 0;
+            simA.finishedGate = false;
+            updateSimATelemetry();
+            drawSimA();
+        }
+
+        function updateSimATelemetry() {
+            const wd = 0.5 * (simA.M + simA.m) * simA.v * simA.v;
+            document.getElementById('out-simA-t').textContent = simA.t.toFixed(3).replace('.', ',') + ' s';
+            document.getElementById('out-simA-x').textContent = simA.x.toFixed(2).replace('.', ',') + ' m';
+            document.getElementById('out-simA-v').textContent = simA.v.toFixed(2).replace('.', ',') + ' m/s';
+            document.getElementById('out-simA-wd').textContent = wd.toFixed(2).replace('.', ',') + ' J';
+        }
+
+        function drawArrow(ctx, x1, y1, x2, y2, color, label) {
+            const headlen = 9;
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const angle = Math.atan2(dy, dx);
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headlen * Math.cos(angle - Math.PI / 6), y2 - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - headlen * Math.cos(angle + Math.PI / 6), y2 - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+
+            if (label) {
+                ctx.font = 'bold 13px Segoe UI';
+                ctx.fillText(label, x2 + 6 * Math.cos(angle), y2 + 6 * Math.sin(angle) - 4);
+            }
+            ctx.restore();
+        }
+
+        function drawSimA() {
+            const canvas = document.getElementById('canvasSimA');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const trackY = 120;
+            const trackStartX = 60;
+            const trackEndX = 610;
+            const scalePxPerMeter = 420; // 1m = 420px
+
+            // Vẽ băng đệm khí
+            ctx.fillStyle = '#cbd5e1';
+            ctx.fillRect(trackStartX, trackY, trackEndX - trackStartX, 18);
+            ctx.strokeStyle = '#64748b';
+            ctx.strokeRect(trackStartX, trackY, trackEndX - trackStartX, 18);
+
+            // Vẽ các lỗ thổi khí trên băng đệm khí
+            ctx.fillStyle = '#38bdf8';
+            for (let gx = trackStartX + 15; gx < trackEndX - 10; gx += 20) {
+                ctx.beginPath();
+                ctx.arc(gx, trackY + 4, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Vẽ chân đỡ băng đệm khí
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(trackStartX + 20, trackY + 18, 16, 80);
+            ctx.fillRect(trackEndX - 50, trackY + 18, 16, 80);
+
+            // Vị trí cổng quang E (x = 0) và cổng quang F (x = d)
+            const gateEX = trackStartX + 80;
+            const gateFX = gateEX + simA.d * scalePxPerMeter;
+
+            // Vẽ cổng quang E
+            ctx.fillStyle = '#0f4c81';
+            ctx.fillRect(gateEX - 6, trackY - 65, 12, 65);
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(gateEX, trackY - 40, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.font = 'bold 12px Segoe UI';
+            ctx.fillStyle = '#0f4c81';
+            ctx.fillText('Cổng E (0 m)', gateEX - 32, trackY - 72);
+
+            // Vẽ cổng quang F
+            ctx.fillStyle = '#0f4c81';
+            ctx.fillRect(gateFX - 6, trackY - 65, 12, 65);
+            ctx.fillStyle = simA.finishedGate ? '#10b981' : '#ef4444';
+            ctx.beginPath();
+            ctx.arc(gateFX, trackY - 40, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#0f4c81';
+            ctx.fillText(`Cổng F (${simA.d.toFixed(2)} m)`, gateFX - 38, trackY - 72);
+
+            // Vẽ ròng rọc ở đầu phải
+            const pulleyX = trackEndX + 18;
+            const pulleyY = trackY - 5;
+            ctx.beginPath();
+            ctx.arc(pulleyX, pulleyY, 16, 0, Math.PI * 2);
+            ctx.fillStyle = '#94a3b8';
+            ctx.fill();
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#334155';
+            ctx.stroke();
+
+            // Tọa độ xe trượt
+            const cartCenterX = gateEX + simA.x * scalePxPerMeter;
+            const cartW = 70;
+            const cartH = 34;
+            const cartY = trackY - cartH;
+
+            // Vẽ dây nối qua ròng rọc
+            const weightY = pulleyY + 45 + (simA.x * scalePxPerMeter) * 0.28;
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(cartCenterX + cartW / 2, cartY + cartH / 2);
+            ctx.lineTo(pulleyX, pulleyY - 16);
+            ctx.moveTo(pulleyX + 16, pulleyY);
+            ctx.lineTo(pulleyX + 16, weightY);
+            ctx.stroke();
+
+            // Vẽ xe trượt
+            ctx.fillStyle = '#1e6bc4';
+            ctx.fillRect(cartCenterX - cartW / 2, cartY, cartW, cartH);
+            ctx.strokeStyle = '#0f172a';
+            ctx.strokeRect(cartCenterX - cartW / 2, cartY, cartW, cartH);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 12px Segoe UI';
+            ctx.fillText(`M=${simA.M.toFixed(2)}kg`, cartCenterX - 30, cartY + 21);
+
+            // Tấm chắn sáng trên xe
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(cartCenterX - 6, cartY - 18, 12, 18);
+
+            // Vẽ quả nặng m
+            const wSize = 28 + simA.m * 30;
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillRect(pulleyX + 16 - wSize / 2, weightY, wSize, wSize * 0.85);
+            ctx.strokeStyle = '#b45309';
+            ctx.strokeRect(pulleyX + 16 - wSize / 2, weightY, wSize, wSize * 0.85);
+            ctx.fillStyle = '#1e293b';
+            ctx.font = 'bold 11px Segoe UI';
+            ctx.fillText(`m=${simA.m.toFixed(2)}kg`, pulleyX + 26, weightY + 15);
+
+            // Vẽ vectơ lực căng và trọng lực quả nặng
+            drawArrow(ctx, cartCenterX + cartW / 2, cartY + cartH / 2, cartCenterX + cartW / 2 + 45, cartY + cartH / 2, '#ef4444', 'T');
+            drawArrow(ctx, pulleyX + 16, weightY + wSize * 0.85, pulleyX + 16, weightY + wSize * 0.85 + 35, '#ef4444', 'P = mg');
+        }
+
+        function recordSimAData() {
+            const F = simA.m * simA.g;
+            const totalM = simA.M + simA.m;
+            const a = F / totalM;
+            const t = Math.sqrt((2 * simA.d) / a);
+
+            const tbody = document.getElementById('tbody-simA');
+            if (simA.recordCount === 0) {
+                tbody.innerHTML = '';
+            }
+            simA.recordCount++;
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>Lần ${simA.recordCount}</strong></td>
+                <td>${F.toFixed(2).replace('.', ',')}</td>
+                <td>${totalM.toFixed(2).replace('.', ',')}</td>
+                <td>${simA.d.toFixed(2).replace('.', ',')}</td>
+                <td><strong style="color:var(--danger);">${t.toFixed(3).replace('.', ',')}</strong></td>
+                <td><strong style="color:var(--primary);">${a.toFixed(2).replace('.', ',')}</strong></td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function clearSimATable() {
+            simA.recordCount = 0;
+            document.getElementById('tbody-simA').innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted);">Chưa có dữ liệu. Hãy bấm "Thả xe" hoặc "Ghi số liệu" để thu thập!</td>
+                </tr>
+            `;
+        }
+
+        /* =========================================================
+           4. TAB 3B: MÔ PHỎNG MẶT PHẲNG NGANG & ĐỒ THỊ REAL-TIME
+           ========================================================= */
+        let simB = {
+            m: 2.0,
+            Fk: 12.0,
+            mu: 0.20,
+            v0: 2.0,
+            g: 10.0,
+            x: 0,
+            v: 2.0,
+            a: 0,
+            t: 0,
+            running: false,
+            animId: null,
+            history: []
+        };
+
+        function initSimB() {
+            updateSimBParams();
+        }
+
+        function computeSimBAcceleration() {
+            const N = simB.m * simB.g;
+            const FmsMax = simB.mu * N;
+            let Fhl = 0;
+            let FmsActual = 0;
+
+            if (Math.abs(simB.v) > 0.001) {
+                // Đang chuyển động
+                const dir = Math.sign(simB.v);
+                FmsActual = -dir * FmsMax;
+                Fhl = simB.Fk + FmsActual;
+            } else {
+                // Đang đứng yên
+                if (simB.Fk > FmsMax) {
+                    FmsActual = -FmsMax;
+                    Fhl = simB.Fk - FmsMax;
+                } else {
+                    FmsActual = -simB.Fk;
+                    Fhl = 0;
+                }
+            }
+            return {
+                N: N,
+                Fms: Math.abs(FmsActual),
+                Fhl: Fhl,
+                a: Fhl / simB.m
+            };
+        }
+
+        function updateSimBParams() {
+            if (simB.running) pauseSimB();
+            simB.m = parseFloat(document.getElementById('slider-simB-m').value);
+            simB.Fk = parseFloat(document.getElementById('slider-simB-Fk').value);
+            simB.mu = parseFloat(document.getElementById('slider-simB-mu').value);
+            simB.v0 = parseFloat(document.getElementById('slider-simB-v0').value);
+
+            document.getElementById('val-simB-m').textContent = simB.m.toFixed(1).replace('.', ',') + ' kg';
+            document.getElementById('val-simB-Fk').textContent = simB.Fk.toFixed(1).replace('.', ',') + ' N';
+            document.getElementById('val-simB-mu').textContent = simB.mu.toFixed(2).replace('.', ',');
+            document.getElementById('val-simB-v0').textContent = simB.v0.toFixed(1).replace('.', ',') + ' m/s';
+
+            resetSimB();
+        }
+
+        function startSimB() {
+            if (simB.t >= 10) resetSimB();
+            if (!simB.running) {
+                simB.running = true;
+                let lastTime = performance.now();
+                function loopB(now) {
+                    if (!simB.running) return;
+                    const dt = Math.min((now - lastTime) / 1000, 0.04);
+                    lastTime = now;
+
+                    const dyn = computeSimBAcceleration();
+                    simB.a = dyn.a;
+
+                    const nextV = simB.v + simB.a * dt;
+                    // Nếu đang chuyển động chậm dần do ma sát mà vận tốc đổi dấu và Fk <= FmsMax thì vật dừng hẳn
+                    if (simB.v > 0 && nextV <= 0 && simB.Fk <= simB.mu * simB.m * simB.g) {
+                        simB.v = 0;
+                        simB.a = 0;
+                    } else {
+                        simB.v = nextV;
+                        simB.x += simB.v * dt;
+                    }
+
+                    simB.t += dt;
+                    simB.history.push({ t: simB.t, v: simB.v });
+
+                    if (simB.t >= 10) {
+                        simB.running = false;
+                    }
+
+                    updateSimBTelemetry();
+                    drawSimB();
+                    drawGraphB();
+
+                    if (simB.running) {
+                        simB.animId = requestAnimationFrame(loopB);
+                    }
+                }
+                simB.animId = requestAnimationFrame(loopB);
+            }
+        }
+
+        function pauseSimB() {
+            simB.running = false;
+            if (simB.animId) cancelAnimationFrame(simB.animId);
+        }
+
+        function cutEngineSimB() {
+            simB.Fk = 0;
+            document.getElementById('slider-simB-Fk').value = 0;
+            document.getElementById('val-simB-Fk').textContent = '0,0 N';
+            updateSimBTelemetry();
+            drawSimB();
+        }
+
+        function resetSimB() {
+            pauseSimB();
+            simB.x = 0;
+            simB.v = simB.v0;
+            simB.t = 0;
+            const dyn = computeSimBAcceleration();
+            simB.a = dyn.a;
+            simB.history = [{ t: 0, v: simB.v0 }];
+            updateSimBTelemetry();
+            drawSimB();
+            drawGraphB();
+        }
+
+        function updateSimBTelemetry() {
+            const dyn = computeSimBAcceleration();
+            const wd = 0.5 * simB.m * simB.v * simB.v;
+            document.getElementById('out-simB-Fhl').textContent = dyn.Fhl.toFixed(2).replace('.', ',') + ' N';
+            document.getElementById('out-simB-a').textContent = dyn.a.toFixed(2).replace('.', ',') + ' m/s²';
+            document.getElementById('out-simB-v').textContent = simB.v.toFixed(2).replace('.', ',') + ' m/s';
+            document.getElementById('out-simB-x').textContent = simB.x.toFixed(2).replace('.', ',') + ' m';
+            document.getElementById('out-simB-wd').textContent = wd.toFixed(2).replace('.', ',') + ' J';
+        }
+
+        function drawSimB() {
+            const canvas = document.getElementById('canvasSimB');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const groundY = 165;
+            // Vẽ mặt đường có vạch chia dịch chuyển
+            ctx.fillStyle = '#e2e8f0';
+            ctx.fillRect(0, groundY, canvas.width, canvas.height - groundY);
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, groundY);
+            ctx.lineTo(canvas.width, groundY);
+            ctx.stroke();
+
+            // Vạch kẻ đường di chuyển tương đối để thấy chuyển động
+            const offsetPx = (simB.x * 25) % 60;
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 2;
+            for (let gx = -offsetPx; gx < canvas.width; gx += 60) {
+                ctx.beginPath();
+                ctx.moveTo(gx, groundY);
+                ctx.lineTo(gx - 12, groundY + 18);
+                ctx.stroke();
+            }
+
+            // Vẽ khối vật ở vị trí hiển thị
+            const boxX = Math.min(140 + simB.x * 8, 560);
+            const boxW = 90;
+            const boxH = 54;
+            const boxY = groundY - boxH;
+            const cx = boxX;
+            const cy = boxY + boxH / 2;
+
+            ctx.fillStyle = '#0f4c81';
+            ctx.fillRect(cx - boxW / 2, boxY, boxW, boxH);
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(cx - boxW / 2, boxY, boxW, boxH);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 13px Segoe UI';
+            ctx.fillText(`m = ${simB.m.toFixed(1)} kg`, cx - 34, cy + 5);
+
+            // Chấm tâm vật
+            ctx.fillStyle = '#ffd166';
+            ctx.beginPath();
+            ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            const dyn = computeSimBAcceleration();
+
+            // Vẽ 4 vectơ lực
+            // 1. Trọng lực P và Phản lực N
+            const lenPN = Math.min(30 + simB.m * 3.5, 58);
+            drawArrow(ctx, cx, cy, cx, cy + lenPN, '#1e293b', 'P');
+            drawArrow(ctx, cx, cy, cx, cy - lenPN, '#f59e0b', 'N');
+
+            // 2. Lực kéo Fk
+            if (simB.Fk > 0) {
+                const lenFk = Math.min(25 + simB.Fk * 3.2, 130);
+                drawArrow(ctx, cx, cy, cx + lenFk, cy, '#10b981', `Fk = ${simB.Fk}N`);
+            }
+
+            // 3. Lực ma sát Fms
+            if (dyn.Fms > 0) {
+                const lenFms = Math.min(25 + dyn.Fms * 3.2, 120);
+                drawArrow(ctx, cx, groundY - 4, cx - lenFms, groundY - 4, '#ef4444', `Fms = ${dyn.Fms.toFixed(1)}N`);
+            }
+
+            // 4. Vectơ gia tốc a phía trên vật
+            if (Math.abs(dyn.a) > 0.01) {
+                const lenA = Math.sign(dyn.a) * Math.min(25 + Math.abs(dyn.a) * 8, 100);
+                drawArrow(ctx, cx, boxY - 22, cx + lenA, boxY - 22, '#7c3aed', `a = ${dyn.a.toFixed(2)} m/s²`);
+            }
+        }
+
+        function drawGraphB() {
+            const canvas = document.getElementById('canvasGraphB');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const padL = 55, padR = 25, padT = 22, padB = 30;
+            const w = canvas.width - padL - padR;
+            const h = canvas.height - padT - padB;
+
+            // Trục tọa độ đồ thị v(t)
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(padL, padT);
+            ctx.lineTo(padL, padT + h);
+            ctx.lineTo(padL + w, padT + h);
+            ctx.stroke();
+
+            ctx.fillStyle = '#0f4c81';
+            ctx.font = 'bold 12px Segoe UI';
+            ctx.fillText('Đồ thị Vận tốc - Thời gian v(t) (Độ dốc = Gia tốc a)', padL + 10, padT - 5);
+            ctx.fillText('v (m/s)', 6, padT + 12);
+            ctx.fillText('t (s)', padL + w - 25, padT + h + 22);
+
+            const maxT = 10;
+            let maxV = 25;
+            simB.history.forEach(pt => { if (pt.v > maxV) maxV = pt.v + 5; });
+
+            // Vẽ đường biểu diễn v(t)
+            if (simB.history.length > 0) {
+                ctx.strokeStyle = '#0284c7';
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                simB.history.forEach((pt, idx) => {
+                    const px = padL + (pt.t / maxT) * w;
+                    const py = padT + h - Math.max(0, (pt.v / maxV) * h);
+                    if (idx === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                });
+                ctx.stroke();
+            }
+        }
+
+        /* =========================================================
+           5. TAB 4: MÁY TÍNH THAM SỐ VẬT LÝ (CÓ BIẾN ĐỔI KATEX)
+           ========================================================= */
+        function solveCalc1() {
+            const FkVal = document.getElementById('calc1-Fk').value;
+            const FcVal = document.getElementById('calc1-Fc').value;
+            let FVal = document.getElementById('calc1-F').value;
+            const mVal = document.getElementById('calc1-m').value;
+            const aVal = document.getElementById('calc1-a').value;
+
+            const resBox = document.getElementById('res-calc1');
+            resBox.style.display = 'block';
+
+            let stepPre = "";
+            if (FVal === "" && FkVal !== "" && FcVal !== "") {
+                const fCalc = parseFloat(FkVal) - parseFloat(FcVal);
+                FVal = fCalc.toString();
+                document.getElementById('calc1-F').value = fCalc;
+                stepPre = `<p>• Tổng hợp lực theo phương chuyển động: \\(F_{hl} = F_{k} - F_{c} = ${FkVal} - ${FcVal} = ${fCalc}\\text{ N}\\).</p>`;
+            }
+
+            const hasF = FVal !== "";
+            const hasM = mVal !== "";
+            const hasA = aVal !== "";
+
+            if (hasF && hasM && !hasA) {
+                const F = parseFloat(FVal);
+                const m = parseFloat(mVal);
+                if (m <= 0) {
+                    resBox.innerHTML = `<strong style="color:var(--danger);">Lỗi Vật lý:</strong> Khối lượng \\(m\\) phải lớn hơn \\(0\\)!`;
+                } else {
+                    const a = F / m;
+                    document.getElementById('calc1-a').value = a.toFixed(3);
+                    resBox.innerHTML = `
+                        <h4 style="color:var(--primary);">✅ Kết quả giải Gia tốc \\(a\\):</h4>
+                        ${stepPre}
+                        <p>• Áp dụng biểu thức Định luật II Newton:</p>
+                        \\[a = \\frac{F_{hl}}{m} = \\frac{${F}}{${m}} \\approx ${a.toFixed(3)}\\mathrm{ m/s^2}\\]
+                    `;
+                }
+            } else if (!hasF && hasM && hasA) {
+                const m = parseFloat(mVal);
+                const a = parseFloat(aVal);
+                const F = m * a;
+                document.getElementById('calc1-F').value = F.toFixed(3);
+                resBox.innerHTML = `
+                    <h4 style="color:var(--primary);">✅ Kết quả giải Hợp lực \\(F_{hl}\\):</h4>
+                    <p>• Áp dụng biểu thức Định luật II Newton:</p>
+                    \\[F_{hl} = m \\cdot a = ${m} \\cdot (${a}) = ${F.toFixed(3)}\\text{ N}\\]
+                `;
+            } else if (hasF && !hasM && hasA) {
+                const F = parseFloat(FVal);
+                const a = parseFloat(aVal);
+                if (a === 0) {
+                    resBox.innerHTML = `<strong style="color:var(--danger);">Lưu ý:</strong> Khi \\(a = 0\\) và \\(F_{hl} = 0\\), vật cân bằng nên không thể xác định duy nhất \\(m\\) từ \\(m = \\frac{F}{a}\\).`;
+                } else {
+                    const m = Math.abs(F / a);
+                    document.getElementById('calc1-m').value = m.toFixed(3);
+                    resBox.innerHTML = `
+                        <h4 style="color:var(--primary);">✅ Kết quả giải Khối lượng \\(m\\):</h4>
+                        ${stepPre}
+                        <p>• Từ hệ thức Định luật II Newton \\(F_{hl} = ma\\), suy ra khối lượng của vật:</p>
+                        \\[m = \\frac{|F_{hl}|}{|a|} = \\frac{${Math.abs(F)}}{${Math.abs(a)}} \\approx ${m.toFixed(3)}\\text{ kg}\\]
+                    `;
+                }
+            } else {
+                resBox.innerHTML = `<strong style="color:var(--danger);">Hướng dẫn:</strong> Hãy nhập đúng 2 trong 3 ô \\((F_{hl}, m, a)\\) và để trống 1 ô cần tìm!`;
+            }
+
+            renderMathInElement(resBox, katexConfig);
+        }
+
+        function clearCalc1() {
+            ['calc1-Fk', 'calc1-Fc', 'calc1-F', 'calc1-m', 'calc1-a'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('res-calc1').style.display = 'none';
+        }
+
+        function solveCalc2() {
+            const m = parseFloat(document.getElementById('calc2-m').value);
+            const Fc = parseFloat(document.getElementById('calc2-Fc').value || "0");
+            const v0 = parseFloat(document.getElementById('calc2-v0').value);
+            const v = parseFloat(document.getElementById('calc2-v').value);
+            const tStr = document.getElementById('calc2-t').value;
+            const dStr = document.getElementById('calc2-d').value;
+
+            const resBox = document.getElementById('res-calc2');
+            resBox.style.display = 'block';
+
+            if (isNaN(m) || m <= 0 || isNaN(v0) || isNaN(v)) {
+                resBox.innerHTML = `<strong style="color:var(--danger);">Lỗi dữ liệu:</strong> Vui lòng nhập đầy đủ \\(m > 0, v_{0}, v\\)!`;
+                renderMathInElement(resBox, katexConfig);
+                return;
+            }
+
+            let a = 0;
+            let stepKinematics = "";
+
+            if (tStr !== "" && parseFloat(tStr) > 0) {
+                const t = parseFloat(tStr);
+                a = (v - v0) / t;
+                const dCalc = v0 * t + 0.5 * a * t * t;
+                stepKinematics = `
+                    <p><strong>Bước 1 (Động học):</strong> Tính gia tốc từ thời gian \\(\\Delta t = ${t}\\text{ s}\\):</p>
+                    \\[a = \\frac{v - v_{0}}{\\Delta t} = \\frac{${v} - ${v0}}{${t}} = ${a.toFixed(3)}\\mathrm{ m/s^2}\\]
+                    <p>• Độ dịch chuyển tương ứng: \\(d = v_{0}t + \\frac{1}{2}at^2 = ${dCalc.toFixed(2)}\\text{ m}\\).</p>
+                `;
+            } else if (dStr !== "" && parseFloat(dStr) > 0) {
+                const d = parseFloat(dStr);
+                a = (v * v - v0 * v0) / (2 * d);
+                const tCalc = a !== 0 ? Math.abs((v - v0) / a) : 0;
+                stepKinematics = `
+                    <p><strong>Bước 1 (Động học):</strong> Tính gia tốc từ hệ thức độc lập thời gian với \\(d = ${d}\\text{ m}\\):</p>
+                    \\[v^2 - v_{0}^2 = 2ad \\Rightarrow a = \\frac{v^2 - v_{0}^2}{2d} = \\frac{${v}^2 - ${v0}^2}{2 \\cdot ${d}} = ${a.toFixed(3)}\\mathrm{ m/s^2}\\]
+                    <p>• Thời gian thực hiện chuyển động: \\(\\Delta t = ${tCalc.toFixed(2)}\\text{ s}\\).</p>
+                `;
+            } else {
+                resBox.innerHTML = `<strong style="color:var(--danger);">Hướng dẫn:</strong> Hãy nhập \\(\\Delta t > 0\\) hoặc \\(d > 0\\) để xác định gia tốc!`;
+                renderMathInElement(resBox, katexConfig);
+                return;
+            }
+
+            const Fhl = m * a;
+            const Fk = Fhl + Fc;
+
+            resBox.innerHTML = `
+                <h4 style="color:var(--primary);">✅ Các bước giải chi tiết:</h4>
+                ${stepKinematics}
+                <p><strong>Bước 2 (Định luật II Newton):</strong> Hợp lực tác dụng lên vật dọc theo chiều chuyển động:</p>
+                \\[F_{hl} = m \\cdot a = ${m} \\cdot (${a.toFixed(3)}) = ${Fhl.toFixed(2)}\\text{ N}\\]
+                <p><strong>Bước 3:</strong> Vì \\(F_{hl} = F_{k} - F_{c}\\) (với \\(F_{c} = ${Fc}\\text{ N}\\)), lực phát động / lực kéo \\(F_{k}\\) là:</p>
+                \\[F_{k} = F_{hl} + F_{c} = ${Fhl.toFixed(2)} + ${Fc} = ${Fk.toFixed(2)}\\text{ N}\\]
+            `;
+            renderMathInElement(resBox, katexConfig);
+        }
+
+        function clearCalc2() {
+            ['calc2-m', 'calc2-Fc', 'calc2-v0', 'calc2-v', 'calc2-t', 'calc2-d'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('res-calc2').style.display = 'none';
+        }
+
+        /* =========================================================
+           6. TAB 6: HỆ THỐNG TRẮC NGHIỆM TƯƠNG TÁC (QUIZ)
+           ========================================================= */
+        const quizQuestions = [
+            {
+                q: "Câu 1: Trong các cách viết hệ thức của Định luật II Newton dưới đây, cách viết nào chính xác về mặt Vật lý và Toán học?",
+                options: [
+                    "A. \\(\\vec{F} = ma\\)",
+                    "B. \\(\\vec{F} = m\\vec{a}\\)",
+                    "C. \\(\\vec{F} = -m\\vec{a}\\)",
+                    "D. \\(F = m\\vec{a}\\)"
+                ],
+                correct: 1,
+                explanation: "Vì lực \\(\\vec{F}\\) và gia tốc \\(\\vec{a}\\) đều là các đại lượng vectơ cùng hướng, còn khối lượng \\(m > 0\\) là đại lượng vô hướng dương nên biểu thức vectơ chuẩn xác phải là \\(\\vec{F} = m\\vec{a}\\) (hoặc \\(\\vec{a} = \\frac{\\vec{F}}{m}\\))."
+            },
+            {
+                q: "Câu 2: Trong chuyển động thẳng chậm dần đều của một chiếc ô tô đang hãm phanh, hợp lực \\(\\vec{F}_{hl}\\) tác dụng vào xe có đặc điểm nào sau đây?",
+                options: [
+                    "A. Cùng chiều với vận tốc \\(\\vec{v}\\) và có độ lớn giảm dần.",
+                    "B. Ngược chiều với vận tốc \\(\\vec{v}\\) và có độ lớn giảm dần về \\(0\\).",
+                    "C. Ngược chiều với vận tốc \\(\\vec{v}\\) và có độ lớn không đổi (khác \\(0\\)).",
+                    "D. Luôn vuông góc với hướng dịch chuyển của xe."
+                ],
+                correct: 2,
+                explanation: "Trong chuyển động thẳng chậm dần đều, gia tốc \\(\\vec{a}\\) ngược chiều với vận tốc \\(\\vec{v}\\) và có độ lớn không đổi. Theo định luật II Newton (\\(\\vec{F}_{hl} = m\\vec{a}\\)), hợp lực \\(\\vec{F}_{hl}\\) cũng ngược chiều với \\(\\vec{v}\\) và có độ lớn không đổi."
+            },
+            {
+                q: "Câu 3: Một quả bóng có khối lượng \\(m = 500\\text{ g} = 0,5\\text{ kg}\\) đang nằm yên trên mặt sân thì bị cầu thủ sút bằng một lực có độ lớn \\(F = 200\\text{ N}\\). Biết thời gian chân tiếp xúc với bóng là \\(\\Delta t = 0,02\\text{ s}\\). Tốc độ của quả bóng ngay khi rời chân cầu thủ là:",
+                options: [
+                    "A. \\(v = 8\\text{ m/s}\\)",
+                    "B. \\(v = 2\\text{ m/s}\\)",
+                    "C. \\(v = 0,8\\text{ m/s}\\)",
+                    "D. \\(v = 40\\text{ m/s}\\)"
+                ],
+                correct: 0,
+                explanation: "Gia tốc của quả bóng trong thời gian tiếp xúc là: \\[a = \\frac{F}{m} = \\frac{200}{0,5} = 400\\mathrm{ m/s^2}\\] Tốc độ của bóng khi bay đi là: \\[v = v_{0} + a\\Delta t = 0 + 400 \\cdot 0,02 = 8\\text{ m/s}\\]"
+            },
+            {
+                q: "Câu 4: Khi tác dụng một hợp lực có độ lớn \\(F\\) không đổi lên vật có khối lượng \\(m_{1}\\) thì vật thu được gia tốc \\(a_{1} = 2\\mathrm{ m/s^2}\\); khi tác dụng cùng lực \\(F\\) đó lên vật có khối lượng \\(m_{2}\\) thì vật thu được gia tốc \\(a_{2} = 6\\mathrm{ m/s^2}\\). Nếu tác dụng lực \\(F\\) nói trên vào vật có khối lượng \\(m = m_{1} + m_{2}\\) thì gia tốc \\(a\\) của vật bằng:",
+                options: [
+                    "A. \\(a = 4,0\\mathrm{ m/s^2}\\)",
+                    "B. \\(a = 8,0\\mathrm{ m/s^2}\\)",
+                    "C. \\(a = 1,5\\mathrm{ m/s^2}\\)",
+                    "D. \\(a = 3,0\\mathrm{ m/s^2}\\)"
+                ],
+                correct: 2,
+                explanation: "Theo định luật II Newton, ta có \\(m_{1} = \\frac{F}{a_{1}}\\) và \\(m_{2} = \\frac{F}{a_{2}}\\). Khi ghép \\(m = m_{1} + m_{2}\\): \\[\\frac{F}{a} = \\frac{F}{a_{1}} + \\frac{F}{a_{2}} \\Rightarrow \\frac{1}{a} = \\frac{1}{a_{1}} + \\frac{1}{a_{2}} = \\frac{1}{2} + \\frac{1}{6} = \\frac{2}{3} \\Rightarrow a = 1,5\\mathrm{ m/s^2}\\]"
+            }
+        ];
+
+        let userAnswers = [-1, -1, -1, -1];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            quizQuestions.forEach((item, qIdx) => {
+                const qDiv = document.createElement('div');
+                qDiv.style.marginBottom = '1.5rem';
+                qDiv.style.paddingBottom = '1rem';
+                qDiv.style.borderBottom = '1px solid #e2e8f0';
+
+                let optsHtml = '';
+                item.options.forEach((optText, oIdx) => {
+                    optsHtml += `
+                        <div class="quiz-option" id="q${qIdx}-opt${oIdx}" onclick="selectQuizOption(${qIdx}, ${oIdx})">
+                            <input type="radio" name="q${qIdx}" id="radio-q${qIdx}-${oIdx}" style="pointer-events:none;">
+                            <span>${optText}</span>
+                        </div>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--primary);">${item.q}</div>
+                    <div>${optsHtml}</div>
+                    <div id="explain-${qIdx}" style="display:none; margin-top:0.75rem; padding:0.85rem; background:#f8fafc; border-left:4px solid var(--primary); border-radius:4px;"></div>
+                `;
+                container.appendChild(qDiv);
+            });
+            renderMathInElement(container, katexConfig);
+        }
+
+        function selectQuizOption(qIdx, oIdx) {
+            userAnswers[qIdx] = oIdx;
+            quizQuestions[qIdx].options.forEach((_, idx) => {
+                const optEl = document.getElementById(`q${qIdx}-opt${idx}`);
+                const radioEl = document.getElementById(`radio-q${qIdx}-${idx}`);
+                optEl.classList.remove('selected');
+                radioEl.checked = false;
+            });
+            document.getElementById(`q${qIdx}-opt${oIdx}`).classList.add('selected');
+            document.getElementById(`radio-q${qIdx}-${oIdx}`).checked = true;
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            quizQuestions.forEach((item, qIdx) => {
+                const chosen = userAnswers[qIdx];
+                item.options.forEach((_, oIdx) => {
+                    const optEl = document.getElementById(`q${qIdx}-opt${oIdx}`);
+                    optEl.classList.remove('correct', 'wrong');
+                    if (oIdx === item.correct) {
+                        optEl.classList.add('correct');
+                    } else if (oIdx === chosen && chosen !== item.correct) {
+                        optEl.classList.add('wrong');
+                    }
+                });
+
+                if (chosen === item.correct) score++;
+
+                const expEl = document.getElementById(`explain-${qIdx}`);
+                expEl.style.display = 'block';
+                const statusBadge = chosen === item.correct
+                    ? `<strong style="color:var(--success);">✔ Chính xác!</strong> `
+                    : `<strong style="color:var(--danger);">✘ Chưa chính xác!</strong> `;
+                expEl.innerHTML = statusBadge + `<strong>Giải thích:</strong> ` + item.explanation;
+                // Gọi lại renderMathInElement ngay sau khi in lời giải
+                renderMathInElement(expEl, katexConfig);
+            });
+
+            const resBox = document.getElementById('quiz-result-box');
+            resBox.style.display = 'block';
+            resBox.innerHTML = `
+                <h3 style="color:var(--primary);">🏆 Kết quả bài làm: ${score} / ${quizQuestions.length} câu đúng (${(score / quizQuestions.length * 10).toFixed(1)} điểm)</h3>
+                <p>Hãy xem kỹ phần giải thích định lượng bằng công thức dưới mỗi câu hỏi để nắm chắc phương pháp giải toán Định luật II Newton.</p>
+            `;
+            renderMathInElement(resBox, katexConfig);
+        }
+
+        function resetQuiz() {
+            userAnswers = [-1, -1, -1, -1];
+            document.getElementById('quiz-result-box').style.display = 'none';
+            renderQuiz();
+        }
+
+        /* =========================================================
+           7. TAB 7: TIỆN ÍCH LỚP HỌC (TIMER & LUCKY WHEEL)
+           ========================================================= */
+        let timerState = {
+            totalSec: 180,
+            remainSec: 180,
+            running: false,
+            intervalId: null
+        };
+
+        function initTimer() {
+            updateTimerUI();
+        }
+
+        function setTimerPreset(seconds) {
+            pauseTimer();
+            document.getElementById('timer-card').classList.remove('timer-finished');
+            timerState.totalSec = seconds;
+            timerState.remainSec = seconds;
+            updateTimerUI();
+        }
+
+        function startTimer() {
+            if (timerState.remainSec <= 0) {
+                timerState.remainSec = timerState.totalSec;
+            }
+            document.getElementById('timer-card').classList.remove('timer-finished');
+            if (!timerState.running) {
+                timerState.running = true;
+                timerState.intervalId = setInterval(() => {
+                    timerState.remainSec--;
+                    updateTimerUI();
+                    if (timerState.remainSec <= 0) {
+                        pauseTimer();
+                        document.getElementById('timer-card').classList.add('timer-finished');
+                        playBeepAlert();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            timerState.running = false;
+            if (timerState.intervalId) clearInterval(timerState.intervalId);
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            document.getElementById('timer-card').classList.remove('timer-finished');
+            timerState.remainSec = timerState.totalSec;
+            updateTimerUI();
+        }
+
+        function updateTimerUI() {
+            const mins = Math.floor(timerState.remainSec / 60);
+            const secs = timerState.remainSec % 60;
+            const text = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            document.getElementById('timer-text').textContent = text;
+
+            const circumference = 2 * Math.PI * 105; // ~659.73
+            const ratio = timerState.totalSec > 0 ? timerState.remainSec / timerState.totalSec : 0;
+            const offset = circumference * (1 - ratio);
+            const ring = document.getElementById('timer-ring');
+            ring.style.strokeDashoffset = offset;
+            if (ratio <= 0.2) ring.style.stroke = '#ef4444';
+            else if (ratio <= 0.5) ring.style.stroke = '#f59e0b';
+            else ring.style.stroke = '#0f4c81';
+        }
+
+        function playBeepAlert() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.6);
+            } catch (e) {}
+        }
+
+        // LUCKY WHEEL
+        const groupData = {
+            1: ["An Bình (Tổ 1)", "Minh Châu (Tổ 1)", "Hoàng Dũng (Tổ 1)", "Khánh Duy (Tổ 1)", "Thu Hà (Tổ 1)", "Gia Huy (Tổ 1)"],
+            2: ["Bảo Khánh (Tổ 2)", "Ngọc Lan (Tổ 2)", "Tuấn Minh (Tổ 2)", "Phương Nam (Tổ 2)", "Hồng Ngọc (Tổ 2)", "Đức Phát (Tổ 2)"],
+            3: ["Minh Quân (Tổ 3)", "Thanh Sơn (Tổ 3)", "Phương Thảo (Tổ 3)", "Anh Thư (Tổ 3)", "Quốc Trung (Tổ 3)", "Hải Yến (Tổ 3)"],
+            4: ["Hoàng Việt (Tổ 4)", "Thiên Ân (Tổ 4)", "Mỹ Duyên (Tổ 4)", "Đăng Khoa (Tổ 4)", "Trọng Nghĩa (Tổ 4)", "Kim Ngân (Tổ 4)"]
+        };
+
+        let currentGroup = 1;
+        let wheelAngle = 0;
+        let wheelSpinning = false;
+        const wheelColors = ['#0f4c81', '#0088cc', '#10b981', '#f59e0b', '#ef4444', '#7c3aed', '#db2777', '#0d9488'];
+
+        function initWheel() {
+            selectGroup(1);
+        }
+
+        function selectGroup(gNum) {
+            currentGroup = gNum;
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById('btn-group-' + i);
+                btn.className = (i === gNum) ? 'btn btn-primary' : 'btn btn-secondary';
+            }
+            document.getElementById('lbl-current-group').textContent = 'Tổ ' + gNum;
+            document.getElementById('student-textarea').value = groupData[gNum].join('\n');
+            drawWheel();
+        }
+
+        function updateStudentListFromTextarea() {
+            const raw = document.getElementById('student-textarea').value;
+            const list = raw.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+            groupData[currentGroup] = list.length > 0 ? list : ["Học sinh 1"];
+            drawWheel();
+        }
+
+        function drawWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const names = groupData[currentGroup];
+            const n = names.length;
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const r = cx - 18;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const arc = (2 * Math.PI) / n;
+            for (let i = 0; i < n; i++) {
+                const startAngle = wheelAngle + i * arc;
+                const endAngle = startAngle + arc;
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(startAngle + arc / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 13px Segoe UI';
+                ctx.fillText(names[i].substring(0, 18), r - 14, 5);
+                ctx.restore();
+            }
+
+            // Vẽ tâm vòng quay
+            ctx.beginPath();
+            ctx.arc(cx, cy, 22, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#0f172a';
+            ctx.stroke();
+
+            // Vẽ kim chỉ ở góc phải (0 rad)
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 4, cy - 12);
+            ctx.lineTo(canvas.width - 4, cy + 12);
+            ctx.lineTo(canvas.width - 28, cy);
+            ctx.closePath();
+            ctx.fillStyle = '#ef4444';
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function spinWheel() {
+            if (wheelSpinning) return;
+            const names = groupData[currentGroup];
+            if (names.length === 0) return;
+
+            wheelSpinning = true;
+            const spinDuration = 3500;
+            const extraSpins = (5 + Math.random() * 4) * 2 * Math.PI;
+            const startAngle = wheelAngle;
+            const startTime = performance.now();
+
+            function animateWheel(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / spinDuration, 1);
+                // Ease out cubic
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                wheelAngle = startAngle + extraSpins * easeOut;
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateWheel);
+                } else {
+                    wheelSpinning = false;
+                    const normalized = ((2 * Math.PI - (wheelAngle % (2 * Math.PI))) + 2 * Math.PI) % (2 * Math.PI);
+                    const arc = (2 * Math.PI) / names.length;
+                    const winIdx = Math.floor(normalized / arc) % names.length;
+                    showWinnerModal(names[winIdx]);
+                }
+            }
+            requestAnimationFrame(animateWheel);
+        }
+
+        function showWinnerModal(winnerName) {
+            document.getElementById('winner-name').textContent = winnerName;
+            document.getElementById('winner-modal').classList.add('show');
+            playBeepAlert();
+        }
+
+        function closeWinnerModal() {
+            document.getElementById('winner-modal').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
