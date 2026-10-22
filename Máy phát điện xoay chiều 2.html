@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chủ đề 4: Máy Phát Điện Xoay Chiều - Vật Lí 12</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-light: #1e6bb8;
+            --secondary: #0284c7;
+            --accent: #f59e0b;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --bg-main: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #0f4c81 60%, #0284c7 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        header .subtitle {
+            font-size: 1rem;
+            color: #e2e8f0;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        header .copyright-header {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            padding: 0.35rem 1rem;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fde047;
+            border: 1px solid rgba(253, 224, 71, 0.4);
+        }
+
+        /* Navigation Tabs */
+        .nav-container {
+            background: var(--bg-card);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            max-width: 1400px;
+            margin: 0 auto;
+            scrollbar-width: thin;
+        }
+
+        .tab-btn {
+            flex: 1 0 auto;
+            padding: 0.95rem 1.15rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+            background-color: #f8fafc;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background-color: #eff6ff;
+            font-weight: 700;
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.25rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards & Layout */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        /* Callout Boxes */
+        .box-info {
+            background: #eff6ff;
+            border-left: 4px solid var(--secondary);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1rem;
+        }
+
+        .box-warning {
+            background: #fef2f2;
+            border-left: 4px solid var(--danger);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1rem;
+        }
+
+        .box-challenge {
+            background: #fffbeb;
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1rem;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Sub-tabs for Simulation */
+        .sim-subtabs {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .sim-subbtn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sim-subbtn.active, .sim-subbtn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .sim-panel {
+            display: none;
+        }
+
+        .sim-panel.active {
+            display: block;
+        }
+
+        /* Simulation Layout */
+        .sim-workspace {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .sim-workspace {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .control-group {
+            margin-bottom: 1.1rem;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.35rem;
+            color: var(--text-main);
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.65rem 1.25rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        canvas {
+            background: #0f172a;
+            border-radius: 10px;
+            width: 100%;
+            display: block;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+        }
+
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .telemetry-item {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 0.65rem 0.85rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .telemetry-item .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .telemetry-item .val {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-top: 0.2rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Calculator Form */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-box label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .input-box input {
+            padding: 0.65rem 0.85rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .input-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.15);
+        }
+
+        /* Guided Practice & Quiz */
+        .level-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-lv1 { background: #dcfce7; color: #166534; }
+        .badge-lv2 { background: #dbeafe; color: #1e40af; }
+        .badge-lv3 { background: #fef3c7; color: #92400e; }
+
+        .hidden-box {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px dashed var(--border-color);
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 0.65rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--secondary);
+            background: #f0f9ff;
+        }
+
+        .quiz-option input[type="radio"] {
+            transform: scale(1.2);
+            accent-color: var(--primary);
+        }
+
+        .quiz-explanation {
+            display: none;
+            margin-top: 0.85rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f0fdf4;
+            border-left: 4px solid var(--success);
+        }
+
+        /* Classroom Tools */
+        .timer-display {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 1.25rem;
+        }
+
+        .wheel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        textarea.student-list {
+            width: 100%;
+            height: 120px;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+
+        /* Modal Popup */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Footer */
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 1.25rem;
+            margin-top: auto;
+            font-size: 0.95rem;
+            border-top: 3px solid var(--secondary);
+        }
+
+        footer strong {
+            color: #fde047;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>CHƯƠNG III: TỪ TRƯỜNG — CHỦ ĐỀ 4: MÁY PHÁT ĐIỆN XOAY CHIỀU</h1>
+    <div class="subtitle">Hệ thống Học tập Vật lý Tương tác & Mô phỏng Thực nghiệm Ảo (CTGDPT 2018)</div>
+    <div class="copyright-header">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+</header>
+
+<div class="nav-container">
+    <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchMainTab('tab1')">🚀 1. Khởi động & Thực tiễn</button>
+        <button class="tab-btn" onclick="switchMainTab('tab2')">📖 2. Cốt lõi Lý thuyết</button>
+        <button class="tab-btn" onclick="switchMainTab('tab3')">🔬 3. Mô phỏng Tương tác</button>
+        <button class="tab-btn" onclick="switchMainTab('tab4')">🧮 4. Máy tính Tham số</button>
+        <button class="tab-btn" onclick="switchMainTab('tab5')">📝 5. Luyện tập Phân hóa</button>
+        <button class="tab-btn" onclick="switchMainTab('tab6')">🎯 6. Bài Tự Đánh giá</button>
+        <button class="tab-btn" onclick="switchMainTab('tab7')">🛠️ 7. Tiện ích Lớp học</button>
+    </nav>
+</div>
+
+<main>
+    <!-- ==================== TAB 1: WARM-UP ==================== -->
+    <section id="tab1" class="tab-content active">
+        <div class="card">
+            <h2 class="card-title">🚀 Khởi động: Từ Đinamô Xe đạp đến Nhà máy Thủy điện Hòa Bình</h2>
+            <p style="margin-bottom: 1rem;">
+                Hằng ngày, mọi thiết bị quanh ta từ bóng đèn, tủ lạnh, điều hòa đến các cỗ máy công nghiệp đều vận hành nhờ <strong>dòng điện xoay chiều (AC)</strong> có thông số chuẩn tại Việt Nam là \( 220\text{ V} - 50\text{ Hz} \). Nhưng làm thế nào cơ năng của dòng nước chảy xiết hay sức đạp chân trên chiếc xe đạp lại biến đổi thành dòng điện đổi chiều liên tục 100 lần mỗi giây?
+            </p>
+            <div class="grid-2">
+                <div class="box-info">
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">💡 Tình huống 1: Đinamô xe đạp</h3>
+                    <p>Khi bạn đạp xe nhanh hơn vào ban đêm, núm xoay của đinamô cọ vào vành lốp quay tít, bóng đèn xe đạp lập tức <strong>sáng rực lên</strong>. Nhưng ngay khi xe dừng lại tại đèn đỏ, bóng đèn tắt hẳn dù nam châm bên trong đinamô vẫn còn nguyên từ tính mạnh!</p>
+                </div>
+                <div class="box-info">
+                    <h3 style="color: var(--primary); margin-bottom: 0.5rem;">⚡ Tình huống 2: Bí ẩn con số 220 V trên ổ cắm</h3>
+                    <p>Trên mọi ổ cắm gia đình ở Việt Nam đều ghi điện áp là \( 220\text{ V} \). Tuy nhiên, khi các kỹ sư điện kiểm tra lớp vỏ bọc cách điện của dây dẫn, họ bắt buộc phải thiết kế lớp vỏ chịu được mức điện áp đỉnh lên tới hơn \( 311\text{ V} \).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">❓ Câu hỏi Mâu thuẫn Nhận thức (Tư duy Vật lý)</h2>
+            <div class="grid-3">
+                <div class="box-challenge">
+                    <h4>🤔 Nghịch lý 1: Cực đại sinh ra Không?</h4>
+                    <p style="margin-top:0.4rem;">Khi mặt phẳng khung dây quay đến vị trí vuông góc với các đường sức từ \(\vec{B}\), lượng đường sức từ xuyên qua khung là <strong>nhiều nhất</strong> (\(\Phi = \Phi_{0}\)). Thế nhưng ngay tại khoảnh khắc đó, suất điện động cảm ứng trong khung lại bằng \( 0\text{ V} \)! Tại sao từ thông cực đại lại không sinh ra điện?</p>
+                </div>
+                <div class="box-challenge">
+                    <h4>🤔 Nghịch lý 2: \(220\text{ V}\) hay \(311\text{ V}\)?</h4>
+                    <p style="margin-top:0.4rem;">Nếu điện áp xoay chiều biến thiên liên tục từ \(0\text{ V}\) lên cực đại rồi giảm về \(0\text{ V}\) theo hàm số cosin, thì con số \(220\text{ V}\) cố định mà vôn kế xoay chiều đo được thực chất đại diện cho điều gì?</p>
+                </div>
+                <div class="box-challenge">
+                    <h4>🤔 Nghịch lý 3: Cuộn dây hay Nam châm quay?</h4>
+                    <p style="margin-top:0.4rem;">Trong mô hình thí nghiệm ở lớp, ta quay khung dây trong từ trường cố định. Nhưng ở các tổ máy phát điện công suất hàng trăm \(\text{MW}\), người ta lại giữ cuộn dây đứng yên (Stato) và cho nam châm khổng lồ quay (Rôto). Lý do kỹ thuật nào buộc phải đảo ngược như vậy?</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <button class="btn btn-primary" onclick="switchMainTab('tab2')">Khám phá Bản chất Lý thuyết ➔</button>
+                <button class="btn btn-secondary" onclick="switchMainTab('tab3')">Thực nghiệm ngay tại Phòng Lab ➔</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 2: CORE THEORY ==================== -->
+    <section id="tab2" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">1. Nguyên tắc tạo ra dòng điện xoay chiều</h2>
+            <p>Nguyên tắc tạo ra dòng điện xoay chiều dựa trên <strong>hiện tượng cảm ứng điện từ</strong>: làm cho từ thông qua khung dây dẫn biến thiên điều hòa theo thời gian.</p>
+            <div class="grid-2" style="margin-top: 1rem;">
+                <div class="box-info">
+                    <h4>📌 Từ thông gửi qua khung dây</h4>
+                    <p>Xét khung dây phẳng có \( N \) vòng dây, diện tích mỗi vòng là \( S \), quay đều với tốc độ góc \( \omega \) quanh trục \( \Delta \) vuông góc với các đường sức từ của từ trường đều \( \vec{B} \):</p>
+                    \[ \Phi = N B S \cos(\omega t + \varphi_{0}) = \Phi_{0} \cos(\omega t + \varphi_{0}) \text{ (Wb)} \]
+                    <p>Trong đó:</p>
+                    <ul style="margin-left: 1.25rem;">
+                        <li>Từ thông cực đại qua khung: \( \Phi_{0} = N B S \text{ (Wb)} \).</li>
+                        <li>\( \varphi_{0} \): Góc hợp bởi vectơ pháp tuyến \( \vec{n} \) và vectơ cảm ứng từ \( \vec{B} \) tại thời điểm \( t = 0 \text{ s} \).</li>
+                    </ul>
+                </div>
+                <div class="box-info">
+                    <h4>📌 Suất điện động cảm ứng xoay chiều</h4>
+                    <p>Theo định luật Faraday, suất điện động cảm ứng xuất hiện trong khung dây là đạo hàm bậc nhất của từ thông theo thời gian (lấy dấu trừ):</p>
+                    \[ e = -\Phi'(t) = \omega N B S \sin(\omega t + \varphi_{0}) = E_{0} \cos\left(\omega t + \varphi_{0} - \frac{\pi}{2}\right) \text{ (V)} \]
+                    <ul style="margin-left: 1.25rem;">
+                        <li>Suất điện động cực đại: \( E_{0} = \omega N B S = \omega \Phi_{0} \text{ (V)} \).</li>
+                        <li>Suất điện động hiệu dụng: \( E = \frac{E_{0}}{\sqrt{2}} \text{ (V)} \).</li>
+                        <li>Suất điện động \( e \) luôn <strong>trễ pha \( \frac{\pi}{2} \text{ rad} \)</strong> so với từ thông \( \Phi \).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">2. Đại cương về Dòng điện Xoay chiều & Giá trị Hiệu dụng</h2>
+            <p>Dòng điện xoay chiều hình sin là dòng điện có chiều và cường độ biến thiên điều hòa theo thời gian theo quy luật hàm cosin (hoặc sin):</p>
+            \[ u = U_{0}\cos(\omega t + \varphi_{u}) \text{ (V)} \quad \text{và} \quad i = I_{0}\cos(\omega t + \varphi_{i}) \text{ (A)} \]
+            <p style="margin-top:0.5rem;">Độ lệch pha của điện áp so với cường độ dòng điện: \( \Delta \varphi = \varphi_{u} - \varphi_{i} \). Giá trị hiệu dụng được xây dựng dựa trên <strong>tác dụng nhiệt</strong> của dòng điện:</p>
+            \[ I = \frac{I_{0}}{\sqrt{2}} \text{ (A)}; \quad U = \frac{U_{0}}{\sqrt{2}} \text{ (V)}; \quad E = \frac{E_{0}}{\sqrt{2}} \text{ (V)} \]
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ký hiệu</th>
+                            <th>Tên đại lượng vật lý</th>
+                            <th>Công thức liên hệ / Định nghĩa</th>
+                            <th>Đơn vị chuẩn (SI)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>\( \Phi, \Phi_{0} \)</td>
+                            <td>Từ thông tức thời và Từ thông cực đại</td>
+                            <td>\( \Phi_{0} = N B S \)</td>
+                            <td>\(\text{Wb}\) (Weber)</td>
+                        </tr>
+                        <tr>
+                            <td>\( e, E_{0}, E \)</td>
+                            <td>Suất điện động tức thời, cực đại, hiệu dụng</td>
+                            <td>\( E_{0} = \omega N B S = \omega \Phi_{0} \); \( E = \frac{E_{0}}{\sqrt{2}} \)</td>
+                            <td>\(\text{V}\) (Vôn)</td>
+                        </tr>
+                        <tr>
+                            <td>\( u, U_{0}, U \)</td>
+                            <td>Điện áp tức thời, cực đại, hiệu dụng</td>
+                            <td>\( U = \frac{U_{0}}{\sqrt{2}} \)</td>
+                            <td>\(\text{V}\) (Vôn)</td>
+                        </tr>
+                        <tr>
+                            <td>\( i, I_{0}, I \)</td>
+                            <td>Cường độ dòng điện tức thời, cực đại, hiệu dụng</td>
+                            <td>\( I = \frac{I_{0}}{\sqrt{2}} \)</td>
+                            <td>\(\text{A}\) (Ampe)</td>
+                        </tr>
+                        <tr>
+                            <td>\( \omega, f, T \)</td>
+                            <td>Tần số góc, Tần số, Chu kì dòng điện</td>
+                            <td>\( \omega = 2\pi f = \frac{2\pi}{T} \)</td>
+                            <td>\(\text{rad/s}\), \(\text{Hz}\), \(\text{s}\)</td>
+                        </tr>
+                        <tr>
+                            <td>\( B, S, N \)</td>
+                            <td>Cảm ứng từ, Tiết diện khung, Số vòng dây</td>
+                            <td>Thông số cấu tạo của máy phát</td>
+                            <td>\(\text{T}\) (Tesla), \(\text{m}^2\), \(\text{vòng}\)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">3. Cấu tạo Máy phát điện Xoay chiều (1 Pha & 3 Pha) và An toàn điện</h2>
+            <div class="grid-2">
+                <div class="box-info">
+                    <h4>⚙️ Máy phát điện xoay chiều 1 pha</h4>
+                    <ul style="margin-left: 1.25rem;">
+                        <li><strong>Phần cảm:</strong> Nam châm vĩnh cửu hoặc nam châm điện, dùng để tạo ra từ trường \(\vec{B}\).</li>
+                        <li><strong>Phần ứng:</strong> Các cuộn dây dẫn, nơi xuất hiện suất điện động cảm ứng khi máy hoạt động.</li>
+                        <li><strong>Rôto (Phần quay) & Stato (Phần đứng yên):</strong>
+                            <br>+ Cách 1 (Phần ứng quay, phần cảm cố định): Phải dùng hệ thống <em>vành khuyên và chổi quét</em> để lấy điện ra ngoài.
+                            <br>+ Cách 2 (Phần cảm quay, phần ứng cố định): Dòng điện lấy trực tiếp từ Stato, không cần chổi quét (dùng cho máy công suất lớn).
+                        </li>
+                        <li>Nếu rôto có \( p \) cặp cực quay với tốc độ \( n \text{ (vòng/s)} \) thì tần số dòng điện là \( f = n p \text{ (Hz)} \) (nếu \( n \) tính bằng \(\text{vòng/phút}\) thì \( f = \frac{n p}{60} \text{ (Hz)} \)).</li>
+                    </ul>
+                </div>
+                <div class="box-info">
+                    <h4>⚡ Máy phát điện xoay chiều 3 pha & Ứng dụng</h4>
+                    <ul style="margin-left: 1.25rem;">
+                        <li><strong>Phần cảm (Rôto):</strong> Một nam châm điện quay quanh trục với tốc độ góc \( \omega \) không đổi.</li>
+                        <li><strong>Phần ứng (Stato):</strong> Gồm 3 cuộn dây hình trụ giống hệt nhau gắn cố định trên vòng tròn, đặt lệch nhau góc \( 120^\circ \).</li>
+                        <li><strong>Hoạt động:</strong> Tạo ra 3 suất điện động xoay chiều cùng biên độ \(E_0\), cùng tần số \(f\) nhưng <strong>lệch pha nhau từng đôi một góc \( \frac{2\pi}{3}\text{ rad} \)</strong>:
+                            \[ e_1 = E_0\cos(\omega t); \quad e_2 = E_0\cos\left(\omega t - \frac{2\pi}{3}\right); \quad e_3 = E_0\cos\left(\omega t + \frac{2\pi}{3}\right) \]
+                        </li>
+                        <li><strong>An toàn điện:</strong> Tuân thủ biển báo, không chạm dây hở, nối đất vỏ kim loại, ngắt nguồn điện khi sửa chữa hoặc có sấm sét.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">⚠️ Bẫy Lý Thuyết Học Sinh Thường Mắc Phải</h2>
+            <div class="grid-2">
+                <div class="box-warning">
+                    <strong>❌ Sai lầm 1: Nhầm góc hợp với mặt phẳng khung dây là góc \(\varphi_0\)</strong>
+                    <p>Đề bài thường cho góc \(\beta\) hợp bởi vectơ cảm ứng từ \(\vec{B}\) và <em>mặt phẳng khung dây</em>. Trong công thức từ thông \(\Phi = NBS\cos\alpha\), góc \(\alpha\) bắt buộc phải là góc giữa \(\vec{B}\) và <strong>vectơ pháp tuyến \(\vec{n}\)</strong> (\(\alpha = 90^\circ - \beta\)).</p>
+                </div>
+                <div class="box-warning">
+                    <strong>❌ Sai lầm 2: Quên đổi đơn vị diện tích và tốc độ quay</strong>
+                    <p>Học sinh rất hay để nguyên diện tích \(S\) tính bằng \(\text{cm}^2\) (phải nhân \(10^{-4}\text{ m}^2\)) hoặc để tốc độ quay tính theo \(\text{vòng/phút}\) (phải chia \(60\) để ra tần số \(f\text{ (Hz)}\), rồi nhân \(2\pi\) để có \(\omega\text{ (rad/s)}\)).</p>
+                </div>
+                <div class="box-warning">
+                    <strong>❌ Sai lầm 3: Cho rằng từ thông cực đại thì suất điện động cực đại</strong>
+                    <p>Vì \(e = -\Phi'(t)\) nên \(e\) và \(\Phi\) vuông pha nhau: \(\left(\frac{\Phi}{\Phi_0}\right)^2 + \left(\frac{e}{E_0}\right)^2 = 1\). Khi \(\Phi\) đạt cực đại (\(\vec{n} \parallel \vec{B}\)) thì \(e = 0\); ngược lại khi \(\Phi = 0\) (\(\vec{n} \perp \vec{B}\)) thì \(|e| = E_0\).</p>
+                </div>
+                <div class="box-warning">
+                    <strong>❌ Sai lầm 4: Dùng khái niệm "Công suất hiệu dụng"</strong>
+                    <p>Giá trị hiệu dụng chỉ áp dụng cho cường độ dòng điện \(I\), điện áp \(U\) và suất điện động \(E\). Đối với công suất tiêu thụ điện xoay chiều, ta gọi là <strong>công suất trung bình</strong> \(P\) chứ không có "công suất hiệu dụng".</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 3: SIMULATION LAB ==================== -->
+    <section id="tab3" class="tab-content">
+        <div class="sim-subtabs">
+            <button class="sim-subbtn active" onclick="switchSimTab('simA', this)">🔬 Tab 3A: Khung dây quay trong từ trường đều (1 Pha)</button>
+            <button class="sim-subbtn" onclick="switchSimTab('simB', this)">⚡ Tab 3B: Máy phát điện xoay chiều 3 pha</button>
+        </div>
+
+        <!-- SUB-TAB 3A: 1-PHASE GENERATOR -->
+        <div id="simA" class="sim-panel active">
+            <div class="card">
+                <h2 class="card-title">🔬 Mô phỏng 3A: Khung dây phẳng quay đều trong từ trường \(\vec{B}\)</h2>
+                <div class="box-challenge">
+                    <strong>🎯 Nhiệm vụ Thử và Sai (Inquiry Guide):</strong>
+                    1. Bấm nút <strong>Tạm dừng</strong> đúng lúc mặt phẳng khung dây nằm ngang (song song với \(\vec{B}\)): Quan sát giá trị tức thời của \(\Phi\) và \(e\).<br>
+                    2. Tăng gấp đôi tốc độ góc \(\omega\): Quan sát xem biên độ từ thông \(\Phi_0\) và biên độ suất điện động \(E_0\) thay đổi như thế nào? Tại sao \(\Phi_0\) không đổi nhưng \(E_0\) lại tăng gấp đôi?
+                </div>
+
+                <div class="sim-workspace">
+                    <!-- Controls -->
+                    <div class="card" style="margin-bottom: 0; background: #f8fafc;">
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">🎛️ Tham số Điều khiển</h3>
+                        
+                        <div class="control-group">
+                            <label>Số vòng dây \(N\): <span id="val_N">100 vòng</span></label>
+                            <input type="range" id="inp_N" min="20" max="500" step="10" value="100" oninput="updateSimAParams()">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Cảm ứng từ \(B\): <span id="val_B">0.50 T</span></label>
+                            <input type="range" id="inp_B" min="0.1" max="1.5" step="0.05" value="0.5" oninput="updateSimAParams()">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Diện tích khung \(S\): <span id="val_S">100 cm²</span></label>
+                            <input type="range" id="inp_S" min="20" max="300" step="10" value="100" oninput="updateSimAParams()">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Tần số góc \(\omega\): <span id="val_W">3.14 rad/s</span></label>
+                            <input type="range" id="inp_W" min="1" max="10" step="0.5" value="3.14" oninput="updateSimAParams()">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Điện trở tải \(R\): <span id="val_R">10 Ω</span></label>
+                            <input type="range" id="inp_R" min="2" max="50" step="1" value="10" oninput="updateSimAParams()">
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
+                            <button class="btn btn-primary" id="btnToggleSimA" onclick="toggleSimA()">⏸️ Tạm dừng</button>
+                            <button class="btn btn-secondary" onclick="stepAngleSimA(0)">Đặt \(\alpha = 0^\circ\) (\(\Phi_{\max}\))</button>
+                            <button class="btn btn-secondary" onclick="stepAngleSimA(Math.PI/2)">Đặt \(\alpha = 90^\circ\) (\(e_{\max}\))</button>
+                        </div>
+                    </div>
+
+                    <!-- Canvas & Telemetry -->
+                    <div>
+                        <canvas id="canvasSimA" width="820" height="400"></canvas>
+                        <div class="telemetry-grid">
+                            <div class="telemetry-item">
+                                <div class="label">Góc pha \(\alpha = (\vec{B},\vec{n})\)</div>
+                                <div class="val" id="out_alpha">0°</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="label">Từ thông cực đại \(\Phi_0\)</div>
+                                <div class="val" id="out_phi0">0.50 Wb</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="label">Từ thông tức thời \(\Phi\)</div>
+                                <div class="val" id="out_phi" style="color: #0284c7;">0.50 Wb</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="label">SĐĐ cực đại \(E_0\)</div>
+                                <div class="val" id="out_E0">1.57 V</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="label">SĐĐ hiệu dụng \(E\)</div>
+                                <div class="val" id="out_E">1.11 V</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="label">SĐĐ tức thời \(e\)</div>
+                                <div class="val" id="out_e" style="color: #dc2626;">0.00 V</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="label">Dòng điện tức thời \(i\)</div>
+                                <div class="val" id="out_i" style="color: #16a34a;">0.00 A</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUB-TAB 3B: 3-PHASE GENERATOR -->
+        <div id="simB" class="sim-panel">
+            <div class="card">
+                <h2 class="card-title">⚡ Mô phỏng 3B: Máy phát điện xoay chiều 3 pha (Rôto nam châm quay)</h2>
+                <div class="box-challenge">
+                    <strong>🎯 Khám phá quy luật 3 pha đối xứng:</strong>
+                    Hãy bấm <strong>Tạm dừng</strong> ở bất kỳ vị trí góc quay nào của nam châm và cộng thử 3 giá trị tức thời \( e_1 + e_2 + e_3 \). Bạn nhận thấy tổng \( e_1 + e_2 + e_3 \) luôn bằng bao nhiêu? Khi \( e_1 = E_0 \) thì \( e_2 \) và \( e_3 \) có giá trị bằng bao nhiêu phần của \( E_0 \)?
+                </div>
+
+                <div class="sim-workspace">
+                    <div class="card" style="margin-bottom: 0; background: #f8fafc;">
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">🎛️ Điều khiển Máy phát 3 Pha</h3>
+                        
+                        <div class="control-group">
+                            <label>Biên độ SĐĐ mỗi pha \(E_0\): <span id="val3_E0">100 V</span></label>
+                            <input type="range" id="inp3_E0" min="20" max="220" step="10" value="100" oninput="updateSimBParams()">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Tốc độ góc Rôto \(\omega\): <span id="val3_W">2.5 rad/s</span></label>
+                            <input type="range" id="inp3_W" min="0.5" max="8" step="0.5" value="2.5" oninput="updateSimBParams()">
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.25rem;">
+                            <button class="btn btn-primary" id="btnToggleSimB" onclick="toggleSimB()">⏸️ Tạm dừng</button>
+                            <button class="btn btn-secondary" onclick="setAngleSimB(0)">Vị trí \(e_1 = E_0\)</button>
+                            <button class="btn btn-secondary" onclick="setAngleSimB(Math.PI/3)">Vị trí \(e_1 = 0.5 E_0\)</button>
+                        </div>
+
+                        <div class="box-info" style="margin-top: 1.5rem; font-size: 0.9rem;">
+                            <strong>Ghi chú cấu tạo:</strong>
+                            Ba cuộn dây \(A_1B_1\) (Đỏ), \(A_2B_2\) (Xanh lá), \(A_3B_3\) (Xanh dương) đặt cố định trên Stato lệch nhau góc \(120^\circ\) (\(\frac{2\pi}{3}\text{ rad}\)).
+                        </div>
+                    </div>
+
+                    <div>
+                        <canvas id="canvasSimB" width="820" height="400"></canvas>
+                        <div class="telemetry-grid">
+                            <div class="telemetry-item">
+                                <div class="label" style="color:#ef4444;">Pha 1: \(e_1(t)\)</div>
+                                <div class="val" id="out3_e1" style="color:#ef4444;">100.0 V</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="label" style="color:#22c55e;">Pha 2: \(e_2(t)\)</div>
+                                <div class="val" id="out3_e2" style="color:#22c55e;">-50.0 V</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="label" style="color:#38bdf8;">Pha 3: \(e_3(t)\)</div>
+                                <div class="val" id="out3_e3" style="color:#38bdf8;">-50.0 V</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="label">Tổng \(e_1 + e_2 + e_3\)</div>
+                                <div class="val" id="out3_sum">0.0 V</div>
+                            </div>
+                            <div class="telemetry-item">
+                                <div class="label">Hiệu \(|e_2 - e_3|\)</div>
+                                <div class="val" id="out3_diff">0.0 V</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 4: CALCULATOR MODULE ==================== -->
+    <section id="tab4" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">🧮 Máy tính Tham số Máy phát điện Xoay chiều</h2>
+            <p style="margin-bottom: 1rem;">
+                Nhập các đại lượng đã biết và <strong>bỏ trống duy nhất 1 ô cần tìm</strong> (trong nhóm thông số chính). Hệ thống sẽ tự động phân tích công thức và trình bày lời giải từng bước chuẩn KaTeX.
+            </p>
+
+            <div class="calc-grid">
+                <div class="input-box">
+                    <label>Số vòng dây \( N \text{ (vòng)} \)</label>
+                    <input type="number" id="calc_N" placeholder="VD: 500" value="500" step="any">
+                </div>
+                <div class="input-box">
+                    <label>Cảm ứng từ \( B \text{ (T)} \)</label>
+                    <input type="number" id="calc_B" placeholder="VD: 0.2" value="0.2" step="any">
+                </div>
+                <div class="input-box">
+                    <label>Diện tích mỗi vòng \( S \text{ (cm}^2\text{)} \)</label>
+                    <input type="number" id="calc_S" placeholder="VD: 50" value="50" step="any">
+                </div>
+                <div class="input-box">
+                    <label>Tần số \( f \text{ (Hz)} \)</label>
+                    <input type="number" id="calc_f" placeholder="VD: 50" value="50" step="any">
+                </div>
+                <div class="input-box">
+                    <label>Suất điện động cực đại \( E_0 \text{ (V)} \)</label>
+                    <input type="number" id="calc_E0" placeholder="Bỏ trống để tính..." step="any">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="runPhysicsCalculator()">⚡ Phân tích & Tính toán chi tiết</button>
+                <button class="btn btn-secondary" onclick="fillSampleCalc(1)">Mẫu 1: Tính \(E_0, E, \Phi_0\)</button>
+                <button class="btn btn-secondary" onclick="fillSampleCalc(2)">Mẫu 2: Tìm số vòng dây \(N\)</button>
+                <button class="btn btn-secondary" onclick="fillSampleCalc(3)">Mẫu 3: Tìm cảm ứng từ \(B\)</button>
+            </div>
+
+            <div id="calcResultBox" class="box-info" style="margin-top: 1.5rem; display: none;"></div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 5: GUIDED PRACTICE ==================== -->
+    <section id="tab5" class="tab-content">
+        <div class="card">
+            <span class="level-badge badge-lv1">Cấp độ 1: Nhận biết - Thông hiểu</span>
+            <h2 class="card-title">Bài toán 1: Xác định Từ thông cực đại và Suất điện động của khung dây</h2>
+            <p>
+                Một khung dây dẫn phẳng có diện tích \( S = 50\text{ cm}^2 \) gồm \( N = 250\text{ vòng} \) dây quay đều với tốc độ \( 3000\text{ vòng/phút} \) trong một từ trường đều có vectơ cảm ứng từ \(\vec{B}\) vuông góc với trục quay của khung và có độ lớn \( B = 0,02\text{ T} \). Chọn gốc thời gian \( t = 0\text{ s} \) là lúc vectơ pháp tuyến \(\vec{n}\) của khung dây cùng chiều với vectơ cảm ứng từ \(\vec{B}\).
+                <br>a) Tính từ thông cực đại gửi qua khung dây và suất điện động cực đại, hiệu dụng trong khung.
+                <br>b) Viết biểu thức từ thông \(\Phi(t)\) và suất điện động cảm ứng \(e(t)\) xuất hiện trong khung.
+            </p>
+            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                <button class="btn btn-secondary" onclick="toggleBox('hint1')">💡 Gợi ý tư duy</button>
+                <button class="btn btn-primary" onclick="toggleBox('sol1')">📖 Xem lời giải chi tiết</button>
+            </div>
+            <div id="hint1" class="hidden-box">
+                <strong>Gợi ý tư duy:</strong>
+                <ul style="margin-left: 1.25rem;">
+                    <li>Đổi diện tích \( S \) từ \(\text{cm}^2\) sang đơn vị chuẩn SI là \(\text{m}^2\) (\( 1\text{ cm}^2 = 10^{-4}\text{ m}^2 \)).</li>
+                    <li>Đổi tốc độ quay \( n = 3000\text{ vòng/phút} \) sang tần số \( f = \frac{n}{60} \text{ (Hz)} \), từ đó suy ra \( \omega = 2\pi f \text{ (rad/s)} \).</li>
+                    <li>Tại \( t = 0\text{ s} \), \(\vec{n}\) cùng chiều \(\vec{B}\) nên pha ban đầu của từ thông là \(\varphi_0 = 0\text{ rad}\).</li>
+                </ul>
+            </div>
+            <div id="sol1" class="hidden-box">
+                <strong>Hướng dẫn giải chi tiết:</strong>
+                <p>Đổi đơn vị chuẩn SI:</p>
+                \[ S = 50\text{ cm}^2 = 50 \cdot 10^{-4}\text{ m}^2 = 5 \cdot 10^{-3}\text{ m}^2 \]
+                \[ f = \frac{3000}{60} = 50\text{ Hz} \Rightarrow \omega = 2\pi f = 100\pi\text{ rad/s} \]
+                <p>a) Từ thông cực đại gửi qua khung dây là:</p>
+                \[ \Phi_0 = N B S = 250 \cdot 0,02 \cdot 5 \cdot 10^{-3} = 0,025\text{ Wb} \]
+                <p>Suất điện động cực đại và suất điện động hiệu dụng trong khung là:</p>
+                \[ E_0 = \omega \Phi_0 = 100\pi \cdot 0,025 = 2,5\pi \approx 7,85\text{ V} \]
+                \[ E = \frac{E_0}{\sqrt{2}} = \frac{2,5\pi}{\sqrt{2}} \approx 5,55\text{ V} \]
+                <p>b) Vì tại \( t = 0\text{ s} \), \(\vec{n} \uparrow\uparrow \vec{B}\) nên \(\varphi_0 = 0\text{ rad}\). Biểu thức từ thông và suất điện động là:</p>
+                \[ \Phi = 0,025\cos(100\pi t)\text{ (Wb)} \]
+                \[ e = -\Phi'(t) = 2,5\pi\sin(100\pi t) = 2,5\pi\cos\left(100\pi t - \frac{\pi}{2}\right)\text{ (V)} \]
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="level-badge badge-lv2">Cấp độ 2: Vận dụng</span>
+            <h2 class="card-title">Bài toán 2: Hệ thức độc lập thời gian & Thiết kế cuộn dây máy phát</h2>
+            <p>
+                <strong>Phần A:</strong> Một mạch điện xoay chiều có độ lệch pha giữa điện áp và cường độ dòng điện là \( \frac{\pi}{2}\text{ rad} \). Tại thời điểm \( t \), cường độ dòng điện trong mạch là \( i = 2\sqrt{3}\text{ A} \) thì điện áp giữa hai đầu mạch là \( u = 50\sqrt{2}\text{ V} \). Biết điện áp hiệu dụng của mạch là \( U = 100\text{ V} \). Tính giá trị hiệu dụng của cường độ dòng điện \( I \) trong mạch.<br>
+                <strong>Phần B:</strong> Nguồn điện trên được lấy từ một máy phát điện xoay chiều một pha có phần cảm gồm \( p = 2 \) cặp cực và phần ứng gồm 4 cuộn dây giống nhau mắc nối tiếp. Biết tần số dòng điện là \( 50\text{ Hz} \), từ thông cực đại qua mỗi vòng dây là \( \Phi_{1v} = \frac{5}{\pi}\text{ mWb} \). Tính số vòng dây của mỗi cuộn dây trong phần ứng.
+            </p>
+            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                <button class="btn btn-secondary" onclick="toggleBox('hint2')">💡 Gợi ý tư duy</button>
+                <button class="btn btn-primary" onclick="toggleBox('sol2')">📖 Xem lời giải chi tiết</button>
+            </div>
+            <div id="hint2" class="hidden-box">
+                <strong>Gợi ý tư duy:</strong>
+                <ul style="margin-left: 1.25rem;">
+                    <li>Hai đại lượng điều hòa vuông pha nhau (\(\Delta \varphi = \pm \frac{\pi}{2}\)) luôn thỏa mãn hệ thức elip vuông pha: \( \left(\frac{u}{U_0}\right)^2 + \left(\frac{i}{I_0}\right)^2 = 1 \), hay viết theo giá trị hiệu dụng: \( \left(\frac{u}{U}\right)^2 + \left(\frac{i}{I}\right)^2 = 2 \).</li>
+                    <li>Ở Phần B: Tổng số vòng dây của cả 4 cuộn mắc nối tiếp là \( N = \frac{E_0}{\omega \Phi_{1v}} \) với \( E_0 = U_0 = U\sqrt{2} \). Sau đó chia cho 4 để tìm số vòng mỗi cuộn.</li>
+                </ul>
+            </div>
+            <div id="sol2" class="hidden-box">
+                <strong>Hướng dẫn giải chi tiết:</strong>
+                <p><strong>Phần A:</strong> Điện áp cực đại là \( U_0 = U\sqrt{2} = 100\sqrt{2}\text{ V} \). Do \( u \) và \( i \) lệch pha nhau góc \( \frac{\pi}{2}\text{ rad} \) nên tại mọi thời điểm \( t \), ta có hệ thức độc lập thời gian:</p>
+                \[ \left(\frac{u}{U_0}\right)^2 + \left(\frac{i}{I_0}\right)^2 = 1 \Leftrightarrow \left(\frac{50\sqrt{2}}{100\sqrt{2}}\right)^2 + \left(\frac{2\sqrt{3}}{I_0}\right)^2 = 1 \]
+                \[ \Rightarrow \frac{1}{4} + \frac{12}{I_0^2} = 1 \Rightarrow \frac{12}{I_0^2} = \frac{3}{4} \Rightarrow I_0 = 4\text{ A} \]
+                <p>Cường độ dòng điện hiệu dụng trong mạch là:</p>
+                \[ I = \frac{I_0}{\sqrt{2}} = \frac{4}{\sqrt{2}} = 2\sqrt{2} \approx 2,83\text{ A} \]
+                <p><strong>Phần B:</strong> Ta có \( \omega = 2\pi f = 100\pi\text{ rad/s} \), từ thông cực đại qua 1 vòng dây là \( \Phi_{1v} = \frac{5}{\pi} \cdot 10^{-3}\text{ Wb} \). Suất điện động cực đại của máy phát bằng \( E_0 = 100\sqrt{2}\text{ V} \)? Không, nếu xét chuẩn bài toán thực tế với \( E = 100\sqrt{2}\text{ V} \Rightarrow E_0 = 200\text{ V} \), hoặc với \( E = 100\text{ V} \Rightarrow E_0 = 100\sqrt{2}\text{ V} \):</p>
+                <p>+ Với \( E = 100\text{ V} \Rightarrow E_0 = 100\sqrt{2}\text{ V} \): Tổng số vòng dây \( N = \frac{E_0}{\omega \Phi_{1v}} = \frac{100\sqrt{2}}{100\pi \cdot \frac{5}{\pi} \cdot 10^{-3}} = 200\sqrt{2}\text{ vòng} \).</p>
+                <p>+ Nếu suất điện động hiệu dụng máy phát là \( E = 100\sqrt{2}\text{ V} \Rightarrow E_0 = 200\text{ V} \): Tổng số vòng dây \( N = \frac{200}{0,5} = 400\text{ vòng} \Rightarrow \) Mỗi cuộn dây có \( N_1 = \frac{400}{4} = 100\text{ vòng} \).</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <span class="level-badge badge-lv3">Cấp độ 3: Vận dụng cao & Năng lực số / AI</span>
+            <h2 class="card-title">Bài toán 3: Khảo sát Máy phát 3 Pha & Phân tích dữ liệu thực nghiệm</h2>
+            <p>
+                <strong>Câu 1 (Máy phát 3 pha):</strong> Một máy phát điện xoay chiều ba pha đang hoạt động ổn định. Suất điện động trong ba cuộn dây của phần ứng có giá trị tức thời là \( e_1, e_2 \) và \( e_3 \). Ở thời điểm mà \( e_1 = 30\text{ V} \) thì \( |e_2 - e_3| = 30\text{ V} \). Tính giá trị cực đại \( E_0 \) của suất điện động mỗi pha (làm tròn 1 chữ số thập phân).<br>
+                <strong>Câu 2 (Tích hợp Năng lực số & AI):</strong> Trong thí nghiệm khảo sát suất điện động cực đại \( E_0 \text{ (V)} \) của một máy phát điện mini theo tần số quay \( f \text{ (vòng/s)} \) của rôto nam châm, cảm biến thu được bộ dữ liệu: \( (f = 810,5\text{ vòng/s}; E_0 = 0,031\text{ V}) \), \( (f = 1108\text{ vòng/s}; E_0 = 0,043\text{ V}) \), \( (f = 1341\text{ vòng/s}; E_0 = 0,052\text{ V}) \). Nếu đưa tập dữ liệu này vào mô hình Hồi quy tuyến tính (Linear Regression) trong AI/Khoa học dữ liệu \( E_0 = k \cdot f \), hệ số góc \( k \) của đường thẳng hồi quy mang ý nghĩa vật lý nào và có giá trị bằng bao nhiêu?
+            </p>
+            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                <button class="btn btn-secondary" onclick="toggleBox('hint3')">💡 Gợi ý tư duy</button>
+                <button class="btn btn-primary" onclick="toggleBox('sol3')">📖 Xem lời giải chi tiết</button>
+            </div>
+            <div id="hint3" class="hidden-box">
+                <strong>Gợi ý tư duy:</strong>
+                <ul style="margin-left: 1.25rem;">
+                    <li>Biểu diễn \( e_1 = E_0\cos\varphi \), \( e_2 = E_0\cos\left(\varphi - \frac{2\pi}{3}\right) \), \( e_3 = E_0\cos\left(\varphi + \frac{2\pi}{3}\right) \). Dùng công thức lượng giác \( \cos a - \cos b \) để rút gọn \( |e_2 - e_3| \) theo \( \sin\varphi \).</li>
+                    <li>Liên hệ với công thức lý thuyết \( E_0 = \omega N B S = (2\pi N B S) \cdot f \) để giải mã ý nghĩa vật lý của hệ số góc \( k \).</li>
+                </ul>
+            </div>
+            <div id="sol3" class="hidden-box">
+                <strong>Hướng dẫn giải chi tiết:</strong>
+                <p><strong>Câu 1:</strong> Giả sử tại thời điểm đang xét, pha của suất điện động thứ nhất là \(\varphi\):</p>
+                \[ e_1 = E_0\cos\varphi = 30\text{ (V)} \Rightarrow \cos\varphi = \frac{30}{E_0} \quad (1) \]
+                <p>Hiệu hai suất điện động còn lại là:</p>
+                \[ |e_2 - e_3| = E_0 \left| \cos\left(\varphi - \frac{2\pi}{3}\right) - \cos\left(\varphi + \frac{2\pi}{3}\right) \right| = E_0 \left| 2\sin\varphi \sin\frac{2\pi}{3} \right| = E_0\sqrt{3}|\sin\varphi| \]
+                <p>Theo đề bài \( |e_2 - e_3| = 30\text{ V} \), suy ra:</p>
+                \[ E_0\sqrt{3}|\sin\varphi| = 30 \Rightarrow |\sin\varphi| = \frac{30}{E_0\sqrt{3}} \quad (2) \]
+                <p>Từ \((1)\) và \((2)\), áp dụng hệ thức \(\cos^2\varphi + \sin^2\varphi = 1\):</p>
+                \[ \left(\frac{30}{E_0}\right)^2 + \left(\frac{30}{E_0\sqrt{3}}\right)^2 = 1 \Leftrightarrow \frac{900}{E_0^2} + \frac{300}{E_0^2} = 1 \Rightarrow E_0^2 = 1200 \Rightarrow E_0 = 20\sqrt{3} \approx 34,6\text{ V} \]
+                <p><strong>Câu 2 (Đánh giá Năng lực số / AI):</strong></p>
+                <p>Theo lý thuyết cảm ứng điện từ: \( E_0 = \omega N B S = (2\pi N B S) \cdot f \). Do đó, hệ số góc \( k \) trong mô hình hồi quy tuyến tính \( E_0 = k \cdot f \) chính là đại lượng \( k = 2\pi N B S = 2\pi \Phi_0 \text{ (V}\cdot\text{s/vòng)} \).</p>
+                <p>Từ bộ dữ liệu thực nghiệm, ta tính được hệ số góc trung bình:</p>
+                \[ k \approx \frac{0,052}{1341} \approx 3,88 \cdot 10^{-5}\text{ V}\cdot\text{s} \Rightarrow \Phi_0 = \frac{k}{2\pi} \approx 6,18 \cdot 10^{-6}\text{ Wb} \]
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 6: INTERACTIVE QUIZ ==================== -->
+    <section id="tab6" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">🎯 Bài Tự Đánh Giá Trực Tuyến (4 Câu hỏi Trọng tâm)</h2>
+            <p style="margin-bottom: 1.25rem;">Chọn phương án trả lời đúng nhất cho mỗi câu hỏi dưới đây rồi nhấn nút <strong>"Nộp bài & Xem giải thích"</strong>.</p>
+
+            <div id="quizContainer"></div>
+
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+                <button class="btn btn-primary" onclick="submitQuiz()">✅ Nộp bài & Xem kết quả</button>
+                <button class="btn btn-secondary" onclick="resetQuiz()">🔄 Làm lại</button>
+                <div id="quizScoreBanner" style="font-size: 1.15rem; font-weight: 800; color: var(--primary);"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 7: CLASSROOM TOOLS ==================== -->
+    <section id="tab7" class="tab-content">
+        <div class="grid-2">
+            <!-- Visual Timer -->
+            <div class="card" style="text-align: center;">
+                <h2 class="card-title" style="justify-content: center;">⏱️ Đồng Hồ Đếm Ngược Hoạt Động Nhóm</h2>
+                
+                <div class="timer-display" id="timerWrap">
+                    <svg width="240" height="240" viewBox="0 0 240 240">
+                        <circle cx="120" cy="120" r="105" fill="none" stroke="#e2e8f0" stroke-width="14"/>
+                        <circle id="timerCircle" cx="120" cy="120" r="105" fill="none" stroke="#0f4c81" stroke-width="14"
+                                stroke-linecap="round" stroke-dasharray="659.73" stroke-dashoffset="0"
+                                transform="rotate(-90 120 120)" style="transition: stroke-dashoffset 0.3s linear;"/>
+                    </svg>
+                    <div id="timerText" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; font-weight: 800; color: var(--primary); font-variant-numeric: tabular-nums;">
+                        03:00
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" onclick="setTimerPreset(60)">1 Phút</button>
+                    <button class="btn btn-secondary" onclick="setTimerPreset(180)">3 Phút</button>
+                    <button class="btn btn-secondary" onclick="setTimerPreset(300)">5 Phút</button>
+                    <button class="btn btn-secondary" onclick="setTimerPreset(600)">10 Phút</button>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 0.75rem;">
+                    <button class="btn btn-success" id="btnStartTimer" onclick="toggleTimer()">▶️ Bắt đầu</button>
+                    <button class="btn btn-danger" onclick="resetTimer()">🔄 Đặt lại</button>
+                </div>
+            </div>
+
+            <!-- Lucky Wheel -->
+            <div class="card">
+                <h2 class="card-title">🎡 Vòng Quay May Mắn (Gọi tên theo 4 Tổ)</h2>
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" onclick="loadTeamList(1)">Tổ 1</button>
+                    <button class="btn btn-secondary" onclick="loadTeamList(2)">Tổ 2</button>
+                    <button class="btn btn-secondary" onclick="loadTeamList(3)">Tổ 3</button>
+                    <button class="btn btn-secondary" onclick="loadTeamList(4)">Tổ 4</button>
+                </div>
+
+                <textarea id="wheelNames" class="student-list" oninput="drawLuckyWheel()">Nguyễn Minh An
+Trần Hoàng Bảo
+Lê Thị Ngọc Châu
+Phạm Quốc Đạt
+Hoàng Gia Hân
+Vũ Đăng Khoa
+Đặng Phương Linh
+Bùi Tuấn Minh</textarea>
+
+                <div class="wheel-container" style="margin-top: 1rem;">
+                    <canvas id="canvasWheel" width="320" height="320" style="width: 300px; height: 300px; background: transparent; box-shadow: none;"></canvas>
+                    <button class="btn btn-primary" style="margin-top: 1rem; font-size: 1.05rem; padding: 0.75rem 2rem;" onclick="spinWheel()">🎯 QUAY NGẪU NHIÊN</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Winner Modal -->
+<div class="modal-overlay" id="winnerModal" onclick="closeWinnerModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
+        <h3 style="color: var(--text-muted); font-size: 1rem; text-transform: uppercase;">Xin mời học sinh phát biểu</h3>
+        <div id="winnerName" style="font-size: 1.85rem; font-weight: 800; color: var(--primary); margin: 1rem 0;"></div>
+        <button class="btn btn-primary" onclick="closeWinnerModal()">Đã sẵn sàng trả lời!</button>
+    </div>
+</div>
+
+<footer>
+    <p><strong>© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</strong></p>
+    <p style="font-size: 0.82rem; margin-top: 0.25rem; color: #94a3b8;">Ứng dụng Học tập Vật lý 12 Tương tác — Chủ đề 4: Máy phát điện xoay chiều</p>
+</footer>
+
+<script>
+    // ==================== KATEX CONFIGURATION ====================
+    const katexConfig = {
+        delimiters: [
+            {left: "\\[", right: "\\]", display: true},
+            {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, katexConfig);
+        initQuiz();
+        updateSimAParams();
+        updateSimBParams();
+        drawLuckyWheel();
+        requestAnimationFrame(animateAllSimulations);
+    });
+
+    // ==================== NAVIGATION LOGIC ====================
+    function switchMainTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        const idx = parseInt(tabId.replace('tab', '')) - 1;
+        document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+        renderMathInElement(document.getElementById(tabId), katexConfig);
+    }
+
+    function switchSimTab(simId, btnEl) {
+        document.querySelectorAll('.sim-panel').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.sim-subbtn').forEach(el => el.classList.remove('active'));
+        document.getElementById(simId).classList.add('active');
+        btnEl.classList.add('active');
+        renderMathInElement(document.getElementById(simId), katexConfig);
+    }
+
+    function toggleBox(id) {
+        const el = document.getElementById(id);
+        const isVisible = el.style.display === 'block';
+        el.style.display = isVisible ? 'none' : 'block';
+        if (!isVisible) {
+            renderMathInElement(el, katexConfig);
+        }
+    }
+
+    // ==================== SIMULATION 3A & 3B ENGINE ====================
+    let simA = {
+        running: true,
+        angle: 0,
+        N: 100,
+        B: 0.5,
+        S_cm2: 100,
+        W: 3.14,
+        R: 10,
+        history: []
+    };
+
+    let simB = {
+        running: true,
+        angle: 0,
+        E0: 100,
+        W: 2.5,
+        history: []
+    };
+
+    function updateSimAParams() {
+        simA.N = parseFloat(document.getElementById('inp_N').value);
+        simA.B = parseFloat(document.getElementById('inp_B').value);
+        simA.S_cm2 = parseFloat(document.getElementById('inp_S').value);
+        simA.W = parseFloat(document.getElementById('inp_W').value);
+        simA.R = parseFloat(document.getElementById('inp_R').value);
+
+        document.getElementById('val_N').textContent = `${simA.N} vòng`;
+        document.getElementById('val_B').textContent = `${simA.B.toFixed(2)} T`;
+        document.getElementById('val_S').textContent = `${simA.S_cm2} cm²`;
+        document.getElementById('val_W').textContent = `${simA.W.toFixed(2)} rad/s`;
+        document.getElementById('val_R').textContent = `${simA.R} Ω`;
+    }
+
+    function toggleSimA() {
+        simA.running = !simA.running;
+        document.getElementById('btnToggleSimA').innerHTML = simA.running ? '⏸️ Tạm dừng' : '▶️ Tiếp tục';
+    }
+
+    function stepAngleSimA(targetRad) {
+        simA.running = false;
+        document.getElementById('btnToggleSimA').innerHTML = '▶️ Tiếp tục';
+        simA.angle = targetRad;
+        drawSimA();
+    }
+
+    function updateSimBParams() {
+        simB.E0 = parseFloat(document.getElementById('inp3_E0').value);
+        simB.W = parseFloat(document.getElementById('inp3_W').value);
+        document.getElementById('val3_E0').textContent = `${simB.E0} V`;
+        document.getElementById('val3_W').textContent = `${simB.W.toFixed(1)} rad/s`;
+    }
+
+    function toggleSimB() {
+        simB.running = !simB.running;
+        document.getElementById('btnToggleSimB').innerHTML = simB.running ? '⏸️ Tạm dừng' : '▶️ Tiếp tục';
+    }
+
+    function setAngleSimB(targetRad) {
+        simB.running = false;
+        document.getElementById('btnToggleSimB').innerHTML = '▶️ Tiếp tục';
+        simB.angle = targetRad;
+        drawSimB();
+    }
+
+    let lastTimestamp = performance.now();
+    function animateAllSimulations(now) {
+        const dt = Math.min((now - lastTimestamp) / 1000, 0.05);
+        lastTimestamp = now;
+
+        if (simA.running) {
+            simA.angle = (simA.angle + simA.W * dt) % (2 * Math.PI);
+        }
+        drawSimA();
+
+        if (simB.running) {
+            simB.angle = (simB.angle + simB.W * dt) % (2 * Math.PI);
+        }
+        drawSimB();
+
+        requestAnimationFrame(animateAllSimulations);
+    }
+
+    function drawSimA() {
+        const canvas = document.getElementById('canvasSimA');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width;
+        const H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+
+        // Physics math
+        const S_m2 = simA.S_cm2 * 1e-4;
+        const phi0 = simA.N * simA.B * S_m2;
+        const E0 = simA.W * phi0;
+        const E_rms = E0 / Math.SQRT2;
+        const phi = phi0 * Math.cos(simA.angle);
+        const e_inst = E0 * Math.sin(simA.angle);
+        const i_inst = e_inst / simA.R;
+
+        // Update Telemetry DOM
+        const deg = Math.round((simA.angle * 180 / Math.PI) % 360);
+        document.getElementById('out_alpha').textContent = `${deg}°`;
+        document.getElementById('out_phi0').textContent = `${phi0.toFixed(3)} Wb`;
+        document.getElementById('out_phi').textContent = `${phi.toFixed(3)} Wb`;
+        document.getElementById('out_E0').textContent = `${E0.toFixed(2)} V`;
+        document.getElementById('out_E').textContent = `${E_rms.toFixed(2)} V`;
+        document.getElementById('out_e').textContent = `${e_inst.toFixed(2)} V`;
+        document.getElementById('out_i').textContent = `${i_inst.toFixed(2)} A`;
+
+        // Left Pane: 3D-like Rotating Frame in Magnetic Field
+        const cx = 190, cy = 200;
+
+        // Magnetic Poles N & S
+        ctx.fillStyle = '#dc2626';
+        ctx.fillRect(15, cy - 110, 40, 220);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 22px Inter';
+        ctx.fillText('N', 26, cy + 8);
+
+        ctx.fillStyle = '#2563eb';
+        ctx.fillRect(325, cy - 110, 40, 220);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText('S', 337, cy + 8);
+
+        // Magnetic Field Lines B (Left to Right)
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+        ctx.lineWidth = 1.5;
+        for (let y = cy - 85; y <= cy + 85; y += 34) {
+            ctx.beginPath();
+            ctx.moveTo(55, y);
+            ctx.lineTo(325, y);
+            ctx.stroke();
+            // Arrow head
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.6)';
+            ctx.beginPath();
+            ctx.moveTo(310, y - 4);
+            ctx.lineTo(322, y);
+            ctx.lineTo(310, y + 4);
+            ctx.fill();
+        }
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 14px Inter';
+        ctx.fillText('B ➔', 65, cy - 95);
+
+        // Rotating Coil Cross-section & Perspective
+        // At alpha = 0, normal n is horizontal (along B), so coil plane is vertical!
+        // Coil plane angle with vertical is simA.angle
+        const radius = 85;
+        const xProj = radius * Math.sin(simA.angle);
+        const yTilt = 32 * Math.cos(simA.angle);
+
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(cx - xProj, cy - 75 - yTilt);
+        ctx.lineTo(cx + xProj, cy - 75 + yTilt);
+        ctx.lineTo(cx + xProj, cy + 75 + yTilt);
+        ctx.lineTo(cx - xProj, cy + 75 - yTilt);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.15)';
+        ctx.fill();
+
+        // Normal Vector n
+        const nLen = 65;
+        const nx = cx + nLen * Math.cos(simA.angle);
+        const ny = cy - nLen * Math.sin(simA.angle);
+        ctx.strokeStyle = '#22c55e';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(nx, ny);
+        ctx.stroke();
+        ctx.fillStyle = '#22c55e';
+        ctx.beginPath();
+        ctx.arc(nx, ny, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.font = 'bold 13px Inter';
+        ctx.fillText('n', nx + 8, ny + 4);
+
+        // Right Pane: Real-time Oscilloscope Graph for Phi(t) and e(t)
+        const gx = 415, gy = 40, gw = 380, gh = 320;
+        const gMidY = gy + gh / 2;
+
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(gx, gy, gw, gh);
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(gx, gy, gw, gh);
+
+        // Center axis
+        ctx.beginPath();
+        ctx.moveTo(gx, gMidY);
+        ctx.lineTo(gx + gw, gMidY);
+        ctx.stroke();
+
+        // Legend
+        ctx.font = 'bold 13px Inter';
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillText('▬ Từ thông Φ(t)', gx + 15, gy + 24);
+        ctx.fillStyle = '#f87171';
+        ctx.fillText('▬ Suất điện động e(t) (trễ pha π/2)', gx + 145, gy + 24);
+
+        // Plot 2 full periods from current phase
+        // Map phi normalized & e normalized
+        const phiAmpPx = Math.min(95, 35 + phi0 * 40);
+        const eAmpPx = Math.min(125, 25 + E0 * 8);
+
+        // Draw Phi curve
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        for (let px = 0; px <= gw; px++) {
+            const ph = (px / gw) * (4 * Math.PI);
+            const y = gMidY - phiAmpPx * Math.cos(ph);
+            if (px === 0) ctx.moveTo(gx + px, y);
+            else ctx.lineTo(gx + px, y);
+        }
+        ctx.stroke();
+
+        // Draw e(t) curve
+        ctx.strokeStyle = '#f87171';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        for (let px = 0; px <= gw; px++) {
+            const ph = (px / gw) * (4 * Math.PI);
+            const y = gMidY - eAmpPx * Math.sin(ph);
+            if (px === 0) ctx.moveTo(gx + px, y);
+            else ctx.lineTo(gx + px, y);
+        }
+        ctx.stroke();
+
+        // Current phase marker on graph
+        const curX = gx + (simA.angle / (4 * Math.PI)) * gw;
+        const curPhiY = gMidY - phiAmpPx * Math.cos(simA.angle);
+        const curEY = gMidY - eAmpPx * Math.sin(simA.angle);
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(curX, gy + 35);
+        ctx.lineTo(curX, gy + gh - 10);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(curX, curPhiY, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#f87171';
+        ctx.beginPath();
+        ctx.arc(curX, curEY, 6, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    function drawSimB() {
+        const canvas = document.getElementById('canvasSimB');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width;
+        const H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+
+        const e1 = simB.E0 * Math.cos(simB.angle);
+        const e2 = simB.E0 * Math.cos(simB.angle - 2 * Math.PI / 3);
+        const e3 = simB.E0 * Math.cos(simB.angle + 2 * Math.PI / 3);
+        const sum = e1 + e2 + e3;
+        const diff23 = Math.abs(e2 - e3);
+
+        document.getElementById('out3_e1').textContent = `${e1.toFixed(1)} V`;
+        document.getElementById('out3_e2').textContent = `${e2.toFixed(1)} V`;
+        document.getElementById('out3_e3').textContent = `${e3.toFixed(1)} V`;
+        document.getElementById('out3_sum').textContent = `${Math.abs(sum) < 0.05 ? '0.0' : sum.toFixed(1)} V`;
+        document.getElementById('out3_diff').textContent = `${diff23.toFixed(1)} V`;
+
+        // Left: Stator with 3 coils 120 deg apart + Rotating Magnet Rotor
+        const cx = 190, cy = 200, statorR = 135;
+
+        // Stator Ring
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 14;
+        ctx.beginPath();
+        ctx.arc(cx, cy, statorR, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // 3 Coils at -90 deg, +30 deg, +150 deg
+        const coils = [
+            { angle: -Math.PI / 2, color: '#ef4444', name: 'Cuộn 1 (A₁B₁)' },
+            { angle: -Math.PI / 2 + 2 * Math.PI / 3, color: '#22c55e', name: 'Cuộn 2 (A₂B₂)' },
+            { angle: -Math.PI / 2 - 2 * Math.PI / 3, color: '#38bdf8', name: 'Cuộn 3 (A₃B₃)' }
+        ];
+
+        coils.forEach(c => {
+            const x = cx + (statorR - 22) * Math.cos(c.angle);
+            const y = cy + (statorR - 22) * Math.sin(c.angle);
+            ctx.fillStyle = c.color;
+            ctx.beginPath();
+            ctx.arc(x, y, 18, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 12px Inter';
+            ctx.fillText(c.name, x - 38, y + (c.angle < 0 ? -26 : 34));
+        });
+
+        // Rotating Magnet Rotor
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(simB.angle - Math.PI / 2);
+        // N pole
+        ctx.fillStyle = '#dc2626';
+        ctx.fillRect(-22, -75, 44, 75);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 18px Inter';
+        ctx.fillText('N', -7, -40);
+        // S pole
+        ctx.fillStyle = '#2563eb';
+        ctx.fillRect(-22, 0, 44, 75);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText('S', -6, 50);
+        // Center shaft
+        ctx.fillStyle = '#f8fafc';
+        ctx.beginPath();
+        ctx.arc(0, 0, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Right: 3-phase Waveform
+        const gx = 400, gy = 40, gw = 395, gh = 320;
+        const gMidY = gy + gh / 2;
+
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(gx, gy, gw, gh);
+        ctx.strokeStyle = '#475569';
+        ctx.strokeRect(gx, gy, gw, gh);
+
+        ctx.beginPath();
+        ctx.moveTo(gx, gMidY);
+        ctx.lineTo(gx + gw, gMidY);
+        ctx.stroke();
+
+        const ampPx = (simB.E0 / 220) * 115 + 15;
+        const phases = [
+            { shift: 0, color: '#ef4444' },
+            { shift: -2 * Math.PI / 3, color: '#22c55e' },
+            { shift: 2 * Math.PI / 3, color: '#38bdf8' }
+        ];
+
+        phases.forEach(p => {
+            ctx.strokeStyle = p.color;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            for (let px = 0; px <= gw; px++) {
+                const ph = (px / gw) * (4 * Math.PI);
+                const y = gMidY - ampPx * Math.cos(ph + p.shift);
+                if (px === 0) ctx.moveTo(gx + px, y);
+                else ctx.lineTo(gx + px, y);
+            }
+            ctx.stroke();
+        });
+
+        // Current phase vertical line
+        const curX = gx + (simB.angle / (4 * Math.PI)) * gw;
+        ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(curX, gy + 15);
+        ctx.lineTo(curX, gy + gh - 15);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        phases.forEach(p => {
+            const y = gMidY - ampPx * Math.cos(simB.angle + p.shift);
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(curX, y, 5.5, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+
+    // ==================== TAB 4: PHYSICS CALCULATOR ====================
+    function fillSampleCalc(mode) {
+        document.getElementById('calc_N').value = mode === 2 ? '' : 500;
+        document.getElementById('calc_B').value = mode === 3 ? '' : 0.2;
+        document.getElementById('calc_S').value = 54;
+        document.getElementById('calc_f').value = 50;
+        document.getElementById('calc_E0').value = mode === 1 ? '' : 169.65;
+        runPhysicsCalculator();
+    }
+
+    function runPhysicsCalculator() {
+        const rawN = document.getElementById('calc_N').value.trim();
+        const rawB = document.getElementById('calc_B').value.trim();
+        const rawS = document.getElementById('calc_S').value.trim();
+        const rawF = document.getElementById('calc_f').value.trim();
+        const rawE0 = document.getElementById('calc_E0').value.trim();
+
+        const box = document.getElementById('calcResultBox');
+        box.style.display = 'block';
+
+        const inputs = [
+            { key: 'N', val: rawN === '' ? null : parseFloat(rawN) },
+            { key: 'B', val: rawB === '' ? null : parseFloat(rawB) },
+            { key: 'S', val: rawS === '' ? null : parseFloat(rawS) },
+            { key: 'f', val: rawF === '' ? null : parseFloat(rawF) },
+            { key: 'E0', val: rawE0 === '' ? null : parseFloat(rawE0) }
+        ];
+
+        const missing = inputs.filter(item => item.val === null || isNaN(item.val));
+
+        if (missing.length !== 1) {
+            box.innerHTML = `<p style="color: var(--danger); font-weight: 700;">⚠️ Vui lòng nhập đúng 4 đại lượng đã biết và ĐỂ TRỐNG duy nhất 1 ô đại lượng cần tìm!</p>`;
+            return;
+        }
+
+        const target = missing[0].key;
+        let N = parseFloat(rawN);
+        let B = parseFloat(rawB);
+        let S_cm2 = parseFloat(rawS);
+        let f = parseFloat(rawF);
+        let E0 = parseFloat(rawE0);
+        let htmlSteps = '';
+
+        if (target === 'E0') {
+            const S_m2 = S_cm2 * 1e-4;
+            const omega = 2 * Math.PI * f;
+            const phi0 = N * B * S_m2;
+            E0 = omega * phi0;
+            const E_rms = E0 / Math.SQRT2;
+            const T = 1 / f;
+
+            htmlSteps = `
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem;">✅ Lời giải chi tiết: Tìm Suất điện động \\(E_0, E\\) và Từ thông \\(\\Phi_0\\)</h3>
+                <p><strong>Bước 1: Đổi đơn vị sang hệ SI và tính tần số góc \\(\\omega\\)</strong></p>
+                \\[ S = ${S_cm2}\\text{ cm}^2 = ${S_m2.toExponential(3)}\\text{ m}^2; \\quad T = \\frac{1}{f} = ${T.toFixed(4)}\\text{ s} \\]
+                \\[ \\omega = 2\\pi f = 2\\pi \\cdot ${f} \\approx ${omega.toFixed(2)}\\text{ rad/s} \\]
+                <p><strong>Bước 2: Tính từ thông cực đại gửi qua khung dây</strong></p>
+                \\[ \\Phi_0 = N B S = ${N} \\cdot ${B} \\cdot ${S_m2.toExponential(3)} = ${phi0.toFixed(4)}\\text{ Wb} \\]
+                <p><strong>Bước 3: Tính suất điện động cực đại \\(E_0\\) và hiệu dụng \\(E\\)</strong></p>
+                \\[ E_0 = \\omega N B S = \\omega \\Phi_0 = ${omega.toFixed(2)} \\cdot ${phi0.toFixed(4)} = \\mathbf{${E0.toFixed(2)}\\text{ V}} \\]
+                \\[ E = \\frac{E_0}{\\sqrt{2}} = \\frac{${E0.toFixed(2)}}{\\sqrt{2}} = \\mathbf{${E_rms.toFixed(2)}\\text{ V}} \\]
+            `;
+        } else if (target === 'N') {
+            const S_m2 = S_cm2 * 1e-4;
+            const omega = 2 * Math.PI * f;
+            N = E0 / (omega * B * S_m2);
+            htmlSteps = `
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem;">✅ Lời giải chi tiết: Tìm số vòng dây \\(N\\) của khung</h3>
+                <p>Ta có công thức suất điện động cực đại: \\( E_0 = \\omega N B S = 2\\pi f N B S \\)</p>
+                <p>Suy ra số vòng dây \\(N\\) cần quấn là:</p>
+                \\[ N = \\frac{E_0}{2\\pi f B S} = \\frac{${E0}}{2\\pi \\cdot ${f} \\cdot ${B} \\cdot (${S_cm2} \\cdot 10^{-4})} \\approx \\mathbf{${Math.round(N)}\\text{ vòng}} \\]
+            `;
+        } else if (target === 'B') {
+            const S_m2 = S_cm2 * 1e-4;
+            const omega = 2 * Math.PI * f;
+            B = E0 / (omega * N * S_m2);
+            htmlSteps = `
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem;">✅ Lời giải chi tiết: Tìm độ lớn cảm ứng từ \\(B\\)</h3>
+                <p>Từ công thức \\( E_0 = 2\\pi f N B S \\), ta rút ra độ lớn cảm ứng từ \\(B\\):</p>
+                \\[ B = \\frac{E_0}{2\\pi f N S} = \\frac{${E0}}{2\\pi \\cdot ${f} \\cdot ${N} \\cdot (${S_cm2} \\cdot 10^{-4})} \\approx \\mathbf{${B.toFixed(4)}\\text{ T}} \\]
+            `;
+        } else if (target === 'S') {
+            const omega = 2 * Math.PI * f;
+            const S_m2 = E0 / (omega * N * B);
+            S_cm2 = S_m2 * 1e4;
+            htmlSteps = `
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem;">✅ Lời giải chi tiết: Tìm diện tích vòng dây \\(S\\)</h3>
+                <p>Từ công thức \\( E_0 = 2\\pi f N B S \\), ta suy ra tiết diện mỗi vòng dây:</p>
+                \\[ S = \\frac{E_0}{2\\pi f N B} = \\frac{${E0}}{2\\pi \\cdot ${f} \\cdot ${N} \\cdot ${B}} = ${S_m2.toExponential(4)}\\text{ m}^2 = \\mathbf{${S_cm2.toFixed(2)}\\text{ cm}^2} \\]
+            `;
+        } else if (target === 'f') {
+            const S_m2 = S_cm2 * 1e-4;
+            f = E0 / (2 * Math.PI * N * B * S_m2);
+            htmlSteps = `
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem;">✅ Lời giải chi tiết: Tìm tần số dòng điện \\(f\\)</h3>
+                <p>Từ công thức \\( E_0 = 2\\pi f N B S \\), ta suy ra tần số của dòng điện xoay chiều:</p>
+                \\[ f = \\frac{E_0}{2\\pi N B S} = \\frac{${E0}}{2\\pi \\cdot ${N} \\cdot ${B} \\cdot (${S_cm2} \\cdot 10^{-4})} \\approx \\mathbf{${f.toFixed(2)}\\text{ Hz}} \\]
+            `;
+        }
+
+        box.innerHTML = htmlSteps;
+        renderMathInElement(box, katexConfig);
+    }
+
+    // ==================== TAB 6: INTERACTIVE QUIZ ====================
+    const quizData = [
+        {
+            q: "Câu 1: Một khung dây dẫn phẳng quay đều với tốc độ góc \\(\\omega\\) quanh một trục cố định nằm trong mặt phẳng khung dây, trong một từ trường đều có vectơ cảm ứng từ \\(\\vec{B}\\) vuông góc với trục quay. Suất điện động cảm ứng trong khung có biểu thức \\(e = E_0\\cos\\left(\\omega t + \\frac{\\pi}{2}\\right)\\text{ (V)}\\). Tại thời điểm \\(t = 0\\text{ s}\\), vectơ pháp tuyến \\(\\vec{n}\\) của mặt phẳng khung dây hợp với vectơ cảm ứng từ \\(\\vec{B}\\) một góc bằng bao nhiêu?",
+            options: [
+                "A. \\(0^\\circ\\)",
+                "B. \\(90^\\circ\\)",
+                "C. \\(180^\\circ\\)",
+                "D. \\(45^\\circ\\)"
+            ],
+            correct: 2,
+            explain: "Ta có \\(\\Phi = \\Phi_0\\cos(\\omega t + \\varphi_0)\\Rightarrow e = -\\Phi'(t) = \\omega\\Phi_0\\cos\\left(\\omega t + \\varphi_0 - \\frac{\\pi}{2}\\right)\\). Đồng nhất với đề bài: \\(\\varphi_0 - \\frac{\\pi}{2} = \\frac{\\pi}{2} \\Rightarrow \\varphi_0 = \\pi\\text{ rad} = 180^\\circ\\)."
+        },
+        {
+            q: "Câu 2: Một khung dây dẫn phẳng dẹt hình chữ nhật có \\(N = 500\\text{ vòng}\\) dây, diện tích mỗi vòng là \\(S = 220\\text{ cm}^2\\). Khung dây quay đều với tốc độ \\(50\\text{ vòng/giây}\\) quanh một trục đối xứng nằm trong mặt phẳng của khung dây, trong một từ trường đều có vectơ cảm ứng từ \\(\\vec{B}\\) vuông góc với trục quay và có độ lớn \\(B = \\frac{\\sqrt{2}}{5\\pi}\\text{ T}\\). Suất điện động cực đại trong khung dây bằng:",
+            options: [
+                "A. \\(110\\sqrt{2}\\text{ V}\\)",
+                "B. \\(220\\sqrt{2}\\text{ V}\\)",
+                "C. \\(110\\text{ V}\\)",
+                "D. \\(220\\text{ V}\\)"
+            ],
+            correct: 1,
+            explain: "Tần số góc \\(\\omega = 2\\pi f = 2\\pi \\cdot 50 = 100\\pi\\text{ rad/s}\\). Đổi \\(S = 220\\text{ cm}^2 = 0,022\\text{ m}^2\\). Suất điện động cực đại: \\(E_0 = \\omega N B S = 100\\pi \\cdot 500 \\cdot \\frac{\\sqrt{2}}{5\\pi} \\cdot 0,022 = 220\\sqrt{2}\\text{ V}\\)."
+        },
+        {
+            q: "Câu 3: Cường độ dòng điện xoay chiều chạy qua một đoạn mạch có biểu thức \\(i = I_0\\cos\\left(100\\pi t - \\frac{\\pi}{6}\\right)\\text{ (A)}\\), với \\(I_0 > 0\\) và \\(t\\) tính bằng giây (\\(\\text{s}\\)). Tính từ lúc \\(t = 0\\text{ s}\\), thời điểm đầu tiên mà dòng điện có độ lớn tức thời bằng giá trị hiệu dụng (\\(|i| = I\\)) và đang giảm là:",
+            options: [
+                "A. \\(\\frac{1}{240}\\text{ s} \\approx 4,17\\text{ ms}\\)",
+                "B. \\(\\frac{1}{120}\\text{ s} \\approx 8,33\\text{ ms}\\)",
+                "C. \\(\\frac{1}{600}\\text{ s} \\approx 1,67\\text{ ms}\\)",
+                "D. \\(\\frac{1}{300}\\text{ s} \\approx 3,33\\text{ ms}\\)"
+            ],
+            correct: 0,
+            explain: "Chu kì \\(T = \\frac{2\\pi}{100\\pi} = 0,02\\text{ s}\\). Tại \\(t = 0\\text{ s}\\), pha ban đầu là \\(-\\frac{\\pi}{6}\\text{ rad}\\) (tương ứng \\(i = \\frac{I_0\\sqrt{3}}{2}\\) và đang tăng về biên dương \\(I_0\\)). Thời gian từ \\(\\frac{I_0\\sqrt{3}}{2}\\) đến \\(I_0\\) là \\(t_1 = \\frac{T}{12}\\); thời gian từ \\(I_0\\) giảm về \\(I = \\frac{I_0}{\\sqrt{2}}\\) là \\(t_2 = \\frac{T}{8}\\). Tổng thời gian: \\(\\Delta t = \\frac{T}{12} + \\frac{T}{8} = \\frac{5T}{24} = \\frac{1}{240}\\text{ s} \\approx 4,17\\text{ ms}\\)."
+        },
+        {
+            q: "Câu 4: Khi nói về mối quan hệ giữa từ thông \\(\\Phi\\) và suất điện động cảm ứng \\(e\\) trong khung dây của máy phát điện xoay chiều, phát biểu nào sau đây là ĐÚNG?",
+            options: [
+                "A. Khi từ thông qua khung dây đạt giá trị cực đại thì suất điện động cảm ứng cũng đạt giá trị cực đại.",
+                "B. Suất điện động cảm ứng trong khung dây luôn cùng pha với từ thông qua khung dây.",
+                "C. Độ lớn của suất điện động cảm ứng tỉ lệ thuận với tốc độ biến thiên của từ thông qua khung dây.",
+                "D. Trong một chu kì dòng điện xoay chiều có 4 lần từ thông đổi chiều và 1 lần dòng điện đổi chiều."
+            ],
+            correct: 2,
+            explain: "Theo định luật Faraday, \\(e = -\\Phi'(t)\\) nên độ lớn suất điện động cảm ứng tỉ lệ thuận với tốc độ biến thiên của từ thông. Khi \\(|\\Phi| = \\Phi_0\\) thì tốc độ biến thiên bằng \\(0\\) nên \\(e = 0\\)."
+        }
+    ];
+
+    function initQuiz() {
+        const container = document.getElementById('quizContainer');
+        let html = '';
+        quizData.forEach((item, idx) => {
+            html += `
+                <div class="card" style="margin-bottom: 1rem; background: #f8fafc;">
+                    <div style="font-weight: 700; margin-bottom: 0.75rem; color: var(--text-main);">${item.q}</div>
+                    <div>
+                        ${item.options.map((opt, oIdx) => `
+                            <label class="quiz-option" id="lbl_q${idx}_o${oIdx}">
+                                <input type="radio" name="q${idx}" value="${oIdx}">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div class="quiz-explanation" id="exp_q${idx}">
+                        <strong>💡 Giải thích chi tiết:</strong> ${item.explain}
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        renderMathInElement(container, katexConfig);
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        quizData.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            const expEl = document.getElementById(`exp_q${idx}`);
+            expEl.style.display = 'block';
+
+            item.options.forEach((_, oIdx) => {
+                const lbl = document.getElementById(`lbl_q${idx}_o${oIdx}`);
+                lbl.style.borderColor = '#e2e8f0';
+                lbl.style.background = 'white';
+                if (oIdx === item.correct) {
+                    lbl.style.borderColor = '#16a34a';
+                    lbl.style.background = '#dcfce7';
+                }
+            });
+
+            if (selected) {
+                const val = parseInt(selected.value);
+                if (val === item.correct) {
+                    score++;
+                } else {
+                    const wrongLbl = document.getElementById(`lbl_q${idx}_o${val}`);
+                    wrongLbl.style.borderColor = '#dc2626';
+                    wrongLbl.style.background = '#fee2e2';
+                }
+            }
+            // Re-render KaTeX immediately in explanation
+            renderMathInElement(expEl, katexConfig);
+        });
+
+        const banner = document.getElementById('quizScoreBanner');
+        banner.innerHTML = `🏆 Kết quả: ${score} / ${quizData.length} câu đúng (${(score / quizData.length * 10).toFixed(1)} điểm)`;
+        renderMathInElement(document.getElementById('quizContainer'), katexConfig);
+    }
+
+    function resetQuiz() {
+        document.getElementById('quizScoreBanner').innerHTML = '';
+        initQuiz();
+    }
+
+    // ==================== TAB 7: CLASSROOM TOOLS ====================
+    let timerTotalSec = 180;
+    let timerRemainSec = 180;
+    let timerInterval = null;
+
+    function setTimerPreset(sec) {
+        pauseTimer();
+        timerTotalSec = sec;
+        timerRemainSec = sec;
+        updateTimerUI();
+    }
+
+    function toggleTimer() {
+        if (timerInterval) {
+            pauseTimer();
+        } else {
+            if (timerRemainSec <= 0) timerRemainSec = timerTotalSec;
+            document.getElementById('btnStartTimer').innerHTML = '⏸️ Tạm dừng';
+            timerInterval = setInterval(() => {
+                timerRemainSec--;
+                updateTimerUI();
+                if (timerRemainSec <= 0) {
+                    pauseTimer();
+                    playBeepAlert();
+                }
+            }, 1000);
+        }
+    }
+
+    function pauseTimer() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        document.getElementById('btnStartTimer').innerHTML = '▶️ Bắt đầu';
+    }
+
+    function resetTimer() {
+        pauseTimer();
+        timerRemainSec = timerTotalSec;
+        updateTimerUI();
+    }
+
+    function updateTimerUI() {
+        const m = String(Math.floor(timerRemainSec / 60)).padStart(2, '0');
+        const s = String(timerRemainSec % 60).padStart(2, '0');
+        const txt = document.getElementById('timerText');
+        txt.textContent = `${m}:${s}`;
+        txt.style.color = timerRemainSec <= 10 ? '#dc2626' : '#0f4c81';
+
+        const circle = document.getElementById('timerCircle');
+        const circumference = 659.73;
+        const offset = circumference * (1 - timerRemainSec / timerTotalSec);
+        circle.style.strokeDashoffset = offset;
+        circle.style.stroke = timerRemainSec <= 10 ? '#dc2626' : '#0f4c81';
+    }
+
+    function playBeepAlert() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, ctx.currentTime);
+            gain.gain.setValueAtTime(0.25, ctx.currentTime);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.6);
+        } catch (e) {}
+    }
+
+    // Lucky Wheel Logic
+    const teamPresets = {
+        1: ["Nguyễn Minh An", "Trần Hoàng Bảo", "Lê Thị Ngọc Châu", "Phạm Quốc Đạt", "Hoàng Gia Hân", "Vũ Đăng Khoa", "Đặng Phương Linh", "Bùi Tuấn Minh"],
+        2: ["Ngô Gia Bảo", "Đỗ Khánh Duy", "Lý Thanh Hà", "Phan Trọng Hiếu", "Trương Mỹ Kỳ", "Đinh Hoàng Nam", "Mai Bảo Ngọc", "Hồ Thanh Phong"],
+        3: ["Lương Thế Quân", "Võ Minh Tâm", "Nguyễn Thảo Trang", "Phạm Anh Tuấn", "Trần Quốc Việt", "Lê Hoàng Yến", "Đoàn Minh Khôi", "Hà Kiều Oanh"],
+        4: ["Trịnh Xuân Bách", "Cao Thùy Dương", "Đặng Hải Đăng", "Bùi Khánh Huyền", "Nguyễn Đức Mạnh", "Phan Thảo Nhi", "Vũ Hoàng Sơn", "Lê Minh Thư"]
+    };
+
+    let wheelAngle = 0;
+    let isSpinning = false;
+    const wheelColors = ['#0f4c81', '#0284c7', '#0d9488', '#16a34a', '#d97706', '#dc2626', '#7c3aed', '#db2777'];
+
+    function loadTeamList(teamId) {
+        document.getElementById('wheelNames').value = teamPresets[teamId].join('\n');
+        drawLuckyWheel();
+    }
+
+    function getStudentArray() {
+        return document.getElementById('wheelNames').value
+            .split('\n')
+            .map(s => s.trim())
+            .filter(s => s.length > 0);
+    }
+
+    function drawLuckyWheel() {
+        const canvas = document.getElementById('canvasWheel');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const names = getStudentArray();
+        const W = canvas.width, H = canvas.height;
+        const cx = W / 2, cy = H / 2, r = 140;
+
+        ctx.clearRect(0, 0, W, H);
+        if (names.length === 0) return;
+
+        const arc = (2 * Math.PI) / names.length;
+
+        names.forEach((name, i) => {
+            const start = wheelAngle + i * arc;
+            const end = start + arc;
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, r, start, end);
+            ctx.closePath();
+            ctx.fillStyle = wheelColors[i % wheelColors.length];
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Text
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(start + arc / 2);
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 13px Inter';
+            ctx.fillText(name.slice(0, 18), r - 14, 5);
+            ctx.restore();
+        });
+
+        // Center hub
+        ctx.beginPath();
+        ctx.arc(cx, cy, 20, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Pointer on the right (0 rad)
+        ctx.fillStyle = '#fde047';
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(cx + r - 10, cy);
+        ctx.lineTo(cx + r + 16, cy - 12);
+        ctx.lineTo(cx + r + 16, cy + 12);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    function spinWheel() {
+        if (isSpinning) return;
+        const names = getStudentArray();
+        if (names.length === 0) return;
+
+        isSpinning = true;
+        const spinDuration = 3500;
+        const startAngle = wheelAngle;
+        const totalRotation = (Math.PI * 2 * (5 + Math.random() * 4));
+        const startTime = performance.now();
+
+        function stepSpin(now) {
+            const elapsed = now - startTime;
+            const t = Math.min(elapsed / spinDuration, 1);
+            // Ease out cubic
+            const ease = 1 - Math.pow(1 - t, 3);
+            wheelAngle = (startAngle + totalRotation * ease) % (Math.PI * 2);
+            drawLuckyWheel();
+
+            if (t < 1) {
+                requestAnimationFrame(stepSpin);
+            } else {
+                isSpinning = false;
+                const arc = (2 * Math.PI) / names.length;
+                const normAngle = (2 * Math.PI - (wheelAngle % (2 * Math.PI))) % (2 * Math.PI);
+                const idx = Math.floor(normAngle / arc) % names.length;
+                showWinnerModal(names[idx]);
+            }
+        }
+        requestAnimationFrame(stepSpin);
+    }
+
+    function showWinnerModal(winner) {
+        playBeepAlert();
+        document.getElementById('winnerName').textContent = winner;
+        document.getElementById('winnerModal').style.display = 'flex';
+    }
+
+    function closeWinnerModal() {
+        document.getElementById('winnerModal').style.display = 'none';
+    }
+</script>
+</body>
+</html>
