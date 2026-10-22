@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chủ đề 2: Định Luật Boyle - Vật Lý 12</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        .tab-btn {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.35);
+            transform: translateY(-1px);
+        }
+        .subtab-btn.active {
+            background-color: #0369a1;
+            color: white;
+            border-color: #0369a1;
+        }
+        .katex-display {
+            margin: 0.75em 0 !important;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.25rem 0;
+        }
+        input[type=range] {
+            accent-color: #0284c7;
+        }
+        @keyframes pulse-danger {
+            0%, 100% { background-color: #fee2e2; border-color: #ef4444; }
+            50% { background-color: #fca5a5; border-color: #b91c1c; }
+        }
+        .timer-finished {
+            animation: pulse-danger 0.8s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-gradient-to-r from-slate-900 via-blue-900 to-sky-900 text-white shadow-xl sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-2xl text-sky-300 shadow-inner">
+                    <i class="fa-solid fa-atom fa-spin" style="animation-duration: 12s;"></i>
+                </div>
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-sky-300 font-semibold block">Vật Lý 12 • Chương II: Khí Lý Tưởng</span>
+                    <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">CHỦ ĐỀ 2: ĐỊNH LUẬT BOYLE (QUÁ TRÌNH ĐẲNG NHIỆT)</h1>
+                    <p class="text-xs md:text-sm text-amber-300 font-medium mt-0.5">
+                        <i class="fa-solid fa-award mr-1"></i>© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700 text-xs text-slate-200">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>Hệ thống Tương tác Chuẩn SI:\(pV = \text{hằng số}\)</span>
+            </div>
+        </div>
+
+        <nav class="bg-slate-800/95 border-t border-slate-700/80">
+            <div class="max-w-7xl mx-auto px-2 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                <button onclick="switchMainTab('tab1')" id="btn-tab1" class="tab-btn active px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                    🚀 1. Khởi động & Thực tiễn
+                </button>
+                <button onclick="switchMainTab('tab2')" id="btn-tab2" class="tab-btn px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                    📖 2. Cốt lõi Lý thuyết
+                </button>
+                <button onclick="switchMainTab('tab3')" id="btn-tab3" class="tab-btn px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                    🔬 3. Mô phỏng Tương tác (3 Lab)
+                </button>
+                <button onclick="switchMainTab('tab4')" id="btn-tab4" class="tab-btn px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                    🧮 4. Máy tính Tham số
+                </button>
+                <button onclick="switchMainTab('tab5')" id="btn-tab5" class="tab-btn px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                    📝 5. Luyện tập Phân hóa
+                </button>
+                <button onclick="switchMainTab('tab6')" id="btn-tab6" class="tab-btn px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                    🎯 6. Tự đánh giá (Quiz)
+                </button>
+                <button onclick="switchMainTab('tab7')" id="btn-tab7" class="tab-btn px-3.5 py-2 rounded-xl text-xs md:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                    🛠️ 7. Tiện ích Lớp học
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+
+        <section id="tab1" class="tab-content space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-lg font-bold text-sm">KHỞI ĐỘNG NHẬN THỨC</span>
+                    <h2 class="text-xl font-bold text-slate-800">Tại sao thể tích thay đổi lại quyết định sự sống còn dưới đáy biển và trong cơ thể?</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Tình huống 1 -->
+                    <div class="bg-gradient-to-b from-sky-50 to-white rounded-2xl p-5 border border-sky-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center text-xl mb-4 shadow">
+                                <i class="fa-solid fa-water"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-800 mb-2">1. Bọt khí từ tàu ngầm & Thợ lặn</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                                Một tàu ngầm đang lặn ở độ sâu \(h = 100 \text{ m}\) dưới mực nước biển nhả ra một bọt khí nhỏ chỉ có thể tích \(V_1 = 1,5 \text{ cm}^3\). Khi nổi lên tới mặt nước (nhiệt độ nước hầu như không đổi), bọt khí này phình to gấp <strong>11 lần</strong> thành \(V_2 = 16,5 \text{ cm}^3\)!
+                            </p>
+                        </div>
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-xl text-xs text-amber-900">
+                            <strong>⚡ Mâu thuẫn nhận thức:</strong> Không hề có ai bơm thêm khí vào bọt khí trong suốt quá trình nổi lên. Tại sao bọt khí lại tự phình to gấp 11 lần? Và tại sao thợ lặn nếu nín thở lao nhanh từ đáy biển lên mặt nước lại có nguy cơ vỡ phế nang phổi?
+                        </div>
+                    </div>
+
+                    <!-- Tình huống 2 -->
+                    <div class="bg-gradient-to-b from-blue-50 to-white rounded-2xl p-5 border border-blue-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xl mb-4 shadow">
+                                <i class="fa-solid fa-syringe"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-800 mb-2">2. Bí mật của Ống tiêm Y tế & Nhịp thở</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                                Khi nhân viên y tế lấy thuốc từ lọ vào ống tiêm, họ chỉ cần kéo nhẹ pit-tông ra sau là thuốc tự chảy ngược vào xi-lanh. Tương tự, khi ta hít vào, cơ hoành hạ xuống làm dung tích phổi tăng từ \(2,40 \text{ lít}\) lên \(2,42 \text{ lít}\).
+                            </p>
+                        </div>
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-xl text-xs text-amber-900">
+                            <strong>⚡ Câu hỏi đặt ra:</strong> Pit-tông không hề chạm vào thuốc để "kéo" thuốc, cơ mũi cũng không "bắt" không khí chui vào phổi. Lực vô hình nào đã đẩy chất lỏng và không khí đi vào khi thể tích khoang chứa tăng lên?
+                        </div>
+                    </div>
+
+                    <!-- Tình huống 3 -->
+                    <div class="bg-gradient-to-b from-indigo-50 to-white rounded-2xl p-5 border border-indigo-200 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xl mb-4 shadow">
+                                <i class="fa-solid fa-bicycle"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-800 mb-2">3. Bài toán Bơm xe đạp thực tế</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                                Một học sinh đi xe đạp bị xẹp lốp. Sau 5 lần bơm đầu tiên, diện tích lốp xe bị bẹp tiếp xúc với mặt đường là \(S_1 = 40 \text{ cm}^2\). Bạn ấy muốn bơm căng đến khi diện tích tiếp xúc giảm còn \(S_2 = 10 \text{ cm}^2\).
+                            </p>
+                        </div>
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-xl text-xs text-amber-900">
+                            <strong>⚡ Thử thách dự đoán:</strong> Liệu bạn học sinh chỉ cần bơm thêm 5 lần, 10 lần hay 15 lần nữa? Làm sao tính chính xác số nhát bơm cần thiết trước khi lốp xe bị nổ?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Góc khám phá nhanh ở Tab 1 -->
+                <div class="mt-6 bg-slate-900 text-white rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Chìa khóa Vật lý hôm nay</span>
+                        <h4 class="text-lg font-bold">Mối liên hệ nhân - quả giữa Thể tích \(V\), Mật độ phân tử \(\mu\) và Áp suất \(p\) ở nhiệt độ không đổi \(T = \text{const}\)</h4>
+                        <p class="text-xs text-slate-300">Khi thể tích bình chứa giảm đi, mật độ phân tử khí \(\mu = \frac{N}{V}\) tăng lên làm tần suất va chạm của các phân tử lên thành bình tăng tỉ lệ thuận!</p>
+                    </div>
+                    <button onclick="switchMainTab('tab3')" class="px-5 py-3 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl shadow-lg transition shrink-0">
+                        Khám phá ngay tại Phòng Mô Phỏng <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab2" class="tab-content hidden space-y-6">
+            <!-- Khái niệm then chốt -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold text-blue-900 flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-book-open text-sky-600"></i> I. Khái niệm Then chốt & Bản chất Vật lý
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-slate-800 mb-2">1. Thông số trạng thái & Đẳng quá trình</h3>
+                        <ul class="text-sm space-y-2 text-slate-700 list-disc pl-5">
+                            <li>Trạng thái của một khối lượng khí xác định (\(m = \text{const}\)) được xác định bằng 3 thông số trạng thái: <strong>Áp suất \(p\)</strong>, <strong>Thể tích \(V\)</strong> và <strong>Nhiệt độ tuyệt đối \(T\)</strong>:
+                                \[ T (\text{K}) = t (^\circ\text{C}) + 273 \]
+                            </li>
+                            <li><strong>Đẳng quá trình:</strong> Là quá trình biến đổi trạng thái trong đó có một thông số được giữ không đổi.</li>
+                            <li><strong>Quá trình đẳng nhiệt:</strong> Là quá trình biến đổi trạng thái của một khối lượng khí xác định khi <strong>nhiệt độ được giữ không đổi</strong> (\(T = \text{hằng số}\)).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-blue-50/70 p-4 rounded-xl border border-blue-200">
+                        <h3 class="font-bold text-blue-900 mb-2">2. Định luật Boyle (Robert Boyle, 1662)</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed mb-2">
+                            <strong>Phát biểu:</strong> Khi nhiệt độ của một khối lượng khí xác định giữ không đổi thì áp suất gây ra bởi khí tỉ lệ nghịch với thể tích của nó.
+                        </p>
+                        <div class="bg-white rounded-xl p-3 border border-blue-200 text-center shadow-inner">
+                            \[ p \sim \frac{1}{V} \Longleftrightarrow pV = \text{hằng số} \Longleftrightarrow p_1 V_1 = p_2 V_2 \]
+                        </div>
+                        <p class="text-xs text-slate-600 mt-2">
+                            <strong>Giải thích bằng thuyết động học phân tử:</strong> Áp suất khí tác dụng lên thành bình là \(p = \frac{2}{3}\mu \bar{E}_d\). Khi \(T = \text{const}\) thì động năng trung bình của phân tử \(\bar{E}_d = \frac{3}{2}kT\) không đổi. Khi nén khí làm thể tích \(V\) giảm bao nhiêu lần thì mật độ phân tử \(\mu = \frac{N}{V}\) tăng bấy nhiêu lần \(\Rightarrow\) số va chạm lên một đơn vị diện tích thành bình tăng bấy nhiêu lần \(\Rightarrow\) áp suất \(p\) tăng tỉ lệ nghịch với \(V\).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hệ thống công thức và các dạng toán chuyên sâu -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold text-blue-900 flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-table-list text-sky-600"></i> II. Hệ thống Công thức Cốt lõi & 3 Dạng Toán Trọng Tâm
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-800 text-white">
+                                <th class="p-3 rounded-tl-xl">Mô hình / Dạng bài</th>
+                                <th class="p-3">Công thức Vật lý chuẩn</th>
+                                <th class="p-3">Giải thích Đại lượng & Quy đổi Đơn vị (SI)</th>
+                                <th class="p-3 rounded-tr-xl">Điều kiện áp dụng</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-blue-900">Dạng 1: Quá trình đẳng nhiệt cơ bản & Khối lượng riêng</td>
+                                <td class="p-3">
+                                    \[ p_1 V_1 = p_2 V_2 \]
+                                    \[ \frac{p_1}{p_2} = \frac{V_2}{V_1} = \frac{D_1}{D_2} = \frac{\mu_1}{\mu_2} \]
+                                </td>
+                                <td class="p-3 text-xs space-y-1">
+                                    <p>• \(p\): Áp suất khí (\(\text{Pa} = \text{N/m}^2, \text{atm}, \text{bar}, \text{mmHg}\))</p>
+                                    <p>• \(V\): Thể tích khí (\(\text{m}^3, \text{dm}^3 = \text{lít}, \text{cm}^3\))</p>
+                                    <p>• \(D = \frac{m}{V}\): Khối lượng riêng (\(\text{kg/m}^3\)), tỉ lệ thuận với \(p\).</p>
+                                </td>
+                                <td class="p-3 text-xs">Khối lượng khí \(m\) không đổi và nhiệt độ \(T\) không đổi.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-blue-900">Dạng 1B: Bọt khí ở độ sâu \(h\) trong chất lỏng</td>
+                                <td class="p-3">
+                                    \[ p_1 = p_0 + \rho g h = p_0 + d \cdot h \]
+                                    \[ (p_0 + \rho g h) V_1 = p_0 V_2 \]
+                                </td>
+                                <td class="p-3 text-xs space-y-1">
+                                    <p>• \(p_0\): Áp suất khí quyển trên mặt thoáng (\(\text{Pa}\))</p>
+                                    <p>• \(\rho\): Khối lượng riêng chất lỏng (\(\text{kg/m}^3\)); \(g \approx 9,8 \text{ m/s}^2\) hoặc \(10 \text{ m/s}^2\)</p>
+                                    <p>• \(d = \rho g\): Trọng lượng riêng của nước (\(\text{N/m}^3\))</p>
+                                </td>
+                                <td class="p-3 text-xs">Nhiệt độ nước không thay đổi theo độ sâu \(h (\text{m})\).</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-blue-900">Dạng 2: Bài toán Xác định Số lần bơm khí (\(n\))</td>
+                                <td class="p-3">
+                                    <p class="text-xs font-semibold text-slate-500">Bóng xẹp ban đầu:</p>
+                                    \[ p_0 (n V_0) = p_2 V_b \]
+                                    <p class="text-xs font-semibold text-slate-500 mt-1">Bình đã có sẵn khí \((p_1, V_b)\):</p>
+                                    \[ p_1 V_b + n p_0 V_0 = p_2 V_b \]
+                                </td>
+                                <td class="p-3 text-xs space-y-1">
+                                    <p>• \(n\): Số lần đẩy pit-tông ống bơm</p>
+                                    <p>• \(V_0 = S \cdot l = \frac{\pi d^2}{4} l\): Thể tích 1 lần bơm</p>
+                                    <p>• \(V_b\): Dung tích bình/bóng chứa khí</p>
+                                </td>
+                                <td class="p-3 text-xs">Quá trình gom toàn bộ lượng khí ngoài và trong vào bình ở cùng nhiệt độ \(T\).</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-blue-900">Dạng 3A: Cột khí giam bởi Thủy ngân trong ống thủy tinh</td>
+                                <td class="p-3">
+                                    <p>• Ngang: \(p = p_0\)</p>
+                                    <p>• Đứng (hở trên): \(p = p_0 + h\)</p>
+                                    <p>• Đứng (hở dưới): \(p = p_0 - h\)</p>
+                                    <p>• Nghiêng góc \(\alpha\) so với phương ngang: \(p = p_0 \pm h\sin\alpha\)</p>
+                                </td>
+                                <td class="p-3 text-xs space-y-1">
+                                    <p>• \(p_0, h\) tính cùng đơn vị độ cao cột thủy ngân (\(\text{mmHg}\) hoặc \(\text{cmHg}\))</p>
+                                    <p>• Thể tích cột khí: \(V = S \cdot l\) (với \(l\) là chiều dài cột khí)</p>
+                                </td>
+                                <td class="p-3 text-xs">Tiết diện ống \(S\) đều, thủy ngân không chảy ra ngoài hoặc tính phần còn lại \(x\).</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-blue-900">Dạng 3B: Ngoại lực \(\vec{F}\) tác dụng lên Pit-tông diện tích \(S\)</td>
+                                <td class="p-3">
+                                    <p>• Khi nén khí: \(p_2 = p_0 + \frac{F}{S}\)</p>
+                                    <p>• Khi kéo dãn: \(p_2 = p_0 - \frac{F}{S}\)</p>
+                                </td>
+                                <td class="p-3 text-xs space-y-1">
+                                    <p>• \(F\): Độ lớn ngoại lực tác dụng (\(\text{N}\))</p>
+                                    <p>• \(S\): Diện tích tiết diện pit-tông (\(\text{m}^2\))</p>
+                                    <p>• Chú ý đổi: \(1 \text{ cm}^2 = 10^{-4} \text{ m}^2\)</p>
+                                </td>
+                                <td class="p-3 text-xs">Bỏ qua ma sát giữa pit-tông và thành xi-lanh.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Quy chuẩn đổi đơn vị -->
+                <div class="mt-4 bg-sky-50 border border-sky-200 rounded-xl p-4 text-xs md:text-sm text-sky-950 flex flex-wrap items-center justify-between gap-3">
+                    <div><strong>📌 Quy đổi Áp suất chuẩn:</strong> \(1 \text{ atm} \approx 1,013 \cdot 10^5 \text{ Pa} \approx 760 \text{ mmHg}\) (Thông thường bài tập lấy \(1 \text{ atm} \approx 1 \text{ bar} = 10^5 \text{ Pa} = 10^5 \text{ N/m}^2\)).</div>
+                    <div><strong>📌 Quy đổi Thể tích chuẩn:</strong> \(1 \text{ m}^3 = 10^3 \text{ dm}^3 (\text{lít}) = 10^6 \text{ cm}^3 (\text{mL}) = 10^9 \text{ mm}^3\).</div>
+                </div>
+            </div>
+
+            <!-- Đồ thị và Bẫy lý thuyết -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-blue-600"></i> III. Nhận diện Đường Đẳng Nhiệt trên các Hệ tọa độ
+                    </h3>
+                    <div class="grid grid-cols-3 gap-3 text-center text-xs">
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <svg viewBox="0 0 120 100" class="w-full h-24 mx-auto">
+                                <line x1="20" y1="85" x2="110" y2="85" stroke="#334155" stroke-width="2"/>
+                                <line x1="20" y1="85" x2="20" y2="10" stroke="#334155" stroke-width="2"/>
+                                <path d="M 30 20 Q 40 70 100 78" fill="none" stroke="#0284c7" stroke-width="2.5"/>
+                                <path d="M 42 15 Q 55 58 105 65" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+                                <text x="8" y="18" font-size="11" font-weight="bold">p</text>
+                                <text x="102" y="97" font-size="11" font-weight="bold">V</text>
+                                <text x="90" y="74" font-size="9" fill="#0284c7">T₁</text>
+                                <text x="95" y="59" font-size="9" fill="#ef4444">T₂&gt;T₁</text>
+                            </svg>
+                            <p class="font-bold mt-1">Hệ tọa độ \((p, V)\)</p>
+                            <p class="text-slate-500">Nhánh Hyperbol. Đường trên có \(T_2 > T_1\).</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <svg viewBox="0 0 120 100" class="w-full h-24 mx-auto">
+                                <line x1="20" y1="85" x2="110" y2="85" stroke="#334155" stroke-width="2"/>
+                                <line x1="20" y1="85" x2="20" y2="10" stroke="#334155" stroke-width="2"/>
+                                <line x1="65" y1="20" x2="65" y2="75" stroke="#0284c7" stroke-width="2.5"/>
+                                <line x1="65" y1="75" x2="65" y2="85" stroke="#64748b" stroke-dasharray="3,2"/>
+                                <text x="5" y="18" font-size="10" font-weight="bold">p,V</text>
+                                <text x="102" y="97" font-size="11" font-weight="bold">T</text>
+                                <text x="60" y="97" font-size="10" fill="#0284c7">T₀</text>
+                            </svg>
+                            <p class="font-bold mt-1">Hệ \((p, T)\) & \((V, T)\)</p>
+                            <p class="text-slate-500">Đoạn thẳng vuông góc với trục \(OT\).</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <svg viewBox="0 0 120 100" class="w-full h-24 mx-auto">
+                                <line x1="20" y1="85" x2="110" y2="85" stroke="#334155" stroke-width="2"/>
+                                <line x1="20" y1="85" x2="20" y2="10" stroke="#334155" stroke-width="2"/>
+                                <line x1="20" y1="85" x2="45" y2="62" stroke="#0284c7" stroke-width="2" stroke-dasharray="3,3"/>
+                                <line x1="45" y1="62" x2="100" y2="15" stroke="#0284c7" stroke-width="2.5"/>
+                                <text x="8" y="18" font-size="11" font-weight="bold">p</text>
+                                <text x="92" y="97" font-size="10" font-weight="bold">1/V</text>
+                            </svg>
+                            <p class="font-bold mt-1">Hệ \((p, \frac{1}{V})\)</p>
+                            <p class="text-slate-500">Đường thẳng kéo dài đi qua gốc tọa độ \(O\).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-rose-50 rounded-2xl shadow-sm border border-rose-200 p-6">
+                    <h3 class="text-lg font-bold text-rose-900 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> IV. Các "Bẫy Lý Thuyết" Học Sinh Hay Mắc Phải
+                    </h3>
+                    <ul class="text-xs md:text-sm space-y-2.5 text-rose-950">
+                        <li class="flex items-start gap-2">
+                            <span class="font-bold text-rose-600">❌ Bẫy 1:</span>
+                            <span><strong>Quên cộng áp suất khí sẵn có trong bóng/lốp xe:</strong> Khi đề bài ghi "Trước khi bơm, trong bóng đã có không khí ở áp suất \(p_1\)", phải dùng \(p_1 V_b + n p_0 V_0 = p_2 V_b\). Chỉ khi đề ghi "bóng xẹp hoàn toàn / chưa có khí" mới dùng \(n p_0 V_0 = p_2 V_b\).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="font-bold text-rose-600">❌ Bẫy 2:</span>
+                            <span><strong>Nhầm lẫn giữa "Áp suất tăng LÊN" và "Áp suất tăng THÊM":</strong> Tăng lên \(2,5 \text{ atm}\) nghĩa là \(p_2 = 2,5 \text{ atm}\); còn tăng thêm \(2,5 \text{ atm}\) nghĩa là \(p_2 = p_1 + 2,5 \text{ atm}\).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="font-bold text-rose-600">❌ Bẫy 3:</span>
+                            <span><strong>Góc nghiêng của ống thủy tinh:</strong> Nếu ống nghiêng góc \(\alpha\) so với <em>phương ngang</em> thì chiều cao cột thủy ngân là \(h' = h\sin\alpha\). Nhưng nếu đề cho góc nghiêng \(\beta\) so với <em>phương thẳng đứng</em> thì phải dùng \(h' = h\cos\beta\)!</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="font-bold text-rose-600">❌ Bẫy 4:</span>
+                            <span><strong>Diện tích hình chữ nhật dưới đường đẳng nhiệt \((p, V)\):</strong> Vì \(S_{hcn} = p \cdot V = \text{hằng số}\) nên mọi hình chữ nhật tạo bởi điểm trên đường đẳng nhiệt với hai trục tọa độ đều có diện tích bằng nhau (\(S_1 = S_2\)).</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab3" class="tab-content hidden space-y-5">
+            <!-- Sub-navigation for 3 Separate Simulation Labs -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-3">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800">🔬 PHÒNG THÍ NGHIỆM ẢO ĐỊNH LUẬT BOYLE (3 MÔ HÌNH ĐỘC LẬP)</h2>
+                    <p class="text-xs text-slate-500">Chọn từng phân hệ thí nghiệm dưới đây để tương tác trực tiếp với mô hình vật lý và đồ thị thời gian thực.</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="switchSimLab('simA')" id="btn-simA" class="subtab-btn active px-4 py-2 rounded-xl text-xs md:text-sm font-bold border border-slate-300 transition">
+                        Lab 3A: Xi-lanh Khí & Đồ thị \((p, V)\)
+                    </button>
+                    <button onclick="switchSimLab('simB')" id="btn-simB" class="subtab-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold border border-slate-300 bg-slate-100 text-slate-700 transition">
+                        Lab 3B: Trạm Bơm Khí Thực Tế
+                    </button>
+                    <button onclick="switchSimLab('simC')" id="btn-simC" class="subtab-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold border border-slate-300 bg-slate-100 text-slate-700 transition">
+                        Lab 3C: Ống Thủy Tinh & Cột Thủy Ngân
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= LAB 3A: XI-LANH & ĐỒ THỊ HYPERBOL ================= -->
+            <div id="simA" class="sim-panel grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Controls & Guide -->
+                <div class="lg:col-span-4 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between space-y-4">
+                    <div class="space-y-4">
+                        <div class="border-b border-slate-100 pb-3">
+                            <span class="text-xs font-bold text-sky-600 uppercase">Mô hình Dạng 1</span>
+                            <h3 class="text-lg font-bold text-slate-800">Khảo sát Nén / Giãn Đẳng Nhiệt</h3>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-sm font-semibold mb-1">
+                                <label for="simA-V">Thể tích khí \(V\):</label>
+                                <span id="simA-V-val" class="text-sky-700 font-bold">20,0 cm³</span>
+                            </div>
+                            <input type="range" id="simA-V" min="8" max="40" step="0.5" value="20" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="updateSimA()">
+                            <div class="flex justify-between text-xs text-slate-400 mt-1">
+                                <span>8 cm³ (Nén mạnh)</span>
+                                <span>40 cm³ (Giãn tối đa)</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-sm font-semibold mb-1">
+                                <label for="simA-T">Nhiệt độ tuyệt đối \(T\):</label>
+                                <span id="simA-T-val" class="text-amber-600 font-bold">300 K (27 °C)</span>
+                            </div>
+                            <input type="range" id="simA-T" min="250" max="450" step="10" value="300" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="updateSimA()">
+                            <div class="flex justify-between text-xs text-slate-400 mt-1">
+                                <span>250 K</span>
+                                <span>350 K</span>
+                                <span>450 K</span>
+                            </div>
+                        </div>
+
+                        <!-- Real-time Outputs -->
+                        <div class="grid grid-cols-2 gap-2.5 pt-2">
+                            <div class="bg-sky-50 p-3 rounded-xl border border-sky-200">
+                                <span class="text-xs text-slate-500 block">Áp suất khí \(p\)</span>
+                                <span id="simA-p-out" class="text-lg font-extrabold text-sky-800">1,50 atm</span>
+                            </div>
+                            <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+                                <span class="text-xs text-slate-500 block">Tích số \(p \cdot V\)</span>
+                                <span id="simA-pv-out" class="text-lg font-extrabold text-emerald-800">30,0 atm·cm³</span>
+                            </div>
+                            <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-200">
+                                <span class="text-xs text-slate-500 block">Mật độ phân tử \(\mu\)</span>
+                                <span id="simA-mu-out" class="text-sm font-bold text-indigo-800">Chuẩn (1,00x)</span>
+                            </div>
+                            <div class="bg-rose-50 p-3 rounded-xl border border-rose-200">
+                                <span class="text-xs text-slate-500 block">Áp lực lên pit-tông</span>
+                                <span id="simA-F-out" class="text-sm font-bold text-rose-800">150 N</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3.5 text-xs text-amber-950 space-y-1.5">
+                        <div class="font-bold text-amber-800"><i class="fa-solid fa-lightbulb mr-1"></i> Nhiệm vụ "Thử và Sai":</div>
+                        <p>1. Giữ nguyên \(T = 300 \text{ K}\), kéo giảm thể tích từ \(30 \text{ cm}^3\) xuống \(15 \text{ cm}^3\) (giảm 2 lần). Quan sát xem áp suất \(p\) và độ dài vector lực \(\vec{F}\) thay đổi mấy lần?</p>
+                        <p>2. Tăng nhiệt độ lên \(T = 450 \text{ K}\) để quan sát đường đẳng nhiệt dịch chuyển lên trên!</p>
+                    </div>
+                </div>
+
+                <!-- Canvas Area -->
+                <div class="lg:col-span-8 bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col">
+                    <div class="w-full h-[420px] relative">
+                        <canvas id="canvasSimA" class="w-full h-full rounded-xl bg-slate-950"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= LAB 3B: TRẠM BƠM KHÍ ĐẲNG NHIỆT ================= -->
+            <div id="simB" class="sim-panel hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-4 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between space-y-4">
+                    <div class="space-y-4">
+                        <div class="border-b border-slate-100 pb-3">
+                            <span class="text-xs font-bold text-sky-600 uppercase">Mô hình Dạng 2</span>
+                            <h3 class="text-lg font-bold text-slate-800">Mô phỏng Bơm Bóng Đá / Lốp Xe</h3>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-sm font-semibold mb-1">
+                                <label for="simB-V0">Thể tích 1 lần bơm \(V_0\):</label>
+                                <span id="simB-V0-val" class="text-sky-700 font-bold">125 cm³ (0,125 L)</span>
+                            </div>
+                            <input type="range" id="simB-V0" min="50" max="250" step="25" value="125" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="resetSimB()">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-sm font-semibold mb-1">
+                                <label for="simB-Vb">Dung tích quả bóng \(V_b\):</label>
+                                <span id="simB-Vb-val" class="text-sky-700 font-bold">2,50 lít (2500 cm³)</span>
+                            </div>
+                            <input type="range" id="simB-Vb" min="1.0" max="5.0" step="0.5" value="2.5" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="resetSimB()">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-sm font-semibold mb-1">
+                                <label for="simB-p1">Áp suất ban đầu trong bóng \(p_1\):</label>
+                                <span id="simB-p1-val" class="text-indigo-700 font-bold">1,0 atm (Đã có khí)</span>
+                            </div>
+                            <input type="range" id="simB-p1" min="0" max="2.0" step="0.5" value="1.0" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="resetSimB()">
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="grid grid-cols-3 gap-2 pt-2">
+                            <button onclick="pumpAction(1)" class="py-2.5 px-3 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl shadow text-xs md:text-sm transition active:scale-95">
+                                <i class="fa-solid fa-hand-point-down mr-1"></i> Bơm +1 lần
+                            </button>
+                            <button onclick="pumpAction(10)" class="py-2.5 px-3 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded-xl shadow text-xs md:text-sm transition active:scale-95">
+                                <i class="fa-solid fa-forward-fast mr-1"></i> Bơm +10 lần
+                            </button>
+                            <button onclick="resetSimB()" class="py-2.5 px-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs md:text-sm transition">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Xả khí
+                            </button>
+                        </div>
+
+                        <!-- Outputs -->
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div class="bg-slate-100 p-3 rounded-xl border border-slate-200">
+                                <span class="text-xs text-slate-500 block">Số lần đã bơm \(n\)</span>
+                                <span id="simB-n-out" class="text-xl font-extrabold text-slate-800">0 lần</span>
+                            </div>
+                            <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                                <span class="text-xs text-slate-500 block">Áp suất trong bóng \(p_2\)</span>
+                                <span id="simB-p2-out" class="text-xl font-extrabold text-amber-700">1,00 atm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-950">
+                        <strong>💡 Hướng dẫn:</strong> Hãy đặt \(V_0 = 125 \text{ cm}^3\), \(V_b = 2,5 \text{ lít}\), \(p_1 = 0 \text{ atm}\) (bóng xẹp) rồi bấm <strong>Bơm +10 lần</strong> 4 lượt (tổng 40 lần) để kiểm chứng xem áp suất có đúng bằng \(2,00 \text{ atm}\) như bài tập tự luyện không!
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8 bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col">
+                    <div class="w-full h-[420px] relative">
+                        <canvas id="canvasSimB" class="w-full h-full rounded-xl bg-slate-950"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= LAB 3C: ỐNG THỦY TINH & CỘT THỦY NGÂN ================= -->
+            <div id="simC" class="sim-panel hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-4 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between space-y-4">
+                    <div class="space-y-4">
+                        <div class="border-b border-slate-100 pb-3">
+                            <span class="text-xs font-bold text-sky-600 uppercase">Mô hình Dạng 3</span>
+                            <h3 class="text-lg font-bold text-slate-800">Ống Thủy Tinh Xoay Góc \(\alpha\)</h3>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-sm font-semibold mb-1">
+                                <label for="simC-angle">Góc nghiêng \(\alpha\) (so với phương ngang):</label>
+                                <span id="simC-angle-val" class="text-sky-700 font-bold">0° (Nằm ngang)</span>
+                            </div>
+                            <input type="range" id="simC-angle" min="-90" max="90" step="5" value="0" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="updateSimC()">
+                            <div class="flex justify-between text-xs text-slate-500 mt-1">
+                                <button onclick="setTubeAngle(-90)" class="underline hover:text-blue-600">-90° (Úp ngược)</button>
+                                <button onclick="setTubeAngle(0)" class="underline hover:text-blue-600">0° (Ngang)</button>
+                                <button onclick="setTubeAngle(30)" class="underline hover:text-blue-600">+30°</button>
+                                <button onclick="setTubeAngle(90)" class="underline hover:text-blue-600">+90° (Ngửa lên)</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-sm font-semibold mb-1">
+                                <label for="simC-l0">Chiều dài cột khí khi nằm ngang \(l_0\):</label>
+                                <span id="simC-l0-val" class="text-slate-700 font-bold">30,0 cm</span>
+                            </div>
+                            <input type="range" id="simC-l0" min="15" max="40" step="1" value="30" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="updateSimC()">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-sm font-semibold mb-1">
+                                <label for="simC-h">Chiều dài cột thủy ngân \(h\):</label>
+                                <span id="simC-h-val" class="text-slate-700 font-bold">15,0 cmHg</span>
+                            </div>
+                            <input type="range" id="simC-h" min="4" max="30" step="1" value="15" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer" oninput="updateSimC()">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div class="bg-sky-50 p-3 rounded-xl border border-sky-200">
+                                <span class="text-xs text-slate-500 block">Áp suất khí \(p\)</span>
+                                <span id="simC-p-out" class="text-lg font-extrabold text-sky-800">76,0 cmHg</span>
+                            </div>
+                            <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+                                <span class="text-xs text-slate-500 block">Chiều dài cột khí \(l\)</span>
+                                <span id="simC-l-out" class="text-lg font-extrabold text-emerald-800">30,0 cm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-950">
+                        <strong>💡 Thử nghiệm ngay:</strong> Giữ \(l_0 = 30 \text{ cm}, h = 15 \text{ cmHg}, p_0 = 76 \text{ cmHg}\) (như Câu 5, 6 Dạng 3 trong tài liệu). Hãy bấm chọn góc <strong>-90° (Úp ngược)</strong> và <strong>+30°</strong> để thấy chiều dài cột khí biến thiên đúng bằng \(44,8 \text{ cm}\) và \(32,7 \text{ cm}\)!
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8 bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col">
+                    <div class="w-full h-[420px] relative">
+                        <canvas id="canvasSimC" class="w-full h-full rounded-xl bg-slate-950"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab4" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <span class="px-3 py-1 bg-sky-100 text-sky-800 rounded-lg font-bold text-xs uppercase">CÔNG CỤ GIẢI TOÁN TỰ ĐỘNG</span>
+                    <h2 class="text-xl font-bold text-slate-800 mt-1">🧮 Máy Tính Tham Số Định Luật Boyle & Bài Toán Bơm Khí</h2>
+                    <p class="text-sm text-slate-500">Nhập các đại lượng đã biết và <strong>bỏ trống duy nhất 1 ô cần tìm</strong>, hệ thống sẽ tự động phân tích và trình bày lời giải từng bước bằng KaTeX.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Calculator Mode 1: p1V1 = p2V2 -->
+                    <div class="lg:col-span-6 bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-4">
+                        <h3 class="font-bold text-blue-900 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-scale-balanced text-sky-600"></i> Chế độ 1: Giải phương trình Đẳng nhiệt \(p_1 V_1 = p_2 V_2\)
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Áp suất đầu \(p_1\)</label>
+                                <input type="number" id="calc-p1" step="any" placeholder="Bỏ trống nếu cần tìm" value="2" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Thể tích đầu \(V_1\)</label>
+                                <input type="number" id="calc-v1" step="any" placeholder="Bỏ trống nếu cần tìm" value="15" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Áp suất sau \(p_2\)</label>
+                                <input type="number" id="calc-p2" step="any" placeholder="Bỏ trống nếu cần tìm" value="" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Thể tích sau \(V_2\)</label>
+                                <input type="number" id="calc-v2" step="any" placeholder="Bỏ trống nếu cần tìm" value="5" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Đơn vị Áp suất</label>
+                                <select id="calc-p-unit" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white">
+                                    <option value="atm">atm</option>
+                                    <option value="Pa">Pa (N/m²)</option>
+                                    <option value="kPa">kPa</option>
+                                    <option value="10^5 Pa">10⁵ Pa</option>
+                                    <option value="mmHg">mmHg</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Đơn vị Thể tích</label>
+                                <select id="calc-v-unit" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white">
+                                    <option value="lít">lít (dm³)</option>
+                                    <option value="cm^3">cm³ (mL)</option>
+                                    <option value="m^3">m³</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 pt-2">
+                            <button onclick="solveBoyleBasic()" class="flex-1 py-2.5 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded-xl shadow transition">
+                                <i class="fa-solid fa-calculator mr-1"></i> Tính Toán Chi Tiết
+                            </button>
+                            <button onclick="clearBoyleBasic()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-sm transition">
+                                Xóa ô
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Calculator Mode 2: Pumping Solver -->
+                    <div class="lg:col-span-6 bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-4">
+                        <h3 class="font-bold text-blue-900 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-pump-medical text-sky-600"></i> Chế độ 2: Giải nhanh Bài toán Số Lần Bơm (\(n\))
+                        </h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Thể tích 1 lần bơm \(V_0\) (\(\text{lít}\))</label>
+                                <input type="number" id="pump-v0" step="any" value="0.125" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Áp suất khí nạp \(p_0\) (\(\text{atm}\))</label>
+                                <input type="number" id="pump-p0" step="any" value="1" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Dung tích bình \(V_b\) (\(\text{lít}\))</label>
+                                <input type="number" id="pump-vb" step="any" value="2.5" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Áp suất đầu \(p_1\) (\(\text{atm}\))</label>
+                                <input type="number" id="pump-p1" step="any" value="1" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Số lần bơm \(n\) (lần)</label>
+                                <input type="number" id="pump-n" step="any" placeholder="Bỏ trống để tìm n" value="12" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Áp suất cuối \(p_2\) (\(\text{atm}\))</label>
+                                <input type="number" id="pump-p2" step="any" placeholder="Bỏ trống để tìm p2" value="" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-500 italic">*Mẹo: Hãy xóa trống ô <strong>Số lần bơm \(n\)</strong> hoặc ô <strong>Áp suất cuối \(p_2\)</strong> rồi nhấn nút giải.</p>
+                        <button onclick="solvePumpCalc()" class="w-full py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl shadow transition">
+                            <i class="fa-solid fa-bolt mr-1"></i> Giải Bài Toán Bơm Khí
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step by step output box -->
+                <div id="calc-result-box" class="mt-6 bg-blue-50/60 rounded-2xl p-5 border border-blue-200">
+                    <h4 class="font-bold text-blue-900 text-sm uppercase tracking-wider mb-2">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Lời giải biến đổi từng bước (KaTeX)
+                    </h4>
+                    <div id="calc-steps-content" class="text-sm text-slate-800 space-y-2">
+                        Nhấn nút <strong>"Tính Toán Chi Tiết"</strong> hoặc <strong>"Giải Bài Toán Bơm Khí"</strong> để xem hướng dẫn biến đổi công thức từng bước.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab5" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold text-slate-800 mb-1">📝 PHÒNG LUYỆN TẬP PHÂN HÓA THEO 3 CẤP ĐỘ NĂNG LỰC</h2>
+                <p class="text-sm text-slate-500 mb-6">Các bài toán điển hình trích lọc từ Tài liệu Chủ đề 2 & Sách Bài Tập Vật lý 12 (Kết nối tri thức).</p>
+
+                <div class="space-y-6">
+                    <!-- CẤP ĐỘ 1 -->
+                    <div class="rounded-2xl border border-emerald-200 bg-emerald-50/30 p-5">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <span class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold uppercase">Cấp độ 1: Nhận biết - Thông hiểu</span>
+                            <span class="text-xs font-semibold text-emerald-800">Dạng 1: Áp dụng trực tiếp biểu thức Định luật Boyle</span>
+                        </div>
+                        <p class="text-sm md:text-base text-slate-800 font-medium leading-relaxed">
+                            <strong>Bài toán 1:</strong> Nén khí đẳng nhiệt từ thể tích \(V_1 = 10 \text{ lít}\) đến thể tích \(V_2 = 6 \text{ lít}\) thì thấy áp suất của khối khí tăng thêm một lượng \(\Delta p = 50 \text{ kPa}\). Hãy xác định áp suất ban đầu \(p_1\) và áp suất lúc sau \(p_2\) của khối khí đó.
+                        </p>
+                        <div class="flex flex-wrap gap-3 mt-4">
+                            <button onclick="toggleElement('hint-lv1')" class="px-3.5 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl text-xs font-bold transition">
+                                💡 Ẩn/Hiện Gợi ý tư duy
+                            </button>
+                            <button onclick="toggleElement('sol-lv1')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition">
+                                📖 Ẩn/Hiện Lời giải chi tiết
+                            </button>
+                        </div>
+                        <div id="hint-lv1" class="hidden mt-3 p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs md:text-sm text-amber-950">
+                            <strong>Gợi ý tư duy:</strong> Khi nén khí, thể tích giảm nên áp suất tăng. Cụm từ "áp suất tăng thêm một lượng \(\Delta p = 50 \text{ kPa}\)" có nghĩa là \(p_2 = p_1 + 50 \text{ (kPa)}\). Không cần đổi đơn vị thể tích ra \(\text{m}^3\) nếu hai vế cùng để đơn vị \(\text{lít}\).
+                        </div>
+                        <div id="sol-lv1" class="hidden mt-3 p-4 bg-white border border-emerald-200 rounded-xl text-sm space-y-2">
+                            <p><strong>Lời giải chi tiết:</strong></p>
+                            <p>• Trạng thái 1: \(V_1 = 10 \text{ lít}\), áp suất \(p_1 (\text{kPa})\).</p>
+                            <p>• Trạng thái 2 (cùng nhiệt độ \(T\)): \(V_2 = 6 \text{ lít}\), áp suất \(p_2 = p_1 + \Delta p = p_1 + 50 \text{ (kPa)}\).</p>
+                            <p>• Áp dụng định luật Boyle cho quá trình đẳng nhiệt:</p>
+                            \[ p_1 V_1 = p_2 V_2 \Longleftrightarrow p_1 \cdot 10 = (p_1 + 50) \cdot 6 \]
+                            \[ \Longleftrightarrow 10 p_1 - 6 p_1 = 300 \Longleftrightarrow 4 p_1 = 300 \Longrightarrow p_1 = 75 \text{ kPa} \]
+                            <p>• Áp suất của khối khí sau khi nén là: \(p_2 = 75 + 50 = 125 \text{ kPa}\).</p>
+                        </div>
+                    </div>
+
+                    <!-- CẤP ĐỘ 2 -->
+                    <div class="rounded-2xl border border-sky-200 bg-sky-50/30 p-5">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <span class="px-3 py-1 bg-sky-600 text-white rounded-lg text-xs font-bold uppercase">Cấp độ 2: Vận dụng</span>
+                            <span class="text-xs font-semibold text-sky-800">Dạng 2: Phối hợp Áp lực cơ học & Định luật Boyle trong bài toán Bơm xe</span>
+                        </div>
+                        <p class="text-sm md:text-base text-slate-800 font-medium leading-relaxed">
+                            <strong>Bài toán 2 (Bài 9.8 SBT Vật lí 12):</strong> Người ta dùng một bơm tay có diện tích pit-tông \(S_b = 8 \text{ cm}^2\) và khoảng chạy \(l = 25 \text{ cm}\) để bơm một bánh xe đạp sao cho khi áp lực của bánh xe lên mặt đường là \(F = 350 \text{ N}\) thì diện tích tiếp xúc của bánh xe với mặt đường là \(S = 50 \text{ cm}^2\). Ban đầu bánh xe chứa không khí ở áp suất khí quyển \(p_0 = 10^5 \text{ Pa}\) và có thể tích \(V_0 = 1500 \text{ cm}^3\). Giả thiết khi áp suất không khí trong bánh xe vượt quá \(1,5 p_0\) thì thể tích của săm xe là \(V_2 = 2000 \text{ cm}^3\) và nhiệt độ không khí không đổi. Tính số lần đẩy bơm tối thiểu \(n\).
+                        </p>
+                        <div class="flex flex-wrap gap-3 mt-4">
+                            <button onclick="toggleElement('hint-lv2')" class="px-3.5 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl text-xs font-bold transition">
+                                💡 Ẩn/Hiện Gợi ý tư duy
+                            </button>
+                            <button onclick="toggleElement('sol-lv2')" class="px-3.5 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold transition">
+                                📖 Ẩn/Hiện Lời giải chi tiết
+                            </button>
+                        </div>
+                        <div id="hint-lv2" class="hidden mt-3 p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs md:text-sm text-amber-950">
+                            <strong>Gợi ý tư duy:</strong>
+                            <br>1. Tính độ tăng áp suất trong bánh xe do trọng lực đè lên diện tích tiếp xúc: \(\Delta p = \frac{F}{S}\), từ đó suy ra áp suất tuyệt đối trong bánh xe sau khi bơm là \(p_2 = p_0 + \frac{F}{S}\).
+                            <br>2. So sánh \(p_2\) với \(1,5 p_0\) để khẳng định thể tích săm xe lúc sau là \(2000 \text{ cm}^3\).
+                            <br>3. Tổng thể tích khí ở áp suất \(p_0\) trước khi nén vào bánh xe là \(V_1 = V_0 + n \cdot S_b \cdot l\).
+                        </div>
+                        <div id="sol-lv2" class="hidden mt-3 p-4 bg-white border border-sky-200 rounded-xl text-sm space-y-2">
+                            <p><strong>Lời giải chi tiết:</strong></p>
+                            <p>1. Áp suất của không khí bên trong bánh xe sau khi bơm xong phải cân bằng với áp suất khí quyển và áp suất do tải trọng đè lên mặt đường:</p>
+                            \[ p_2 = p_0 + \frac{F}{S} = 10^5 + \frac{350}{50 \cdot 10^{-4}} = 10^5 + 0,7 \cdot 10^5 = 1,7 \cdot 10^5 \text{ Pa} \]
+                            <p>2. Vì \(p_2 = 1,7 \cdot 10^5 \text{ Pa} > 1,5 p_0\) nên thể tích của bánh xe sau khi bơm là \(V_2 = 2000 \text{ cm}^3\).</p>
+                            <p>3. Thể tích không khí mỗi lần bơm đưa vào là: \(V_{\text{1 lần}} = S_b \cdot l = 8 \cdot 25 = 200 \text{ cm}^3\).</p>
+                            <p>4. Xét toàn bộ lượng khí có trong bánh xe sau \(n\) lần bơm:</p>
+                            <p>• Trạng thái 1 (ở áp suất \(p_1 = p_0 = 10^5 \text{ Pa}\)): \(V_1 = V_0 + n V_{\text{1 lần}} = 1500 + 200n \text{ (cm}^3\text{)}\).</p>
+                            <p>• Trạng thái 2: \(p_2 = 1,7 \cdot 10^5 \text{ Pa}\), \(V_2 = 2000 \text{ cm}^3\).</p>
+                            <p>• Áp dụng định luật Boyle (\(T = \text{const}\)):</p>
+                            \[ p_1 V_1 = p_2 V_2 \Longleftrightarrow 10^5 \cdot (1500 + 200n) = 1,7 \cdot 10^5 \cdot 2000 \]
+                            \[ \Longleftrightarrow 1500 + 200n = 3400 \Longleftrightarrow 200n = 1900 \Longrightarrow n = 9,5 \approx 10 \text{ lần} \]
+                        </div>
+                    </div>
+
+                    <!-- CẤP ĐỘ 3 -->
+                    <div class="rounded-2xl border border-purple-200 bg-purple-50/30 p-5">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <span class="px-3 py-1 bg-purple-700 text-white rounded-lg text-xs font-bold uppercase">Cấp độ 3: Vận dụng cao & Năng lực số / AI</span>
+                            <span class="text-xs font-semibold text-purple-900">Dạng 3: Bài toán Cực trị Thủy ngân tràn khỏi ống & Kiểm chứng số liệu</span>
+                        </div>
+                        <p class="text-sm md:text-base text-slate-800 font-medium leading-relaxed">
+                            <strong>Bài toán 3:</strong> Một ống thủy tinh tiết diện đều \(S\) có chiều dài toàn bộ \(L = 60 \text{ cm}\), một đầu kín và một đầu hở hướng lên trên. Trong ống có một cột không khí bị giam bởi một cột thủy ngân dài \(a = 40 \text{ cm}\) sao cho mặt trên của cột thủy ngân vừa ngang bằng miệng ống. Biết áp suất khí quyển là \(p_0 = 80 \text{ cmHg}\) và nhiệt độ không đổi. Khi lật ngược ống thẳng đứng để miệng ống ở dưới thì một phần thủy ngân chảy ra ngoài. Tìm độ cao cột thủy ngân \(x\) còn lại trong ống và đánh giá nghiệm vật lý.
+                        </p>
+                        <div class="flex flex-wrap gap-3 mt-4">
+                            <button onclick="toggleElement('hint-lv3')" class="px-3.5 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl text-xs font-bold transition">
+                                💡 Ẩn/Hiện Gợi ý tư duy & Tư duy Số/AI
+                            </button>
+                            <button onclick="toggleElement('sol-lv3')" class="px-3.5 py-1.5 bg-purple-700 hover:bg-purple-600 text-white rounded-xl text-xs font-bold transition">
+                                📖 Ẩn/Hiện Lời giải & Biện luận nghiệm
+                            </button>
+                        </div>
+                        <div id="hint-lv3" class="hidden mt-3 p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs md:text-sm text-amber-950 space-y-1">
+                            <p><strong>Gợi ý tư duy:</strong> Khi lật ngược ống mà thủy ngân bị chảy bớt ra ngoài, phần thủy ngân còn lại có chiều dài \(x\) sẽ nằm sát miệng ống để cân bằng. Do đó chiều dài cột khí lúc sau chiếm toàn bộ phần ống còn lại: \(l_2 = L - x = 60 - x\).</p>
+                            <p><strong>🤖 Góc Năng lực số / Tư duy phản biện với AI:</strong> Khi giải phương trình bậc hai \((80 - x)(60 - x) = 2400\), nhiều công cụ giải toán tự động hoặc AI nếu không gắn điều kiện biên vật lý sẽ lấy cả hai nghiệm. Học sinh cần dùng điều kiện vật lý \(0 < x < a = 40 \text{ cm}\) để loại nghiệm ngoại lai!</p>
+                        </div>
+                        <div id="sol-lv3" class="hidden mt-3 p-4 bg-white border border-purple-200 rounded-xl text-sm space-y-2">
+                            <p><strong>Lời giải chi tiết:</strong></p>
+                            <p>• <strong>Trạng thái 1 (Miệng ống ở trên):</strong></p>
+                            <p>Chiều dài cột không khí ban đầu: \(l_1 = L - a = 60 - 40 = 20 \text{ cm} \Rightarrow V_1 = S \cdot l_1 = 20S\).</p>
+                            <p>Áp suất khí ban đầu: \(p_1 = p_0 + a = 80 + 40 = 120 \text{ cmHg}\).</p>
+                            <p>• <strong>Trạng thái 2 (Lật ngược miệng ống xuống dưới):</strong></p>
+                            <p>Gọi \(x (\text{cm})\) là chiều cao cột thủy ngân còn lại trong ống (Điều kiện: \(0 < x < 40 \text{ cm}\)).</p>
+                            <p>Chiều dài cột không khí lúc này là: \(l_2 = L - x = 60 - x \text{ (cm)} \Rightarrow V_2 = (60 - x)S\).</p>
+                            <p>Áp suất của cột khí lúc này là: \(p_2 = p_0 - x = 80 - x \text{ (cmHg)}\).</p>
+                            <p>• <strong>Áp dụng định luật Boyle:</strong></p>
+                            \[ p_1 V_1 = p_2 V_2 \Longleftrightarrow 120 \cdot 20S = (80 - x)(60 - x)S \]
+                            \[ \Longleftrightarrow x^2 - 140x + 4800 = 2400 \Longleftrightarrow x^2 - 140x + 2400 = 0 \]
+                            <p>• Giải phương trình bậc hai ta được hai nghiệm:</p>
+                            \[ \left[ \begin{aligned} x_1 &= 120 \text{ cm (Loại vì } x < 40 \text{ cm)} \\ x_2 &= 20 \text{ cm (Nhận)} \end{aligned} \right. \]
+                            <p><strong>Kết luận:</strong> Độ cao cột thủy ngân còn lại trong ống là \(x = 20 \text{ cm}\).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab6" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-lg font-bold text-xs uppercase">KIỂM TRA ĐÁNH GIÁ NĂNG LỰC</span>
+                        <h2 class="text-xl font-bold text-slate-800 mt-1">🎯 Bài Tự Đánh Giá Trắc Nghiệm Định Luật Boyle (4 Câu Hỏi Trọng Tâm)</h2>
+                    </div>
+                    <div id="quiz-score-banner" class="hidden px-4 py-2 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-sm">
+                        Điểm số: <span id="quiz-score-val">0/4</span>
+                    </div>
+                </div>
+
+                <!-- Quiz Container -->
+                <div id="quiz-questions-container" class="space-y-6"></div>
+
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button onclick="submitQuiz()" class="px-6 py-3 bg-gradient-to-r from-blue-700 to-sky-600 hover:from-blue-600 hover:to-sky-500 text-white font-bold rounded-xl shadow-md transition">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Nộp Bài & Xem Giải Thích Chi Tiết
+                    </button>
+                    <button onclick="resetQuiz()" class="px-5 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-rotate mr-1"></i> Làm lại
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab7" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- TOOL 1: VISUAL TIMER -->
+                <div class="lg:col-span-5 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between" id="timer-card">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2 mb-1">
+                            <i class="fa-solid fa-stopwatch text-sky-600"></i> 1. Đồng Hồ Đếm Ngược (Visual Timer)
+                        </h2>
+                        <p class="text-xs text-slate-500 mb-4">Hỗ trợ thảo luận nhóm, làm bài trắc nghiệm tốc độ trên lớp kèm âm báo tự động.</p>
+
+                        <!-- Quick Select Buttons -->
+                        <div class="grid grid-cols-4 gap-2 mb-5">
+                            <button onclick="setTimerPreset(30)" class="py-1.5 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 rounded-lg text-xs font-bold border border-slate-200 transition">30 giây</button>
+                            <button onclick="setTimerPreset(60)" class="py-1.5 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 rounded-lg text-xs font-bold border border-slate-200 transition">1 phút</button>
+                            <button onclick="setTimerPreset(180)" class="py-1.5 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 rounded-lg text-xs font-bold border border-slate-200 transition">3 phút</button>
+                            <button onclick="setTimerPreset(300)" class="py-1.5 bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 rounded-lg text-xs font-bold border border-slate-200 transition">5 phút</button>
+                        </div>
+
+                        <!-- Circular Progress SVG -->
+                        <div class="relative w-56 h-56 mx-auto my-2 flex items-center justify-center">
+                            <svg class="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="10" />
+                                <circle id="timer-ring" cx="60" cy="60" r="52" fill="none" stroke="#0284c7" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.72" stroke-dashoffset="0" class="transition-all duration-300" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span id="timer-display" class="text-4xl font-extrabold tracking-tight text-slate-800 font-mono">01:00</span>
+                                <span id="timer-status" class="text-xs font-semibold text-slate-400 uppercase mt-1">Sẵn sàng</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="startPauseTimer()" id="btn-timer-toggle" class="flex-1 py-3 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl shadow transition">
+                            <i class="fa-solid fa-play mr-1"></i> Bắt đầu
+                        </button>
+                        <button onclick="resetTimer()" class="px-5 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition">
+                            <i class="fa-solid fa-rotate-left"></i> Đặt lại
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TOOL 2: LUCKY WHEEL BY 4 TEAMS -->
+                <div class="lg:col-span-7 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-dharmachakra text-amber-500"></i> 2. Vòng Quay May Mắn Theo 4 Tổ
+                            </h2>
+                            <p class="text-xs text-slate-500">Chọn Tổ hoặc nhập danh sách học sinh để gọi tên ngẫu nhiên lên bảng giải bài.</p>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <button onclick="loadTeamList('all')" id="team-all" class="team-btn px-2.5 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold">Cả lớp</button>
+                            <button onclick="loadTeamList(1)" id="team-1" class="team-btn px-2.5 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-bold">Tổ 1</button>
+                            <button onclick="loadTeamList(2)" id="team-2" class="team-btn px-2.5 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-bold">Tổ 2</button>
+                            <button onclick="loadTeamList(3)" id="team-3" class="team-btn px-2.5 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-bold">Tổ 3</button>
+                            <button onclick="loadTeamList(4)" id="team-4" class="team-btn px-2.5 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-bold">Tổ 4</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <!-- Wheel Canvas -->
+                        <div class="md:col-span-7 flex flex-col items-center relative">
+                            <canvas id="wheelCanvas" width="300" height="300" class="max-w-full h-auto"></canvas>
+                            <button onclick="spinLuckyWheel()" id="btn-spin-wheel" class="mt-3 px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white font-extrabold rounded-xl shadow-lg transition active:scale-95">
+                                <i class="fa-solid fa-dice mr-1"></i> QUAY NGẪU NHIÊN
+                            </button>
+                        </div>
+
+                        <!-- Student List Input -->
+                        <div class="md:col-span-5 space-y-2">
+                            <label class="block text-xs font-bold text-slate-700">Danh sách Học sinh (mỗi dòng 1 tên):</label>
+                            <textarea id="wheel-names-input" rows="8" oninput="updateWheelFromTextarea()" class="w-full p-3 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
+                            <p class="text-[11px] text-slate-400">Có thể dán trực tiếp danh sách học sinh của lớp vào ô trên, vòng quay sẽ cập nhật tức thì.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- LUCKY WHEEL WINNER MODAL -->
+    <div id="winner-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border border-amber-200 transform transition-all">
+            <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-3xl mx-auto mb-3">
+                🎉
+            </div>
+            <span class="text-xs font-bold uppercase tracking-widest text-sky-600">Xin chúc mừng bạn được chọn!</span>
+            <h3 id="winner-name-text" class="text-2xl font-extrabold text-slate-900 my-2">Nguyễn Văn A</h3>
+            <p class="text-sm text-slate-600 mb-5">Hãy sẵn sàng trả lời câu hỏi về <strong>Định luật Boyle</strong> để nhận điểm thưởng nhé!</p>
+            <button onclick="closeWinnerModal()" class="w-full py-3 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded-xl shadow transition">
+                Tuyệt vời! Đóng thông báo
+            </button>
+        </div>
+    </div>
+
+    <footer class="bg-slate-900 text-slate-300 border-t border-slate-800 mt-10">
+        <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs md:text-sm">
+            <div class="font-bold text-amber-300">
+                © 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+            </div>
+            <div class="text-slate-400">
+                Học liệu số Tương tác Vật lý 12 • Chuẩn Chương trình GDPT 2018 (Kết nối tri thức với cuộc sống)
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cấu hình chuẩn KaTeX bắt buộc tránh xung đột biến JS
+        const katexConfig = {
+            delimiters: [
+                {left: "\\[", right: "\\]", display: true},
+                {left: "\\(", right: "\\)", display: false}
+            ],
+            throwOnError: false
+        };
+
+        function triggerMathRender(element = document.body) {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(element, katexConfig);
+            }
+        }
+
+        // Chuyển đổi giữa 7 Tab chính
+        function switchMainTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            const targetSection = document.getElementById(tabId);
+            const targetBtn = document.getElementById('btn-' + tabId);
+            if (targetSection) targetSection.classList.remove('hidden');
+            if (targetBtn) targetBtn.classList.add('active');
+
+            if (tabId === 'tab3') {
+                setTimeout(() => {
+                    resizeAndDrawAllSims();
+                }, 50);
+            }
+            if (tabId === 'tab7') {
+                drawLuckyWheel();
+            }
+            triggerMathRender(targetSection);
+        }
+
+        // Chuyển đổi giữa 3 Phòng Mô Phỏng (3A, 3B, 3C)
+        let activeSimId = 'simA';
+        function switchSimLab(simId) {
+            activeSimId = simId;
+            document.querySelectorAll('.sim-panel').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.subtab-btn').forEach(b => {
+                b.classList.remove('active');
+                b.classList.add('bg-slate-100', 'text-slate-700');
+            });
+
+            document.getElementById(simId).classList.remove('hidden');
+            const btn = document.getElementById('btn-' + simId);
+            btn.classList.add('active');
+            btn.classList.remove('bg-slate-100', 'text-slate-700');
+
+            setTimeout(() => {
+                resizeAndDrawAllSims();
+            }, 30);
+        }
+
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+                if (!el.classList.contains('hidden')) {
+                    triggerMathRender(el);
+                }
+            }
+        }
+
+        const particlesA = [];
+        const NUM_PARTICLES_A = 42;
+        for (let i = 0; i < NUM_PARTICLES_A; i++) {
+            particlesA.push({
+                rx: Math.random(),
+                ry: Math.random(),
+                vx: (Math.random() - 0.5) * 2.5,
+                vy: (Math.random() - 0.5) * 2.5
+            });
+        }
+
+        let simAState = { V: 20, T: 300, p: 1.5, kConst: 30 };
+
+        function updateSimA() {
+            const V = parseFloat(document.getElementById('simA-V').value);
+            const T = parseFloat(document.getElementById('simA-T').value);
+            // Ở T = 300K, tích pV = 30 atm.cm3. Khi T thay đổi, pV tỉ lệ thuận với T
+            const kConst = 30 * (T / 300);
+            const p = kConst / V;
+            const muRatio = 20 / V;
+            const forceN = Math.round(p * 100); // Giả sử tiết diện S = 10 cm2 -> 1 atm tác dụng 100 N
+
+            simAState = { V, T, p, kConst };
+
+            document.getElementById('simA-V-val').textContent = `${V.toFixed(1).replace('.', ',')} cm³`;
+            document.getElementById('simA-T-val').textContent = `${T} K (${T - 273} °C)`;
+            document.getElementById('simA-p-out').textContent = `${p.toFixed(2).replace('.', ',')} atm`;
+            document.getElementById('simA-pv-out').textContent = `${kConst.toFixed(1).replace('.', ',')} atm·cm³`;
+            document.getElementById('simA-mu-out').textContent = `${muRatio.toFixed(2).replace('.', ',')}x chuẩn`;
+            document.getElementById('simA-F-out').textContent = `${forceN} N`;
+        }
+
+        function drawSimA() {
+            const canvas = document.getElementById('canvasSimA');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            // Bố cục: Trái là Xi-lanh & Phân tử, Phải là Đồ thị (p, V)
+            const cylX = 45;
+            const cylY = 55;
+            const cylW = Math.min(200, w * 0.34);
+            const cylH = h - 105;
+
+            // Vẽ thành xi-lanh
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(cylX, cylY, cylW, cylH);
+
+            // Chiều cao cột khí tỉ lệ với V (max 40 cm3)
+            const gasH = (simAState.V / 42) * (cylH - 30);
+            const pistonY = cylY + cylH - gasH;
+
+            // Nền vùng khí
+            const grad = ctx.createLinearGradient(cylX, pistonY, cylX, cylY + cylH);
+            grad.addColorStop(0, 'rgba(56, 189, 248, 0.28)');
+            grad.addColorStop(1, 'rgba(14, 165, 233, 0.12)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(cylX + 2, pistonY, cylW - 4, gasH);
+
+            // Vẽ Pit-tông và cần đẩy
+            ctx.fillStyle = '#cbd5e1';
+            ctx.fillRect(cylX + 2, pistonY - 18, cylW - 4, 18);
+            ctx.fillRect(cylX + cylW / 2 - 8, cylY - 25, 16, pistonY - cylY + 7);
+
+            // Vẽ Vector Lực áp suất khí đẩy lên Pit-tông và ngoại lực nén xuống
+            const vecLen = Math.min(75, Math.max(18, simAState.p * 22));
+            // Mũi tên lực khí đẩy lên (Màu đỏ cam)
+            drawVectorArrow(ctx, cylX + cylW * 0.28, pistonY + 12, cylX + cylW * 0.28, pistonY + 12 - vecLen, '#f43f5e', 'F_khí');
+            // Mũi tên lực nén xuống (Màu vàng)
+            drawVectorArrow(ctx, cylX + cylW * 0.72, pistonY - 25 - vecLen, cylX + cylW * 0.72, pistonY - 25, '#facc15', 'F_nén');
+
+            // Cập nhật và vẽ các hạt phân tử khí chuyển động hỗn loạn
+            const speedScale = Math.sqrt(simAState.T / 300);
+            ctx.fillStyle = '#38bdf8';
+            particlesA.forEach(pt => {
+                pt.rx += (pt.vx * speedScale) / cylW;
+                pt.ry += (pt.vy * speedScale) / Math.max(25, gasH);
+                if (pt.rx < 0.05) { pt.rx = 0.05; pt.vx *= -1; }
+                if (pt.rx > 0.95) { pt.rx = 0.95; pt.vx *= -1; }
+                if (pt.ry < 0.06) { pt.ry = 0.06; pt.vy *= -1; }
+                if (pt.ry > 0.94) { pt.ry = 0.94; pt.vy *= -1; }
+
+                const px = cylX + pt.rx * cylW;
+                const py = pistonY + pt.ry * gasH;
+                ctx.beginPath();
+                ctx.arc(px, py, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = 'bold 12px Inter';
+            ctx.fillText(`XI-LANH ĐẲNG NHIỆT (T = ${simAState.T} K)`, cylX, cylY - 32);
+
+            // VẼ ĐỒ THỊ HYPERBOL (p, V) BÊN PHẢI
+            const gx = cylX + cylW + 55;
+            const gy = h - 55;
+            const gw = w - gx - 35;
+            const gh = h - 105;
+
+            if (gw > 120) {
+                // Lưới tọa độ
+                ctx.strokeStyle = '#1e293b';
+                ctx.lineWidth = 1;
+                for (let i = 1; i <= 4; i++) {
+                    const yGrid = gy - (i / 4) * gh;
+                    ctx.beginPath();
+                    ctx.moveTo(gx, yGrid);
+                    ctx.lineTo(gx + gw, yGrid);
+                    ctx.stroke();
+                }
+
+                // Trục Op và OV
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(gx, gy - gh);
+                ctx.lineTo(gx, gy);
+                ctx.lineTo(gx + gw, gy);
+                ctx.stroke();
+
+                ctx.fillStyle = '#f8fafc';
+                ctx.font = 'bold 12px Inter';
+                ctx.fillText('p (atm)', gx - 15, gy - gh - 10);
+                ctx.fillText('V (cm³)', gx + gw - 35, gy + 25);
+
+                // Đường đẳng nhiệt chuẩn T0 = 300K (nét đứt mờ để đối chiếu khi T != 300K)
+                if (simAState.T !== 300) {
+                    ctx.strokeStyle = 'rgba(148, 163, 184, 0.45)';
+                    ctx.lineWidth = 1.5;
+                    ctx.setLineDash([4, 4]);
+                    ctx.beginPath();
+                    for (let v = 8; v <= 40; v += 0.5) {
+                        const pRef = 30 / v;
+                        const xPlot = gx + ((v - 5) / 40) * gw;
+                        const yPlot = gy - (pRef / 6) * gh;
+                        if (v === 8) ctx.moveTo(xPlot, yPlot);
+                        else ctx.lineTo(xPlot, yPlot);
+                    }
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+
+                // Đường đẳng nhiệt hiện tại p = kConst / V
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                for (let v = 8; v <= 40; v += 0.5) {
+                    const pVal = simAState.kConst / v;
+                    const xPlot = gx + ((v - 5) / 40) * gw;
+                    const yPlot = gy - (pVal / 6) * gh;
+                    if (v === 8) ctx.moveTo(xPlot, yPlot);
+                    else ctx.lineTo(xPlot, yPlot);
+                }
+                ctx.stroke();
+
+                // Điểm trạng thái hiện tại (V, p)
+                const curX = gx + ((simAState.V - 5) / 40) * gw;
+                const curY = gy - (simAState.p / 6) * gh;
+
+                // Tô diện tích hình chữ nhật OABC (minh họa S = p.V = const)
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.15)';
+                ctx.fillRect(gx, curY, curX - gx, gy - curY);
+
+                ctx.strokeStyle = '#facc15';
+                ctx.setLineDash([4, 3]);
+                ctx.beginPath();
+                ctx.moveTo(gx, curY);
+                ctx.lineTo(curX, curY);
+                ctx.lineTo(curX, gy);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.fillStyle = '#f43f5e';
+                ctx.beginPath();
+                ctx.arc(curX, curY, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#facc15';
+                ctx.font = 'bold 12px Inter';
+                ctx.fillText(`M(${simAState.V.toFixed(1)}; ${simAState.p.toFixed(2)})`, curX + 8, curY - 8);
+            }
+        }
+
+        function drawVectorArrow(ctx, x1, y1, x2, y2, color, label) {
+            const headlen = 8;
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const angle = Math.atan2(dy, dx);
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headlen * Math.cos(angle - Math.PI / 6), y2 - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - headlen * Math.cos(angle + Math.PI / 6), y2 - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.font = 'bold 11px Inter';
+            ctx.fillText(label, x2 + 6, y2);
+        }
+
+        let simBState = { V0: 125, Vb: 2.5, p1: 1.0, n: 0, p2: 1.0, pumpAnim: 0 };
+
+        function resetSimB() {
+            const V0 = parseFloat(document.getElementById('simB-V0').value);
+            const Vb = parseFloat(document.getElementById('simB-Vb').value);
+            const p1 = parseFloat(document.getElementById('simB-p1').value);
+            simBState = { V0, Vb, p1, n: 0, p2: p1, pumpAnim: 0 };
+            updateSimBUI();
+        }
+
+        function pumpAction(count) {
+            simBState.n += count;
+            // Theo định luật Boyle: p2 * Vb = p1 * Vb + n * p0 * V0 (với p0 = 1 atm, đổi V0 ra lít)
+            const V0_lit = simBState.V0 / 1000;
+            simBState.p2 = simBState.p1 + (simBState.n * 1.0 * V0_lit) / simBState.Vb;
+            simBState.pumpAnim = 1.0;
+            updateSimBUI();
+        }
+
+        function updateSimBUI() {
+            document.getElementById('simB-V0-val').textContent = `${simBState.V0} cm³ (${(simBState.V0 / 1000).toFixed(3)} L)`;
+            document.getElementById('simB-Vb-val').textContent = `${simBState.Vb.toFixed(2)} lít (${simBState.Vb * 1000} cm³)`;
+            document.getElementById('simB-p1-val').textContent = `${simBState.p1.toFixed(1)} atm`;
+            document.getElementById('simB-n-out').textContent = `${simBState.n} lần`;
+            document.getElementById('simB-p2-out').textContent = `${simBState.p2.toFixed(2).replace('.', ',')} atm`;
+        }
+
+        function drawSimB() {
+            const canvas = document.getElementById('canvasSimB');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            if (simBState.pumpAnim > 0) {
+                simBState.pumpAnim = Math.max(0, simBState.pumpAnim - 0.06);
+            }
+
+            // Vẽ ống bơm tay bên trái
+            const pumpX = 90;
+            const pumpBottom = h - 70;
+            const pumpH = 190;
+            const handleOffset = simBState.pumpAnim * 70;
+
+            // Thân ống bơm
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(pumpX - 22, pumpBottom - pumpH, 44, pumpH);
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(pumpX - 22, pumpBottom - pumpH, 44, pumpH);
+
+            // Cần bơm và tay cầm chữ T
+            const rodTopY = pumpBottom - pumpH - 65 + handleOffset;
+            ctx.fillStyle = '#cbd5e1';
+            ctx.fillRect(pumpX - 4, rodTopY, 8, 80);
+            ctx.fillStyle = '#0284c7';
+            ctx.fillRect(pumpX - 38, rodTopY - 12, 76, 14);
+
+            // Đế bơm
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(pumpX - 45, pumpBottom, 90, 14);
+
+            // Dây dẫn khí sang quả bóng
+            const ballCenterX = w * 0.65;
+            const ballCenterY = h * 0.52;
+            const baseRadius = 70;
+            const maxRadius = Math.min(125, h * 0.34);
+            const radius = simBState.p2 === 0 ? 55 : Math.min(maxRadius, baseRadius + Math.min(45, simBState.p2 * 10));
+
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(pumpX + 22, pumpBottom - 15);
+            ctx.quadraticCurveTo((pumpX + ballCenterX) / 2, h - 20, ballCenterX - radius, ballCenterY + 20);
+            ctx.stroke();
+
+            // Vẽ Quả bóng chứa khí
+            const ballGrad = ctx.createRadialGradient(ballCenterX - 20, ballCenterY - 20, 10, ballCenterX, ballCenterY, radius);
+            ballGrad.addColorStop(0, '#0ea5e9');
+            ballGrad.addColorStop(1, '#1e3a8a');
+            ctx.fillStyle = ballGrad;
+            ctx.beginPath();
+            ctx.arc(ballCenterX, ballCenterY, radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#7dd3fc';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Vẽ các hạt phân tử trong bóng (số lượng hạt tăng theo áp suất p2)
+            const numDots = Math.min(140, Math.floor(simBState.p2 * 22));
+            ctx.fillStyle = '#fde047';
+            for (let i = 0; i < numDots; i++) {
+                const angle = (i * 137.5) + Date.now() * 0.002 * (i % 2 === 0 ? 1 : -1);
+                const rDist = ((i * 19) % Math.max(10, radius - 12));
+                const dx = ballCenterX + rDist * Math.cos(angle);
+                const dy = ballCenterY + rDist * Math.sin(angle);
+                ctx.beginPath();
+                ctx.arc(dx, dy, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Hiển thị thông số trực tiếp trên Canvas
+            ctx.fillStyle = '#f8fafc';
+            ctx.font = 'bold 14px Inter';
+            ctx.fillText(`ỐNG BƠM: V₀ = ${simBState.V0} cm³`, pumpX - 45, 42);
+            ctx.fillText(`QUẢ BÓNG: V_b = ${simBState.Vb} lít | Áp suất p₂ = ${simBState.p2.toFixed(2)} atm`, ballCenterX - 140, 42);
+            ctx.font = '12px Inter';
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillText(`Phương trình Boyle: p₁·V_b + n·p₀·V₀ = p₂·V_b`, ballCenterX - 130, h - 25);
+        }
+
+        let simCState = { angle: 0, l0: 30, h: 15, p0: 76, p: 76, l: 30 };
+
+        function setTubeAngle(deg) {
+            document.getElementById('simC-angle').value = deg;
+            updateSimC();
+        }
+
+        function updateSimC() {
+            const angle = parseFloat(document.getElementById('simC-angle').value);
+            const l0 = parseFloat(document.getElementById('simC-l0').value);
+            const h = parseFloat(document.getElementById('simC-h').value);
+            const p0 = 76; // cmHg
+
+            const rad = (angle * Math.PI) / 180;
+            // Áp suất khí bị giam: p = p0 + h * sin(alpha)
+            const p = p0 + h * Math.sin(rad);
+            // Định luật Boyle: p0 * l0 = p * l => l = (p0 * l0) / p
+            const l = (p0 * l0) / p;
+
+            simCState = { angle, l0, h, p0, p, l };
+
+            let posDesc = 'Nghiêng';
+            if (angle === 0) posDesc = 'Nằm ngang';
+            else if (angle === 90) posDesc = 'Thẳng đứng - Miệng ở trên';
+            else if (angle === -90) posDesc = 'Thẳng đứng - Miệng ở dưới';
+
+            document.getElementById('simC-angle-val').textContent = `${angle}° (${posDesc})`;
+            document.getElementById('simC-l0-val').textContent = `${l0.toFixed(1)} cm`;
+            document.getElementById('simC-h-val').textContent = `${h.toFixed(1)} cmHg`;
+            document.getElementById('simC-p-out').textContent = `${p.toFixed(1).replace('.', ',')} cmHg`;
+            document.getElementById('simC-l-out').textContent = `${l.toFixed(1).replace('.', ',')} cm`;
+        }
+
+        function drawSimC() {
+            const canvas = document.getElementById('canvasSimC');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            const cx = w * 0.5;
+            const cy = h * 0.52;
+
+            // Vẽ đường chuẩn nằm ngang
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+            ctx.setLineDash([5, 5]);
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(40, cy);
+            ctx.lineTo(w - 40, cy);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.save();
+            ctx.translate(cx, cy);
+            // Xoay ống theo góc alpha (trong Canvas góc âm là quay ngược chiều kim đồng hồ tức hướng lên)
+            ctx.rotate((-simCState.angle * Math.PI) / 180);
+
+            const scale = 3.2; // 1 cm = 3.2 px
+            const totalTubeCm = 75;
+            const tubeLenPx = totalTubeCm * scale;
+            const tubeRadius = 16;
+            const startX = -tubeLenPx / 2;
+
+            // Cột khí l và cột thủy ngân h
+            const gasPx = Math.min(tubeLenPx - 20, simCState.l * scale);
+            const hgPx = simCState.h * scale;
+
+            // Vẽ vùng khí bị giam (bên trái gắn với đáy kín)
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.3)';
+            ctx.fillRect(startX, -tubeRadius + 2, gasPx, (tubeRadius - 2) * 2);
+
+            // Vẽ giọt / cột thủy ngân màu bạc ánh kim
+            const hgGrad = ctx.createLinearGradient(0, -tubeRadius, 0, tubeRadius);
+            hgGrad.addColorStop(0, '#94a3b8');
+            hgGrad.addColorStop(0.5, '#f8fafc');
+            hgGrad.addColorStop(1, '#64748b');
+            ctx.fillStyle = hgGrad;
+            ctx.fillRect(startX + gasPx, -tubeRadius + 2, hgPx, (tubeRadius - 2) * 2);
+
+            // Thành ống thủy tinh (kín đầu trái, hở đầu phải)
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(startX + tubeLenPx, -tubeRadius);
+            ctx.lineTo(startX, -tubeRadius);
+            ctx.lineTo(startX, tubeRadius);
+            ctx.lineTo(startX + tubeLenPx, tubeRadius);
+            ctx.stroke();
+
+            // Nhãn kích thước trên ống
+            ctx.fillStyle = '#f8fafc';
+            ctx.font = 'bold 12px Inter';
+            ctx.fillText(`Khí: l = ${simCState.l.toFixed(1)} cm`, startX + 8, -tubeRadius - 8);
+            ctx.fillStyle = '#facc15';
+            ctx.fillText(`Hg: h = ${simCState.h} cm`, startX + gasPx, tubeRadius + 18);
+
+            ctx.restore();
+
+            // Chú thích công thức trên màn hình
+            ctx.fillStyle = '#f8fafc';
+            ctx.font = 'bold 14px Inter';
+            ctx.fillText(`Áp suất khí quyển p₀ = 76 cmHg | Góc nghiêng α = ${simCState.angle}°`, 25, 32);
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '13px Inter';
+            ctx.fillText(`Công thức: p = p₀ + h·sin(α) = ${simCState.p.toFixed(1)} cmHg  ⇒  l = (p₀·l₀)/p = ${simCState.l.toFixed(1)} cm`, 25, h - 20);
+        }
+
+        function resizeAndDrawAllSims() {
+            ['canvasSimA', 'canvasSimB', 'canvasSimC'].forEach(cid => {
+                const c = document.getElementById(cid);
+                if (c && c.parentElement) {
+                    const rect = c.parentElement.getBoundingClientRect();
+                    if (rect.width > 0 && rect.height > 0) {
+                        c.width = rect.width;
+                        c.height = rect.height;
+                    }
+                }
+            });
+            drawSimA();
+            drawSimB();
+            drawSimC();
+        }
+
+        function animateSimulations() {
+            const tab3El = document.getElementById('tab3');
+            if (tab3El && !tab3El.classList.contains('hidden')) {
+                if (activeSimId === 'simA') drawSimA();
+                else if (activeSimId === 'simB') drawSimB();
+                else if (activeSimId === 'simC') drawSimC();
+            }
+            requestAnimationFrame(animateSimulations);
+        }
+
+        function clearBoyleBasic() {
+            document.getElementById('calc-p1').value = '';
+            document.getElementById('calc-v1').value = '';
+            document.getElementById('calc-p2').value = '';
+            document.getElementById('calc-v2').value = '';
+        }
+
+        function solveBoyleBasic() {
+            const p1Raw = document.getElementById('calc-p1').value.trim();
+            const v1Raw = document.getElementById('calc-v1').value.trim();
+            const p2Raw = document.getElementById('calc-p2').value.trim();
+            const v2Raw = document.getElementById('calc-v2').value.trim();
+            const pUnit = document.getElementById('calc-p-unit').value;
+            const vUnit = document.getElementById('calc-v-unit').value;
+
+            const inputs = [
+                { key: 'p1', val: p1Raw === '' ? null : parseFloat(p1Raw) },
+                { key: 'v1', val: v1Raw === '' ? null : parseFloat(v1Raw) },
+                { key: 'p2', val: p2Raw === '' ? null : parseFloat(p2Raw) },
+                { key: 'v2', val: v2Raw === '' ? null : parseFloat(v2Raw) }
+            ];
+
+            const missing = inputs.filter(item => item.val === null || isNaN(item.val));
+            const outEl = document.getElementById('calc-steps-content');
+
+            if (missing.length !== 1) {
+                outEl.innerHTML = `<div class="p-3 bg-rose-100 text-rose-800 rounded-xl font-semibold">⚠️ Vui lòng nhập chính xác 3 đại lượng đã biết và bỏ trống đúng 1 đại lượng cần tìm!</div>`;
+                return;
+            }
+
+            const p1 = inputs[0].val;
+            const v1 = inputs[1].val;
+            const p2 = inputs[2].val;
+            const v2 = inputs[3].val;
+            const target = missing[0].key;
+
+            let html = '';
+            if (target === 'p2') {
+                const res = (p1 * v1) / v2;
+                document.getElementById('calc-p2').value = res.toFixed(3);
+                html = `
+                    <p><strong>Bước 1: Tóm tắt trạng thái của lượng khí xác định (đẳng nhiệt \(T = \\text{const}\)):</strong></p>
+                    <p>• Trạng thái 1: \\(p_1 = ${p1} \\text{ ${pUnit}}\\), \\(V_1 = ${v1} \\text{ ${vUnit}}\\)</p>
+                    <p>• Trạng thái 2: \\(V_2 = ${v2} \\text{ ${vUnit}}\\), \\(p_2 = ?\\)</p>
+                    <p><strong>Bước 2: Áp dụng hệ thức Định luật Boyle:</strong></p>
+                    \\[ p_1 V_1 = p_2 V_2 \\Longrightarrow p_2 = \\frac{p_1 V_1}{V_2} \\]
+                    <p><strong>Bước 3: Thay số và tính kết quả:</strong></p>
+                    \\[ p_2 = \\frac{${p1} \\cdot ${v1}}{${v2}} = ${res.toFixed(3)} \\text{ ${pUnit}} \\]
+                `;
+            } else if (target === 'v2') {
+                const res = (p1 * v1) / p2;
+                document.getElementById('calc-v2').value = res.toFixed(3);
+                html = `
+                    <p><strong>Bước 1: Tóm tắt trạng thái của lượng khí:</strong></p>
+                    <p>• Trạng thái 1: \\(p_1 = ${p1} \\text{ ${pUnit}}\\), \\(V_1 = ${v1} \\text{ ${vUnit}}\\)</p>
+                    <p>• Trạng thái 2: \\(p_2 = ${p2} \\text{ ${pUnit}}\\), \\(V_2 = ?\\)</p>
+                    <p><strong>Bước 2: Áp dụng hệ thức Định luật Boyle:</strong></p>
+                    \\[ p_1 V_1 = p_2 V_2 \\Longrightarrow V_2 = \\frac{p_1 V_1}{p_2} = \\frac{${p1} \\cdot ${v1}}{${p2}} = ${res.toFixed(3)} \\text{ ${vUnit}} \\]
+                `;
+            } else if (target === 'p1') {
+                const res = (p2 * v2) / v1;
+                document.getElementById('calc-p1').value = res.toFixed(3);
+                html = `
+                    <p><strong>Áp dụng Định luật Boyle tìm áp suất ban đầu \\(p_1\\):</strong></p>
+                    \\[ p_1 V_1 = p_2 V_2 \\Longrightarrow p_1 = \\frac{p_2 V_2}{V_1} = \\frac{${p2} \\cdot ${v2}}{${v1}} = ${res.toFixed(3)} \\text{ ${pUnit}} \\]
+                `;
+            } else if (target === 'v1') {
+                const res = (p2 * v2) / p1;
+                document.getElementById('calc-v1').value = res.toFixed(3);
+                html = `
+                    <p><strong>Áp dụng Định luật Boyle tìm thể tích ban đầu \\(V_1\\):</strong></p>
+                    \\[ p_1 V_1 = p_2 V_2 \\Longrightarrow V_1 = \\frac{p_2 V_2}{p_1} = \\frac{${p2} \\cdot ${v2}}{${p1}} = ${res.toFixed(3)} \\text{ ${vUnit}} \\]
+                `;
+            }
+
+            outEl.innerHTML = html;
+            triggerMathRender(outEl);
+        }
+
+        function solvePumpCalc() {
+            const v0 = parseFloat(document.getElementById('pump-v0').value);
+            const p0 = parseFloat(document.getElementById('pump-p0').value);
+            const vb = parseFloat(document.getElementById('pump-vb').value);
+            const p1 = parseFloat(document.getElementById('pump-p1').value || '0');
+            const nRaw = document.getElementById('pump-n').value.trim();
+            const p2Raw = document.getElementById('pump-p2').value.trim();
+            const outEl = document.getElementById('calc-steps-content');
+
+            if (nRaw === '' && p2Raw !== '') {
+                const p2 = parseFloat(p2Raw);
+                const n = ((p2 - p1) * vb) / (p0 * v0);
+                document.getElementById('pump-n').value = Math.round(n * 100) / 100;
+                outEl.innerHTML = `
+                    <p><strong>Giải bài toán tìm Số lần bơm \\(n\\):</strong></p>
+                    <p>• Xét toàn bộ lượng khí được đưa vào bình dung tích \\(V_b = ${vb} \\text{ lít}\\):</p>
+                    \\[ p_1 V_b + n p_0 V_0 = p_2 V_b \\Longrightarrow n = \\frac{(p_2 - p_1) V_b}{p_0 V_0} \\]
+                    <p>• Thay số vào biểu thức:</p>
+                    \\[ n = \\frac{(${p2} - ${p1}) \\cdot ${vb}}{${p0} \\cdot ${v0}} = ${n.toFixed(2)} \\text{ lần} \\]
+                `;
+            } else {
+                const n = parseFloat(nRaw || '10');
+                const p2 = p1 + (n * p0 * v0) / vb;
+                document.getElementById('pump-p2').value = p2.toFixed(3);
+                outEl.innerHTML = `
+                    <p><strong>Giải bài toán tìm Áp suất khí trong bình \\(p_2\\) sau \\(n = ${n}\\) lần bơm:</strong></p>
+                    <p>• Phương trình bảo toàn lượng khí trong quá trình đẳng nhiệt:</p>
+                    \\[ p_1 V_b + n p_0 V_0 = p_2 V_b \\Longrightarrow p_2 = p_1 + \\frac{n p_0 V_0}{V_b} \\]
+                    <p>• Thay số vào biểu thức:</p>
+                    \\[ p_2 = ${p1} + \\frac{${n} \\cdot ${p0} \\cdot ${v0}}{${vb}} = ${p2.toFixed(3)} \\text{ atm} \\]
+                `;
+            }
+            triggerMathRender(outEl);
+        }
+
+        const quizData = [
+            {
+                q: "Câu 1: Đồ thị biểu diễn hai đường đẳng nhiệt của cùng một lượng khí lý tưởng trong hệ tọa độ \\((p, V)\\) ứng với hai nhiệt độ \\(T_1\\) (đường dưới) và \\(T_2\\) (đường nằm trên). Mối quan hệ đúng về nhiệt độ của hai đường đẳng nhiệt này là:",
+                options: [
+                    "A. \\(T_2 > T_1\\)",
+                    "B. \\(T_2 = T_1\\)",
+                    "C. \\(T_2 < T_1\\)",
+                    "D. \\(T_2 \\le T_1\\)"
+                ],
+                correct: 0,
+                explain: "Kẻ một đường đẳng tích \\(V = \\text{const}\\) cắt hai đường đẳng nhiệt: cùng một thể tích \\(V\\), đường nằm trên có áp suất \\(p_2 > p_1\\) nên nhiệt độ tuyệt đối tương ứng \\(T_2 > T_1\\)."
+            },
+            {
+                q: "Câu 2: Cho một lượng khí được giãn đẳng nhiệt từ thể tích \\(V_1 = 3 \\text{ lít}\\) đến thể tích \\(V_2 = 4 \\text{ lít}\\), biết ban đầu áp suất khí là \\(p_1 = 8 \\cdot 10^5 \\text{ Pa}\\). Trong quá trình này, áp suất của chất khí đã tăng hay giảm một lượng bao nhiêu?",
+                options: [
+                    "A. Tăng thêm \\(2 \\cdot 10^5 \\text{ Pa}\\)",
+                    "B. Giảm đi \\(2 \\cdot 10^5 \\text{ Pa}\\)",
+                    "C. Giảm xuống còn \\(2 \\cdot 10^5 \\text{ Pa}\\)",
+                    "D. Tăng thêm \\(6 \\cdot 10^5 \\text{ Pa}\\)"
+                ],
+                correct: 1,
+                explain: "Áp dụng định luật Boyle: \\(p_1 V_1 = p_2 V_2 \\Rightarrow p_2 = \\frac{8 \\cdot 10^5 \\cdot 3}{4} = 6 \\cdot 10^5 \\text{ Pa}\\). Vậy áp suất của khí đã giảm một lượng là \\(\\Delta p = p_1 - p_2 = 8 \\cdot 10^5 - 6 \\cdot 10^5 = 2 \\cdot 10^5 \\text{ Pa}\\)."
+            },
+            {
+                q: "Câu 3: Một bọt khí có thể tích \\(V_1 = 1,5 \\text{ cm}^3\\) được tạo ra từ khoang tàu ngầm đang lặn ở độ sâu \\(h = 100 \\text{ m}\\) dưới mực nước biển. Coi nhiệt độ của bọt khí không đổi, khối lượng riêng của nước biển là \\(\\rho = 1,00 \\cdot 10^3 \\text{ kg/m}^3\\), áp suất khí quyển \\(p_0 = 1,00 \\cdot 10^5 \\text{ Pa}\\) và \\(g = 10 \\text{ m/s}^2\\). Khi bọt khí này nổi lên tới mặt nước thì thể tích của nó bằng:",
+                options: [
+                    "A. \\(15,0 \\text{ cm}^3\\)",
+                    "B. \\(11,0 \\text{ cm}^3\\)",
+                    "C. \\(16,5 \\text{ cm}^3\\)",
+                    "D. \\(18,2 \\text{ cm}^3\\)"
+                ],
+                correct: 2,
+                explain: "Áp suất tại độ sâu \\(100 \\text{ m}\\): \\(p_1 = p_0 + \\rho g h = 10^5 + 10^3 \\cdot 10 \\cdot 100 = 11 \\cdot 10^5 \\text{ Pa}\\). Khi lên mặt nước \\(p_2 = p_0 = 10^5 \\text{ Pa}\\). Theo định luật Boyle: \\(V_2 = \\frac{p_1 V_1}{p_2} = 11 \\cdot 1,5 = 16,5 \\text{ cm}^3\\)."
+            },
+            {
+                q: "Câu 4: Một quả bóng da có dung tích không đổi \\(V = 1,25 \\text{ lít}\\). Người ta dùng bơm đưa không khí ở áp suất \\(p_0 = 10^5 \\text{ Pa}\\) vào bóng, mỗi lần bơm được \\(V_0 = 125 \\text{ cm}^3\\) không khí. Biết trước khi bơm, trong bóng đã có không khí ở áp suất \\(p_1 = 10^5 \\text{ Pa}\\) và nhiệt độ không đổi. Áp suất không khí trong quả bóng sau \\(n = 20\\) lần bơm bằng:",
+                options: [
+                    "A. \\(2,0 \\cdot 10^5 \\text{ Pa}\\)",
+                    "B. \\(3,0 \\cdot 10^5 \\text{ Pa}\\)",
+                    "C. \\(1,5 \\cdot 10^5 \\text{ Pa}\\)",
+                    "D. \\(4,5 \\cdot 10^5 \\text{ Pa}\\)"
+                ],
+                correct: 1,
+                explain: "Đổi \\(V = 1,25 \\text{ lít} = 1250 \\text{ cm}^3\\). Tổng thể tích khí ở áp suất \\(10^5 \\text{ Pa}\\) là \\(V_{\\Sigma} = 1250 + 20 \\cdot 125 = 3750 \\text{ cm}^3\\). Theo định luật Boyle: \\(p_2 = \\frac{10^5 \\cdot 3750}{1250} = 3,0 \\cdot 10^5 \\text{ Pa}\\)."
+            }
+        ];
+
+        function renderQuizUI() {
+            const container = document.getElementById('quiz-questions-container');
+            container.innerHTML = quizData.map((item, idx) => `
+                <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3" id="quiz-card-${idx}">
+                    <p class="font-bold text-slate-800 text-sm md:text-base">${item.q}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                        ${item.options.map((opt, oIdx) => `
+                            <label class="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-200 cursor-pointer hover:border-sky-400 transition">
+                                <input type="radio" name="q-${idx}" value="${oIdx}" class="w-4 h-4 text-sky-600">
+                                <span class="text-sm text-slate-700">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="quiz-exp-${idx}" class="hidden mt-3 p-3.5 rounded-xl text-xs md:text-sm"></div>
+                </div>
+            `).join('');
+            triggerMathRender(container);
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            quizData.forEach((item, idx) => {
+                const selected = document.querySelector(`input[name="q-${idx}"]:checked`);
+                const expEl = document.getElementById(`quiz-exp-${idx}`);
+                expEl.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-950', 'border-emerald-300', 'bg-rose-50', 'text-rose-950', 'border-rose-300');
+
+                if (selected && parseInt(selected.value) === item.correct) {
+                    score++;
+                    expEl.classList.add('bg-emerald-50', 'text-emerald-950', 'border', 'border-emerald-300');
+                    expEl.innerHTML = `<strong>✅ Chính xác!</strong> ${item.explain}`;
+                } else {
+                    expEl.classList.add('bg-rose-50', 'text-rose-950', 'border', 'border-rose-300');
+                    expEl.innerHTML = `<strong>❌ Chưa đúng (Đáp án đúng: ${item.options[item.correct].split('.')[0]}).</strong> ${item.explain}`;
+                }
+                // BẮT BUỘC gọi lại renderMathInElement ngay sau khi in lời giải
+                renderMathInElement(expEl, katexConfig);
+            });
+
+            const banner = document.getElementById('quiz-score-banner');
+            banner.classList.remove('hidden');
+            document.getElementById('quiz-score-val').textContent = `${score}/${quizData.length} (${(score / quizData.length) * 10} điểm)`;
+        }
+
+        function resetQuiz() {
+            renderQuizUI();
+            document.getElementById('quiz-score-banner').classList.add('hidden');
+        }
+
+        let timerTotal = 60;
+        let timerRemaining = 60;
+        let timerInterval = null;
+        let timerRunning = false;
+        const RING_CIRCUMFERENCE = 326.72;
+
+        function setTimerPreset(seconds) {
+            pauseTimer();
+            timerTotal = seconds;
+            timerRemaining = seconds;
+            document.getElementById('timer-card').classList.remove('timer-finished');
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const m = String(Math.floor(timerRemaining / 60)).padStart(2, '0');
+            const s = String(timerRemaining % 60).padStart(2, '0');
+            document.getElementById('timer-display').textContent = `${m}:${s}`;
+            const offset = RING_CIRCUMFERENCE * (1 - timerRemaining / Math.max(1, timerTotal));
+            document.getElementById('timer-ring').style.strokeDashoffset = offset;
+        }
+
+        function playBeepAlert() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.18, ctx.currentTime + idx * 0.15);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.15 + 0.14);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + idx * 0.15);
+                    osc.stop(ctx.currentTime + idx * 0.15 + 0.15);
+                });
+            } catch (e) {}
+        }
+
+        function startPauseTimer() {
+            if (timerRunning) {
+                pauseTimer();
+            } else {
+                if (timerRemaining <= 0) timerRemaining = timerTotal;
+                document.getElementById('timer-card').classList.remove('timer-finished');
+                timerRunning = true;
+                document.getElementById('btn-timer-toggle').innerHTML = `<i class="fa-solid fa-pause mr-1"></i> Tạm dừng`;
+                document.getElementById('timer-status').textContent = 'Đang chạy...';
+                timerInterval = setInterval(() => {
+                    timerRemaining--;
+                    updateTimerDisplay();
+                    if (timerRemaining <= 0) {
+                        pauseTimer();
+                        document.getElementById('timer-status').textContent = 'HẾT GIỜ!';
+                        document.getElementById('timer-card').classList.add('timer-finished');
+                        playBeepAlert();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            timerRunning = false;
+            clearInterval(timerInterval);
+            document.getElementById('btn-timer-toggle').innerHTML = `<i class="fa-solid fa-play mr-1"></i> Tiếp tục`;
+            document.getElementById('timer-status').textContent = 'Tạm dừng';
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timerRemaining = timerTotal;
+            document.getElementById('timer-card').classList.remove('timer-finished');
+            document.getElementById('btn-timer-toggle').innerHTML = `<i class="fa-solid fa-play mr-1"></i> Bắt đầu`;
+            document.getElementById('timer-status').textContent = 'Sẵn sàng';
+            updateTimerDisplay();
+        }
+
+        // VÒNG QUAY MAY MẮN THEO 4 TỔ
+        const teamsData = {
+            1: ["Tổ 1 - Minh Anh", "Tổ 1 - Quốc Bảo", "Tổ 1 - Hoàng Châu", "Tổ 1 - Tiến Đạt"],
+            2: ["Tổ 2 - Khánh Duy", "Tổ 2 - Hương Giang", "Tổ 2 - Gia Hân", "Tổ 2 - Tuấn Kiệt"],
+            3: ["Tổ 3 - Bảo Lâm", "Tổ 3 - Trà My", "Tổ 3 - Thiện Nhân", "Tổ 3 - Thảo Nguyên"],
+            4: ["Tổ 4 - Minh Quân", "Tổ 4 - Thanh Tâm", "Tổ 4 - Anh Thư", "Tổ 4 - Đức Trọng"]
+        };
+
+        let wheelNames = [];
+        let wheelAngle = 0;
+        let isSpinning = false;
+        const wheelColors = ['#0284c7', '#2563eb', '#4f46e5', '#0d9488', '#d97706', '#e11d48', '#7c3aed', '#059669'];
+
+        function loadTeamList(teamKey) {
+            document.querySelectorAll('.team-btn').forEach(b => {
+                b.classList.remove('bg-blue-600', 'text-white');
+                b.classList.add('bg-slate-100', 'text-slate-700');
+            });
+            const activeBtn = document.getElementById('team-' + teamKey);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-blue-600', 'text-white');
+                activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
+            }
+
+            if (teamKey === 'all') {
+                wheelNames = [...teamsData[1], ...teamsData[2], ...teamsData[3], ...teamsData[4]];
+            } else {
+                wheelNames = [...teamsData[teamKey]];
+            }
+            document.getElementById('wheel-names-input').value = wheelNames.join('\n');
+            drawLuckyWheel();
+        }
+
+        function updateWheelFromTextarea() {
+            const raw = document.getElementById('wheel-names-input').value;
+            wheelNames = raw.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+            drawLuckyWheel();
+        }
+
+        function drawLuckyWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const r = cx - 14;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const items = wheelNames.length > 0 ? wheelNames : ["Nhập tên HS"];
+            const arc = (Math.PI * 2) / items.length;
+
+            items.forEach((name, i) => {
+                const start = wheelAngle + i * arc;
+                const end = start + arc;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, start, end);
+                ctx.closePath();
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(start + arc / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 11px Inter';
+                ctx.fillText(name.slice(0, 18), r - 12, 4);
+                ctx.restore();
+            });
+
+            // Tâm vòng quay
+            ctx.beginPath();
+            ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+            ctx.fillStyle = '#0f172a';
+            ctx.fill();
+            ctx.strokeStyle = '#facc15';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Kim chỉ bên phải (Góc 0 rad)
+            ctx.fillStyle = '#f43f5e';
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 2, cy - 10);
+            ctx.lineTo(canvas.width - 2, cy + 10);
+            ctx.lineTo(canvas.width - 22, cy);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function spinLuckyWheel() {
+            if (isSpinning || wheelNames.length === 0) return;
+            isSpinning = true;
+            const spinDuration = 3500;
+            const startAngle = wheelAngle;
+            const totalRotation = (Math.PI * 2 * (5 + Math.random() * 4));
+            const startTime = performance.now();
+
+            function step(now) {
+                const progress = Math.min(1, (now - startTime) / spinDuration);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                wheelAngle = startAngle + totalRotation * easeOut;
+                drawLuckyWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    isSpinning = false;
+                    const normalized = ((2 * Math.PI - (wheelAngle % (2 * Math.PI))) + 2 * Math.PI) % (2 * Math.PI);
+                    const arc = (2 * Math.PI) / wheelNames.length;
+                    const index = Math.floor(normalized / arc) % wheelNames.length;
+                    const winner = wheelNames[index];
+                    playBeepAlert();
+                    document.getElementById('winner-name-text').textContent = winner;
+                    const modal = document.getElementById('winner-modal');
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        function closeWinnerModal() {
+            const modal = document.getElementById('winner-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        window.addEventListener('resize', () => {
+            resizeAndDrawAllSims();
+        });
+
+        window.onload = function () {
+            triggerMathRender();
+            updateSimA();
+            resetSimB();
+            updateSimC();
+            renderQuizUI();
+            loadTeamList('all');
+            resizeAndDrawAllSims();
+            animateSimulations();
+        };
+    </script>
+</body>
+</html>
