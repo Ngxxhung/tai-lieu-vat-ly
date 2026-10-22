@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vật Lý 10 - Chủ Đề 12: Chuyển Động Ném</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initMath()"></script>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #1e3a8a;
+            --accent: #0284c7;
+            --accent-hover: #0369a1;
+            --bg-light: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        .copyright-banner {
+            font-size: 0.95rem;
+            color: #bae6fd;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.1);
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 999px;
+        }
+
+        /* Navigation Tabs */
+        .nav-container {
+            background-color: var(--card-bg);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            max-width: 1400px;
+            margin: 0 auto;
+            list-style: none;
+            scrollbar-width: thin;
+        }
+
+        .nav-tabs li {
+            flex: 0 0 auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.9rem 1.1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--accent);
+            background-color: #f1f5f9;
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            background-color: #e0f2fe;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 1300px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* UI Components */
+        .card {
+            background: var(--card-bg);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-sim {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .grid-sim {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .alert-box {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background-color: #e0f2fe;
+            border-left-color: var(--accent);
+            color: #0c4a6e;
+        }
+
+        .alert-warning {
+            background-color: #fef3c7;
+            border-left-color: var(--warning);
+            color: #78350f;
+        }
+
+        .alert-danger {
+            background-color: #fee2e2;
+            border-left-color: var(--danger);
+            color: #7f1d1d;
+        }
+
+        .alert-success {
+            background-color: #dcfce7;
+            border-left-color: var(--success);
+            color: #14532d;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Controls & Sliders */
+        .control-group {
+            margin-bottom: 1rem;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .control-group input[type="number"], .control-group select, .control-group textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: #64748b;
+        }
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+        .btn-success:hover {
+            background-color: #15803d;
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+        }
+        .btn-warning:hover {
+            background-color: #b45309;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+
+        /* Simulation Canvas */
+        .canvas-wrapper {
+            background: #0f172a;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #334155;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .telemetry-item {
+            background: #f1f5f9;
+            padding: 0.6rem;
+            border-radius: 0.375rem;
+            border-left: 3px solid var(--accent);
+            font-size: 0.85rem;
+        }
+
+        .telemetry-item span {
+            display: block;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--primary);
+        }
+
+        /* Practice & Quiz */
+        .practice-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 0.25rem;
+            color: white;
+            margin-right: 0.5rem;
+        }
+
+        .badge-l1 { background-color: var(--success); }
+        .badge-l2 { background-color: var(--accent); }
+        .badge-l3 { background-color: #7c3aed; }
+
+        .hidden-box {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border: 1px dashed var(--border-color);
+            border-radius: 0.5rem;
+        }
+
+        .quiz-option {
+            display: block;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            background-color: #f1f5f9;
+            border-color: var(--accent);
+        }
+
+        .quiz-option input {
+            margin-right: 0.75rem;
+        }
+
+        /* Classroom Tools */
+        .timer-display {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .timer-Alert {
+            animation: blinkRed 0.6s infinite alternate;
+        }
+
+        @keyframes blinkRed {
+            from { background-color: #ffffff; }
+            to { background-color: #fecaca; }
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            animation: fadeIn 0.25s ease;
+        }
+
+        footer {
+            background-color: var(--primary);
+            color: #94a3b8;
+            text-align: center;
+            padding: 1.25rem;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        footer strong {
+            color: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>CHỦ ĐỀ 12: CHUYỂN ĐỘNG NÉM (VẬT LÝ 10)</h1>
+    <div class="copyright-banner">© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</div>
+</header>
+
+<nav class="nav-container">
+    <ul class="nav-tabs">
+        <li><button class="tab-btn active" onclick="switchTab('tab1')">🚀 Tab 1: Khởi động & Thực tiễn</button></li>
+        <li><button class="tab-btn" onclick="switchTab('tab2')">📖 Tab 2: Cốt lõi Lý thuyết</button></li>
+        <li><button class="tab-btn" onclick="switchTab('tab3a')">🔬 Tab 3A: Mô phỏng Ném ngang</button></li>
+        <li><button class="tab-btn" onclick="switchTab('tab3b')">🔬 Tab 3B: Mô phỏng Ném xiên</button></li>
+        <li><button class="tab-btn" onclick="switchTab('tab4')">🧮 Tab 4: Máy tính Vật lý</button></li>
+        <li><button class="tab-btn" onclick="switchTab('tab5')">📝 Tab 5: Luyện tập Phân hóa</button></li>
+        <li><button class="tab-btn" onclick="switchTab('tab6')">🎯 Tab 6: Tự đánh giá (Quiz)</button></li>
+        <li><button class="tab-btn" onclick="switchTab('tab7')">🛠️ Tab 7: Tiện ích Lớp học</button></li>
+    </ul>
+</nav>
+
+<main>
+    <!-- ==================== TAB 1: KHỞI ĐỘNG ==================== -->
+    <section id="tab1" class="tab-content active">
+        <div class="card">
+            <h2 class="card-title">🚀 Tình huống thực tiễn & Mâu thuẫn nhận thức</h2>
+            <p style="margin-bottom: 1rem;">Trong đời sống, thể thao và kỹ thuật hàng không, chúng ta bắt gặp vô số chuyển động của các vật được phóng đi trong không trung dưới tác dụng của trọng lực. Hãy cùng suy ngẫm 3 câu hỏi thách thức trực giác dưới đây:</p>
+            
+            <div class="grid-2">
+                <div class="alert-box alert-info">
+                    <h3>📦 Tình huống 1: Máy bay thả hàng cứu trợ</h3>
+                    <p>Một máy bay chở hàng đang bay ngang ở độ cao \(H = 490\text{ m}\) với vận tốc không đổi \(v_{0} = 100\text{ m/s}\) đến vùng lũ lụt. Nếu phi công đợi máy bay bay đến <strong>đúng phía trên mục tiêu</strong> mới nhấn nút thả gói hàng thì gói hàng có rơi trúng đích không? Người đứng dưới mặt đất và phi công trên máy bay sẽ nhìn thấy quỹ đạo của gói hàng khác nhau như thế nào?</p>
+                </div>
+
+                <div class="alert-box alert-warning">
+                    <h3>⚖️ Tình huống 2: Viên đạn bắn ngang và viên đạn rơi tự do</h3>
+                    <p>Tại cùng một độ cao \(h\), viên bi A có khối lượng \(m_{A}\) được thả rơi tự do, đồng thời viên bi B có khối lượng \(m_{B}\) được bắn mạnh theo phương nằm ngang với vận tốc \(v_{0} = 250\text{ m/s}\). Bỏ qua sức cản không khí, trực giác mách bảo viên bi B đi quãng đường dài hơn rất nhiều nên sẽ chạm đất muộn hơn. <strong>Dự đoán này đúng hay sai? Tại sao?</strong></p>
+                </div>
+            </div>
+
+            <div class="alert-box alert-success" style="margin-top: 0.5rem;">
+                <h3>🏃 Tình huống 3: Bí quyết Vàng trong nhảy xa và đẩy tạ</h3>
+                <p>Trong môn nhảy xa hoặc ném lao, vận động viên luôn cố gắng chạy lấy đà để đạt tốc độ ban đầu \(v_{0}\) lớn nhất. Tuy nhiên, nếu dậm nhảy với góc \(\alpha\) quá thấp thì người sẽ chạm cát sớm; nếu nhảy góc \(\alpha\) quá cao gần thẳng đứng thì chỉ nhảy bổng lên cao mà không đi xa được. Vậy <strong>góc dậm nhảy \(\alpha\) bằng bao nhiêu độ</strong> sẽ giúp đạt tầm bay xa \(L\) cực đại?</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 1.2rem;">
+                <button class="btn" onclick="switchTab('tab2')">Khám phá Bản chất Vật lý để giải mã ➔</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 2: LÝ THUYẾT ==================== -->
+    <section id="tab2" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">📖 1. Nguyên lý phân tích chuyển động ném</h2>
+            <p>Khi bỏ qua sức cản của không khí, mọi vật bị ném chỉ chịu tác dụng của <strong>trọng lực \(\vec{P} = m\vec{g}\)</strong> hướng thẳng đứng từ trên xuống dưới (gia tốc \(\vec{a} = \vec{g}\)). Do đó, ta phân tích chuyển động phức tạp của vật thành <strong>hai chuyển động thành phần độc lập</strong> theo hai trục tọa độ vuông góc \(Ox\) (nằm ngang) và \(Oy\) (thẳng đứng):</p>
+            <ul style="margin: 0.75rem 0 0.75rem 1.5rem;">
+                <li><strong>Thành phần theo phương ngang \(Ox\):</strong> Không có lực tác dụng (\(a_{x} = 0\)) \(\Rightarrow\) Chuyển động <strong>thẳng đều</strong>.</li>
+                <li><strong>Thành phần theo phương thẳng đứng \(Oy\):</strong> Chịu tác dụng của trọng lực (\(|a_{y}| = g\)) \(\Rightarrow\) Chuyển động <strong>thẳng biến đổi đều</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h2 class="card-title">📐 2. Chuyển động Ném ngang</h2>
+                <p><strong>Điều kiện:</strong> Vật được ném từ độ cao \(H\) với vận tốc đầu \(\vec{v}_{0}\) theo phương nằm ngang. Chọn gốc \(O\) tại vị trí ném, \(Ox\) hướng theo \(\vec{v}_{0}\), \(Oy\) thẳng đứng hướng xuống:</p>
+                \[
+                \begin{cases}
+                a_{x} = 0 \implies v_{x} = v_{0} \implies d_{x} = x = v_{0}t \\
+                a_{y} = g \implies v_{y} = gt \implies d_{y} = y = \frac{1}{2}gt^{2}
+                \end{cases}
+                \]
+                <p><strong>Phương trình quỹ đạo (nhánh Parabol):</strong></p>
+                \[ y = \frac{g}{2v_{0}^{2}}x^{2} \]
+                <p><strong>Thời gian rơi đến khi chạm đất (\(y = H\)):</strong></p>
+                \[ t = \sqrt{\frac{2H}{g}} \]
+                <p><strong>Tầm bay xa cực đại theo phương ngang:</strong></p>
+                \[ L = x_{\max} = v_{0}t = v_{0}\sqrt{\frac{2H}{g}} \]
+                <p><strong>Vận tốc tại thời điểm \(t\) và góc hợp với phương ngang:</strong></p>
+                \[ v = \sqrt{v_{x}^{2} + v_{y}^{2}} = \sqrt{v_{0}^{2} + (gt)^{2}} \quad ; \quad \tan\beta = \frac{v_{y}}{v_{x}} = \frac{gt}{v_{0}} \]
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">🏹 3. Chuyển động Ném xiên (từ mặt đất)</h2>
+                <p><strong>Điều kiện:</strong> Vật được ném lên từ mặt đất với vận tốc đầu \(\vec{v}_{0}\) hợp với phương ngang góc ném \(\alpha\). Chọn gốc \(O\) tại vị trí ném, \(Ox\) nằm ngang, \(Oy\) thẳng đứng hướng lên:</p>
+                \[
+                \begin{cases}
+                v_{0x} = v_{0}\cos\alpha \implies v_{x} = v_{0}\cos\alpha \implies x = (v_{0}\cos\alpha)t \\
+                v_{0y} = v_{0}\sin\alpha \implies v_{y} = v_{0}\sin\alpha - gt \implies y = (v_{0}\sin\alpha)t - \frac{1}{2}gt^{2}
+                \end{cases}
+                \]
+                <p><strong>Phương trình quỹ đạo (Parabol):</strong></p>
+                \[ y = -\frac{g}{2v_{0}^{2}\cos^{2}\alpha}x^{2} + (\tan\alpha)x \]
+                <p><strong>Thời gian đạt tầm cao cực đại (\(v_{y} = 0\)) & Tổng thời gian bay:</strong></p>
+                \[ t_{I} = \frac{v_{0}\sin\alpha}{g} \quad \implies \quad t_{\text{bay}} = 2t_{I} = \frac{2v_{0}\sin\alpha}{g} \]
+                <p><strong>Tầm bay cao cực đại \(H\) và Tầm bay xa \(L\):</strong></p>
+                \[ H = y_{\max} = \frac{v_{0}^{2}\sin^{2}\alpha}{2g} \quad ; \quad L = x_{\max} = \frac{v_{0}^{2}\sin 2\alpha}{g} \]
+                <p><em>(Nếu ném từ độ cao \(y_{0} = h_{0}\) so với đất: \(y = h_{0} + (v_{0}\sin\alpha)t - \frac{1}{2}gt^{2}\)).</em></p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">📊 4. Bảng hệ thống ký hiệu và đơn vị chuẩn SI</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ký hiệu đại lượng</th>
+                            <th>Tên gọi và Ý nghĩa vật lý</th>
+                            <th>Đơn vị chuẩn (SI)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>\(\vec{v}_{0}, v_{0}\)</td>
+                            <td>Vectơ vận tốc ban đầu và tốc độ ban đầu của vật lúc ném</td>
+                            <td>\(\text{m/s}\)</td>
+                        </tr>
+                        <tr>
+                            <td>\(\vec{v}_{x}, \vec{v}_{y}\)</td>
+                            <td>Các thành phần vận tốc theo trục nằm ngang \(Ox\) và trục thẳng đứng \(Oy\)</td>
+                            <td>\(\text{m/s}\)</td>
+                        </tr>
+                        <tr>
+                            <td>\(\vec{g}, g\)</td>
+                            <td>Vectơ gia tốc rơi tự do (gia tốc trọng trường), luôn hướng thẳng đứng xuống dưới</td>
+                            <td>\(\mathrm{m/s^2}\)</td>
+                        </tr>
+                        <tr>
+                            <td>\(\alpha\)</td>
+                            <td>Góc ném (góc hợp bởi vectơ vận tốc đầu \(\vec{v}_{0}\) và phương nằm ngang)</td>
+                            <td>Độ (\(^\circ\)) hoặc \(\text{rad}\)</td>
+                        </tr>
+                        <tr>
+                            <td>\(H\)</td>
+                            <td>Độ cao ban đầu (trong ném ngang) hoặc Tầm bay cao cực đại (trong ném xiên)</td>
+                            <td>\(\text{m}\)</td>
+                        </tr>
+                        <tr>
+                            <td>\(L\)</td>
+                            <td>Tầm bay xa của vật tính theo phương nằm ngang</td>
+                            <td>\(\text{m}\)</td>
+                        </tr>
+                        <tr>
+                            <td>\(t\)</td>
+                            <td>Thời gian chuyển động của vật trong không khí</td>
+                            <td>\(\text{s}\)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">⚠️ 5. Bẫy lý thuyết & Sai lầm học sinh thường gặp</h2>
+            <div class="grid-2">
+                <div class="alert-box alert-danger">
+                    <strong>❌ Bẫy 1: Tại đỉnh cao nhất \(I\) của quỹ đạo ném xiên, vận tốc và gia tốc của vật đều bằng \(0\).</strong><br>
+                    <strong>✅ Bản chất đúng:</strong> Tại đỉnh cao nhất \(I\), chỉ có thành phần vận tốc thẳng đứng bằng không (\(v_{y} = 0\)), còn vận tốc toàn phần của vật đạt giá trị cực tiểu \(v_{\min} = v_{x} = v_{0}\cos\alpha \neq 0\). Đặc biệt, gia tốc của vật tại mọi vị trí (kể cả tại đỉnh \(I\)) luôn không đổi và bằng \(\vec{a} = \vec{g}\) hướng thẳng đứng xuống dưới!
+                </div>
+                <div class="alert-box alert-danger">
+                    <strong>❌ Bẫy 2: Vật có khối lượng \(M\) lớn hơn hoặc được ném ngang mạnh hơn (\(v_{0}\) lớn hơn) sẽ chạm đất khác thời điểm với vật rơi tự do.</strong><br>
+                    <strong>✅ Bản chất đúng:</strong> Khi bỏ qua sức cản không khí, thời gian rơi trong ném ngang \(t = \sqrt{\frac{2H}{g}}\) <strong>không phụ thuộc vào khối lượng \(M\)</strong> và <strong>không phụ thuộc vào vận tốc ném ngang \(v_{0}\)</strong>. Hai vật ở cùng độ cao \(H\) luôn chạm đất cùng một lúc.
+                </div>
+                <div class="alert-box alert-warning">
+                    <strong>❌ Bẫy 3: Hai góc ném khác nhau luôn cho hai tầm xa \(L\) khác nhau.</strong><br>
+                    <strong>✅ Bản chất đúng:</strong> Khi ném từ mặt đất với cùng tốc độ đầu \(v_{0}\), hai góc ném phụ nhau (\(\alpha_{1} + \alpha_{2} = 90^\circ\), ví dụ \(30^\circ\) và \(60^\circ\)) sẽ có \(\sin(2\alpha_{1}) = \sin(2\alpha_{2})\) nên cho <strong>cùng một tầm bay xa \(L\)</strong> (nhưng tầm cao \(H\) và thời gian bay khác nhau). Tầm xa đạt cực đại khi \(\alpha = 45^\circ\).
+                </div>
+                <div class="alert-box alert-warning">
+                    <strong>❌ Bẫy 4: Nhầm lẫn dấu của phương trình quỹ đạo khi đổi hệ trục tọa độ.</strong><br>
+                    <strong>✅ Bản chất đúng:</strong> Trong ném ngang, nếu chọn gốc \(O\) tại vị trí ném, \(Oy\) hướng xuống thì \(y = \frac{g}{2v_{0}^{2}}x^{2}\). Nhưng nếu chọn gốc \(O\) tại mặt đất và \(Oy\) hướng lên đi qua điểm ném thì phương trình tọa độ phải là \(y = H - \frac{1}{2}gt^{2} = H - \frac{g}{2v_{0}^{2}}x^{2}\).
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 3A: MÔ PHỎNG NÉM NGANG ==================== -->
+    <section id="tab3a" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">🔬 Tab 3A: Phòng thí nghiệm ảo - Chuyển động Ném ngang vs Rơi tự do</h2>
+            <p style="margin-bottom: 1rem;"><strong>Mô hình vật lý:</strong> So sánh đồng thời chuyển động của <strong>Viên bi A (Ném ngang)</strong> với vận tốc đầu \(\vec{v}_{0}\) và <strong>Viên bi B (Rơi tự do)</strong> được thả cùng lúc từ độ cao \(H\), kèm hiệu ứng chụp ảnh hoạt nghiệm (stroboscopic).</p>
+
+            <div class="grid-sim">
+                <!-- Controls -->
+                <div>
+                    <div class="control-group">
+                        <label><span>Độ cao ban đầu \(H\):</span> <strong id="lbl_h3a">45 m</strong></label>
+                        <input type="range" id="inp_h3a" min="10" max="100" step="1" value="45" oninput="updateSim3AParams()">
+                    </div>
+                    <div class="control-group">
+                        <label><span>Vận tốc ném ngang \(v_{0}\):</span> <strong id="lbl_v3a">20 m/s</strong></label>
+                        <input type="range" id="inp_v3a" min="5" max="45" step="1" value="20" oninput="updateSim3AParams()">
+                    </div>
+                    <div class="control-group">
+                        <label><span>Khối lượng vật \(m\):</span> <strong id="lbl_m3a">2.0 kg</strong></label>
+                        <input type="range" id="inp_m3a" min="0.5" max="10" step="0.5" value="2.0" oninput="updateSim3AParams()">
+                    </div>
+                    <div class="control-group">
+                        <label><span>Gia tốc trọng trường \(g\):</span> <strong id="lbl_g3a">9.8 m/s²</strong></label>
+                        <select id="inp_g3a" onchange="updateSim3AParams()">
+                            <option value="9.8">Trái Đất chuẩn (g = 9,8 m/s²)</option>
+                            <option value="10">Lấy tròn giải bài tập (g = 10 m/s²)</option>
+                            <option value="1.67">Mặt Trăng (g = 1,67 m/s²)</option>
+                            <option value="3.7">Hỏa Tinh (g = 3,7 m/s²)</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label style="justify-content: flex-start; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" id="chk_vec3a" checked onchange="drawSim3A()"> Hiển thị vectơ \(\vec{v}, \vec{v}_{x}, \vec{v}_{y}\) & Hoạt nghiệm
+                        </label>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="startSim3A()">▶ Bắt đầu / Thả bi</button>
+                        <button class="btn btn-warning" onclick="pauseSim3A()">⏸ Tạm dừng</button>
+                        <button class="btn btn-secondary" onclick="resetSim3A()">🔄 Đặt lại</button>
+                    </div>
+
+                    <div class="alert-box alert-info" style="margin-top: 1rem; font-size: 0.88rem;">
+                        <strong>💡 Hướng dẫn thao tác "Thử và Sai":</strong><br>
+                        1. Giữ nguyên \(H = 45\text{ m}\), tăng \(v_{0}\) từ \(15\text{ m/s}\) lên gấp đôi (\(30\text{ m/s}\)): Quan sát xem thời gian chạm đất \(t\) và tầm xa \(L\) thay đổi ra sao?<br>
+                        2. Thay đổi khối lượng \(m\): Quỹ đạo và thời gian rơi có thay đổi không? Còn động năng \(W_{d}\) thì sao?
+                    </div>
+                </div>
+
+                <!-- Canvas & Outputs -->
+                <div>
+                    <div class="canvas-wrapper">
+                        <canvas id="canvas3a" width="760" height="420"></canvas>
+                    </div>
+
+                    <div class="telemetry-grid">
+                        <div class="telemetry-item">Thời gian \(t\): <span id="out_t3a">0.00 s</span></div>
+                        <div class="telemetry-item">Tọa độ \(x\): <span id="out_x3a">0.00 m</span></div>
+                        <div class="telemetry-item">Độ cao còn lại: <span id="out_y3a">45.0 m</span></div>
+                        <div class="telemetry-item">Vận tốc \(v_{x}\): <span id="out_vx3a">20.0 m/s</span></div>
+                        <div class="telemetry-item">Vận tốc \(v_{y}\): <span id="out_vy3a">0.0 m/s</span></div>
+                        <div class="telemetry-item">Tổng vận tốc \(v\): <span id="out_v3a">20.0 m/s</span></div>
+                        <div class="telemetry-item">Tầm xa cực đại \(L\): <span id="out_L3a">60.6 m</span></div>
+                        <div class="telemetry-item">Động năng \(W_{d}\): <span id="out_wd3a">400 J</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 3B: MÔ PHỎNG NÉM XIÊN ==================== -->
+    <section id="tab3b" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">🔬 Tab 3B: Phòng thí nghiệm ảo - Chuyển động Ném xiên & Khảo sát Góc bắn</h2>
+            <p style="margin-bottom: 1rem;"><strong>Mô hình vật lý:</strong> Khảo sát quỹ đạo Parabol của vật ném xiên từ độ cao ban đầu \(h_{0}\) với góc ném \(\alpha\). Hệ thống cho phép <strong>lưu lại các quỹ đạo trước đó</strong> để so sánh tầm cao \(H\) và tầm xa \(L\) của các góc bắn phụ nhau.</p>
+
+            <div class="grid-sim">
+                <!-- Controls -->
+                <div>
+                    <div class="control-group">
+                        <label><span>Vận tốc ban đầu \(v_{0}\):</span> <strong id="lbl_v3b">25 m/s</strong></label>
+                        <input type="range" id="inp_v3b" min="10" max="40" step="1" value="25" oninput="updateSim3BParams()">
+                    </div>
+                    <div class="control-group">
+                        <label><span>Góc ném \(\alpha\):</span> <strong id="lbl_a3b">45°</strong></label>
+                        <input type="range" id="inp_a3b" min="10" max="85" step="1" value="45" oninput="updateSim3BParams()">
+                    </div>
+                    <div class="control-group">
+                        <label><span>Độ cao điểm ném \(h_{0}\):</span> <strong id="lbl_h3b">0 m</strong></label>
+                        <input type="range" id="inp_h3b" min="0" max="30" step="1" value="0" oninput="updateSim3BParams()">
+                    </div>
+                    <div class="control-group">
+                        <label><span>Gia tốc trọng trường \(g\):</span> <strong id="lbl_g3b">10 m/s²</strong></label>
+                        <select id="inp_g3b" onchange="updateSim3BParams()">
+                            <option value="10">Lấy tròn (g = 10 m/s²)</option>
+                            <option value="9.8">Chuẩn Trái Đất (g = 9,8 m/s²)</option>
+                        </select>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="startSim3B()">🚀 Khai hỏa / Ném vật</button>
+                        <button class="btn btn-warning" onclick="pauseSim3B()">⏸ Tạm dừng</button>
+                        <button class="btn btn-secondary" onclick="clearTraces3B()">🧹 Xóa vết quỹ đạo cũ</button>
+                    </div>
+
+                    <div class="alert-box alert-info" style="margin-top: 1rem; font-size: 0.88rem;">
+                        <strong>💡 Hướng dẫn thao tác "Thử và Sai":</strong><br>
+                        1. Đặt \(h_{0} = 0\text{ m}\), giữ \(v_{0} = 25\text{ m/s}\). Lần lượt bắn với góc \(\alpha = 30^\circ\), \(\alpha = 60^\circ\) và \(\alpha = 45^\circ\). Quan sát điểm rơi của góc \(30^\circ\) và \(60^\circ\)!<br>
+                        2. Chú ý vectơ vận tốc \(\vec{v}\) khi vật đi qua đỉnh cao nhất \(I\): Thành phần nào triệt tiêu?
+                    </div>
+                </div>
+
+                <!-- Canvas & Outputs -->
+                <div>
+                    <div class="canvas-wrapper">
+                        <canvas id="canvas3b" width="760" height="420"></canvas>
+                    </div>
+
+                    <div class="telemetry-grid">
+                        <div class="telemetry-item">Thời gian \(t\): <span id="out_t3b">0.00 s</span></div>
+                        <div class="telemetry-item">Tọa độ \(x\): <span id="out_x3b">0.00 m</span></div>
+                        <div class="telemetry-item">Độ cao \(y\): <span id="out_y3b">0.00 m</span></div>
+                        <div class="telemetry-item">Vận tốc \(v_{x}\): <span id="out_vx3b">17.7 m/s</span></div>
+                        <div class="telemetry-item">Vận tốc \(v_{y}\): <span id="out_vy3b">17.7 m/s</span></div>
+                        <div class="telemetry-item">Độ cao cực đại \(H_{\max}\): <span id="out_H3b">15.63 m</span></div>
+                        <div class="telemetry-item">Tầm bay xa \(L\): <span id="out_L3b">62.50 m</span></div>
+                        <div class="telemetry-item">Tổng thời gian bay: <span id="out_Ttotal3b">3.54 s</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 4: MÁY TÍNH VẬT LÝ ==================== -->
+    <section id="tab4" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">🧮 Máy tính Tham số Chuyển động Ném (Giải từng bước bằng KaTeX)</h2>
+            <p style="margin-bottom: 1rem;">Chọn chế độ bài toán, nhập các đại lượng đã biết và <strong>bỏ trống đại lượng cần tìm</strong>. Hệ thống sẽ tự động phân tích và trình bày lời giải chi tiết.</p>
+
+            <div class="grid-2">
+                <div>
+                    <div class="control-group">
+                        <label>Chế độ bài toán:</label>
+                        <select id="calc_mode" onchange="toggleCalcFields()">
+                            <option value="horizontal">1. Chuyển động Ném ngang (Tìm H, v₀, t, L, v chạm đất)</option>
+                            <option value="oblique">2. Chuyển động Ném xiên từ mặt đất (Tính đầy đủ từ v₀ và α)</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Gia tốc trọng trường \(g\text{ (m/s}^2)\):</label>
+                        <input type="number" id="calc_g" value="10" step="0.1">
+                    </div>
+
+                    <!-- Fields for Horizontal -->
+                    <div id="fields_horizontal">
+                        <div class="control-group">
+                            <label>Độ cao ban đầu \(H\text{ (m)}\) (Bỏ trống nếu cần tìm):</label>
+                            <input type="number" id="calc_H" placeholder="VD: 45" step="any">
+                        </div>
+                        <div class="control-group">
+                            <label>Vận tốc ban đầu \(v_{0}\text{ (m/s)}\) (Bỏ trống nếu cần tìm):</label>
+                            <input type="number" id="calc_v0" placeholder="VD: 20" step="any">
+                        </div>
+                        <div class="control-group">
+                            <label>Thời gian rơi \(t\text{ (s)}\) (Bỏ trống nếu cần tìm):</label>
+                            <input type="number" id="calc_t" placeholder="VD: 3" step="any">
+                        </div>
+                        <div class="control-group">
+                            <label>Tầm bay xa \(L\text{ (m)}\) (Bỏ trống nếu cần tìm):</label>
+                            <input type="number" id="calc_L" placeholder="VD: 60" step="any">
+                        </div>
+                    </div>
+
+                    <!-- Fields for Oblique -->
+                    <div id="fields_oblique" style="display: none;">
+                        <div class="control-group">
+                            <label>Vận tốc ném ban đầu \(v_{0}\text{ (m/s)}\):</label>
+                            <input type="number" id="calc_ob_v0" value="20" step="any">
+                        </div>
+                        <div class="control-group">
+                            <label>Góc ném \(\alpha\text{ (độ)}\):</label>
+                            <input type="number" id="calc_ob_alpha" value="30" step="any">
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn" onclick="solvePhysicsCalc()">⚡ Phân tích & Giải chi tiết</button>
+                        <button class="btn btn-secondary" onclick="clearCalcInputs()">Xóa dữ liệu</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div id="calc_output" class="alert-box alert-info" style="min-height: 260px;">
+                        <strong>📋 Kết quả và các bước biến đổi công thức sẽ hiển thị tại đây...</strong><br>
+                        <em>Gợi ý thử nhanh: Nhập \(H = 80\), \(v_{0} = 30\), để trống \(t\) và \(L\) rồi bấm "Phân tích & Giải chi tiết".</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 5: LUYỆN TẬP PHÂN HÓA ==================== -->
+    <section id="tab5" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">📝 Phòng Luyện tập Phân hóa 3 Cấp độ</h2>
+
+            <!-- Bài 1 -->
+            <div class="card" style="border-left: 5px solid var(--success);">
+                <h3><span class="practice-badge badge-l1">Cấp độ 1: Nhận biết - Thông hiểu</span> Bài toán Ném ngang cơ bản</h3>
+                <p style="margin-top: 0.5rem;">Một vật được ném theo phương nằm ngang với vận tốc ban đầu \(v_{0} = 30\text{ m/s}\) ở độ cao \(H = 80\text{ m}\) so với mặt đất. Bỏ qua sức cản của không khí, lấy \(g = 10\mathrm{ m/s^2}\).<br>
+                a) Viết phương trình quỹ đạo của vật (chọn gốc tọa độ \(O\) tại vị trí ném, \(Ox\) hướng theo \(\vec{v}_{0}\), \(Oy\) thẳng đứng hướng xuống).<br>
+                b) Tính thời gian vật rơi chạm đất và tầm bay xa \(L\) của vật.<br>
+                c) Xác định độ lớn vận tốc và góc hợp bởi vectơ vận tốc của vật với phương ngang ngay khi chạm đất.</p>
+                
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="toggleBox('hint1')">💡 Gợi ý tư duy</button>
+                    <button class="btn" onclick="toggleBox('sol1')">📖 Xem lời giải chi tiết</button>
+                </div>
+
+                <div id="hint1" class="hidden-box">
+                    <strong>Gợi ý:</strong> Áp dụng công thức chuyển động rơi tự do theo trục \(Oy\) để tìm thời gian \(t = \sqrt{\frac{2H}{g}}\). Sau đó thay vào chuyển động thẳng đều trên trục \(Ox\) để tính \(L = v_{0}t\). Độ lớn vận tốc chạm đất tính theo định lý Pythagore: \(v = \sqrt{v_{x}^{2} + v_{y}^{2}}\).
+                </div>
+
+                <div id="sol1" class="hidden-box">
+                    <strong>Lời giải chi tiết:</strong>
+                    <p>a) Phương trình chuyển động theo hai trục \(Ox, Oy\): \(x = v_{0}t = 30t\text{ (m)}\) và \(y = \frac{1}{2}gt^{2} = 5t^{2}\text{ (m)}\).<br>
+                    Rút \(t = \frac{x}{30}\) thế vào \(y\), ta được phương trình quỹ đạo:</p>
+                    \[ y = 5\left(\frac{x}{30}\right)^{2} = \frac{x^{2}}{180}\text{ (m)} \quad (\text{với } x \ge 0) \]
+                    <p>b) Thời gian từ lúc ném đến khi chạm đất (\(y = H = 80\text{ m}\)):</p>
+                    \[ t = \sqrt{\frac{2H}{g}} = \sqrt{\frac{2 \cdot 80}{10}} = 4\text{ s} \]
+                    <p>Tầm bay xa của vật theo phương ngang:</p>
+                    \[ L = v_{0}t = 30 \cdot 4 = 120\text{ m} \]
+                    <p>c) Ngay khi chạm đất, các thành phần vận tốc là \(v_{x} = v_{0} = 30\text{ m/s}\) và \(v_{y} = gt = 10 \cdot 4 = 40\text{ m/s}\). Độ lớn vận tốc chạm đất:</p>
+                    \[ v = \sqrt{v_{x}^{2} + v_{y}^{2}} = \sqrt{30^{2} + 40^{2}} = 50\text{ m/s} \]
+                    <p>Góc \(\beta\) hợp bởi vectơ vận tốc \(\vec{v}\) và phương ngang: \(\tan\beta = \frac{v_{y}}{v_{x}} = \frac{40}{30} = \frac{4}{3} \implies \beta \approx 53,13^\circ\).</p>
+                </div>
+            </div>
+
+            <!-- Bài 2 -->
+            <div class="card" style="border-left: 5px solid var(--accent);">
+                <h3><span class="practice-badge badge-l2">Cấp độ 2: Vận dụng</span> Bài toán Đánh bóng Golf qua hồ nước</h3>
+                <p style="margin-top: 0.5rem;">Một quả bóng golf được người chơi đánh đi từ mặt đất với vận tốc ban đầu \(v_{0} = 40\text{ m/s}\) hợp với phương ngang một góc \(\alpha = 45^\circ\). Quả bóng bay về hướng một cái hồ cách chỗ đứng đánh bóng \(100\text{ m}\), biết hồ rộng \(50\text{ m}\) (tính theo hướng bay của quả bóng). Lấy \(g = 10\mathrm{ m/s^2}\) và bỏ qua sức cản không khí.<br>
+                a) Tính độ cao cực đại \(H\) và thời gian quả bóng bay trong không khí.<br>
+                b) Viết phương trình quỹ đạo của quả bóng và xác định xem <strong>quả bóng có bị rơi xuống hồ nước hay không?</strong></p>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="toggleBox('hint2')">💡 Gợi ý tư duy</button>
+                    <button class="btn" onclick="toggleBox('sol2')">📖 Xem lời giải chi tiết</button>
+                </div>
+
+                <div id="hint2" class="hidden-box">
+                    <strong>Gợi ý:</strong> Hồ nước bắt đầu ở vị trí cách điểm đánh \(100\text{ m}\) và kết thúc ở bờ bên kia cách điểm đánh \(100 + 50 = 150\text{ m}\). Hãy tính tầm bay xa \(L\) của quả bóng rồi so sánh với khoảng \([100\text{ m}; 150\text{ m}]\).
+                </div>
+
+                <div id="sol2" class="hidden-box">
+                    <strong>Lời giải chi tiết:</strong>
+                    <p>a) Thời gian quả bóng đi lên đến đỉnh cao nhất (\(v_{y} = 0\)):</p>
+                    \[ t_{1} = \frac{v_{0}\sin\alpha}{g} = \frac{40\sin 45^\circ}{10} = 2\sqrt{2}\text{ s} \implies t_{\text{bay}} = 2t_{1} = 4\sqrt{2} \approx 5,66\text{ s} \]
+                    <p>Độ cao cực đại mà quả bóng đạt được:</p>
+                    \[ H = \frac{v_{0}^{2}\sin^{2}\alpha}{2g} = \frac{40^{2} \cdot \left(\frac{\sqrt{2}}{2}\right)^{2}}{2 \cdot 10} = 40\text{ m} \]
+                    <p>b) Chọn gốc tọa độ \(O\) tại vị trí đánh bóng, \(Ox\) nằm ngang hướng về phía hồ, \(Oy\) thẳng đứng hướng lên. Phương trình quỹ đạo:</p>
+                    \[ y = -\frac{g}{2v_{0}^{2}\cos^{2}\alpha}x^{2} + (\tan\alpha)x = -\frac{10}{2 \cdot 40^{2} \cdot 0,5}x^{2} + x = -\frac{x^{2}}{160} + x\text{ (m)} \]
+                    <p>Khi chạm đất (\(y = 0\)), tầm bay xa của quả bóng là:</p>
+                    \[ L = \frac{v_{0}^{2}\sin 2\alpha}{g} = \frac{40^{2} \cdot \sin 90^\circ}{10} = 160\text{ m} \]
+                    <p>Vì hồ nước nằm trong khoảng từ \(x_{1} = 100\text{ m}\) đến bờ xa nhất \(x_{2} = 100 + 50 = 150\text{ m}\), mà \(L = 160\text{ m} > 150\text{ m}\) nên <strong>quả bóng bay vượt qua khỏi hồ và rơi trên mặt đất phía bên kia hồ</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Bài 3 -->
+            <div class="card" style="border-left: 5px solid #7c3aed;">
+                <h3><span class="practice-badge badge-l3">Cấp độ 3: Vận dụng cao + Tích hợp Năng lực số & AI</span> Phân tích Video thể thao & Kiểm chứng AI</h3>
+                <p style="margin-top: 0.5rem;">Một cầu thủ bóng rổ cao \(2,0\text{ m}\) đứng cách rổ \(x = 10\text{ m}\) theo phương nằm ngang để thực hiện cú ném 3 điểm. Miệng rổ ở độ cao \(y_{\text{rổ}} = 3,05\text{ m}\) so với mặt sân. Cầu thủ ném bóng từ độ cao ngang đầu (\(y_{0} = 2,0\text{ m}\)) với góc ném \(\alpha = 45^\circ\) so với phương ngang. Lấy \(g = 9,8\mathrm{ m/s^2}\), bỏ qua lực cản không khí.<br>
+                a) Tính tốc độ ban đầu \(v_{0}\) cần thiết để bóng đi lọt chính xác vào tâm rổ.<br>
+                b) <strong>[Tình huống Năng lực số & Đạo đức/Kiểm chứng AI - YCCĐ 10.A1.2, 10.C3.1]:</strong> Một học sinh dùng phần mềm phân tích video chuyển động kết hợp hỏi một Chatbot AI. Chatbot AI trả lời nhanh: <em>"Vì bóng ném góc \(45^\circ\) đi xa \(10\text{ m}\) nên áp dụng ngay công thức \(L = \frac{v_{0}^{2}\sin 2\alpha}{g} \implies v_{0} = \sqrt{gL} = \sqrt{9,8 \cdot 10} \approx 9,90\text{ m/s}\)"</em>. Hãy phân tích xem lập luận của AI mắc sai lầm vật lý (ảo giác/thiếu điều kiện biên) ở đâu và viết lại câu lệnh (prompt) chuẩn xác để AI giải đúng.</p>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="toggleBox('hint3')">💡 Gợi ý tư duy</button>
+                    <button class="btn" onclick="toggleBox('sol3')">📖 Xem lời giải chi tiết</button>
+                </div>
+
+                <div id="hint3" class="hidden-box">
+                    <strong>Gợi ý:</strong> Chọn gốc tọa độ \(O\) tại vị trí ném bóng (ở độ cao \(2\text{ m}\)). Khi đó vị trí của rổ so với điểm ném có tọa độ \(x = 10\text{ m}\) và độ cao chênh lệch \(y = 3,05 - 2,0 = 1,05\text{ m} \neq 0\). Chú ý điều kiện áp dụng công thức tầm xa \(L\).
+                </div>
+
+                <div id="sol3" class="hidden-box">
+                    <strong>Lời giải chi tiết:</strong>
+                    <p>a) Chọn hệ trục tọa độ \(Oxy\) có gốc \(O\) tại điểm ném (độ cao \(2,0\text{ m}\)), \(Ox\) nằm ngang, \(Oy\) thẳng đứng hướng lên. Tọa độ của rổ trong hệ quy chiếu này là \(x = 10\text{ m}\) và \(y = 3,05 - 2,0 = 1,05\text{ m}\).<br>
+                    Phương trình quỹ đạo của bóng với \(\alpha = 45^\circ\) (\(\tan 45^\circ = 1\), \(\cos^{2}45^\circ = 0,5\)):</p>
+                    \[ y = x\tan 45^\circ - \frac{gx^{2}}{2v_{0}^{2}\cos^{2}45^\circ} \iff 1,05 = 10 - \frac{9,8 \cdot 10^{2}}{2 \cdot v_{0}^{2} \cdot 0,5} \]
+                    \[ \implies \frac{980}{v_{0}^{2}} = 10 - 1,05 = 8,95 \implies v_{0} = \sqrt{\frac{980}{8,95}} \approx 10,46\text{ m/s} \]
+                    <p><em>(Nếu lấy theo giá trị làm tròn trung gian \(\frac{\sqrt{2}}{2} \approx 0,707\) như SBT thì \(v_{0} \approx 10,57\text{ m/s}\)).</em></p>
+                    <p>b) <strong>Phân tích sai lầm của AI & Kỹ năng kiểm chứng của con người:</strong><br>
+                    - Chatbot AI đã áp dụng máy móc công thức tầm xa \(L = \frac{v_{0}^{2}\sin 2\alpha}{g}\). Công thức này <strong>chỉ đúng khi điểm ném và điểm rơi nằm trên cùng một mặt phẳng ngang (\(y = 0\))</strong>. Ở đây điểm ném cao \(2,0\text{ m}\) còn rổ cao \(3,05\text{ m}\) (\(\Delta y = 1,05\text{ m}\)). Nếu ném với \(v_{0} = 9,90\text{ m/s}\) như AI gợi ý thì khi bay xa \(10\text{ m}\), bóng đã rơi xuống độ cao \(2,0\text{ m}\) (thấp hơn rổ \(1,05\text{ m}\))!<br>
+                    - <strong>Prompt mẫu chuẩn xác (10.C3.1):</strong> <em>"Hãy đóng vai giáo viên Vật lý 10, giải bài toán ném xiên bằng hệ trục tọa độ Oxy: Điểm ném ở độ cao ban đầu y0 = 2,0 m, mục tiêu rổ ở tọa độ ngang x = 10 m và độ cao y = 3,05 m, góc ném alpha = 45 độ, g = 9,8 m/s². Lưu ý điểm đầu và điểm cuối không cùng độ cao nên không dùng công thức tầm xa L mặc định."</em></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 6: INTERACTIVE QUIZ ==================== -->
+    <section id="tab6" class="tab-content">
+        <div class="card">
+            <h2 class="card-title">🎯 Bài Tự Đánh Giá Trắc Nghiệm (4 Câu hỏi cốt lõi)</h2>
+            <p style="margin-bottom: 1rem;">Chọn đáp án đúng nhất cho từng câu hỏi dưới đây và nhấn <strong>"Nộp bài & Xem kết quả"</strong> để xem điểm số cùng lời giải chi tiết.</p>
+
+            <div id="quiz_container"></div>
+
+            <div class="btn-group" style="margin-top: 1.5rem;">
+                <button class="btn btn-success" onclick="submitQuiz()">✅ Nộp bài & Xem kết quả</button>
+                <button class="btn btn-secondary" onclick="resetQuiz()">🔄 Làm lại</button>
+            </div>
+
+            <div id="quiz_result_box" style="margin-top: 1.5rem;"></div>
+        </div>
+    </section>
+
+    <!-- ==================== TAB 7: CLASSROOM TOOLS ==================== -->
+    <section id="tab7" class="tab-content">
+        <div class="grid-2">
+            <!-- Visual Timer -->
+            <div class="card" id="timer_card">
+                <h2 class="card-title">⏱️ Đồng hồ Đếm ngược Thảo luận nhóm (Visual Timer)</h2>
+                <div class="timer-display">
+                    <svg width="240" height="240" viewBox="0 0 240 240">
+                        <circle cx="120" cy="120" r="100" fill="none" stroke="#e2e8f0" stroke-width="14"/>
+                        <circle id="timer_ring" cx="120" cy="120" r="100" fill="none" stroke="#0284c7" stroke-width="14"
+                                stroke-dasharray="628.32" stroke-dashoffset="0" stroke-linecap="round"
+                                transform="rotate(-90 120 120)" style="transition: stroke-dashoffset 0.5s linear;"/>
+                        <text id="timer_text" x="120" y="132" text-anchor="middle" font-size="42" font-weight="800" fill="#0f172a">03:00</text>
+                    </svg>
+                </div>
+
+                <div class="btn-group" style="justify-content: center; margin-bottom: 1rem;">
+                    <button class="btn btn-secondary" onclick="setTimerPreset(60)">1 Phút</button>
+                    <button class="btn btn-secondary" onclick="setTimerPreset(180)">3 Phút</button>
+                    <button class="btn btn-secondary" onclick="setTimerPreset(300)">5 Phút</button>
+                    <button class="btn btn-secondary" onclick="setTimerPreset(600)">10 Phút</button>
+                </div>
+
+                <div class="btn-group" style="justify-content: center;">
+                    <button class="btn btn-success" onclick="startTimer()">▶ Bắt đầu</button>
+                    <button class="btn btn-warning" onclick="pauseTimer()">⏸ Tạm dừng</button>
+                    <button class="btn btn-secondary" onclick="resetTimer()">🔄 Đặt lại</button>
+                </div>
+            </div>
+
+            <!-- Lucky Wheel -->
+            <div class="card">
+                <h2 class="card-title">🎡 Vòng quay May mắn Gọi tên theo 4 Tổ</h2>
+                <div class="grid-2" style="grid-template-columns: 1fr 1fr; align-items: center;">
+                    <div style="text-align: center; position: relative;">
+                        <canvas id="wheelCanvas" width="280" height="280" style="max-width: 260px; margin: 0 auto;"></canvas>
+                        <button class="btn btn-success" style="margin-top: 0.75rem; width: 100%;" onclick="spinWheel()">🎯 QUAY NGẪU NHIÊN</button>
+                    </div>
+                    <div>
+                        <div class="control-group">
+                            <label>Chọn Tổ hoạt động:</label>
+                            <select id="team_select" onchange="loadTeamNames()">
+                                <option value="team1">Tổ 1</option>
+                                <option value="team2">Tổ 2</option>
+                                <option value="team3">Tổ 3</option>
+                                <option value="team4">Tổ 4</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>Danh sách Học sinh (mỗi dòng 1 tên):</label>
+                            <textarea id="student_list" rows="6" oninput="updateWheelFromTextarea()"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Modal Popup Lucky Wheel -->
+<div class="modal-overlay" id="winner_modal">
+    <div class="modal-box">
+        <h2 style="color: var(--accent); margin-bottom: 0.5rem;">🎉 XIN CHÚC MỪNG! 🎉</h2>
+        <p style="color: var(--text-muted);">Học sinh được mời trả lời câu hỏi / lên bảng là:</p>
+        <div id="winner_name" style="font-size: 1.8rem; font-weight: 800; color: var(--primary); margin: 1.2rem 0; padding: 0.75rem; background: #e0f2fe; border-radius: 0.5rem;"></div>
+        <button class="btn" onclick="closeWinnerModal()">Đóng thông báo</button>
+    </div>
+</div>
+
+<footer>
+    <strong>© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng</strong><br>
+    Ứng dụng Học tập Vật lý Tương tác - Chương trình GDPT 2018
+</footer>
+
+<script>
+    // ==================== KATEX CONFIGURATION ====================
+    const katexConfig = {
+        delimiters: [
+            {left: "\\[", right: "\\]", display: true},
+            {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+    };
+
+    function initMath() {
+        if (typeof renderMathInElement === 'function') {
+            renderMathInElement(document.body, katexConfig);
+        }
+    }
+
+    // ==================== TAB NAVIGATION ====================
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        const target = document.getElementById(tabId);
+        if (target) target.classList.add('active');
+
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => {
+            if (btn.getAttribute('onclick').includes(tabId)) {
+                btn.classList.add('active');
+            }
+        });
+
+        if (tabId === 'tab3a') drawSim3A();
+        if (tabId === 'tab3b') drawSim3B();
+        if (tabId === 'tab7') drawWheel();
+    }
+
+    function toggleBox(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        if (el.style.display === 'block' && typeof renderMathInElement === 'function') {
+            renderMathInElement(el, katexConfig);
+        }
+    }
+
+    // ==================== TAB 3A: NÉM NGANG VS RƠI TỰ DO ====================
+    let sim3A = {
+        H: 45,
+        v0: 20,
+        m: 2.0,
+        g: 9.8,
+        t: 0,
+        tMax: 0,
+        running: false,
+        animId: null
+    };
+
+    function updateSim3AParams() {
+        sim3A.H = parseFloat(document.getElementById('inp_h3a').value);
+        sim3A.v0 = parseFloat(document.getElementById('inp_v3a').value);
+        sim3A.m = parseFloat(document.getElementById('inp_m3a').value);
+        sim3A.g = parseFloat(document.getElementById('inp_g3a').value);
+
+        document.getElementById('lbl_h3a').innerText = sim3A.H + ' m';
+        document.getElementById('lbl_v3a').innerText = sim3A.v0 + ' m/s';
+        document.getElementById('lbl_m3a').innerText = sim3A.m.toFixed(1) + ' kg';
+        document.getElementById('lbl_g3a').innerText = sim3A.g + ' m/s²';
+
+        resetSim3A();
+    }
+
+    function resetSim3A() {
+        pauseSim3A();
+        sim3A.t = 0;
+        sim3A.tMax = Math.sqrt((2 * sim3A.H) / sim3A.g);
+        drawSim3A();
+    }
+
+    function startSim3A() {
+        if (sim3A.t >= sim3A.tMax) sim3A.t = 0;
+        if (!sim3A.running) {
+            sim3A.running = true;
+            let lastTime = performance.now();
+            function loop(now) {
+                if (!sim3A.running) return;
+                const dt = (now - lastTime) / 1000;
+                lastTime = now;
+                sim3A.t += dt;
+                if (sim3A.t >= sim3A.tMax) {
+                    sim3A.t = sim3A.tMax;
+                    sim3A.running = false;
+                }
+                drawSim3A();
+                if (sim3A.running) sim3A.animId = requestAnimationFrame(loop);
+            }
+            sim3A.animId = requestAnimationFrame(loop);
+        }
+    }
+
+    function pauseSim3A() {
+        sim3A.running = false;
+        if (sim3A.animId) cancelAnimationFrame(sim3A.animId);
+    }
+
+    function drawArrow(ctx, x1, y1, x2, y2, color, label) {
+        const headlen = 8;
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const angle = Math.atan2(dy, dx);
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - headlen * Math.cos(angle - Math.PI / 6), y2 - headlen * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(x2 - headlen * Math.cos(angle + Math.PI / 6), y2 - headlen * Math.sin(angle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fill();
+
+        if (label) {
+            ctx.font = 'bold 12px sans-serif';
+            ctx.fillText(label, x2 + 5, y2 - 4);
+        }
+    }
+
+    function drawSim3A() {
+        const canvas = document.getElementById('canvas3a');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width;
+        const H_can = canvas.height;
+
+        ctx.clearRect(0, 0, W, H_can);
+
+        const padLeft = 75;
+        const padBottom = 45;
+        const padTop = 35;
+        const padRight = 40;
+
+        // Scale dynamic: max X ~ 220m, max Y ~ 110m
+        const scaleX = (W - padLeft - padRight) / 220;
+        const scaleY = (H_can - padTop - padBottom) / 110;
+        const groundY = H_can - padBottom;
+        const startY = groundY - sim3A.H * scaleY;
+
+        // Grid lines
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 1;
+        for (let gx = 0; gx <= 220; gx += 20) {
+            let px = padLeft + gx * scaleX;
+            ctx.beginPath(); ctx.moveTo(px, padTop); ctx.lineTo(px, groundY); ctx.stroke();
+            ctx.fillStyle = '#64748b'; ctx.font = '11px sans-serif';
+            ctx.fillText(gx + 'm', px - 10, groundY + 18);
+        }
+        for (let gy = 0; gy <= 100; gy += 20) {
+            let py = groundY - gy * scaleY;
+            ctx.beginPath(); ctx.moveTo(padLeft, py); ctx.lineTo(W - padRight, py); ctx.stroke();
+            ctx.fillStyle = '#64748b'; ctx.font = '11px sans-serif';
+            ctx.fillText(gy + 'm', padLeft - 35, py + 4);
+        }
+
+        // Ground & Cliff
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(padLeft - 30, startY, 30, sim3A.H * scaleY);
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(20, groundY);
+        ctx.lineTo(W - 15, groundY);
+        ctx.stroke();
+
+        // Current physics values
+        const curX = sim3A.v0 * sim3A.t;
+        const curDrop = 0.5 * sim3A.g * sim3A.t * sim3A.t;
+        const curHeight = Math.max(0, sim3A.H - curDrop);
+        const vx = sim3A.v0;
+        const vy = sim3A.g * sim3A.t;
+        const vTotal = Math.sqrt(vx * vx + vy * vy);
+        const Lmax = sim3A.v0 * sim3A.tMax;
+        const Wd = 0.5 * sim3A.m * vTotal * vTotal;
+
+        // Draw parabolic trajectory curve
+        ctx.strokeStyle = '#38bdf8';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        for (let tau = 0; tau <= sim3A.tMax; tau += 0.05) {
+            let px = padLeft + (sim3A.v0 * tau) * scaleX;
+            let py = startY + (0.5 * sim3A.g * tau * tau) * scaleY;
+            if (tau === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        const showVec = document.getElementById('chk_vec3a').checked;
+
+        // Stroboscopic dots every 0.5s
+        if (showVec) {
+            for (let tau = 0.5; tau <= sim3A.t; tau += 0.5) {
+                let sx = padLeft + (sim3A.v0 * tau) * scaleX;
+                let sy = startY + (0.5 * sim3A.g * tau * tau) * scaleY;
+                ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+                ctx.beginPath();
+                ctx.moveTo(padLeft - 15, sy);
+                ctx.lineTo(sx, sy);
+                ctx.stroke();
+
+                ctx.fillStyle = 'rgba(244, 63, 94, 0.5)';
+                ctx.beginPath(); ctx.arc(padLeft - 15, sy, 4, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.5)';
+                ctx.beginPath(); ctx.arc(sx, sy, 4, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+
+        // Current pixel positions
+        const ballAx = padLeft + curX * scaleX;
+        const ballAy = startY + curDrop * scaleY;
+        const ballBx = padLeft - 15;
+        const ballBy = ballAy;
+
+        // Horizontal alignment line showing both balls at same height
+        ctx.strokeStyle = '#eab308';
+        ctx.setLineDash([2, 3]);
+        ctx.beginPath();
+        ctx.moveTo(ballBx, ballBy);
+        ctx.lineTo(ballAx, ballAy);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Draw Ball B (Free fall)
+        ctx.fillStyle = '#f43f5e';
+        ctx.beginPath();
+        ctx.arc(ballBx, ballBy, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#fda4af';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.fillText('Bi B (Rơi tự do)', ballBx - 45, ballBy - 12);
+
+        // Draw Ball A (Horizontal projectile)
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(ballAx, ballAy, 9, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#bae6fd';
+        ctx.fillText('Bi A (Ném ngang)', ballAx - 30, ballAy - 14);
+
+        // Draw Vectors on Ball A
+        if (showVec) {
+            const vScale = 1.4;
+            drawArrow(ctx, ballAx, ballAy, ballAx + vx * vScale, ballAy, '#22c55e', 'vx');
+            if (vy > 0.5) {
+                drawArrow(ctx, ballAx, ballAy, ballAx, ballAy + vy * vScale, '#f97316', 'vy');
+            }
+            drawArrow(ctx, ballAx, ballAy, ballAx + vx * vScale, ballAy + vy * vScale, '#eab308', 'v');
+        }
+
+        // Update Telemetry DOM
+        document.getElementById('out_t3a').innerText = sim3A.t.toFixed(2) + ' s';
+        document.getElementById('out_x3a').innerText = curX.toFixed(2) + ' m';
+        document.getElementById('out_y3a').innerText = curHeight.toFixed(2) + ' m';
+        document.getElementById('out_vx3a').innerText = vx.toFixed(1) + ' m/s';
+        document.getElementById('out_vy3a').innerText = vy.toFixed(1) + ' m/s';
+        document.getElementById('out_v3a').innerText = vTotal.toFixed(1) + ' m/s';
+        document.getElementById('out_L3a').innerText = Lmax.toFixed(2) + ' m';
+        document.getElementById('out_wd3a').innerText = Wd.toFixed(1) + ' J';
+    }
+
+    // ==================== TAB 3B: NÉM XIÊN ====================
+    let sim3B = {
+        v0: 25,
+        alphaDeg: 45,
+        h0: 0,
+        g: 10,
+        t: 0,
+        tMax: 0,
+        running: false,
+        animId: null,
+        traces: []
+    };
+
+    function calcSim3BTmax(v0, alphaRad, h0, g) {
+        const vy0 = v0 * Math.sin(alphaRad);
+        return (vy0 + Math.sqrt(vy0 * vy0 + 2 * g * h0)) / g;
+    }
+
+    function updateSim3BParams() {
+        sim3B.v0 = parseFloat(document.getElementById('inp_v3b').value);
+        sim3B.alphaDeg = parseFloat(document.getElementById('inp_a3b').value);
+        sim3B.h0 = parseFloat(document.getElementById('inp_h3b').value);
+        sim3B.g = parseFloat(document.getElementById('inp_g3b').value);
+
+        document.getElementById('lbl_v3b').innerText = sim3B.v0 + ' m/s';
+        document.getElementById('lbl_a3b').innerText = sim3B.alphaDeg + '°';
+        document.getElementById('lbl_h3b').innerText = sim3B.h0 + ' m';
+        document.getElementById('lbl_g3b').innerText = sim3B.g + ' m/s²';
+
+        pauseSim3B();
+        sim3B.t = 0;
+        const rad = sim3B.alphaDeg * Math.PI / 180;
+        sim3B.tMax = calcSim3BTmax(sim3B.v0, rad, sim3B.h0, sim3B.g);
+        drawSim3B();
+    }
+
+    function startSim3B() {
+        const rad = sim3B.alphaDeg * Math.PI / 180;
+        sim3B.tMax = calcSim3BTmax(sim3B.v0, rad, sim3B.h0, sim3B.g);
+        sim3B.t = 0;
+
+        // Save trace
+        sim3B.traces.push({
+            v0: sim3B.v0,
+            alphaDeg: sim3B.alphaDeg,
+            h0: sim3B.h0,
+            g: sim3B.g,
+            tMax: sim3B.tMax,
+            color: `hsl(${(sim3B.alphaDeg * 4) % 360}, 85%, 65%)`
+        });
+        if (sim3B.traces.length > 5) sim3B.traces.shift();
+
+        if (!sim3B.running) {
+            sim3B.running = true;
+            let lastTime = performance.now();
+            function loop(now) {
+                if (!sim3B.running) return;
+                const dt = (now - lastTime) / 1000;
+                lastTime = now;
+                sim3B.t += dt;
+                if (sim3B.t >= sim3B.tMax) {
+                    sim3B.t = sim3B.tMax;
+                    sim3B.running = false;
+                }
+                drawSim3B();
+                if (sim3B.running) sim3B.animId = requestAnimationFrame(loop);
+            }
+            sim3B.animId = requestAnimationFrame(loop);
+        }
+    }
+
+    function pauseSim3B() {
+        sim3B.running = false;
+        if (sim3B.animId) cancelAnimationFrame(sim3B.animId);
+    }
+
+    function clearTraces3B() {
+        pauseSim3B();
+        sim3B.traces = [];
+        sim3B.t = 0;
+        drawSim3B();
+    }
+
+    function drawSim3B() {
+        const canvas = document.getElementById('canvas3b');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width;
+        const H_can = canvas.height;
+        ctx.clearRect(0, 0, W, H_can);
+
+        const padLeft = 55;
+        const padBottom = 40;
+        const padTop = 30;
+        const padRight = 30;
+
+        // Max X ~ 180m, Max Y ~ 100m
+        const scaleX = (W - padLeft - padRight) / 180;
+        const scaleY = (H_can - padTop - padBottom) / 100;
+        const groundY = H_can - padBottom;
+
+        // Grid
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 1;
+        for (let gx = 0; gx <= 180; gx += 20) {
+            let px = padLeft + gx * scaleX;
+            ctx.beginPath(); ctx.moveTo(px, padTop); ctx.lineTo(px, groundY); ctx.stroke();
+            ctx.fillStyle = '#64748b'; ctx.font = '11px sans-serif';
+            ctx.fillText(gx + 'm', px - 10, groundY + 18);
+        }
+        for (let gy = 0; gy <= 100; gy += 20) {
+            let py = groundY - gy * scaleY;
+            ctx.beginPath(); ctx.moveTo(padLeft, py); ctx.lineTo(W - padRight, py); ctx.stroke();
+            ctx.fillStyle = '#64748b'; ctx.font = '11px sans-serif';
+            ctx.fillText(gy + 'm', padLeft - 35, py + 4);
+        }
+
+        // Ground
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(15, groundY);
+        ctx.lineTo(W - 15, groundY);
+        ctx.stroke();
+
+        // Draw saved traces
+        sim3B.traces.forEach(tr => {
+            const r = tr.alphaDeg * Math.PI / 180;
+            ctx.strokeStyle = tr.color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            for (let tau = 0; tau <= tr.tMax; tau += 0.04) {
+                let tx = tr.v0 * Math.cos(r) * tau;
+                let ty = tr.h0 + tr.v0 * Math.sin(r) * tau - 0.5 * tr.g * tau * tau;
+                let px = padLeft + tx * scaleX;
+                let py = groundY - ty * scaleY;
+                if (tau === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+
+            // Label angle at peak
+            const tPeak = (tr.v0 * Math.sin(r)) / tr.g;
+            const xPeak = tr.v0 * Math.cos(r) * tPeak;
+            const yPeak = tr.h0 + (tr.v0 * tr.v0 * Math.sin(r) * Math.sin(r)) / (2 * tr.g);
+            ctx.fillStyle = tr.color;
+            ctx.font = 'bold 11px sans-serif';
+            ctx.fillText(`α=${tr.alphaDeg}°`, padLeft + xPeak * scaleX - 15, groundY - yPeak * scaleY - 8);
+        });
+
+        // Current projectile state
+        const rad = sim3B.alphaDeg * Math.PI / 180;
+        sim3B.tMax = calcSim3BTmax(sim3B.v0, rad, sim3B.h0, sim3B.g);
+        const vx = sim3B.v0 * Math.cos(rad);
+        const vy0 = sim3B.v0 * Math.sin(rad);
+        const curX = vx * sim3B.t;
+        const curY = Math.max(0, sim3B.h0 + vy0 * sim3B.t - 0.5 * sim3B.g * sim3B.t * sim3B.t);
+        const vy = vy0 - sim3B.g * sim3B.t;
+
+        const Hmax = sim3B.h0 + (vy0 * vy0) / (2 * sim3B.g);
+        const Lmax = vx * sim3B.tMax;
+
+        const bx = padLeft + curX * scaleX;
+        const by = groundY - curY * scaleY;
+
+        // Draw ball
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath();
+        ctx.arc(bx, by, 8, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw velocity vectors
+        const vScale = 1.3;
+        drawArrow(ctx, bx, by, bx + vx * vScale, by, '#22c55e', 'vx');
+        if (Math.abs(vy) > 0.5) {
+            drawArrow(ctx, bx, by, bx, by - vy * vScale, '#f97316', 'vy');
+        }
+        drawArrow(ctx, bx, by, bx + vx * vScale, by - vy * vScale, '#38bdf8', 'v');
+
+        // Update Telemetry
+        document.getElementById('out_t3b').innerText = sim3B.t.toFixed(2) + ' s';
+        document.getElementById('out_x3b').innerText = curX.toFixed(2) + ' m';
+        document.getElementById('out_y3b').innerText = curY.toFixed(2) + ' m';
+        document.getElementById('out_vx3b').innerText = vx.toFixed(2) + ' m/s';
+        document.getElementById('out_vy3b').innerText = vy.toFixed(2) + ' m/s';
+        document.getElementById('out_H3b').innerText = Hmax.toFixed(2) + ' m';
+        document.getElementById('out_L3b').innerText = Lmax.toFixed(2) + ' m';
+        document.getElementById('out_Ttotal3b').innerText = sim3B.tMax.toFixed(2) + ' s';
+    }
+
+    // ==================== TAB 4: CALCULATOR MODULE ====================
+    function toggleCalcFields() {
+        const mode = document.getElementById('calc_mode').value;
+        document.getElementById('fields_horizontal').style.display = (mode === 'horizontal') ? 'block' : 'none';
+        document.getElementById('fields_oblique').style.display = (mode === 'oblique') ? 'block' : 'none';
+    }
+
+    function clearCalcInputs() {
+        ['calc_H', 'calc_v0', 'calc_t', 'calc_L'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('calc_output').innerHTML = '<strong>📋 Đã xóa dữ liệu. Hãy nhập các thông số đã biết và nhấn Tính toán.</strong>';
+    }
+
+    function solvePhysicsCalc() {
+        const mode = document.getElementById('calc_mode').value;
+        const g = parseFloat(document.getElementById('calc_g').value) || 10;
+        const outBox = document.getElementById('calc_output');
+
+        if (mode === 'horizontal') {
+            let H = parseFloat(document.getElementById('calc_H').value);
+            let v0 = parseFloat(document.getElementById('calc_v0').value);
+            let t = parseFloat(document.getElementById('calc_t').value);
+            let L = parseFloat(document.getElementById('calc_L').value);
+
+            let steps = `<h4>🔍 Phân tích bài toán Ném ngang (với \\(g = ${g}\\mathrm{ m/s^2}\\)):</h4><ol style="margin-left:1.5rem; margin-top:0.5rem;">`;
+
+            if (!isNaN(H) && isNaN(t)) {
+                t = Math.sqrt((2 * H) / g);
+                steps += `<li>Tính thời gian rơi từ độ cao \\(H = ${H}\\text{ m}\\): \\[ t = \\sqrt{\\frac{2H}{g}} = \\sqrt{\\frac{2 \\cdot ${H}}{${g}}} = ${t.toFixed(2)}\\text{ s} \\]</li>`;
+            } else if (!isNaN(t) && isNaN(H)) {
+                H = 0.5 * g * t * t;
+                steps += `<li>Tính độ cao thả vật từ thời gian rơi \\(t = ${t}\\text{ s}\\): \\[ H = \\frac{1}{2}gt^{2} = \\frac{1}{2} \\cdot ${g} \\cdot ${t}^{2} = ${H.toFixed(2)}\\text{ m} \\]</li>`;
+            }
+
+            if (!isNaN(L) && !isNaN(v0) && isNaN(t)) {
+                t = L / v0;
+                H = 0.5 * g * t * t;
+                steps += `<li>Từ tầm xa \\(L\\) và \\(v_{0}\\), suy ra thời gian rơi và độ cao \\(H\\): \\[ t = \\frac{L}{v_{0}} = \\frac{${L}}{${v0}} = ${t.toFixed(2)}\\text{ s} \\implies H = \\frac{1}{2}gt^{2} = ${H.toFixed(2)}\\text{ m} \\]</li>`;
+            }
+
+            if (!isNaN(t) && !isNaN(v0) && isNaN(L)) {
+                L = v0 * t;
+                steps += `<li>Tính tầm bay xa theo phương ngang: \\[ L = v_{0}t = ${v0} \\cdot ${t.toFixed(2)} = ${L.toFixed(2)}\\text{ m} \\]</li>`;
+            } else if (!isNaN(t) && !isNaN(L) && isNaN(v0)) {
+                v0 = L / t;
+                steps += `<li>Tính vận tốc ném ban đầu \\(v_{0}\\): \\[ v_{0} = \\frac{L}{t} = \\frac{${L}}{${t.toFixed(2)}} = ${v0.toFixed(2)}\\text{ m/s} \\]</li>`;
+            }
+
+            if (!isNaN(v0) && !isNaN(t)) {
+                const vy = g * t;
+                const vTouch = Math.sqrt(v0 * v0 + vy * vy);
+                steps += `<li>Vận tốc của vật ngay khi chạm đất: \\[ v = \\sqrt{v_{0}^{2} + (gt)^{2}} = \\sqrt{${v0.toFixed(2)}^{2} + (${g} \\cdot ${t.toFixed(2)})^{2}} = ${vTouch.toFixed(2)}\\text{ m/s} \\]</li></ol>`;
+                outBox.innerHTML = steps;
+            } else {
+                outBox.innerHTML = `<span style="color:var(--danger); font-weight:bold;">⚠️ Thiếu dữ kiện! Vui lòng nhập ít nhất 2 đại lượng độc lập (Ví dụ: H và v₀, hoặc H và L, hoặc v₀ và t).</span>`;
+            }
+        } else {
+            const v0 = parseFloat(document.getElementById('calc_ob_v0').value);
+            const alphaDeg = parseFloat(document.getElementById('calc_ob_alpha').value);
+            if (isNaN(v0) || isNaN(alphaDeg)) {
+                outBox.innerHTML = `<span style="color:var(--danger); font-weight:bold;">⚠️ Vui lòng nhập đầy đủ \\(v_{0}\\) và góc ném \\(\\alpha\\)!</span>`;
+            } else {
+                const rad = alphaDeg * Math.PI / 180;
+                const v0x = v0 * Math.cos(rad);
+                const v0y = v0 * Math.sin(rad);
+                const tPeak = v0y / g;
+                const tTotal = 2 * tPeak;
+                const H = (v0y * v0y) / (2 * g);
+                const L = (v0 * v0 * Math.sin(2 * rad)) / g;
+
+                outBox.innerHTML = `
+                    <h4>🔍 Lời giải bài toán Ném xiên (\\(v_{0} = ${v0}\\text{ m/s}, \\alpha = ${alphaDeg}^\\circ, g = ${g}\\mathrm{ m/s^2}\\)):</h4>
+                    <ol style="margin-left:1.5rem; margin-top:0.5rem;">
+                        <li>Phân tích vận tốc ban đầu theo hai trục:
+                            \\[ v_{0x} = v_{0}\\cos\\alpha = ${v0}\\cos ${alphaDeg}^\\circ = ${v0x.toFixed(2)}\\text{ m/s} \\quad ; \\quad v_{0y} = v_{0}\\sin\\alpha = ${v0}\\sin ${alphaDeg}^\\circ = ${v0y.toFixed(2)}\\text{ m/s} \\]
+                        </li>
+                        <li>Tầm bay cao cực đại \\(H\\):
+                            \\[ H = \\frac{v_{0}^{2}\\sin^{2}\\alpha}{2g} = \\frac{${v0}^{2} \\cdot \\sin^{2}${alphaDeg}^\\circ}{2 \\cdot ${g}} = ${H.toFixed(2)}\\text{ m} \\]
+                        </li>
+                        <li>Tổng thời gian bay trong không khí và Tầm bay xa \\(L\\):
+                            \\[ t_{\\text{bay}} = \\frac{2v_{0}\\sin\\alpha}{g} = ${tTotal.toFixed(2)}\\text{ s} \\quad ; \\quad L = \\frac{v_{0}^{2}\\sin 2\\alpha}{g} = ${L.toFixed(2)}\\text{ m} \\]
+                        </li>
+                    </ol>
+                `;
+            }
+        }
+
+        if (typeof renderMathInElement === 'function') {
+            renderMathInElement(outBox, katexConfig);
+        }
+    }
+
+    // ==================== TAB 6: INTERACTIVE QUIZ ====================
+    const quizData = [
+        {
+            q: "Câu 1: Bi A có khối lượng lớn gấp 4 lần bi B. Tại cùng một lúc và ở cùng một độ cao \\(H\\), bi A được thả rơi tự do còn bi B được ném theo phương nằm ngang với vận tốc \\(\\vec{v}_{0}\\). Nếu bỏ qua sức cản không khí thì:",
+            options: [
+                "A. Bi A rơi chạm đất trước bi B vì nặng hơn.",
+                "B. Bi A rơi chạm đất sau bi B.",
+                "C. Cả hai bi đều rơi chạm đất cùng một lúc với độ lớn vận tốc bằng nhau.",
+                "D. Cả hai bi đều rơi chạm đất cùng một lúc với độ lớn vận tốc khác nhau."
+            ],
+            correct: 3,
+            explain: "Thời gian rơi của cả hai bi đều được xác định bởi chuyển động thành phần theo phương thẳng đứng \\(t = \\sqrt{\\frac{2H}{g}}\\) nên hai bi chạm đất cùng một lúc. Tuy nhiên, khi chạm đất bi A có tốc độ \\(v_{A} = gt\\), còn bi B có tốc độ \\(v_{B} = \\sqrt{v_{0}^{2} + (gt)^{2}} > v_{A}\\)."
+        },
+        {
+            q: "Câu 2: Trong chuyển động ném xiên từ mặt đất (bỏ qua sức cản của không khí), khi vật đạt đến đỉnh cao nhất \\(I\\) của quỹ đạo thì vectơ gia tốc \\(\\vec{a}\\) và tốc độ \\(v\\) của vật có giá trị là:",
+            options: [
+                "A. Gia tốc \\(a = 0\\) và tốc độ \\(v = 0\\).",
+                "B. Gia tốc \\(\\vec{a} = \\vec{g}\\) hướng thẳng đứng xuống dưới và tốc độ đạt cực tiểu \\(v_{\\min} = v_{0}\\cos\\alpha\\).",
+                "C. Gia tốc \\(\\vec{a} = \\vec{g}\\) hướng ngang theo chiều chuyển động và tốc độ \\(v = 0\\).",
+                "D. Gia tốc \\(\\vec{a} = \\vec{g}\\) hướng thẳng đứng lên trên và tốc độ \\(v = v_{0}\\sin\\alpha\\)."
+            ],
+            correct: 1,
+            explain: "Trong suốt quá trình bay, vật chỉ chịu tác dụng của trọng lực nên gia tốc luôn là \\(\\vec{a} = \\vec{g}\\) hướng thẳng đứng xuống dưới. Tại đỉnh cao nhất \\(I\\), thành phần \\(v_{y} = 0\\) nên tốc độ của vật cực tiểu bằng \\(v_{\\min} = v_{x} = v_{0}\\cos\\alpha\\)."
+        },
+        {
+            q: "Câu 3: Một máy bay đang bay theo phương ngang ở độ cao \\(H = 490\\text{ m}\\) với tốc độ không đổi \\(v_{0} = 150\\text{ m/s}\\) thì thả một gói hàng cứu trợ. Lấy \\(g = 9,8\\mathrm{ m/s^2}\\), bỏ qua sức cản không khí. Tầm bay xa \\(L\\) (tính theo phương ngang) của gói hàng là:",
+            options: [
+                "A. \\(L = 1500\\text{ m}\\).",
+                "B. \\(L = 1000\\text{ m}\\).",
+                "C. \\(L = 1410\\text{ m}\\).",
+                "D. \\(L = 2820\\text{ m}\\)."
+            ],
+            correct: 0,
+            explain: "Thời gian rơi của gói hàng là \\(t = \\sqrt{\\frac{2H}{g}} = \\sqrt{\\frac{2 \\cdot 490}{9,8}} = 10\\text{ s}\\). Tầm bay xa theo phương ngang là \\(L = v_{0}t = 150 \\cdot 10 = 1500\\text{ m}\\)."
+        },
+        {
+            q: "Câu 4: Một vật được ném xiên từ mặt đất với vận tốc ban đầu có độ lớn \\(v_{0} = 50\\text{ m/s}\\). Khi lên tới điểm cao nhất của quỹ đạo, vận tốc của vật có độ lớn là \\(40\\text{ m/s}\\). Bỏ qua sức cản không khí, lấy \\(g = 10\\mathrm{ m/s^2}\\). Tầm bay cao cực đại \\(H\\) của vật là:",
+            options: [
+                "A. \\(H = 80\\text{ m}\\).",
+                "B. \\(H = 45\\text{ m}\\).",
+                "C. \\(H = 125\\text{ m}\\).",
+                "D. \\(H = 60\\text{ m}\\)."
+            ],
+            correct: 1,
+            explain: "Tại điểm cao nhất \\(v_{y} = 0\\) nên \\(v_{x} = v_{0}\\cos\\alpha = 40\\text{ m/s}\\). Suy ra thành phần vận tốc đầu theo phương thẳng đứng là \\(v_{0y} = \\sqrt{v_{0}^{2} - v_{x}^{2}} = \\sqrt{50^{2} - 40^{2}} = 30\\text{ m/s}\\). Độ cao cực đại là \\(H = \\frac{v_{0y}^{2}}{2g} = \\frac{30^{2}}{2 \\cdot 10} = 45\\text{ m}\\)."
+        }
+    ];
+
+    function renderQuiz() {
+        const container = document.getElementById('quiz_container');
+        let html = '';
+        quizData.forEach((item, idx) => {
+            html += `<div class="card" style="margin-bottom: 1rem;">
+                <p style="font-weight: 700; margin-bottom: 0.75rem;">${item.q}</p>`;
+            item.options.forEach((opt, oIdx) => {
+                html += `<label class="quiz-option">
+                    <input type="radio" name="q_${idx}" value="${oIdx}"> ${opt}
+                </label>`;
+            });
+            html += `</div>`;
+        });
+        container.innerHTML = html;
+        if (typeof renderMathInElement === 'function') {
+            renderMathInElement(container, katexConfig);
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        let detailHtml = '';
+        quizData.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="q_${idx}"]:checked`);
+            const userAns = selected ? parseInt(selected.value) : -1;
+            const isCorrect = (userAns === item.correct);
+            if (isCorrect) score++;
+
+            detailHtml += `<div class="alert-box ${isCorrect ? 'alert-success' : 'alert-danger'}">
+                <strong>Câu ${idx + 1}: ${isCorrect ? 'Chính xác! 🎉' : 'Chưa chính xác ❌'}</strong><br>
+                <span>Đáp án đúng: <strong>${item.options[item.correct]}</strong></span><br>
+                <em>Giải thích:</em> ${item.explain}
+            </div>`;
+        });
+
+        const resBox = document.getElementById('quiz_result_box');
+        resBox.innerHTML = `<div class="card" style="border: 2px solid var(--accent);">
+            <h3 style="color: var(--secondary); margin-bottom: 1rem;">📊 Kết quả làm bài: ${score} / ${quizData.length} câu đúng (${(score / quizData.length) * 100}%)</h3>
+            ${detailHtml}
+        </div>`;
+        renderMathInElement(resBox, katexConfig);
+    }
+
+    function resetQuiz() {
+        document.querySelectorAll('#quiz_container input[type="radio"]').forEach(r => r.checked = false);
+        document.getElementById('quiz_result_box').innerHTML = '';
+    }
+
+    // ==================== TAB 7: CLASSROOM TOOLS ====================
+    // 1. Visual Timer
+    let timerState = {
+        total: 180,
+        remaining: 180,
+        interval: null
+    };
+
+    function updateTimerUI() {
+        const mins = Math.floor(timerState.remaining / 60);
+        const secs = timerState.remaining % 60;
+        document.getElementById('timer_text').textContent = 
+            `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        
+        const circumference = 628.32;
+        const offset = circumference * (1 - timerState.remaining / timerState.total);
+        document.getElementById('timer_ring').style.strokeDashoffset = offset;
+    }
+
+    function setTimerPreset(seconds) {
+        pauseTimer();
+        document.getElementById('timer_card').classList.remove('timer-Alert');
+        timerState.total = seconds;
+        timerState.remaining = seconds;
+        updateTimerUI();
+    }
+
+    function playBeep() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, ctx.currentTime);
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.6);
+        } catch (e) {}
+    }
+
+    function startTimer() {
+        if (timerState.interval) return;
+        document.getElementById('timer_card').classList.remove('timer-Alert');
+        timerState.interval = setInterval(() => {
+            if (timerState.remaining > 0) {
+                timerState.remaining--;
+                updateTimerUI();
+            } else {
+                pauseTimer();
+                document.getElementById('timer_card').classList.add('timer-Alert');
+                playBeep();
+            }
+        }, 1000);
+    }
+
+    function pauseTimer() {
+        if (timerState.interval) {
+            clearInterval(timerState.interval);
+            timerState.interval = null;
+        }
+    }
+
+    function resetTimer() {
+        pauseTimer();
+        document.getElementById('timer_card').classList.remove('timer-Alert');
+        timerState.remaining = timerState.total;
+        updateTimerUI();
+    }
+
+    // 2. Lucky Wheel
+    const defaultTeams = {
+        team1: ["Nguyễn Minh An", "Trần Quốc Bảo", "Lê Hoàng Châu", "Phạm Thùy Dương", "Hoàng Gia Huy", "Vũ Thảo Linh"],
+        team2: ["Đặng Tuấn Kiệt", "Bùi Ngọc Mai", "Đỗ Hải Nam", "Hồ Phương Oanh", "Ngô Minh Phúc", "Dương Thanh Tâm"],
+        team3: ["Lý Quốc Khánh", "Mai Hồng Ngọc", "Trịnh Xuân Sơn", "Phan Thanh Thảo", "Võ Anh Tuấn", "Đinh Bảo Vy"],
+        team4: ["Lương Gia Bảo", "Châu Minh Đức", "Hà Khánh Huyền", "Tạ Quang Minh", "Kiều Phương Nhi", "Lâm Quốc Việt"]
+    };
+
+    let wheelNames = [...defaultTeams.team1];
+    let wheelAngle = 0;
+    let isSpinning = false;
+    const wheelColors = ['#0284c7', '#16a34a', '#d97706', '#9333ea', '#e11d48', '#0d9488', '#2563eb', '#ca8a04'];
+
+    function loadTeamNames() {
+        const teamKey = document.getElementById('team_select').value;
+        wheelNames = [...defaultTeams[teamKey]];
+        document.getElementById('student_list').value = wheelNames.join('\n');
+        drawWheel();
+    }
+
+    function updateWheelFromTextarea() {
+        const raw = document.getElementById('student_list').value;
+        wheelNames = raw.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+        if (wheelNames.length === 0) wheelNames = ["Học sinh 1"];
+        drawWheel();
+    }
+
+    function drawWheel() {
+        const canvas = document.getElementById('wheelCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const r = cx - 12;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const n = wheelNames.length;
+        const arc = (2 * Math.PI) / n;
+
+        for (let i = 0; i < n; i++) {
+            const startAngle = wheelAngle + i * arc;
+            const endAngle = startAngle + arc;
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, r, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fillStyle = wheelColors[i % wheelColors.length];
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(startAngle + arc / 2);
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 12px sans-serif';
+            ctx.fillText(wheelNames[i].slice(0, 16), r - 12, 4);
+            ctx.restore();
+        }
+
+        // Pointer triangle on right side (angle = 0)
+        ctx.fillStyle = '#facc15';
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(canvas.width - 2, cy - 10);
+        ctx.lineTo(canvas.width - 22, cy);
+        ctx.lineTo(canvas.width - 2, cy + 10);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    function spinWheel() {
+        if (isSpinning || wheelNames.length === 0) return;
+        isSpinning = true;
+        const spinDuration = 3500;
+        const totalRotation = (Math.random() * 4 + 6) * 2 * Math.PI;
+        const startAngle = wheelAngle;
+        const startTime = performance.now();
+
+        function animateSpin(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / spinDuration, 1);
+            // Ease out cubic
+            const ease = 1 - Math.pow(1 - progress, 3);
+            wheelAngle = startAngle + totalRotation * ease;
+            drawWheel();
+
+            if (progress < 1) {
+                requestAnimationFrame(animateSpin);
+            } else {
+                isSpinning = false;
+                const n = wheelNames.length;
+                const arc = (2 * Math.PI) / n;
+                const normalized = ((2 * Math.PI - (wheelAngle % (2 * Math.PI))) + 2 * Math.PI) % (2 * Math.PI);
+                const index = Math.floor(normalized / arc) % n;
+                showWinnerModal(wheelNames[index]);
+            }
+        }
+        requestAnimationFrame(animateSpin);
+    }
+
+    function showWinnerModal(name) {
+        playBeep();
+        document.getElementById('winner_name').innerText = name;
+        document.getElementById('winner_modal').style.display = 'flex';
+    }
+
+    function closeWinnerModal() {
+        document.getElementById('winner_modal').style.display = 'none';
+    }
+
+    // ==================== INITIALIZATION ====================
+    window.addEventListener('DOMContentLoaded', () => {
+        updateSim3AParams();
+        updateSim3BParams();
+        renderQuiz();
+        loadTeamNames();
+        updateTimerUI();
+    });
+</script>
+</body>
+</html>
