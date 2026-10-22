@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyên Đề Vật Lý 12: Nhiệt Độ - Thang Nhiệt Độ - Nhiệt Kế</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#082f49'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .tab-btn.active {
+            border-bottom: 3px solid #0284c7;
+            color: #0369a1;
+            font-weight: 700;
+            background-color: #f0f7ff;
+        }
+        .canvas-container {
+            position: relative;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="bg-gradient-to-r from-brand-900 via-brand-700 to-sky-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-2">
+            <div>
+                <span class="inline-block bg-sky-500/30 text-sky-200 text-xs px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider mb-1">VẬT LÝ 12 • CHƯƠNG I: VẬT LÍ NHIỆT</span>
+                <h1 class="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                    🌡️ CHỦ ĐỀ 3: NHIỆT ĐỘ • THANG NHIỆT ĐỘ • NHIỆT KẾ
+                </h1>
+                <p class="text-xs text-sky-200">Bản chuẩn theo SGK & SBT Kết nối tri thức với cuộc sống</p>
+            </div>
+            <div class="text-right">
+                <div class="inline-block bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/20 text-xs text-amber-300 font-medium shadow-inner">
+                    © 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+                </div>
+            </div>
+        </div>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="bg-white border-b border-slate-200 px-4 shadow-sm overflow-x-auto">
+            <div class="max-w-7xl mx-auto flex space-x-1 sm:space-x-2 text-sm font-medium text-slate-600 min-w-max">
+                <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn active py-3 px-3 transition-colors flex items-center gap-1.5 hover:text-brand-600">
+                    <span>🚀</span> Khởi động & Thực tiễn
+                </button>
+                <button onclick="switchTab(2)" id="tab-btn-2" class="tab-btn py-3 px-3 transition-colors flex items-center gap-1.5 hover:text-brand-600">
+                    <span>📖</span> Cốt lõi lý thuyết
+                </button>
+                <button onclick="switchTab(3)" id="tab-btn-3" class="tab-btn py-3 px-3 transition-colors flex items-center gap-1.5 hover:text-brand-600">
+                    <span>🔬</span> Mô phỏng tương tác
+                </button>
+                <button onclick="switchTab(4)" id="tab-btn-4" class="tab-btn py-3 px-3 transition-colors flex items-center gap-1.5 hover:text-brand-600">
+                    <span>🧮</span> Máy tính tham số
+                </button>
+                <button onclick="switchTab(5)" id="tab-btn-5" class="tab-btn py-3 px-3 transition-colors flex items-center gap-1.5 hover:text-brand-600">
+                    <span>📝</span> Luyện tập phân hóa
+                </button>
+                <button onclick="switchTab(6)" id="tab-btn-6" class="tab-btn py-3 px-3 transition-colors flex items-center gap-1.5 hover:text-brand-600">
+                    <span>🎯</span> Bài tự đánh giá
+                </button>
+                <button onclick="switchTab(7)" id="tab-btn-7" class="tab-btn py-3 px-3 transition-colors flex items-center gap-1.5 hover:text-brand-600">
+                    <span>🛠️</span> Tiện ích lớp học
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 md:p-8">
+
+        <!-- ==================== TAB 1: KHỞI ĐỘNG & THỰC TIỄN ==================== -->
+        <section id="tab-content-1" class="tab-content block space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="border-l-4 border-sky-600 pl-4 mb-4">
+                    <h2 class="text-xl font-bold text-slate-800">Mâu thuẫn nhận thức & Cảm giác nhiệt sinh lý</h2>
+                    <p class="text-sm text-slate-500">Giác quan của con người có thực sự là một thước đo tin cậy về nhiệt độ?</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-sky-50/70 p-5 rounded-xl border border-sky-100 flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block bg-sky-200 text-sky-800 text-xs font-bold px-2.5 py-1 rounded-md mb-2">Tình huống 1</span>
+                            <h3 class="font-semibold text-slate-800 text-base mb-2">Thí nghiệm 3 chậu nước kinh điển (Locke's Experiment)</h3>
+                            <p class="text-sm text-slate-600 mb-3">
+                                Nhúng bàn tay trái vào cốc nước lạnh, bàn tay phải vào cốc nước nóng. Sau 1 phút, rút cả hai tay ra và cùng nhúng vào cốc nước ấm ở giữa:
+                            </p>
+                            <ul class="text-sm text-slate-700 list-disc list-inside space-y-1 mb-4">
+                                <li>Tay trái (từ lạnh sang ấm): cảm giác <strong>ấm/nóng lên</strong> (\(\Delta T > 0\), nhiệt truyền vào tay).</li>
+                                <li>Tay phải (từ nóng sang ấm): cảm giác <strong>lạnh đi</strong> (\(\Delta T < 0\), nhiệt từ tay truyền ra nước).</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200 text-xs text-sky-900 font-medium">
+                            💡 <strong>Nghịch lý:</strong> Cùng một môi trường nước ấm, hai bàn tay lại gửi về não bộ hai tín hiệu hoàn toàn trái ngược! Cảm giác của da chỉ báo hiệu <em>chiều dòng nhiệt truyền qua da</em>, không đo được giá trị nhiệt độ tuyệt đối.
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50/70 p-5 rounded-xl border border-amber-100 flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block bg-amber-200 text-amber-800 text-xs font-bold px-2.5 py-1 rounded-md mb-2">Tình huống 2</span>
+                            <h3 class="font-semibold text-slate-800 text-base mb-2">Chạm vào thanh kim loại và miếng gỗ mùa đông</h3>
+                            <p class="text-sm text-slate-600 mb-3">
+                                Vào một buổi sáng mùa đông \(15^\circ\text{C}\), sờ vào tay nắm cửa bằng nhôm ta thấy buốt lạnh, nhưng sờ vào cánh cửa gỗ lại thấy bình thường dù cả hai đều ở trạng thái cân bằng nhiệt với không khí phòng.
+                            </p>
+                            <p class="text-sm text-slate-700 mb-2">
+                                <strong>Bản chất:</strong> Hệ số dẫn nhiệt của kim loại (\(k \approx 200 \text{ W/m.K}\)) lớn gấp hàng trăm lần gỗ (\(k \approx 0,15 \text{ W/m.K}\)). Kim loại rút nhiệt lượng từ ngón tay với tốc độ cực nhanh!
+                            </p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-amber-200 text-xs text-amber-900 font-medium">
+                            ❓ <strong>Nhu cầu khoa học:</strong> Làm thế nào để định lượng khách quan mức độ "nóng - lạnh" của vật mà không phụ thuộc vào cảm giác sinh lý chủ quan? Chúng ta cần công cụ chuẩn: <strong>Thang nhiệt độ và Nhiệt kế</strong>.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tương tác thử thách khởi động -->
+                <div class="mt-6 bg-slate-800 text-white p-5 rounded-xl">
+                    <h4 class="font-semibold text-sky-400 mb-2 flex items-center gap-2">
+                        <span>🤔</span> Câu hỏi gợi mở tư duy:
+                    </h4>
+                    <p class="text-sm text-slate-300 mb-4">
+                        Nếu hai vật tiếp xúc nhau mà không có sự truyền nhiệt năng giữa chúng, ta kết luận được điều gì về nội năng \(U\) và nhiệt độ \(T\) của hai vật?
+                    </p>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <button onclick="showQuickAnswer(1)" class="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg border border-slate-600 transition">A. Nội năng hai vật chắc chắn bằng nhau (\(U_1 = U_2\))</button>
+                        <button onclick="showQuickAnswer(2)" class="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg border border-slate-600 transition">B. Nhiệt độ hai vật bằng nhau (\(T_1 = T_2\))</button>
+                        <button onclick="showQuickAnswer(3)" class="bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg border border-slate-600 transition">C. Cả nội năng và nhiệt độ đều bằng nhau</button>
+                    </div>
+                    <div id="quick-answer-feedback" class="mt-3 text-xs hidden p-3 rounded-lg"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: CỐT LÕI LÝ THUYẾT ==================== -->
+        <section id="tab-content-2" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                <!-- Mục 1: Ý nghĩa khái niệm nhiệt độ -->
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs">1</span>
+                        Ý Nghĩa Vật Lý Của Khái Niệm Nhiệt Độ
+                    </h3>
+                    <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-semibold text-brand-700 mb-1">Quy luật truyền nhiệt năng</h4>
+                            <p class="text-slate-600">
+                                Nhiệt độ cho biết trạng thái <strong>cân bằng nhiệt</strong> và <strong>chiều truyền nhiệt năng</strong> tự phát giữa các vật tiếp xúc:
+                            </p>
+                            <ul class="list-disc list-inside mt-2 space-y-1 text-slate-700">
+                                <li>\(T_A > T_B\): Nhiệt năng tự động truyền từ vật có nhiệt độ cao hơn \((A)\) sang vật có nhiệt độ thấp hơn \((B)\).</li>
+                                <li>\(T_A = T_B\): Hệ ở trạng thái <strong>cân bằng nhiệt</strong>; dòng nhiệt truyền qua lại triệt tiêu (\(Q_{net} = 0\)).</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-semibold text-brand-700 mb-1">Góc nhìn động học vi mô</h4>
+                            <p class="text-slate-600">
+                                Nhiệt độ nhiệt động lực học \(T\) là thước đo trực tiếp của <strong>động năng tịnh tiến trung bình</strong> của các phân tử cấu tạo nên vật:
+                            </p>
+                            <div class="my-2 p-2 bg-white rounded border border-slate-200 text-center font-mono">
+                                \[\bar{E}_d = \frac{1}{2} m \bar{v}^2 = \frac{3}{2} k T\]
+                            </div>
+                            <p class="text-xs text-slate-500">
+                                Trong đó: \(k = 1,38 \cdot 10^{-23} \text{ J/K}\) là hằng số Boltzmann. Phân tử chuyển động nhiệt càng nhanh thì nhiệt độ của khối chất càng cao.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mục 2: Ba thang đo nhiệt độ -->
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs">2</span>
+                        Hệ Thống Các Thang Đo Nhiệt Độ (Celsius - Kelvin - Fahrenheit)
+                    </h3>
+                    <div class="mt-4 overflow-x-auto">
+                        <table class="w-full text-sm text-left border-collapse border border-slate-200 rounded-lg overflow-hidden">
+                            <thead class="bg-slate-100 text-slate-700 font-semibold text-xs uppercase">
+                                <tr>
+                                    <th class="border border-slate-200 p-3">Đặc trưng so sánh</th>
+                                    <th class="border border-slate-200 p-3 bg-sky-50 text-sky-800">Thang Celsius (\(^\circ\text{C}\))</th>
+                                    <th class="border border-slate-200 p-3 bg-emerald-50 text-emerald-800">Thang Kelvin (\(\text{K}\)) - Chuẩn SI</th>
+                                    <th class="border border-slate-200 p-3 bg-amber-50 text-amber-800">Thang Fahrenheit (\(^\circ\text{F}\))</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-700">
+                                <tr>
+                                    <td class="p-3 font-medium bg-slate-50">Tác giả & Năm đề xuất</td>
+                                    <td class="p-3">Anders Celsius (1742)</td>
+                                    <td class="p-3">Lord Kelvin (1848)</td>
+                                    <td class="p-3">Daniel Fahrenheit (1724)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-medium bg-slate-50">Kí hiệu nhiệt độ</td>
+                                    <td class="p-3">\(t\) (\(^\circ\text{C}\))</td>
+                                    <td class="p-3">\(T\) (\(\text{K}\)) - không có dấu \(^\circ\)</td>
+                                    <td class="p-3">\(T_F\) hoặc \(t\) (\(^\circ\text{F}\))</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-medium bg-slate-50">Mốc chuẩn 1 (Nước đá tan @ 1 atm)</td>
+                                    <td class="p-3 font-bold text-sky-700">\(0^\circ\text{C}\)</td>
+                                    <td class="p-3 font-bold text-emerald-700">\(273,15 \text{ K}\)</td>
+                                    <td class="p-3 font-bold text-amber-700">\(32^\circ\text{F}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-medium bg-slate-50">Mốc chuẩn 2 (Nước sôi @ 1 atm)</td>
+                                    <td class="p-3 font-bold text-sky-700">\(100^\circ\text{C}\)</td>
+                                    <td class="p-3 font-bold text-emerald-700">\(373,15 \text{ K}\)</td>
+                                    <td class="p-3 font-bold text-amber-700">\(212^\circ\text{F}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-medium bg-slate-50">Độ không tuyệt đối</td>
+                                    <td class="p-3">\(-273,15^\circ\text{C}\)</td>
+                                    <td class="p-3">\(0 \text{ K}\) (Động năng phân tử \(= 0\))</td>
+                                    <td class="p-3">\(-459,67^\circ\text{F}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-medium bg-slate-50">Điểm ba của nước (Triple Point)</td>
+                                    <td class="p-3">\(0,01^\circ\text{C}\)</td>
+                                    <td class="p-3">\(273,16 \text{ K}\) (Cân bằng rắn-lỏng-hơi)</td>
+                                    <td class="p-3">\(32,018^\circ\text{F}\)</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-medium bg-slate-50">Độ lớn 1 độ chia</td>
+                                    <td class="p-3">\(\Delta 1^\circ\text{C} = \frac{1}{100}\) khoảng mốc</td>
+                                    <td class="p-3">\(\Delta 1 \text{ K} = \Delta 1^\circ\text{C}\)</td>
+                                    <td class="p-3">\(\Delta 1^\circ\text{F} = \frac{1}{180} = \frac{5}{9} \Delta 1^\circ\text{C}\)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Mục 3: Công thức chuyển đổi & Giải thích KaTeX -->
+                <div class="bg-gradient-to-r from-slate-900 to-sky-950 text-white p-5 rounded-xl shadow-inner">
+                    <h4 class="font-bold text-sky-300 text-sm mb-3 uppercase tracking-wider">Hệ thức chuyển đổi tương hỗ giữa các thang đo</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                        <div class="p-3 bg-white/10 rounded-lg border border-white/10">
+                            <span class="text-amber-300 font-bold block mb-1">Celsius \(\leftrightarrow\) Kelvin:</span>
+                            <div class="text-sm">\[T \ (\text{K}) = t \ (^\circ\text{C}) + 273,15 \approx t + 273\]</div>
+                            <div class="text-sm">\[t \ (^\circ\text{C}) = T \ (\text{K}) - 273,15\]</div>
+                            <p class="text-slate-300 text-[11px] mt-1 font-sans">Độ biến thiên: \(\Delta T \ (\text{K}) = \Delta t \ (^\circ\text{C})\)</p>
+                        </div>
+                        <div class="p-3 bg-white/10 rounded-lg border border-white/10">
+                            <span class="text-amber-300 font-bold block mb-1">Celsius \(\leftrightarrow\) Fahrenheit:</span>
+                            <div class="text-sm">\[T_F \ (^\circ\text{F}) = 1,8 \cdot t \ (^\circ\text{C}) + 32\]</div>
+                            <div class="text-sm">\[t \ (^\circ\text{C}) = \frac{T_F \ (^\circ\text{F}) - 32}{1,8}\]</div>
+                            <p class="text-slate-300 text-[11px] mt-1 font-sans">Độ biến thiên: \(\Delta T_F \ (^\circ\text{F}) = 1,8 \cdot \Delta t \ (^\circ\text{C})\)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mục 4: Bẫy lý thuyết thường gặp -->
+                <div class="bg-rose-50 border-l-4 border-rose-500 p-4 rounded-r-xl">
+                    <h4 class="font-bold text-rose-800 text-sm mb-2 flex items-center gap-1.5">
+                        <span>⚠️</span> Bẫy Lý Thuyết Thường Mắc Phải Khi Làm Bài Thi
+                    </h4>
+                    <ul class="text-xs text-rose-900 space-y-1.5 list-disc list-inside">
+                        <li><strong>Sai lầm 1:</strong> Đồng nhất <em>Nhiệt độ</em> với <em>Nhiệt lượng</em> hoặc <em>Nội năng</em>. Nhiệt độ là chỉ số đo trạng thái (đặc trưng cho động năng hạt vi mô), không phải dạng năng lượng tích trữ trong vật. Vật có nhiệt độ thấp hơn vẫn có thể có nội năng lớn hơn nếu khối lượng lớn hơn nhiều (Ví dụ: Một tảng băng lớn có nội năng lớn hơn chén nước sôi).</li>
+                        <li><strong>Sai lầm 2:</strong> Nhầm lẫn giữa <em>giá trị nhiệt độ</em> và <em>độ biến thiên nhiệt độ</em>. Khi nhiệt độ tăng \(\Delta t = 10^\circ\text{C}\) thì thang Kelvin tăng đúng \(\Delta T = 10\text{ K}\) (KHÔNG cộng thêm 273), còn thang Fahrenheit tăng \(\Delta T_F = 1,8 \times 10 = 18^\circ\text{F}\).</li>
+                        <li><strong>Sai lầm 3:</strong> Khử trùng nhiệt kế y tế bằng nước sôi \(100^\circ\text{C}\). Giới hạn đo của nhiệt kế y tế thủy ngân chỉ tới \(42^\circ\text{C}\), nhúng vào nước sôi cột thủy ngân nở bung ống mao quản gây vỡ nổ độc hại!</li>
+                        <li><strong>Sai lầm 4:</strong> Cho rằng có nhiệt độ thấp hơn \(0\text{ K}\). \(0\text{ K}\) là độ không tuyệt đối, tại đó động năng chuyển động nhiệt bằng không, không tồn tại trạng thái nhiệt độ âm trong thang Kelvin.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: MÔ PHỎNG TƯƠNG TÁC (SIMULATION LAB) ==================== -->
+        <section id="tab-content-3" class="tab-content hidden space-y-6">
+            <!-- Sub-tabs for Simulations -->
+            <div class="flex border-b border-slate-200 space-x-4">
+                <button onclick="switchSim(1)" id="sim-tab-1" class="py-2 px-4 border-b-2 border-brand-600 font-bold text-brand-700 text-sm">
+                    Lab 3A: Động Học Phân Tử & Cân Bằng Nhiệt
+                </button>
+                <button onclick="switchSim(2)" id="sim-tab-2" class="py-2 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-medium text-sm">
+                    Lab 3B: So Sánh 3 Thang Nhiệt Kế Trực Quan
+                </button>
+            </div>
+
+            <!-- SIMULATION 3A: Molecular Kinetic Transfer -->
+            <div id="sim-content-1" class="space-y-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex flex-col lg:flex-row gap-6">
+                        <!-- Canvas Display -->
+                        <div class="flex-1">
+                            <div class="canvas-container shadow-inner">
+                                <canvas id="heatSimCanvas" width="600" height="320" class="w-full h-auto block"></canvas>
+                            </div>
+                            <div class="mt-2 flex justify-between text-xs text-slate-500 px-1">
+                                <span>Khối Vật Thể A (Nhiệt độ \(T_A\))</span>
+                                <span id="sim-transfer-indicator" class="font-semibold text-amber-500">Trạng thái: Đang trao đổi nhiệt</span>
+                                <span>Khối Vật Thể B (Nhiệt độ \(T_B\))</span>
+                            </div>
+                        </div>
+
+                        <!-- Controls Panel -->
+                        <div class="w-full lg:w-80 bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4 text-sm">
+                            <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider text-center border-b pb-2">Tham Số Điều Khiển</h4>
+                            
+                            <div>
+                                <label class="flex justify-between text-xs font-medium text-slate-700">
+                                    <span>Nhiệt độ Vật A (\(t_A\)):</span>
+                                    <span id="tempA_val" class="text-rose-600 font-bold">80 °C</span>
+                                </label>
+                                <input type="range" id="sliderTempA" min="0" max="100" value="80" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-500 mt-1">
+                            </div>
+
+                            <div>
+                                <label class="flex justify-between text-xs font-medium text-slate-700">
+                                    <span>Nhiệt độ Vật B (\(t_B\)):</span>
+                                    <span id="tempB_val" class="text-sky-600 font-bold">20 °C</span>
+                                </label>
+                                <input type="range" id="sliderTempB" min="0" max="100" value="20" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-500 mt-1">
+                            </div>
+
+                            <div class="flex gap-2 pt-2">
+                                <button id="btnToggleContact" class="flex-1 py-2 px-3 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg text-xs transition shadow-sm flex items-center justify-center gap-1">
+                                    <span>🤝</span> Cho tiếp xúc
+                                </button>
+                                <button id="btnResetSim" class="py-2 px-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-lg text-xs transition">
+                                    🔄 Reset
+                                </button>
+                            </div>
+
+                            <!-- Real-time Monitor -->
+                            <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-2 text-xs">
+                                <div class="font-semibold text-slate-700 border-b pb-1">Trạng thái thời gian thực:</div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-500">Vận tốc TB \(\bar{v}_A\):</span>
+                                    <span id="speedA_disp" class="font-mono font-bold text-rose-600">-- m/s</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-500">Vận tốc TB \(\bar{v}_B\):</span>
+                                    <span id="speedB_disp" class="font-mono font-bold text-sky-600">-- m/s</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-500">Nhiệt độ cân bằng:</span>
+                                    <span id="eqTemp_disp" class="font-mono font-bold text-emerald-600">-- °C</span>
+                                </div>
+                            </div>
+
+                            <div class="text-[11px] text-slate-500 bg-amber-50 p-2.5 rounded border border-amber-200">
+                                💡 <strong>Thao tác tìm hiểu:</strong> Kéo chỉnh nhiệt độ ban đầu chênh lệch cao, bấm <em>"Cho tiếp xúc"</em> và quan sát: các hạt nhanh truyền động năng khi va chạm tại vách tiếp xúc cho tới khi vận tốc phân tử 2 bên đồng đều.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMULATION 3B: Interactive Thermometers Trio -->
+            <div id="sim-content-2" class="hidden space-y-4">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="max-w-3xl mx-auto space-y-6">
+                        <div class="text-center">
+                            <h3 class="text-base font-bold text-slate-800">Mô hình cột đo nhiệt độ ba thang Celsius - Kelvin - Fahrenheit</h3>
+                            <p class="text-xs text-slate-500 mt-1">Kéo thanh trượt nhiệt độ môi trường để quan sát mức dâng cột chất lỏng và sự tương thích các mốc vật lý</p>
+                        </div>
+
+                        <!-- Thermometer Canvas -->
+                        <div class="bg-slate-900 p-4 rounded-xl shadow-inner flex justify-center">
+                            <canvas id="thermoCanvas" width="640" height="360" class="w-full max-w-xl h-auto"></canvas>
+                        </div>
+
+                        <!-- Direct Slider Control -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="font-semibold text-slate-700">Điều chỉnh nhiệt độ chuẩn:</span>
+                                <span id="thermoInputVal" class="text-base font-mono font-bold text-brand-600">37,0 °C</span>
+                            </div>
+                            <input type="range" id="thermoSlider" min="-100" max="200" value="37" step="0.5" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-brand-600">
+                            
+                            <!-- Quick Buttons -->
+                            <div class="flex flex-wrap gap-2 text-xs pt-1 justify-center">
+                                <button onclick="setThermoQuick(-273.15)" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100">Độ 0 tuyệt đối (-273,15°C)</button>
+                                <button onclick="setThermoQuick(0)" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100">Nước đá tan (0°C)</button>
+                                <button onclick="setThermoQuick(0.01)" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100">Điểm ba (0,01°C)</button>
+                                <button onclick="setThermoQuick(37)" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100">Thân nhiệt (37°C)</button>
+                                <button onclick="setThermoQuick(100)" class="px-2.5 py-1 bg-white border border-slate-300 rounded hover:bg-slate-100">Nước sôi (100°C)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: MÁY TÍNH THAM SỐ ==================== -->
+        <section id="tab-content-4" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                <div class="border-l-4 border-emerald-600 pl-4">
+                    <h2 class="text-xl font-bold text-slate-800">Máy Tính Chuyển Đổi & Khảo Sát Tỉ Số Thang Nhiệt</h2>
+                    <p class="text-sm text-slate-500">Nhập 1 đại lượng đã biết, hệ thống tự động giải mã các thang đo còn lại và hiển thị bước biến đổi tường minh KaTeX.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Celsius Input -->
+                    <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                        <label class="block text-xs font-bold text-sky-800 mb-1">Nhiệt độ Celsius \(t \ (^\circ\text{C})\)</label>
+                        <div class="relative">
+                            <input type="number" id="calc_celsius" step="any" placeholder="Nhập độ C..." class="w-full px-3 py-2 bg-white border border-sky-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono">
+                            <span class="absolute right-3 top-2 text-xs text-sky-400 font-medium">°C</span>
+                        </div>
+                        <span class="text-[11px] text-sky-600 mt-1 block">Mốc chuẩn: 0 đến 100 °C</span>
+                    </div>
+
+                    <!-- Kelvin Input -->
+                    <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                        <label class="block text-xs font-bold text-emerald-800 mb-1">Nhiệt độ Kelvin \(T \ (\text{K})\)</label>
+                        <div class="relative">
+                            <input type="number" id="calc_kelvin" step="any" placeholder="Nhập độ K..." class="w-full px-3 py-2 bg-white border border-emerald-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono">
+                            <span class="absolute right-3 top-2 text-xs text-emerald-400 font-medium">K</span>
+                        </div>
+                        <span class="text-[11px] text-emerald-600 mt-1 block">Mốc chuẩn: \(T \ge 0 \text{ K}\)</span>
+                    </div>
+
+                    <!-- Fahrenheit Input -->
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
+                        <label class="block text-xs font-bold text-amber-800 mb-1">Nhiệt độ Fahrenheit \(T_F \ (^\circ\text{F})\)</label>
+                        <div class="relative">
+                            <input type="number" id="calc_fahr" step="any" placeholder="Nhập độ F..." class="w-full px-3 py-2 bg-white border border-amber-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono">
+                            <span class="absolute right-3 top-2 text-xs text-amber-400 font-medium">°F</span>
+                        </div>
+                        <span class="text-[11px] text-amber-600 mt-1 block">Mốc chuẩn: 32 đến 212 °F</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button onclick="calculateTemperatures()" class="py-2.5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl text-sm transition shadow-md flex items-center gap-2">
+                        <span>⚡</span> Tính toán chi tiết
+                    </button>
+                    <button onclick="resetCalculator()" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium rounded-xl text-sm transition border border-slate-300">
+                        Xóa dữ liệu
+                    </button>
+                </div>
+
+                <!-- Derivation Display Output -->
+                <div id="calc_result_box" class="hidden bg-slate-900 text-slate-100 p-5 rounded-xl space-y-4">
+                    <h4 class="font-bold text-sky-400 text-sm border-b border-slate-700 pb-2">
+                        KẾT QUẢ VÀ CÁC BƯỚC BIẾN ĐỔI CHI TIẾT
+                    </h4>
+                    <div id="calc_steps" class="space-y-3 text-sm font-sans leading-relaxed">
+                        <!-- KaTeX Math steps injected here -->
+                    </div>
+                </div>
+
+                <!-- Special Ratio Solver Tool -->
+                <div class="border-t pt-5">
+                    <h3 class="font-bold text-slate-800 text-base mb-2">Công cụ giải nhanh bài toán tỉ số hai thang nhiệt:</h3>
+                    <p class="text-xs text-slate-600 mb-3">Ví dụ: Tìm nhiệt độ mà số chỉ thang Fahrenheit gấp \(k\) lần số chỉ thang Celsius (\(T_F / t = k\)):</p>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="font-medium text-slate-700">Tỉ số \(k = \frac{T_F}{t}\):</span>
+                            <input type="number" id="ratio_k" value="2.5" step="0.1" class="w-24 px-3 py-1.5 border rounded-lg text-sm font-mono">
+                        </div>
+                        <button onclick="solveRatioProblem()" class="px-4 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg shadow-sm">
+                            Giải phương trình
+                        </button>
+                    </div>
+                    <div id="ratio_solution" class="mt-3 text-xs bg-slate-50 p-3 rounded-lg border border-slate-200 hidden"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: PHÒNG LUYỆN TẬP PHÂN HÓA ==================== -->
+        <section id="tab-content-5" class="tab-content hidden space-y-6">
+            <div class="space-y-6">
+                <!-- Cấp độ 1: Nhận biết - Thông hiểu -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
+                            CẤP ĐỘ 1: NHẬN BIẾT - THÔNG HIỂU (Trích SBT Bài 3.9 & Đề dự báo thời tiết)
+                        </span>
+                        <span class="text-xs text-slate-400">Áp dụng trực tiếp công thức</span>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-base">
+                        Bài toán 1: Chuyển đổi dải nhiệt độ khí tượng New York và Hà Nội
+                    </h3>
+                    <p class="text-sm text-slate-700">
+                        Bản tin dự báo thời tiết tại New York dự báo dải nhiệt độ dao động trong khoảng \(75^\circ\text{F}\) đến \(94^\circ\text{F}\).
+                        <br>
+                        a) Hãy quy đổi dải nhiệt độ này ra thang Celsius (\(^\circ\text{C}\)).
+                        <br>
+                        b) Tại Hà Nội nhiệt độ dự báo từ \(19^\circ\text{C}\) đến \(28^\circ\text{C}\). Hãy đổi dải nhiệt độ tại Hà Nội sang thang đo Kelvin (\(\text{K}\)).
+                    </p>
+                    <div class="flex gap-2">
+                        <button onclick="toggleSolution('sol1')" class="text-xs bg-sky-100 text-sky-800 font-semibold px-3 py-1.5 rounded-lg hover:bg-sky-200 transition">
+                            👁️ Xem / Ẩn Lời giải & Gợi ý tư duy
+                        </button>
+                    </div>
+                    <div id="sol1" class="hidden bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2">
+                        <p class="font-bold text-brand-700">Gợi ý tư duy & Lời giải chuẩn:</p>
+                        <p><strong>a) Chuyển \(^\circ\text{F}\) sang \(^\circ\text{C}\):</strong></p>
+                        <p>Sử dụng hệ thức: \(t = \frac{T_F - 32}{1,8}\)</p>
+                        <p>• Ứng với \(T_{F1} = 75^\circ\text{F}\): \(t_1 = \frac{75 - 32}{1,8} = \frac{43}{1,8} \approx 23,89^\circ\text{C}\)</p>
+                        <p>• Ứng với \(T_{F2} = 94^\circ\text{F}\): \(t_2 = \frac{94 - 32}{1,8} = \frac{62}{1,8} \approx 34,44^\circ\text{C}\)</p>
+                        <p>\(\Rightarrow\) Dải nhiệt độ tại New York là: <strong>\(23,9^\circ\text{C} - 34,4^\circ\text{C}\)</strong>.</p>
+                        <p class="mt-2"><strong>b) Chuyển \(^\circ\text{C}\) sang \(\text{K}\):</strong></p>
+                        <p>Sử dụng hệ thức: \(T = t + 273,15\) (hoặc làm tròn \(T = t + 273\))</p>
+                        <p>• \(t_1 = 19^\circ\text{C} \Rightarrow T_1 = 19 + 273,15 = 292,15 \text{ K} \approx 292\text{ K}\)</p>
+                        <p>• \(t_2 = 28^\circ\text{C} \Rightarrow T_2 = 28 + 273,15 = 301,15 \text{ K} \approx 301\text{ K}\)</p>
+                        <p>\(\Rightarrow\) Dải nhiệt độ tại Hà Nội là: <strong>\(292\text{ K} - 301\text{ K}\)</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- Cấp độ 2: Vận dụng -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full">
+                            CẤP ĐỘ 2: VẬN DỤNG (Phối hợp nở vì nhiệt & Thước đo nhiệt kế)
+                        </span>
+                        <span class="text-xs text-slate-400">Ứng dụng định luật giãn nở</span>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-base">
+                        Bài toán 2: Tính toán độ dãn nở vì nhiệt của vật liệu và cấu tạo nhiệt kế
+                    </h3>
+                    <p class="text-sm text-slate-700">
+                        Một dây điện bằng đồng có độ dài ban đầu \(l_0 = 50\text{ m}\) ở nhiệt độ \(t_0 = 20^\circ\text{C}\). Biết rằng khi nhiệt độ tăng thêm \(1^\circ\text{C}\), mỗi mét dây đồng dài thêm \(0,017\text{ mm}\).
+                        <br>
+                        a) Hãy xác định chiều dài tăng thêm \(\Delta l\) của dây đồng khi nhiệt độ ngoài trời đạt \(40^\circ\text{C}\).
+                        <br>
+                        b) Một nhiệt kế chất lỏng có bầu chứa \(V_0 = 2\text{ cm}^3\) thủy ngân. Ống mao quản hình trụ có đường kính trong \(d = 0,2\text{ mm}\). Biết hệ số nở khối của thủy ngân là \(\beta = 1,8 \cdot 10^{-4}\text{ K}^{-1}\). Hỏi khi nhiệt độ tăng thêm \(\Delta t = 10^\circ\text{C}\), chiều cao cột thủy ngân dâng lên thêm bao nhiêu milimét?
+                    </p>
+                    <div class="flex gap-2">
+                        <button onclick="toggleSolution('sol2')" class="text-xs bg-sky-100 text-sky-800 font-semibold px-3 py-1.5 rounded-lg hover:bg-sky-200 transition">
+                            👁️ Xem / Ẩn Lời giải & Gợi ý tư duy
+                        </button>
+                    </div>
+                    <div id="sol2" class="hidden bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2">
+                        <p class="font-bold text-brand-700">Lời giải chi tiết:</p>
+                        <p><strong>a) Độ tăng độ dài của dây đồng:</strong></p>
+                        <p>• Độ tăng nhiệt độ: \(\Delta t = 40 - 20 = 20^\circ\text{C}\).</p>
+                        <p>• Hệ số tăng độ dài trên mỗi mét cho \(1^\circ\text{C}\) là \(k = 0,017\text{ mm/(m.}^\circ\text{C)}\).</p>
+                        <p>• Độ dãn dài: \[\Delta l = l_0 \cdot k \cdot \Delta t = 50 \cdot 0,017 \cdot 20 = 17\text{ mm} = 0,017\text{ m}\]</p>
+                        <p>\(\Rightarrow\) Chiều dài toàn phần ở \(40^\circ\text{C}\) là: \(l = 50 + 0,017 = 50,017\text{ m}\).</p>
+                        <p class="mt-2"><strong>b) Độ cao dâng lên trong nhiệt kế thủy ngân:</strong></p>
+                        <p>• Thể tích thủy ngân nở ra: \[\Delta V = V_0 \cdot \beta \cdot \Delta t = 2000\text{ mm}^3 \cdot (1,8 \cdot 10^{-4}) \cdot 10 = 3,6\text{ mm}^3\]</p>
+                        <p>• Tiết diện ngang của ống mao quản: \[S = \frac{\pi d^2}{4} = \frac{\pi \cdot 0,2^2}{4} \approx 0,031416\text{ mm}^2\]</p>
+                        <p>• Chiều cao cột thủy ngân dâng thêm: \[\Delta h = \frac{\Delta V}{S} = \frac{3,6}{0,031416} \approx 114,6\text{ mm} \approx 11,46\text{ cm}\]</p>
+                        <p class="text-slate-500 italic">Nhận xét: Vì tiết diện mao quản rất bé nên thể tích nở nhỏ cũng tạo ra độ dịch chuyển rất dài, giúp việc chia vạch nhiệt độ rõ nét và chính xác.</p>
+                    </div>
+                </div>
+
+                <!-- Cấp độ 3: Vận dụng cao -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full">
+                            CẤP ĐỘ 3: VẬN DỤNG CAO (Nhiệt kế hỏng vạch & Cảm biến bức xạ viễn thám)
+                        </span>
+                        <span class="text-xs text-slate-400">Khảo sát phi tuyến & Năng lực số</span>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-base">
+                        Bài toán 3: Hiệu chỉnh nhiệt kế lỗi vạch chia và Cảm biến nhiệt hồng ngoại
+                    </h3>
+                    <p class="text-sm text-slate-700">
+                        a) <em>(Nhiệt kế phân khoảng lỗi)</em>: Một chiếc nhiệt kế thủy ngân chưa chia độ được đặt vào nước đá đang tan thì chiều dài cột thủy ngân là \(l_0 = 4\text{ cm}\), đặt vào hơi nước đang sôi ở \(1\text{ atm}\) thì chiều dài là \(l_{100} = 24\text{ cm}\). Khi đặt nhiệt kế này vào một cốc nước ấm, chiều dài cột thủy ngân đo được là \(l = 11\text{ cm}\). Hãy tính nhiệt độ của cốc nước theo thang Celsius và Fahrenheit.
+                        <br>
+                        b) <em>(Đo nhiệt độ hồng ngoại từ xa - Năng lực AI/Số)</em>: Một camera tầm nhiệt hồng ngoại công nghiệp ghi nhận bước sóng phát xạ bức xạ cực đại của một vật thể ở lò luyện kim là \(\lambda_{max} = 2,5 \ \mu\text{m}\). Biết theo định luật dịch chuyển Wien: \(\lambda_{max} \cdot T = 2898 \ \mu\text{m}\cdot\text{K}\). Xác định nhiệt độ của vật theo thang Celsius.
+                    </p>
+                    <div class="flex gap-2">
+                        <button onclick="toggleSolution('sol3')" class="text-xs bg-sky-100 text-sky-800 font-semibold px-3 py-1.5 rounded-lg hover:bg-sky-200 transition">
+                            👁️ Xem / Ẩn Lời giải & Gợi ý tư duy
+                        </button>
+                    </div>
+                    <div id="sol3" class="hidden bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2">
+                        <p class="font-bold text-brand-700">Lời giải chi tiết:</p>
+                        <p><strong>a) Phương pháp nội suy tuyến tính chiều dài:</strong></p>
+                        <p>Khoảng cách giữa hai điểm mốc \(0^\circ\text{C}\) và \(100^\circ\text{C}\) là: \[\Delta L = l_{100} - l_0 = 24 - 4 = 20\text{ cm}\]</p>
+                        <p>Mỗi \(1\text{ cm}\) tương ứng với độ tăng nhiệt độ là: \[\frac{100^\circ\text{C}}{20\text{ cm}} = 5^\circ\text{C/cm}\]</p>
+                        <p>Tại \(l = 11\text{ cm}\), chiều dài tăng thêm so với mốc \(0^\circ\text{C}\) là: \[\Delta l = 11 - 4 = 7\text{ cm}\]</p>
+                        <p>\(\Rightarrow\) Nhiệt độ tương ứng: \[t = 7\text{ cm} \times 5^\circ\text{C/cm} = 35^\circ\text{C}\]</p>
+                        <p>Đổi sang thang Fahrenheit: \[T_F = 1,8 \times 35 + 32 = 95^\circ\text{F}\]</p>
+                        <p class="mt-2"><strong>b) Xác định nhiệt độ từ bức xạ quang phổ (Định luật Wien):</strong></p>
+                        <p>\[T = \frac{2898}{\lambda_{max}} = \frac{2898}{2,5} = 1159,2\text{ K}\]</p>
+                        <p>Chuyển sang Celsius: \[t = 1159,2 - 273,15 = 886,05^\circ\text{C}\]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: BÀI TỰ ĐÁNH GIÁ (INTERACTIVE QUIZ) ==================== -->
+        <section id="tab-content-6" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 gap-2">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">🎯 Trắc Nghiệm Tự Đánh Giá Năng Lực Học Tập</h2>
+                        <p class="text-xs text-slate-500">4 câu hỏi chuẩn định dạng THPT 2025 kèm giải thích KaTeX chuyên sâu</p>
+                    </div>
+                    <div id="quiz-score-badge" class="hidden px-4 py-1.5 bg-brand-50 text-brand-700 font-bold rounded-xl border border-brand-200 text-sm">
+                        Điểm số: <span id="quiz-score-text">0/4</span>
+                    </div>
+                </div>
+
+                <!-- Quiz Form Container -->
+                <div id="quiz-container" class="space-y-6">
+                    <!-- Questions injected dynamically via JS -->
+                </div>
+
+                <!-- Submit / Retry Buttons -->
+                <div class="flex gap-3 pt-2">
+                    <button id="btnSubmitQuiz" onclick="submitQuiz()" class="py-2.5 px-6 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl text-sm transition shadow-md">
+                        Nộp bài & Xem giải thích
+                    </button>
+                    <button id="btnResetQuiz" onclick="resetQuiz()" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium rounded-xl text-sm transition border border-slate-300">
+                        Làm lại
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 7: TIỆN ÍCH LỚP HỌC ==================== -->
+        <section id="tab-content-7" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Visual Countdown Timer -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                                <span>⏱️</span> Đồng Hồ Đếm Ngược Hoạt Động Lớp Học
+                            </h3>
+                            <span id="timer-status" class="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">Sẵn sàng</span>
+                        </div>
+
+                        <!-- Circular SVG Timer -->
+                        <div class="relative w-48 h-48 mx-auto my-2">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="44" stroke="#e2e8f0" stroke-width="8" fill="transparent" />
+                                <circle id="timer-progress" cx="50" cy="50" r="44" stroke="#0284c7" stroke-width="8" fill="transparent" stroke-dasharray="276.46" stroke-dashoffset="0" stroke-linecap="round" class="transition-all duration-300" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                <span id="timer-display" class="text-3xl font-mono font-bold text-slate-800 tracking-tight">02:00</span>
+                                <span class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase mt-1">Phút : Giây</span>
+                            </div>
+                        </div>
+
+                        <!-- Quick presets -->
+                        <div class="flex justify-center gap-2 my-4">
+                            <button onclick="setTimerPreset(60)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium">1 Phút</button>
+                            <button onclick="setTimerPreset(120)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium">2 Phút</button>
+                            <button onclick="setTimerPreset(300)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium">5 Phút</button>
+                            <button onclick="setTimerPreset(600)" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium">10 Phút</button>
+                        </div>
+                    </div>
+
+                    <!-- Control Buttons -->
+                    <div class="flex gap-2">
+                        <button id="btnStartTimer" onclick="toggleTimer()" class="flex-1 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold text-xs shadow-sm transition">
+                            Bắt đầu
+                        </button>
+                        <button onclick="resetTimer()" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-medium text-xs border border-slate-300 transition">
+                            Đặt lại
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lucky Wheel: Random Student Selector -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                                <span>🎡</span> Vòng Quay May Mắn (Gọi Tên 4 Tổ)
+                            </h3>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">Gọi ngẫu nhiên học sinh xung phong giải bài hoặc trả lời câu hỏi</p>
+
+                        <!-- Canvas Wheel -->
+                        <div class="relative w-56 h-56 mx-auto flex items-center justify-center">
+                            <!-- Indicator arrow -->
+                            <div class="absolute -top-3 z-10 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[18px] border-t-rose-600 drop-shadow"></div>
+                            <canvas id="wheelCanvas" width="240" height="240" class="w-full h-full"></canvas>
+                        </div>
+
+                        <!-- Result Announcement -->
+                        <div id="wheelWinnerDisplay" class="text-center my-3 min-h-[32px] flex items-center justify-center">
+                            <span class="text-xs text-slate-400">Hãy nhấn "Quay số" để chọn ngẫu nhiên thành viên</span>
+                        </div>
+                    </div>
+
+                    <!-- Input Settings & Trigger -->
+                    <div class="space-y-3">
+                        <div class="flex gap-2">
+                            <select id="wheelGroupSelect" onchange="loadGroupStudents()" class="text-xs border border-slate-300 rounded-lg px-2 py-1.5 bg-slate-50">
+                                <option value="all">Toàn bộ 4 Tổ</option>
+                                <option value="1">Tổ 1</option>
+                                <option value="2">Tổ 2</option>
+                                <option value="3">Tổ 3</option>
+                                <option value="4">Tổ 4</option>
+                            </select>
+                            <button id="btnSpinWheel" onclick="spinLuckyWheel()" class="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-xs shadow-md transition">
+                                🎲 Quay số ngẫu nhiên!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 mt-12 text-center text-xs">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p class="font-semibold text-slate-200 text-sm">
+                ỨNG DỤNG DẠY HỌC TƯƠNG TÁC VẬT LÝ 12 - CHUYÊN ĐỀ VẬT LÍ NHIỆT
+            </p>
+            <p>
+                Phát triển theo Chương trình Giáo dục Phổ thông 2018 • Bộ sách Kết nối tri thức với cuộc sống
+            </p>
+            <div class="pt-2">
+                <span class="inline-block bg-slate-800 text-amber-300 border border-slate-700 px-4 py-1 rounded-full font-mono text-[11px]">
+                    © 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT APPLICATION CORE ==================== -->
+    <script>
+        // ==================== 1. TAB CONTROLLER ====================
+        function switchTab(tabIndex) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            const targetContent = document.getElementById(`tab-content-${tabIndex}`);
+            const targetBtn = document.getElementById(`tab-btn-${tabIndex}`);
+            if (targetContent) targetContent.classList.remove('hidden');
+            if (targetBtn) targetBtn.classList.add('active');
+
+            // Trigger specific renders if needed
+            if (tabIndex === 3) {
+                initHeatSim();
+                initThermoCanvas();
+            } else if (tabIndex === 7) {
+                drawWheel();
+            }
+
+            // Re-render KaTeX in new visible container
+            if (window.renderMathInElement) {
+                renderMathInElement(targetContent, {
+                    delimiters: [
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        function switchSim(simIndex) {
+            document.getElementById('sim-content-1').classList.toggle('hidden', simIndex !== 1);
+            document.getElementById('sim-content-2').classList.toggle('hidden', simIndex !== 2);
+            document.getElementById('sim-tab-1').classList.toggle('border-brand-600', simIndex === 1);
+            document.getElementById('sim-tab-1').classList.toggle('text-brand-700', simIndex === 1);
+            document.getElementById('sim-tab-1').classList.toggle('text-slate-500', simIndex !== 1);
+            document.getElementById('sim-tab-2').classList.toggle('border-brand-600', simIndex === 2);
+            document.getElementById('sim-tab-2').classList.toggle('text-brand-700', simIndex === 2);
+            document.getElementById('sim-tab-2').classList.toggle('text-slate-500', simIndex !== 2);
+
+            if (simIndex === 1) initHeatSim();
+            if (simIndex === 2) initThermoCanvas();
+        }
+
+        // Quick answer feedback in tab 1
+        function showQuickAnswer(option) {
+            const box = document.getElementById('quick-answer-feedback');
+            box.classList.remove('hidden');
+            if (option === 2) {
+                box.className = "mt-3 text-xs p-3 rounded-lg bg-emerald-900/60 border border-emerald-500 text-emerald-200";
+                box.innerHTML = "✅ <strong>Chính xác!</strong> Khi hai vật cân bằng nhiệt, nhiệt độ của chúng bằng nhau (\(T_1 = T_2\)). Nội năng \(U\) phụ thuộc vào cả nhiệt độ và số phân tử (khối lượng) nên nội năng hai vật không nhất thiết phải bằng nhau.";
+            } else {
+                box.className = "mt-3 text-xs p-3 rounded-lg bg-rose-900/60 border border-rose-500 text-rose-200";
+                box.innerHTML = "❌ <strong>Chưa chính xác!</strong> Hãy nhớ rằng: Nhiệt độ xác định chiều truyền nhiệt, còn nội năng là tổng toàn bộ động năng và thế năng phân tử. Hai vật có thể có nhiệt độ bằng nhau nhưng vật to lớn hơn chứa nhiều phân tử hơn nên có nội năng lớn hơn.";
+            }
+            if (window.renderMathInElement) {
+                renderMathInElement(box, {
+                    delimiters: [{ left: "\\(", right: "\\)", display: false }]
+                });
+            }
+        }
+
+        // ==================== 2. SIMULATION LAB 3A: MOLECULAR HEAT TRANSFER ====================
+        let heatCanvas, heatCtx;
+        let particlesA = [];
+        let particlesB = [];
+        let inContact = false;
+        let simTempA = 80;
+        let simTempB = 20;
+        let animIdHeat;
+
+        class Particle {
+            constructor(x, y, vx, vy, color, side) {
+                this.x = x;
+                this.y = y;
+                this.vx = vx;
+                this.vy = vy;
+                this.radius = 4;
+                this.color = color;
+                this.side = side; // 'A' or 'B'
+            }
+
+            update(minX, maxX, minY, maxY) {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce walls
+                if (this.x - this.radius < minX) { this.x = minX + this.radius; this.vx *= -1; }
+                if (this.x + this.radius > maxX) { this.x = maxX - this.radius; this.vx *= -1; }
+                if (this.y - this.radius < minY) { this.y = minY + this.radius; this.vy *= -1; }
+                if (this.y + this.radius > maxY) { this.y = maxY - this.radius; this.vy *= -1; }
+            }
+
+            draw(ctx) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 6;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function getSpeedFromTemp(temp) {
+            // v ~ sqrt(T)
+            const kelvin = temp + 273.15;
+            return Math.sqrt(kelvin) * 0.18;
+        }
+
+        function createParticles() {
+            particlesA = [];
+            particlesB = [];
+            const count = 40;
+
+            const speedA = getSpeedFromTemp(simTempA);
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const v = speedA * (0.8 + Math.random() * 0.4);
+                particlesA.push(new Particle(
+                    20 + Math.random() * 240,
+                    40 + Math.random() * 240,
+                    Math.cos(angle) * v,
+                    Math.sin(angle) * v,
+                    '#f43f5e',
+                    'A'
+                ));
+            }
+
+            const speedB = getSpeedFromTemp(simTempB);
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const v = speedB * (0.8 + Math.random() * 0.4);
+                particlesB.push(new Particle(
+                    340 + Math.random() * 240,
+                    40 + Math.random() * 240,
+                    Math.cos(angle) * v,
+                    Math.sin(angle) * v,
+                    '#38bdf8',
+                    'B'
+                ));
+            }
+        }
+
+        function initHeatSim() {
+            heatCanvas = document.getElementById('heatSimCanvas');
+            if (!heatCanvas) return;
+            heatCtx = heatCanvas.getContext('2d');
+
+            createParticles();
+            updateSimHUD();
+
+            if (animIdHeat) cancelAnimationFrame(animIdHeat);
+            loopHeatSim();
+        }
+
+        function loopHeatSim() {
+            heatCtx.clearRect(0, 0, heatCanvas.width, heatCanvas.height);
+
+            const mid = heatCanvas.width / 2; // 300
+            const wallLeft = inContact ? mid - 2 : mid - 20;
+            const wallRight = inContact ? mid + 2 : mid + 20;
+
+            // Draw bounding boxes
+            heatCtx.strokeStyle = 'rgba(244, 63, 94, 0.4)';
+            heatCtx.lineWidth = 2;
+            heatCtx.strokeRect(15, 30, wallLeft - 15, 260);
+
+            heatCtx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+            heatCtx.strokeRect(wallRight, 30, (heatCanvas.width - 15) - wallRight, 260);
+
+            // Barrier representation
+            if (!inContact) {
+                heatCtx.fillStyle = '#64748b';
+                heatCtx.fillRect(mid - 15, 30, 30, 260);
+                heatCtx.fillStyle = '#94a3b8';
+                heatCtx.font = '11px sans-serif';
+                heatCtx.textAlign = 'center';
+                heatCtx.fillText('Vách', mid, 150);
+                heatCtx.fillText('Cách', mid, 165);
+                heatCtx.fillText('Nhiệt', mid, 180);
+            } else {
+                // Diathermal wall
+                heatCtx.fillStyle = '#f59e0b';
+                heatCtx.fillRect(mid - 3, 30, 6, 260);
+
+                // Thermal exchange physics
+                if (Math.abs(simTempA - simTempB) > 0.05) {
+                    const rate = 0.04;
+                    if (simTempA > simTempB) {
+                        simTempA -= rate;
+                        simTempB += rate;
+                    } else {
+                        simTempA += rate;
+                        simTempB -= rate;
+                    }
+                    // Re-scale speeds slowly
+                    particlesA.forEach(p => {
+                        const targetV = getSpeedFromTemp(simTempA);
+                        const curV = Math.hypot(p.vx, p.vy);
+                        p.vx = (p.vx / curV) * targetV;
+                        p.vy = (p.vy / curV) * targetV;
+                    });
+                    particlesB.forEach(p => {
+                        const targetV = getSpeedFromTemp(simTempB);
+                        const curV = Math.hypot(p.vx, p.vy);
+                        p.vx = (p.vx / curV) * targetV;
+                        p.vy = (p.vy / curV) * targetV;
+                    });
+                }
+            }
+
+            // Update & draw particles
+            particlesA.forEach(p => {
+                p.update(15, wallLeft, 30, 290);
+                p.draw(heatCtx);
+            });
+
+            particlesB.forEach(p => {
+                p.update(wallRight, heatCanvas.width - 15, 30, 290);
+                p.draw(heatCtx);
+            });
+
+            // Energy transfer spark effect at boundary when in contact
+            if (inContact && Math.abs(simTempA - simTempB) > 0.5) {
+                heatCtx.fillStyle = '#fef08a';
+                for (let k = 0; k < 3; k++) {
+                    const sparkY = 40 + Math.random() * 240;
+                    heatCtx.fillRect(mid - 2 + (Math.random() - 0.5) * 6, sparkY, 3, 3);
+                }
+            }
+
+            updateSimHUD();
+            animIdHeat = requestAnimationFrame(loopHeatSim);
+        }
+
+        function updateSimHUD() {
+            const vA = (getSpeedFromTemp(simTempA) * 150).toFixed(0);
+            const vB = (getSpeedFromTemp(simTempB) * 150).toFixed(0);
+            const eq = ((simTempA + simTempB) / 2).toFixed(1);
+
+            document.getElementById('speedA_disp').textContent = `~ ${vA} m/s (${simTempA.toFixed(1)}°C)`;
+            document.getElementById('speedB_disp').textContent = `~ ${vB} m/s (${simTempB.toFixed(1)}°C)`;
+            document.getElementById('eqTemp_disp').textContent = `${eq} °C`;
+
+            const statusEl = document.getElementById('sim-transfer-indicator');
+            if (!inContact) {
+                statusEl.textContent = 'Trạng thái: Cách nhiệt độc lập';
+                statusEl.className = 'font-semibold text-slate-400';
+            } else if (Math.abs(simTempA - simTempB) < 0.2) {
+                statusEl.textContent = 'Trạng thái: ĐÃ ĐẠT CÂN BẰNG NHIỆT';
+                statusEl.className = 'font-semibold text-emerald-500';
+            } else {
+                statusEl.textContent = `Dòng nhiệt: A (${simTempA.toFixed(0)}°C) ➔ B (${simTempB.toFixed(0)}°C)`;
+                statusEl.className = 'font-semibold text-amber-500';
+            }
+        }
+
+        document.getElementById('sliderTempA').addEventListener('input', function(e) {
+            simTempA = parseFloat(e.target.value);
+            document.getElementById('tempA_val').textContent = `${simTempA.toFixed(0)} °C`;
+            createParticles();
+        });
+
+        document.getElementById('sliderTempB').addEventListener('input', function(e) {
+            simTempB = parseFloat(e.target.value);
+            document.getElementById('tempB_val').textContent = `${simTempB.toFixed(0)} °C`;
+            createParticles();
+        });
+
+        document.getElementById('btnToggleContact').addEventListener('click', function() {
+            inContact = !inContact;
+            this.innerHTML = inContact ? '<span>🛑</span> Tách vách ngăn' : '<span>🤝</span> Cho tiếp xúc';
+            this.classList.toggle('bg-amber-600', inContact);
+            this.classList.toggle('bg-brand-600', !inContact);
+        });
+
+        document.getElementById('btnResetSim').addEventListener('click', function() {
+            inContact = false;
+            document.getElementById('btnToggleContact').innerHTML = '<span>🤝</span> Cho tiếp xúc';
+            document.getElementById('btnToggleContact').className = 'flex-1 py-2 px-3 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg text-xs transition shadow-sm flex items-center justify-center gap-1';
+            simTempA = parseFloat(document.getElementById('sliderTempA').value);
+            simTempB = parseFloat(document.getElementById('sliderTempB').value);
+            createParticles();
+        });
+
+        // ==================== 3. SIMULATION LAB 3B: TRIO THERMOMETERS ====================
+        let currentCelsius = 37.0;
+
+        function initThermoCanvas() {
+            drawThermometers(currentCelsius);
+        }
+
+        function setThermoQuick(val) {
+            currentCelsius = val;
+            document.getElementById('thermoSlider').value = val;
+            document.getElementById('thermoInputVal').textContent = `${val.toFixed(2)} °C`;
+            drawThermometers(val);
+        }
+
+        document.getElementById('thermoSlider').addEventListener('input', function(e) {
+            currentCelsius = parseFloat(e.target.value);
+            document.getElementById('thermoInputVal').textContent = `${currentCelsius.toFixed(1)} °C`;
+            drawThermometers(currentCelsius);
+        });
+
+        function drawThermometers(celsius) {
+            const canvas = document.getElementById('thermoCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const kelvin = celsius + 273.15;
+            const fahr = celsius * 1.8 + 32;
+
+            // Coordinate layout
+            const baseY = 290;
+            const topY = 60;
+            const rangeHeight = baseY - topY; // 230 px
+            // Map: -50 C to 150 C onto the stem
+            const minC = -50;
+            const maxC = 150;
+
+            function getY(cVal) {
+                const clamped = Math.max(minC, Math.min(maxC, cVal));
+                const fraction = (clamped - minC) / (maxC - minC);
+                return baseY - fraction * rangeHeight;
+            }
+
+            const liquidY = getY(celsius);
+
+            const scales = [
+                { name: "Celsius", unit: "°C", value: celsius.toFixed(1), x: 120, color: "#38bdf8", ticks: [0, 50, 100], min: minC, max: maxC },
+                { name: "Kelvin", unit: "K", value: kelvin.toFixed(1), x: 320, color: "#34d399", ticks: [223.15, 273.15, 373.15], min: minC + 273.15, max: maxC + 273.15 },
+                { name: "Fahrenheit", unit: "°F", value: fahr.toFixed(1), x: 520, color: "#fbbf24", ticks: [-40, 32, 122, 212], min: minC * 1.8 + 32, max: maxC * 1.8 + 32 }
+            ];
+
+            scales.forEach(s => {
+                // Glass stem outer
+                ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+                ctx.strokeStyle = "#94a3b8";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.roundRect(s.x - 10, topY - 15, 20, rangeHeight + 30, 10);
+                ctx.fill();
+                ctx.stroke();
+
+                // Liquid fill
+                ctx.fillStyle = s.color;
+                ctx.beginPath();
+                ctx.roundRect(s.x - 5, liquidY, 10, baseY - liquidY + 15, 4);
+                ctx.fill();
+
+                // Bulb
+                ctx.beginPath();
+                ctx.arc(s.x, baseY + 20, 22, 0, Math.PI * 2);
+                ctx.fillStyle = s.color;
+                ctx.fill();
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Bulb reflection highlight
+                ctx.beginPath();
+                ctx.arc(s.x - 7, baseY + 14, 5, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+                ctx.fill();
+
+                // Title & Values
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 13px sans-serif";
+                ctx.textAlign = "center";
+                ctx.fillText(s.name, s.x, topY - 32);
+
+                ctx.font = "bold 14px monospace";
+                ctx.fillStyle = s.color;
+                ctx.fillText(`${s.value} ${s.unit}`, s.x, baseY + 58);
+
+                // Graduation Marks & key physics references
+                ctx.font = "10px sans-serif";
+                ctx.textAlign = "left";
+                ctx.fillStyle = "#cbd5e1";
+
+                // Water freezing line
+                const freezeY = getY(0);
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(s.x + 12, freezeY);
+                ctx.lineTo(s.x + 35, freezeY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillText(s.name === "Celsius" ? "0°C (Đá tan)" : s.name === "Kelvin" ? "273,15 K" : "32°F", s.x + 38, freezeY + 3);
+
+                // Water boiling line
+                const boilY = getY(100);
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(s.x + 12, boilY);
+                ctx.lineTo(s.x + 35, boilY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillText(s.name === "Celsius" ? "100°C (Sôi)" : s.name === "Kelvin" ? "373,15 K" : "212°F", s.x + 38, boilY + 3);
+            });
+        }
+
+        // ==================== 4. PARAMETER CALCULATOR MODULE ====================
+        function calculateTemperatures() {
+            const inC = document.getElementById('calc_celsius').value;
+            const inK = document.getElementById('calc_kelvin').value;
+            const inF = document.getElementById('calc_fahr').value;
+
+            let c = null;
+            let source = "";
+
+            if (inC !== "") {
+                c = parseFloat(inC);
+                source = "Celsius";
+            } else if (inK !== "") {
+                const k = parseFloat(inK);
+                if (k < 0) {
+                    alert("Lỗi vật lý: Nhiệt độ Kelvin không thể có giá trị âm (< 0 K)!");
+                    return;
+                }
+                c = k - 273.15;
+                source = "Kelvin";
+            } else if (inF !== "") {
+                const f = parseFloat(inF);
+                c = (f - 32) / 1.8;
+                source = "Fahrenheit";
+            } else {
+                alert("Vui lòng nhập ít nhất một giá trị nhiệt độ để thực hiện chuyển đổi!");
+                return;
+            }
+
+            const k = c + 273.15;
+            const f = c * 1.8 + 32;
+
+            // Fill back inputs
+            document.getElementById('calc_celsius').value = c.toFixed(2);
+            document.getElementById('calc_kelvin').value = k.toFixed(2);
+            document.getElementById('calc_fahr').value = f.toFixed(2);
+
+            // Construct KaTeX derivation steps
+            const resultBox = document.getElementById('calc_result_box');
+            const stepsDiv = document.getElementById('calc_steps');
+            resultBox.classList.remove('hidden');
+
+            let mathHtml = `<div><strong>Nguồn gốc dữ liệu:</strong> Nhập từ thang <strong>${source}</strong>.</div>`;
+
+            if (source === "Celsius") {
+                mathHtml += `
+                    <div class="p-2.5 bg-slate-800 rounded border border-slate-700">
+                        1. Chuyển đổi sang thang đo tuyệt đối Kelvin (\(T\)):
+                        \\[T = t + 273,15 = ${c.toFixed(2)} + 273,15 = ${k.toFixed(2)} \\text{ K}\\]
+                    </div>
+                    <div class="p-2.5 bg-slate-800 rounded border border-slate-700">
+                        2. Chuyển đổi sang thang đo Fahrenheit (\(T_F\)):
+                        \\[T_F = 1,8 \\cdot t + 32 = 1,8 \\cdot (${c.toFixed(2)}) + 32 = ${f.toFixed(2)} ^\\circ\\text{F}\\]
+                    </div>
+                `;
+            } else if (source === "Kelvin") {
+                mathHtml += `
+                    <div class="p-2.5 bg-slate-800 rounded border border-slate-700">
+                        1. Chuyển đổi sang thang Celsius (\(t\)):
+                        \\[t = T - 273,15 = ${inK} - 273,15 = ${c.toFixed(2)} ^\\circ\\text{C}\\]
+                    </div>
+                    <div class="p-2.5 bg-slate-800 rounded border border-slate-700">
+                        2. Chuyển đổi sang thang Fahrenheit (\(T_F\)):
+                        \\[T_F = 1,8 \\cdot t + 32 = 1,8 \\cdot (${c.toFixed(2)}) + 32 = ${f.toFixed(2)} ^\\circ\\text{F}\\]
+                    </div>
+                `;
+            } else {
+                mathHtml += `
+                    <div class="p-2.5 bg-slate-800 rounded border border-slate-700">
+                        1. Chuyển đổi sang thang Celsius (\(t\)):
+                        \\[t = \\frac{T_F - 32}{1,8} = \\frac{${inF} - 32}{1,8} = ${c.toFixed(2)} ^\\circ\\text{C}\\]
+                    </div>
+                    <div class="p-2.5 bg-slate-800 rounded border border-slate-700">
+                        2. Chuyển đổi sang thang Kelvin (\(T\)):
+                        \\[T = t + 273,15 = ${c.toFixed(2)} + 273,15 = ${k.toFixed(2)} \\text{ K}\\]
+                    </div>
+                `;
+            }
+
+            // Additional physics summary
+            mathHtml += `
+                <div class="text-xs text-sky-300 pt-1">
+                    🎯 <strong>Động năng tịnh tiến phân tử tương ứng:</strong> 
+                    \\[\\bar{E}_d = \\frac{3}{2} k T = \\frac{3}{2} (1,38 \\cdot 10^{-23}) \\cdot (${k.toFixed(2)}) \\approx ${(1.5 * 1.38e-23 * k).toExponential(4)} \\text{ J}\\]
+                </div>
+            `;
+
+            stepsDiv.innerHTML = mathHtml;
+            if (window.renderMathInElement) {
+                renderMathInElement(stepsDiv, {
+                    delimiters: [
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        function resetCalculator() {
+            document.getElementById('calc_celsius').value = '';
+            document.getElementById('calc_kelvin').value = '';
+            document.getElementById('calc_fahr').value = '';
+            document.getElementById('calc_result_box').classList.add('hidden');
+        }
+
+        function solveRatioProblem() {
+            const k = parseFloat(document.getElementById('ratio_k').value);
+            const res = document.getElementById('ratio_solution');
+            res.classList.remove('hidden');
+
+            if (k === 1.8) {
+                res.innerHTML = "Phương trình vô nghiệm vì hệ số góc \(1,8 = k\), không tồn tại nhiệt độ hữu hạn.";
+                return;
+            }
+
+            // T_F = k * t => 1.8*t + 32 = k*t => (k - 1.8) * t = 32 => t = 32 / (k - 1.8)
+            const tC = 32 / (k - 1.8);
+            const tF = k * tC;
+            const tK = tC + 273.15;
+
+            res.innerHTML = `
+                <div>
+                    <strong>Phương trình biến đổi:</strong>
+                    \\[\\frac{T_F}{t} = k \\iff \\frac{1,8t + 32}{t} = ${k}\\]
+                    \\[1,8t + 32 = ${k}t \\iff (${k} - 1,8)t = 32 \\implies t = \\frac{32}{${(k - 1.8).toFixed(2)}} \\approx ${tC.toFixed(2)} ^\\circ\\text{C}\\]
+                    • Thang Fahrenheit: \\(T_F = ${k} \\cdot (${tC.toFixed(2)}) \\approx ${tF.toFixed(2)} ^\\circ\\text{F}\\)
+                    <br>
+                    • Thang Kelvin: \\(T = ${tC.toFixed(2)} + 273,15 \\approx ${tK.toFixed(2)} \\text{ K}\\)
+                </div>
+            `;
+            if (window.renderMathInElement) {
+                renderMathInElement(res, {
+                    delimiters: [
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        // Toggle Practice Solutions
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                if (window.renderMathInElement) {
+                    renderMathInElement(el, {
+                        delimiters: [
+                            { left: "\\[", right: "\\]", display: true },
+                            { left: "\\(", right: "\\)", display: false }
+                        ],
+                        throwOnError: false
+                    });
+                }
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // ==================== 5. INTERACTIVE QUIZ MODULE ====================
+        const quizData = [
+            {
+                id: 1,
+                question: "Kết luận nào sau đây là <strong>không đúng</strong> khi nói về thang nhiệt độ Celsius?",
+                options: [
+                    "A. Kí hiệu của nhiệt độ là \\(t\\), đơn vị đo là độ C (\\(^\\circ\\text{C}\\)).",
+                    "B. Chọn mốc nhiệt độ nước đá đang tan ở áp suất tiêu chuẩn là \\(0^\\circ\\text{C}\\).",
+                    "C. Khoảng cách giữa điểm nước đá tan và nước sôi được chia làm 100 khoảng đều nhau.",
+                    "D. Giá trị nhiệt độ \\(1^\\circ\\text{C}\\) luôn tương ứng bằng \\(273\\text{ K}\\)."
+                ],
+                correct: 3, // D
+                explain: "Phương án D sai vì \\(t = 1^\\circ\\text{C}\\) tương ứng với \\(T = 1 + 273,15 = 274,15\\text{ K}\\), không phải \\(273\\text{ K}\\). Chỉ có mốc \\(0^\\circ\\text{C}\\) mới tương ứng xấp xỉ \\(273\\text{ K}\\)."
+            },
+            {
+                id: 2,
+                question: "Người ta nhúng một nhiệt kế thủy ngân chưa chia độ vào bát nước đá đang tan thì cột thủy ngân dài \\(5\\text{ cm}\\), nhúng vào hơi nước đang sôi ở áp suất tiêu chuẩn thì cột thủy ngân dài \\(25\\text{ cm}\\). Nếu nhúng nhiệt kế vào chất lỏng có nhiệt độ \\(40^\\circ\\text{C}\\) thì chiều dài cột thủy ngân trong ống là:",
+                options: [
+                    "A. \\(13\\text{ cm}\\)",
+                    "B. \\(15\\text{ cm}\\)",
+                    "C. \\(12\\text{ cm}\\)",
+                    "D. \\(14\\text{ cm}\\)"
+                ],
+                correct: 0, // A
+                explain: "Khoảng cách giữa \\(0^\\circ\\text{C}\\) và \\(100^\\circ\\text{C}\\) là \\(25 - 5 = 20\\text{ cm}\\). Mỗi \\(1^\\circ\\text{C}\\) cột thủy ngân dãn thêm: \\[\\Delta l_1 = \\frac{20\\text{ cm}}{100} = 0,2\\text{ cm/}^\\circ\\text{C}\\] Ở \\(40^\\circ\\text{C}\\), chiều dài cột thủy ngân là: \\[l = l_0 + 40 \\cdot 0,2 = 5 + 8 = 13\\text{ cm}\\]"
+            },
+            {
+                id: 3,
+                question: "Tại nhiệt độ nào thì số chỉ trên thang nhiệt độ Fahrenheit bằng đúng số chỉ trên thang nhiệt độ Celsius (\\(T_F = t\\))?",
+                options: [
+                    "A. \\(0\\)",
+                    "B. \\(-40\\)",
+                    "C. \\(32\\)",
+                    "D. \\(-273,15\\)"
+                ],
+                correct: 1, // B
+                explain: "Từ công thức chuyển đổi: \\[T_F = 1,8t + 32\\] Đặt \\(T_F = t = x\\), ta được: \\[x = 1,8x + 32 \\iff -0,8x = 32 \\implies x = -40\\] Vậy tại \\(-40^\\circ\\text{C}\\) cũng chính là \\(-40^\\circ\\text{F}\\)."
+            },
+            {
+                id: 4,
+                question: "Xét về bản chất nhiệt động lực học, lý do chính khiến người ta sử dụng thang đo nhiệt độ Kelvin trong các nghiên cứu khoa học vật lý là:",
+                options: [
+                    "A. Thang Kelvin dễ chia vạch hơn thang Celsius trong phòng thí nghiệm.",
+                    "B. Độ không tuyệt đối (\\(0\\text{ K}\\)) là mốc tự nhiên tại đó động năng chuyển động nhiệt tịnh tiến của phân tử bằng 0.",
+                    "C. Thang Kelvin không bao giờ xuất hiện các giá trị lớn hơn \\(1000\\text{ K}\\).",
+                    "D. Thang Kelvin chỉ dùng riêng để đo cho các vật thể ở thể khí lí tưởng."
+                ],
+                correct: 1, // B
+                explain: "Thang nhiệt độ Kelvin có gốc \\(0\\text{ K}\\) bắt nguồn từ trạng thái vi mô cơ bản: các phân tử đứng yên hoàn toàn (động năng nhiệt triệt tiêu), giúp các định luật vật lý (khí lí tưởng, bức xạ nhiệt) có dạng tỉ lệ thuận tuyến tính đơn giản: \\(\\bar{E}_d = \\frac{3}{2}kT\\), \\(pV = nRT\\)."
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const qCard = document.createElement('div');
+                qCard.className = "p-5 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3";
+                qCard.id = `q-card-${q.id}`;
+
+                let optionsHtml = '';
+                q.options.forEach((opt, oIdx) => {
+                    optionsHtml += `
+                        <label class="flex items-start gap-3 p-2.5 rounded-lg border border-slate-200 bg-white hover:bg-sky-50 cursor-pointer text-xs sm:text-sm transition">
+                            <input type="radio" name="question_${q.id}" value="${oIdx}" class="mt-0.5 text-brand-600 focus:ring-brand-500">
+                            <span class="text-slate-700">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                qCard.innerHTML = `
+                    <div class="font-bold text-slate-800 text-sm flex gap-2">
+                        <span class="text-brand-600">Câu ${idx + 1}:</span>
+                        <div>${q.question}</div>
+                    </div>
+                    <div class="space-y-2">
+                        ${optionsHtml}
+                    </div>
+                    <div id="quiz-explain-${q.id}" class="hidden p-3 rounded-lg text-xs leading-relaxed mt-2"></div>
+                `;
+
+                container.appendChild(qCard);
+            });
+
+            if (window.renderMathInElement) {
+                renderMathInElement(container, {
+                    delimiters: [
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            let answeredCount = 0;
+
+            quizData.forEach(q => {
+                const selected = document.querySelector(`input[name="question_${q.id}"]:checked`);
+                const card = document.getElementById(`q-card-${q.id}`);
+                const explainBox = document.getElementById(`quiz-explain-${q.id}`);
+
+                explainBox.classList.remove('hidden');
+
+                if (selected) {
+                    answeredCount++;
+                    const userAns = parseInt(selected.value);
+                    if (userAns === q.correct) {
+                        score++;
+                        card.classList.remove('border-slate-200');
+                        card.classList.add('border-emerald-400', 'bg-emerald-50/40');
+                        explainBox.className = "p-3 rounded-lg text-xs leading-relaxed mt-2 bg-emerald-100 text-emerald-900 border border-emerald-300";
+                        explainBox.innerHTML = `<strong>Chính xác!</strong> ${q.explain}`;
+                    } else {
+                        card.classList.remove('border-slate-200');
+                        card.classList.add('border-rose-400', 'bg-rose-50/40');
+                        explainBox.className = "p-3 rounded-lg text-xs leading-relaxed mt-2 bg-rose-100 text-rose-900 border border-rose-300";
+                        explainBox.innerHTML = `<strong>Chưa đúng!</strong> ${q.explain}`;
+                    }
+                } else {
+                    card.classList.remove('border-slate-200');
+                    card.classList.add('border-amber-400', 'bg-amber-50/40');
+                    explainBox.className = "p-3 rounded-lg text-xs leading-relaxed mt-2 bg-amber-100 text-amber-900 border border-amber-300";
+                    explainBox.innerHTML = `<strong>Chưa trả lời!</strong> ${q.explain}`;
+                }
+
+                // KaTeX render inside explanation box
+                if (window.renderMathInElement) {
+                    renderMathInElement(explainBox, {
+                        delimiters: [
+                            { left: "\\[", right: "\\]", display: true },
+                            { left: "\\(", right: "\\)", display: false }
+                        ],
+                        throwOnError: false
+                    });
+                }
+            });
+
+            const badge = document.getElementById('quiz-score-badge');
+            const scoreText = document.getElementById('quiz-score-text');
+            badge.classList.remove('hidden');
+            scoreText.textContent = `${score}/${quizData.length}`;
+
+            if (score === quizData.length && window.confetti) {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
+            document.querySelectorAll('[id^="quiz-explain-"]').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('[id^="q-card-"]').forEach(el => {
+                el.className = "p-5 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3";
+            });
+            document.getElementById('quiz-score-badge').classList.add('hidden');
+        }
+
+        // ==================== 6. TAB 7: CLASSROOM TOOLS ====================
+        // A. Visual Timer
+        let timerTotalSeconds = 120;
+        let timerRemaining = 120;
+        let timerInterval = null;
+        let isTimerRunning = false;
+
+        function updateTimerDisplay() {
+            const min = Math.floor(timerRemaining / 60);
+            const sec = timerRemaining % 60;
+            document.getElementById('timer-display').textContent = 
+                `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+
+            // Circle dashoffset: full = 276.46
+            const circle = document.getElementById('timer-progress');
+            const fraction = timerRemaining / timerTotalSeconds;
+            const offset = 276.46 * (1 - fraction);
+            circle.style.strokeDashoffset = offset;
+
+            if (timerRemaining <= 10 && timerRemaining > 0) {
+                circle.style.stroke = "#ef4444";
+            } else {
+                circle.style.stroke = "#0284c7";
+            }
+        }
+
+        function toggleTimer() {
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                document.getElementById('btnStartTimer').textContent = "Tiếp tục";
+                document.getElementById('timer-status').textContent = "Tạm dừng";
+            } else {
+                if (timerRemaining <= 0) return;
+                isTimerRunning = true;
+                document.getElementById('btnStartTimer').textContent = "Tạm dừng";
+                document.getElementById('timer-status').textContent = "Đang chạy...";
+
+                timerInterval = setInterval(() => {
+                    timerRemaining--;
+                    updateTimerDisplay();
+
+                    if (timerRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        isTimerRunning = false;
+                        document.getElementById('btnStartTimer').textContent = "Bắt đầu";
+                        document.getElementById('timer-status').textContent = "HẾT GIỜ!";
+                        if (window.confetti) confetti();
+                        playTimerBeep();
+                    }
+                }, 1000);
+            }
+        }
+
+        function setTimerPreset(seconds) {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timerTotalSeconds = seconds;
+            timerRemaining = seconds;
+            document.getElementById('btnStartTimer').textContent = "Bắt đầu";
+            document.getElementById('timer-status').textContent = "Sẵn sàng";
+            updateTimerDisplay();
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timerRemaining = timerTotalSeconds;
+            document.getElementById('btnStartTimer').textContent = "Bắt đầu";
+            document.getElementById('timer-status').textContent = "Sẵn sàng";
+            updateTimerDisplay();
+        }
+
+        function playTimerBeep() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.6);
+            } catch (e) {
+                console.log("Audio API not supported or blocked");
+            }
+        }
+
+        // B. Lucky Wheel
+        const studentGroups = {
+            "1": ["Nguyễn Văn An", "Trần Thị Bình", "Lê Văn Cường", "Phạm Thị Dung", "Hoàng Văn Em"],
+            "2": ["Vũ Đức Giang", "Đặng Thùy Hân", "Bùi Thế Hùng", "Đỗ Mai Khanh", "Lý Gia Linh"],
+            "3": ["Ngô Quốc Minh", "Dương Yến Nhi", "Hồ Phúc Nguyên", "Trịnh Thảo Oanh", "Phan Gia Phúc"],
+            "4": ["Mai Thành Quang", "Tạ Hồng Sơn", "Đinh Ngọc Thảo", "Lê Hoàng Uyên", "Cao Xuân Vũ"]
+        };
+
+        let currentStudentList = [];
+        let wheelCanvas, wheelCtx;
+        let wheelAngle = 0;
+        let isSpinning = false;
+
+        function loadGroupStudents() {
+            const sel = document.getElementById('wheelGroupSelect').value;
+            if (sel === 'all') {
+                currentStudentList = [
+                    ...studentGroups["1"],
+                    ...studentGroups["2"],
+                    ...studentGroups["3"],
+                    ...studentGroups["4"]
+                ];
+            } else {
+                currentStudentList = [...studentGroups[sel]];
+            }
+            drawWheel();
+        }
+
+        function drawWheel() {
+            wheelCanvas = document.getElementById('wheelCanvas');
+            if (!wheelCanvas) return;
+            wheelCtx = wheelCanvas.getContext('2d');
+
+            const numSegments = currentStudentList.length;
+            const centerX = wheelCanvas.width / 2;
+            const centerY = wheelCanvas.height / 2;
+            const radius = centerX - 8;
+
+            wheelCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+
+            const arcSize = (Math.PI * 2) / numSegments;
+            const palette = ['#0284c7', '#0d9488', '#f59e0b', '#e11d48', '#8b5cf6', '#10b981', '#f97316'];
+
+            for (let i = 0; i < numSegments; i++) {
+                const angle = wheelAngle + i * arcSize;
+                wheelCtx.beginPath();
+                wheelCtx.moveTo(centerX, centerY);
+                wheelCtx.arc(centerX, centerY, radius, angle, angle + arcSize);
+                wheelCtx.fillStyle = palette[i % palette.length];
+                wheelCtx.fill();
+                wheelCtx.strokeStyle = "#ffffff";
+                wheelCtx.lineWidth = 1.5;
+                wheelCtx.stroke();
+
+                // Draw Text
+                wheelCtx.save();
+                wheelCtx.translate(centerX, centerY);
+                wheelCtx.rotate(angle + arcSize / 2);
+                wheelCtx.textAlign = "right";
+                wheelCtx.fillStyle = "#ffffff";
+                wheelCtx.font = "bold 9px sans-serif";
+                wheelCtx.fillText(currentStudentList[i], radius - 10, 3);
+                wheelCtx.restore();
+            }
+
+            // Center Pin
+            wheelCtx.beginPath();
+            wheelCtx.arc(centerX, centerY, 14, 0, Math.PI * 2);
+            wheelCtx.fillStyle = "#1e293b";
+            wheelCtx.fill();
+            wheelCtx.strokeStyle = "#ffffff";
+            wheelCtx.lineWidth = 2;
+            wheelCtx.stroke();
+        }
+
+        function spinLuckyWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            document.getElementById('wheelWinnerDisplay').innerHTML = "<span class='text-xs text-amber-600 font-bold animate-pulse'>Đang quay ngẫu nhiên...</span>";
+
+            const spinRotations = 5 + Math.random() * 5; // rotations
+            const duration = 4000; // ms
+            const startAngle = wheelAngle;
+            const targetAngle = startAngle + spinRotations * Math.PI * 2;
+            const startTime = performance.now();
+
+            function animateSpin(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                // Ease out cubic
+                const ease = 1 - Math.pow(1 - progress, 3);
+
+                wheelAngle = startAngle + (targetAngle - startAngle) * ease;
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateSpin);
+                } else {
+                    isSpinning = false;
+                    // Compute Winner at Top (-PI/2)
+                    const totalSegments = currentStudentList.length;
+                    const arcSize = (Math.PI * 2) / totalSegments;
+                    let normAngle = (wheelAngle % (Math.PI * 2));
+                    if (normAngle < 0) normAngle += Math.PI * 2;
+
+                    // Arrow is at top: 3*PI/2 in canvas angle
+                    const arrowAngle = (3 * Math.PI / 2 - normAngle + Math.PI * 4) % (Math.PI * 2);
+                    const winnerIndex = Math.floor(arrowAngle / arcSize) % totalSegments;
+                    const winnerName = currentStudentList[winnerIndex];
+
+                    document.getElementById('wheelWinnerDisplay').innerHTML = `
+                        <div class="p-2 bg-amber-100 border border-amber-300 rounded-lg text-amber-900 font-bold text-xs">
+                            🎉 Chúc mừng: <span class="text-rose-600 text-sm">${winnerName}</span> đã được chọn!
+                        </div>
+                    `;
+
+                    if (window.confetti) confetti();
+                }
+            }
+
+            requestAnimationFrame(animateSpin);
+        }
+
+        // ==================== 7. BOOTSTRAP ON LOAD ====================
+        window.addEventListener('DOMContentLoaded', () => {
+            renderQuiz();
+            initHeatSim();
+            loadGroupStudents();
+            updateTimerDisplay();
+
+            // Auto-render KaTeX on initial page
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+```eof
+
+Tệp HTML duy nhất trên đã được thiết kế hoàn thiện với đầy đủ các tính năng:
+1. **Tuân thủ bản quyền:** Đặt trang trọng thông tin tác quyền tại `<header>` và `<footer>`: `"© 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng"`.
+2. **7 Tab chuẩn phương pháp EdTech:**
+   - **Tab 1:** Tình huống nghịch lý 3 chậu nước (John Locke) và sự dẫn nhiệt giữa kim loại - gỗ mùa đông.
+   - **Tab 2:** Cốt lõi lý thuyết, bảng chuẩn hóa 3 thang đo (Celsius, Kelvin, Fahrenheit) và bảng phân tích 4 bẫy lý thuyết vật lý nhiệt thường gặp.
+   - **Tab 3:** Bộ đôi phòng thí nghiệm ảo gồm: **Lab 3A** mô phỏng động học phân tử va chạm & cân bằng nhiệt theo thời gian thực (HTML5 Canvas); **Lab 3B** mô hình 3 cột nhiệt kế tương tác cùng thanh trượt.
+   - **Tab 4:** Máy tính tham số vật lý tự động chuyển đổi tương hỗ kèm công cụ giải bài toán tỉ số \(T_F / t = k\) hiển thị từng bước bằng KaTeX.
+   - **Tab 5:** 3 bài tập phân hóa 3 cấp độ (Nhận biết - Thông hiểu, Vận dụng, Vận dụng cao) có nút ẩn/hiện lời giải chi tiết.
+   - **Tab 6:** 4 câu trắc nghiệm khách quan tự chấm điểm, tự kích hoạt hiệu ứng chúc mừng (confetti) và giải thích chi tiết có KaTeX rendering tức thì.
+   - **Tab 7:** Tiện ích lớp học gồm Đồng hồ đếm ngược trực quan dạng tròn SVG kèm âm báo & Vòng quay may mắn gọi tên học sinh ngẫu nhiên theo 4 Tổ bằng Canvas.
