@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyên Đề Sóng: Mô Tả Sóng - Vật Lý 11</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        sci: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bae0fd',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#082f49',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .tab-btn.active {
+            background-color: #0284c7;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+            transform: translateY(-1px);
+        }
+        .katex-display {
+            margin: 0.75em 0 !important;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.25em 0;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: #ef4444; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { border-color: #fca5a5; box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+        }
+        .timer-alarm {
+            animation: pulse-border 1s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-sci-500 selection:text-white">
+
+    <!-- HEADER -->
+    <header class="bg-gradient-to-r from-slate-900 via-sci-900 to-slate-800 text-white shadow-lg sticky top-0 z-40 border-b border-sci-700">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-sci-500/20 border border-sci-400/40 flex items-center justify-center text-2xl shadow-inner">
+                    🌊
+                </div>
+                <div>
+                    <span class="text-xs font-mono uppercase tracking-widest text-sky-300 bg-sky-950/80 px-2.5 py-0.5 rounded-full border border-sky-700">Chuyên đề 2: Sóng • Chủ đề 1</span>
+                    <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-white mt-0.5">MÔ TẢ SÓNG & SỰ TRUYỀN SÓNG CƠ</h1>
+                    <p class="text-xs md:text-sm text-sky-200/90 font-medium mt-0.5">
+                        2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-xs bg-slate-800/90 px-3 py-2 rounded-lg border border-slate-700">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="font-mono text-slate-300">Chuẩn chương trình GDPT 2018 (KNTT - CTST - CD)</span>
+            </div>
+        </div>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="bg-slate-800/95 border-t border-slate-700/80 backdrop-blur">
+            <div class="max-w-7xl mx-auto px-2 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn active whitespace-nowrap px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:bg-slate-700/70 transition-all flex items-center gap-1.5">
+                    <span>🚀</span> 1. Khởi động
+                </button>
+                <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:bg-slate-700/70 transition-all flex items-center gap-1.5">
+                    <span>📖</span> 2. Cốt lõi Lý thuyết
+                </button>
+                <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:bg-slate-700/70 transition-all flex items-center gap-1.5">
+                    <span>🔬</span> 3. Mô phỏng Tương tác
+                </button>
+                <button onclick="switchTab('tab4')" id="btn-tab4" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:bg-slate-700/70 transition-all flex items-center gap-1.5">
+                    <span>🧮</span> 4. Máy tính Tham số
+                </button>
+                <button onclick="switchTab('tab5')" id="btn-tab5" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:bg-slate-700/70 transition-all flex items-center gap-1.5">
+                    <span>📝</span> 5. Luyện tập Phân hóa
+                </button>
+                <button onclick="switchTab('tab6')" id="btn-tab6" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:bg-slate-700/70 transition-all flex items-center gap-1.5">
+                    <span>🎯</span> 6. Tự đánh giá (Quiz)
+                </button>
+                <button onclick="switchTab('tab7')" id="btn-tab7" class="tab-btn whitespace-nowrap px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-300 hover:bg-slate-700/70 transition-all flex items-center gap-1.5">
+                    <span>🛠️</span> 7. Tiện ích Lớp học
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+
+        <!-- ==================== TAB 1: KHỞI ĐỘNG & THỰC TIỄN ==================== -->
+        <section id="tab1" class="tab-content space-y-6">
+            <div class="bg-gradient-to-br from-sci-800 to-slate-900 rounded-2xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="bg-sky-500/30 border border-sky-400/40 text-sky-200 text-xs font-bold uppercase px-3 py-1 rounded-full">Tình huống Mở đầu</span>
+                    <h2 class="text-2xl md:text-3xl font-extrabold mt-3 leading-tight">Giải mã Nghịch lý "Chiếc Phao Câu Cá" & Bí mật Sóng Thần</h2>
+                    <p class="text-slate-200 mt-3 leading-relaxed text-sm md:text-base">
+                        Khi đi câu cá ở hồ Tuyền Lâm hay hồ chứa nước tại Đức Trọng, chắc hẳn các em từng thấy những gợn sóng lăn tăn chạy liên tục từ giữa hồ vào bờ. Nhưng tại sao chiếc phao câu cá nổi trên mặt nước lại không hề bị sóng đẩy trôi dạt vào bờ?
+                    </p>
+                </div>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
+                    <!-- Tình huống 1 -->
+                    <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="text-3xl mb-2">🎣</div>
+                            <h3 class="font-bold text-lg text-sky-300">1. Nghịch lý Chiếc Phao</h3>
+                            <p class="text-xs md:text-sm text-slate-200 mt-2 leading-relaxed">
+                                Một học sinh thấy chiếc phao câu cá nhô lên cao \( 6 \text{ lần} \) trong \( 4 \text{ s} \), và ngọn sóng chạy trên mặt hồ với tốc độ \( v = 0,5 \text{ m/s} \). Tại sao ngọn sóng đi xa hàng chục mét mà chiếc phao chỉ nhấp nhô tại chỗ?
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/10">
+                            <button onclick="toggleReveal('warmup-ans-1')" class="text-xs font-bold text-amber-300 hover:text-amber-200 flex items-center gap-1">
+                                💡 Giải mã mâu thuẫn nhận thức
+                            </button>
+                            <div id="warmup-ans-1" class="hidden mt-2 text-xs bg-slate-900/90 p-3 rounded-lg text-slate-200 border border-amber-500/30">
+                                <strong>Bản chất Vật lý:</strong> Sóng cơ lan truyền là sự lan truyền <em>pha dao động và năng lượng</em>, còn các phần tử vật chất của môi trường (nước và phao) chỉ dao động quanh vị trí cân bằng cố định! Nhô lên \( 6 \text{ lần} \) ứng với \( 5 \text{ chu kì } T \Rightarrow T = 0,8 \text{ s} \), không phải \( \frac{4}{6} \text{ s} \)!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tình huống 2 -->
+                    <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="text-3xl mb-2">🚢</div>
+                            <h3 class="font-bold text-lg text-sky-300">2. Công nghệ Sonar Tàu Biển</h3>
+                            <p class="text-xs md:text-sm text-slate-200 mt-2 leading-relaxed">
+                                Tàu khảo sát phát một xung siêu âm thẳng đứng xuống đáy biển với tốc độ \( v = 1600 \text{ m/s} \). Sau \( \Delta t = 0,8 \text{ s} \) tàu thu được tín hiệu phản xạ. Làm sao đo độ sâu đáy biển mà không cần thả dây dọi?
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/10">
+                            <button onclick="toggleReveal('warmup-ans-2')" class="text-xs font-bold text-amber-300 hover:text-amber-200 flex items-center gap-1">
+                                💡 Giải mã kỹ thuật đo sâu
+                            </button>
+                            <div id="warmup-ans-2" class="hidden mt-2 text-xs bg-slate-900/90 p-3 rounded-lg text-slate-200 border border-amber-500/30">
+                                <strong>Nguyên lý:</strong> Sóng âm truyền đi một lượt từ tàu xuống đáy và một lượt phản xạ ngược lại lên tàu, nên tổng quãng đường là \( 2d = v \cdot \Delta t \Rightarrow d = \frac{1600 \cdot 0,8}{2} = 640 \text{ m} \).
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tình huống 3 -->
+                    <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="text-3xl mb-2">🌏</div>
+                            <h3 class="font-bold text-lg text-sky-300">3. Sóng Địa Chấn P và S</h3>
+                            <p class="text-xs md:text-sm text-slate-200 mt-2 leading-relaxed">
+                                Khi xảy ra động đất, trạm địa chấn luôn ghi nhận được sóng dọc (sóng P - Primary) đến sớm hơn sóng ngang (sóng S - Secondary). Tại sao tâm Trái Đất (lõi ngoài chất lỏng) lại chặn đứng sóng ngang S?
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/10">
+                            <button onclick="toggleReveal('warmup-ans-3')" class="text-xs font-bold text-amber-300 hover:text-amber-200 flex items-center gap-1">
+                                💡 Giải mã cấu trúc Trái Đất
+                            </button>
+                            <div id="warmup-ans-3" class="hidden mt-2 text-xs bg-slate-900/90 p-3 rounded-lg text-slate-200 border border-amber-500/30">
+                                <strong>Phân loại sóng:</strong> Sóng dọc truyền được trong cả <em>Rắn, Lỏng, Khí</em> (do biến dạng nén - dãn). Sóng ngang chỉ truyền được trong <em>chất rắn</em> và trên bề mặt chất lỏng (do cần lực đàn hồi chống biến dạng lệch). Lõi ngoài Trái Đất là kim loại lỏng nên sóng S không truyền qua được!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Cognitive Conflict Question Box -->
+            <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-200">Thử thách Tư duy Nhanh</span>
+                        <h3 class="text-lg font-bold text-slate-800 mt-1">Câu hỏi Mâu thuẫn Nhận thức trước giờ học</h3>
+                    </div>
+                    <span class="text-xs text-slate-500">Hãy chọn phương án em cho là đúng nhất để kiểm tra trực giác Vật lý!</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <p class="font-semibold text-sm text-slate-800">
+                            ❓ <strong>Tình huống A:</strong> Một sóng âm có tần số \( f = 500 \text{ Hz} \) truyền từ không khí (\( v_{kk} = 340 \text{ m/s} \)) đi vào trong nước (\( v_{n} = 1500 \text{ m/s} \)). Khi sóng truyền sang môi trường nước thì đại lượng nào <strong>KHÔNG ĐỔI</strong> và đại lượng nào <strong>THAY ĐỔI</strong>?
+                        </p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="checkWarmupChoice('A', false)" class="w-full text-left text-xs md:text-sm p-2.5 rounded-lg bg-white border border-slate-300 hover:border-sci-500 transition">
+                                1. Bước sóng \( \lambda \) không đổi, tần số \( f \) tăng lên gấp \( 4,4 \text{ lần} \).
+                            </button>
+                            <button onclick="checkWarmupChoice('A', true)" class="w-full text-left text-xs md:text-sm p-2.5 rounded-lg bg-white border border-slate-300 hover:border-sci-500 transition">
+                                2. Tần số \( f = 500 \text{ Hz} \) giữ nguyên không đổi, bước sóng \( \lambda \) tăng lên gấp \( \frac{1500}{340} \approx 4,41 \text{ lần} \).
+                            </button>
+                        </div>
+                        <div id="warmup-feedback-A" class="hidden mt-3 p-3 rounded-lg text-xs"></div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <p class="font-semibold text-sm text-slate-800">
+                            ❓ <strong>Tình huống B:</strong> Trên hình ảnh sườn sóng hình sin đang truyền từ <strong>trái sang phải</strong> (theo chiều dương trục \( Ox \)), một điểm \( M \) nằm trên sườn <em>trước</em> đỉnh sóng và điểm \( N \) nằm trên sườn <em>sau</em> đỉnh sóng đang chuyển động thế nào?
+                        </p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="checkWarmupChoice('B', true)" class="w-full text-left text-xs md:text-sm p-2.5 rounded-lg bg-white border border-slate-300 hover:border-sci-500 transition">
+                                1. Điểm ở sườn trước đang đi lên (\( \vec{v}_d \uparrow \)), điểm ở sườn sau đang đi xuống (\( \vec{v}_d \downarrow \)).
+                            </button>
+                            <button onclick="checkWarmupChoice('B', false)" class="w-full text-left text-xs md:text-sm p-2.5 rounded-lg bg-white border border-slate-300 hover:border-sci-500 transition">
+                                2. Cả hai điểm đều chuyển động ngang sang phải theo hướng truyền sóng \( \vec{v} \).
+                            </button>
+                        </div>
+                        <div id="warmup-feedback-B" class="hidden mt-3 p-3 rounded-lg text-xs"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: CỐT LÕI LÝ THUYẾT & BẢN CHẤT ==================== -->
+        <section id="tab2" class="tab-content hidden space-y-6">
+            <!-- 1. Khái niệm & Bản chất -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-md border border-slate-200 space-y-4">
+                    <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                        <span class="text-xl">📘</span>
+                        <h2 class="text-xl font-extrabold text-sci-800">1. Bản Chất Vật Lý Của Sóng Cơ</h2>
+                    </div>
+                    <div class="space-y-3 text-sm leading-relaxed text-slate-700">
+                        <p>
+                            <strong class="text-sci-700">● Định nghĩa:</strong> <strong>Sóng cơ</strong> là những biến dạng cơ (dao động cơ) lan truyền trong một môi trường đàn hồi (rắn, lỏng, khí). Sóng cơ <strong>không truyền được trong chân không</strong>.
+                        </p>
+                        <p>
+                            <strong class="text-sci-700">● Hai nguyên nhân tạo nên sóng:</strong>
+                            <br>1. Có <em>nguồn dao động</em> từ bên ngoài tác dụng lên môi trường tại điểm gốc \( O \).
+                            <br>2. Có <em>lực liên kết đàn hồi</em> giữa các phần tử lân cận của môi trường khiến các phần tử xa nguồn lần lượt dao động trễ pha hơn.
+                        </p>
+                        <div class="bg-sky-50 border-l-4 border-sci-600 p-3.5 rounded-r-xl text-slate-800">
+                            <strong>💡 Hệ quả Bản chất:</strong> Quá trình truyền sóng là quá trình <strong>truyền năng lượng</strong> và <strong>truyền pha dao động</strong>. Các phần tử vật chất chỉ dao động điều hòa quanh vị trí cân bằng cố định của nó, <em>không</em> chuyển dời đi xa theo sóng.
+                        </div>
+                    </div>
+
+                    <!-- Phân loại Sóng ngang & Sóng dọc -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h3 class="font-bold text-sci-700 flex items-center gap-1.5">
+                                <span>〰️</span> a) Sóng Ngang (Transverse Wave)
+                            </h3>
+                            <ul class="mt-2 text-xs md:text-sm space-y-1.5 text-slate-700 list-disc list-inside">
+                                <li><strong>Phương dao động:</strong> Vuông góc (\( \perp \)) với phương truyền sóng.</li>
+                                <li><strong>Môi trường truyền:</strong> Trong <strong>chất rắn</strong> và trên <strong>bề mặt chất lỏng</strong> (do có lực đàn hồi chống biến dạng lệch và lực căng mặt ngoài).</li>
+                                <li><strong>Ví dụ:</strong> Sóng mặt nước, sóng trên sợi dây đàn hồi.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h3 class="font-bold text-indigo-700 flex items-center gap-1.5">
+                                <span>📏</span> b) Sóng Dọc (Longitudinal Wave)
+                            </h3>
+                            <ul class="mt-2 text-xs md:text-sm space-y-1.5 text-slate-700 list-disc list-inside">
+                                <li><strong>Phương dao động:</strong> Trùng (\( \parallel \)) với phương truyền sóng (tạo ra các vùng nén - dãn xen kẽ).</li>
+                                <li><strong>Môi trường truyền:</strong> Truyền được trong cả <strong>Rắn, Lỏng và Khí</strong> (\( v_{\text{rắn}} > v_{\text{lỏng}} > v_{\text{khí}} \)).</li>
+                                <li><strong>Ví dụ:</strong> Sóng âm trong không khí, sóng nén - dãn trên lò xo.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phương trình truyền sóng -->
+                <div class="bg-gradient-to-b from-slate-800 to-slate-900 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-mono uppercase tracking-wider text-sky-300 bg-sky-900/60 px-2.5 py-1 rounded">Mô hình Toán học</span>
+                        <h3 class="text-lg font-bold mt-2 text-white">2. Phương Trình Truyền Sóng</h3>
+                        <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                            Xét nguồn sóng tại gốc \( O(x = 0) \) dao động điều hòa:
+                        </p>
+                        <div class="bg-slate-950/70 p-3 rounded-xl my-2 border border-slate-700 text-center">
+                            \[ u_{O} = A \cos(\omega t + \varphi_{0}) \]
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Sóng truyền theo chiều dương trục \( Ox \) với tốc độ \( v \) đến điểm \( M \) cách \( O \) đoạn \( x \) mất thời gian \( \Delta t = \frac{x}{v} \). Phương trình sóng tại \( M \):
+                        </p>
+                        <div class="bg-sky-950/90 p-3 rounded-xl my-2 border border-sky-600 text-center text-sky-200">
+                            \[ u_{M} = A \cos\left[\omega\left(t - \frac{x}{v}\right) + \varphi_{0}\right] \]
+                            \[ u_{M} = A \cos\left(2\pi\frac{t}{T} - 2\pi\frac{x}{\lambda} + \varphi_{0}\right) \]
+                        </div>
+                    </div>
+                    <div class="text-xs bg-white/10 p-3.5 rounded-xl border border-white/15 space-y-1.5">
+                        <p class="font-bold text-amber-300">📌 Độ lệch pha giữa hai điểm \( M, N \):</p>
+                        <p>Cách nhau khoảng \( d = |x_{2} - x_{1}| \) trên cùng phương truyền sóng:</p>
+                        <p class="text-center font-semibold">\[ \Delta \varphi = \frac{2\pi d}{\lambda} = \frac{2\pi f d}{v} \]</p>
+                        <p class="text-[11px] text-slate-300">
+                            • Cùng pha: \( d = k\lambda \)<br>
+                            • Ngược pha: \( d = (2k+1)\frac{\lambda}{2} = (k + 0,5)\lambda \)<br>
+                            • Vuông pha: \( d = (2k+1)\frac{\lambda}{4} = (k + 0,5)\frac{\lambda}{2} \)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Bảng Hệ Thống Công Thức Cốt Lõi -->
+            <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+                <h2 class="text-xl font-extrabold text-sci-800 mb-4 flex items-center gap-2">
+                    <span>📐</span> 3. Hệ Thống Các Đại Lượng & Công Thức Đặc Trưng Của Sóng
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs md:text-sm">
+                        <thead>
+                            <tr class="bg-slate-800 text-white">
+                                <th class="p-3 rounded-tl-lg">Đại lượng</th>
+                                <th class="p-3">Ký hiệu</th>
+                                <th class="p-3">Công thức liên hệ</th>
+                                <th class="p-3">Ý nghĩa Vật lý & Bản chất</th>
+                                <th class="p-3 rounded-tr-lg">Đơn vị (SI)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-sci-700">Biên độ sóng</td>
+                                <td class="p-3 font-mono">\( A \)</td>
+                                <td class="p-3">\( A = |u_{\max}| \)</td>
+                                <td class="p-3">Độ lệch lớn nhất của phần tử sóng khỏi vị trí cân bằng. Biên độ càng lớn, phần tử dao động càng mạnh.</td>
+                                <td class="p-3">\( \text{m} \) (hoặc \( \text{cm, mm} \))</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-sci-700">Chu kì sóng</td>
+                                <td class="p-3 font-mono">\( T \)</td>
+                                <td class="p-3">\[ T = \frac{1}{f} = \frac{2\pi}{\omega} = \frac{\Delta t}{N - 1} \]</td>
+                                <td class="p-3">Khoảng thời gian để 2 ngọn sóng liên tiếp chạy qua 1 điểm. Bằng chu kì dao động của nguồn sóng.</td>
+                                <td class="p-3">\( \text{s} \) (giây)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-sci-700">Tần số sóng</td>
+                                <td class="p-3 font-mono">\( f \)</td>
+                                <td class="p-3">\[ f = \frac{1}{T} = \frac{\omega}{2\pi} \]</td>
+                                <td class="p-3">Số phần tử thực hiện dao động toàn phần trong \( 1 \text{ s} \). <strong>Không đổi</strong> khi sóng truyền qua các môi trường khác nhau.</td>
+                                <td class="p-3">\( \text{Hz} \) (\( \text{s}^{-1} \))</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-sci-700">Tốc độ truyền sóng</td>
+                                <td class="p-3 font-mono">\( v \)</td>
+                                <td class="p-3">\[ v = \frac{\Delta s}{\Delta t} = \lambda f = \frac{\lambda}{T} \]</td>
+                                <td class="p-3">Tốc độ lan truyền pha dao động. Chỉ phụ thuộc vào <strong>bản chất môi trường</strong> (tính đàn hồi, mật độ, nhiệt độ).</td>
+                                <td class="p-3">\( \text{m/s} \)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-sci-700">Bước sóng</td>
+                                <td class="p-3 font-mono">\( \lambda \)</td>
+                                <td class="p-3">\[ \lambda = v T = \frac{v}{f} = \frac{L}{n - 1} \]</td>
+                                <td class="p-3">Quãng đường sóng truyền trong \( 1 \text{ chu kì } T \), hoặc khoảng cách ngắn nhất giữa 2 điểm trên cùng phương truyền dao động cùng pha.</td>
+                                <td class="p-3">\( \text{m} \) (hoặc \( \text{cm} \))</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 font-bold text-sci-700">Cường độ sóng</td>
+                                <td class="p-3 font-mono">\( I \)</td>
+                                <td class="p-3">\[ I = \frac{E}{S \cdot \Delta t} = \frac{P}{S} = \frac{P}{4\pi r^2} \]</td>
+                                <td class="p-3">Năng lượng sóng truyền qua \( 1 \text{ đơn vị diện tích} \) vuông góc phương truyền trong \( 1 \text{ đơn vị thời gian} \).</td>
+                                <td class="p-3">\( \text{W/m}^2 \)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 4. Bẫy Lý Thuyết Học Sinh Hay Mắc Phải -->
+            <div class="bg-rose-50/70 rounded-2xl p-6 shadow-md border border-rose-200">
+                <h2 class="text-xl font-extrabold text-rose-800 mb-4 flex items-center gap-2">
+                    <span>⚠️</span> 4. Năm "Bẫy Lý Thuyết" Học Sinh Thường Mắc Phải
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs md:text-sm">
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm">
+                        <span class="font-bold text-rose-600">❌ Bẫy 1: Nhầm \( v \) truyền sóng và \( v_{d} \) phần tử</span>
+                        <p class="mt-1.5 text-slate-700">
+                            • <strong>Tốc độ truyền sóng:</strong> \( v = \lambda f \) (hằng số trong môi trường đồng tính).<br>
+                            • <strong>Vận tốc dao động phần tử:</strong> \( v_{d} = u'(t) = -\omega A \sin(\omega t - \frac{2\pi x}{\lambda}) \) biến thiên điều hòa với \( v_{d\max} = \omega A = 2\pi f A \).
+                        </p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm">
+                        <span class="font-bold text-rose-600">❌ Bẫy 2: Đếm ngọn sóng & số lần phao nhô</span>
+                        <p class="mt-1.5 text-slate-700">
+                            • Khoảng cách từ ngọn sóng thứ \( 1 \) đến ngọn sóng thứ \( n \) chỉ có <strong>\( (n - 1) \) bước sóng</strong>: \( d = (n - 1)\lambda \).<br>
+                            • Phao nhô cao \( N \) lần liên tiếp trong thời gian \( \Delta t \) ứng với <strong>\( (N - 1) \) chu kì</strong>: \( \Delta t = (N - 1)T \).
+                        </p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm">
+                        <span class="font-bold text-rose-600">❌ Bẫy 3: Thiếu cụm "trên cùng phương truyền"</span>
+                        <p class="mt-1.5 text-slate-700">
+                            Định nghĩa bước sóng bắt buộc phải đủ 3 yếu tố: Khoảng cách giữa hai điểm (1) <strong>gần nhau nhất</strong>, (2) <strong>trên cùng một phương truyền sóng</strong> và (3) <strong>dao động cùng pha</strong>.
+                        </p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm">
+                        <span class="font-bold text-rose-600">❌ Bẫy 4: Đơn vị của \( x \) và \( u \) trong phương trình</span>
+                        <p class="mt-1.5 text-slate-700">
+                            Trong phương trình \( u = A \cos\left(\omega t - \frac{2\pi x}{\lambda}\right) \), đại lượng \( x \) và bước sóng \( \lambda \) <strong>bắt buộc phải cùng đơn vị</strong> (cùng là \( \text{cm} \) hoặc cùng là \( \text{m} \)), trong khi \( u \) và \( A \) cùng đơn vị (có thể là \( \text{mm} \)).
+                        </p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm">
+                        <span class="font-bold text-rose-600">❌ Bẫy 5: Dấu \( \pm \frac{2\pi x}{\lambda} \) và chiều truyền sóng</span>
+                        <p class="mt-1.5 text-slate-700">
+                            • Sóng truyền theo chiều \( +Ox \): điểm sau trễ pha hơn nguồn \( \rightarrow \) dấu trừ \( \left(\omega t - \frac{2\pi x}{\lambda}\right) \).<br>
+                            • Điểm \( P \) nằm <em>trước</em> \( O \) cách đoạn \( d \): sớm pha hơn \( O \) \( \rightarrow \) dấu cộng \( \left(\omega t + \frac{2\pi d}{\lambda}\right) \).
+                        </p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm">
+                        <span class="font-bold text-rose-600">❌ Bẫy 6: Quy tắc Sườn Trước - Sườn Sau</span>
+                        <p class="mt-1.5 text-slate-700">
+                            Khi sóng truyền theo một chiều xác định: Mọi phần tử thuộc <strong>sườn đón sóng (sườn trước đỉnh)</strong> đều đang <strong>đi lên</strong> (\( v_{d} > 0 \)), mọi phần tử thuộc <strong>sườn sau đỉnh</strong> đều đang <strong>đi xuống</strong> (\( v_{d} < 0 \)).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: MÔ PHỎNG TƯƠNG TÁC (SIMULATION LAB) ==================== -->
+        <section id="tab3" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-sci-600 bg-sci-50 px-2.5 py-1 rounded-md border border-sci-200">Phòng Thí Nghiệm Ảo Tương Tác</span>
+                        <h2 class="text-xl font-extrabold text-slate-800 mt-1">Khảo Sát Sự Truyền Sóng Ngang, Sóng Dọc & Độ Lệch Pha</h2>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="setWaveMode('transverse')" id="btn-mode-transverse" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-sci-600 text-white shadow">
+                            〰️ Sóng Ngang
+                        </button>
+                        <button onclick="setWaveMode('longitudinal')" id="btn-mode-longitudinal" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300">
+                            📏 Sóng Dọc
+                        </button>
+                        <button onclick="toggleSimPlay()" id="btn-sim-play" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 shadow">
+                            ⏸️ Tạm dừng
+                        </button>
+                        <button onclick="stepSimTime()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-white hover:bg-amber-600">
+                            ⏭️ Nhích \(\Delta t = \frac{T}{12}\)
+                        </button>
+                        <button onclick="resetSim()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-600 text-white hover:bg-slate-700">
+                            🔄 Đặt lại \(t = 0\)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Simulation Canvas + Controls Layout -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-5">
+                    <!-- Left Controls (4 cols) -->
+                    <div class="lg:col-span-4 space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-sm text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-2">🎛️ Bảng Điều Khiển Tham Số</h3>
+
+                        <!-- Amplitude A -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span>Biên độ sóng \( A \):</span>
+                                <span id="lbl-sim-A" class="font-mono text-sci-700 font-bold">4.0 cm</span>
+                            </div>
+                            <input type="range" id="sim-A" min="1" max="6" step="0.5" value="4" oninput="updateSimParams()" class="w-full accent-sci-600 cursor-pointer">
+                        </div>
+
+                        <!-- Frequency f -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span>Tần số nguồn \( f \):</span>
+                                <span id="lbl-sim-f" class="font-mono text-sci-700 font-bold">1.0 Hz</span>
+                            </div>
+                            <input type="range" id="sim-f" min="0.5" max="2.5" step="0.25" value="1.0" oninput="updateSimParams()" class="w-full accent-sci-600 cursor-pointer">
+                        </div>
+
+                        <!-- Wave speed v -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span>Tốc độ truyền sóng \( v \):</span>
+                                <span id="lbl-sim-v" class="font-mono text-sci-700 font-bold">20 cm/s</span>
+                            </div>
+                            <input type="range" id="sim-v" min="10" max="40" step="2" value="20" oninput="updateSimParams()" class="w-full accent-sci-600 cursor-pointer">
+                        </div>
+
+                        <!-- Probe Positions x_M and x_N -->
+                        <div class="pt-2 border-t border-slate-200 space-y-3">
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span class="text-rose-600">🔴 Vị trí phần tử \( M \) (\( x_M \)):</span>
+                                    <span id="lbl-sim-xM" class="font-mono text-rose-600 font-bold">10 cm</span>
+                                </div>
+                                <input type="range" id="sim-xM" min="0" max="50" step="1" value="10" oninput="updateSimParams()" class="w-full accent-rose-600 cursor-pointer">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1">
+                                    <span class="text-emerald-600">🟢 Vị trí phần tử \( N \) (\( x_N \)):</span>
+                                    <span id="lbl-sim-xN" class="font-mono text-emerald-600 font-bold">25 cm</span>
+                                </div>
+                                <input type="range" id="sim-xN" min="0" max="50" step="1" value="25" oninput="updateSimParams()" class="w-full accent-emerald-600 cursor-pointer">
+                            </div>
+                        </div>
+
+                        <!-- Direction & Vector Toggle -->
+                        <div class="pt-2 border-t border-slate-200 flex items-center justify-between text-xs">
+                            <label class="flex items-center gap-2 font-semibold cursor-pointer">
+                                <input type="checkbox" id="sim-show-vec" checked onchange="updateSimParams()" class="rounded text-sci-600">
+                                Hiện vector vận tốc phần tử \( \vec{v}_d \)
+                            </label>
+                            <button onclick="toggleWaveDirection()" id="btn-sim-dir" class="px-2.5 py-1 bg-slate-800 text-white rounded font-mono text-xs">
+                                Chiều: Trái → Phải (+Ox)
+                            </button>
+                        </div>
+
+                        <!-- Live Calculated Readouts -->
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 text-xs">
+                            <div class="font-bold text-slate-800 border-b pb-1">📊 Đầu Ra Thời Gian Thực (Outputs)</div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>Chu kì \( T \): <span id="out-T" class="font-mono font-bold text-sci-700">1.00 s</span></div>
+                                <div>Bước sóng \( \lambda \): <span id="out-lambda" class="font-mono font-bold text-sci-700">20.0 cm</span></div>
+                                <div>\( v_{d\max} = \omega A \): <span id="out-vmax" class="font-mono font-bold text-rose-600">25.1 cm/s</span></div>
+                                <div>Khoảng \( d_{MN} \): <span id="out-dMN" class="font-mono font-bold text-slate-800">15.0 cm</span></div>
+                            </div>
+                            <div class="pt-1 border-t border-slate-100">
+                                Độ lệch pha \( \Delta \varphi_{MN} \): <span id="out-phase" class="font-mono font-bold text-indigo-700">1.50π rad (Vuông pha)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Canvas Display (8 cols) -->
+                    <div class="lg:col-span-8 flex flex-col gap-4">
+                        <!-- Main Wave Canvas (u - x) -->
+                        <div class="bg-slate-900 rounded-xl p-3 border border-slate-700 shadow-inner">
+                            <div class="flex justify-between items-center text-xs text-slate-300 mb-2 px-1">
+                                <span class="font-semibold text-sky-300">Đồ thị Không gian \( (u - x) \) & Chuyển động của các phần tử môi trường</span>
+                                <span id="sim-time-display" class="font-mono bg-slate-800 px-2.5 py-0.5 rounded text-amber-300 border border-slate-700">t = 0.00 s</span>
+                            </div>
+                            <div class="w-full h-64 md:h-72 relative">
+                                <canvas id="waveCanvas" class="w-full h-full block rounded-lg bg-slate-950"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Instantaneous status of M and N -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-rose-50 border border-rose-200 rounded-xl p-3.5 text-xs space-y-1">
+                                <div class="font-bold text-rose-800 flex justify-between">
+                                    <span>🔴 Trạng thái Phần tử M (\( x_M \))</span>
+                                    <span id="status-M-trend" class="font-mono px-2 py-0.5 rounded bg-rose-200 text-rose-900">Đang đi lên ↑</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 pt-1 text-slate-700">
+                                    <div>Li độ \( u_M \): <span id="status-uM" class="font-mono font-bold">+0.00 cm</span></div>
+                                    <div>Vận tốc \( v_{dM} \): <span id="status-vM" class="font-mono font-bold">+25.1 cm/s</span></div>
+                                </div>
+                            </div>
+                            <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 text-xs space-y-1">
+                                <div class="font-bold text-emerald-800 flex justify-between">
+                                    <span>🟢 Trạng thái Phần tử N (\( x_N \))</span>
+                                    <span id="status-N-trend" class="font-mono px-2 py-0.5 rounded bg-emerald-200 text-emerald-900">Đang đi xuống ↓</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 pt-1 text-slate-700">
+                                    <div>Li độ \( u_N \): <span id="status-uN" class="font-mono font-bold">-4.00 cm</span></div>
+                                    <div>Vận tốc \( v_{dN} \): <span id="status-vN" class="font-mono font-bold">0.0 cm/s</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hướng dẫn Thao tác "Thử và Sai" -->
+                <div class="mt-6 bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs md:text-sm text-amber-950">
+                    <h4 class="font-bold text-amber-800 flex items-center gap-1.5 mb-2">
+                        <span>🧭</span> Nhiệm vụ Khám phá "Thử và Sai" dành cho Học sinh:
+                    </h4>
+                    <ol class="list-decimal list-inside space-y-1.5 leading-relaxed">
+                        <li><strong>Thí nghiệm 1 (Sự phụ thuộc của bước sóng):</strong> Giữ nguyên tốc độ truyền sóng \( v = 20 \text{ cm/s} \), kéo thanh trượt tăng tần số \( f \) từ \( 1,0 \text{ Hz} \) lên \( 2,0 \text{ Hz} \). Quan sát hình dạng sóng và cho biết bước sóng \( \lambda \) tăng hay giảm mấy lần? Nếu tăng biên độ \( A \) gấp đôi thì bước sóng \( \lambda \) và chu kì \( T \) có thay đổi không?</li>
+                        <li><strong>Thí nghiệm 2 (Độ lệch pha):</strong> Đặt \( f = 1,0 \text{ Hz}, v = 20 \text{ cm/s} \) (khi đó \( \lambda = 20 \text{ cm} \)). Đặt điểm \( M \) tại \( x_M = 10 \text{ cm} \). Hãy kéo điểm \( N \) đến \( x_N = 30 \text{ cm} \) (cách \( M \) đúng \( 1\lambda \)) và \( x_N = 20 \text{ cm} \) (cách \( M \) nửa bước sóng \( 0,5\lambda \)). Quan sát chiều mũi tên vận tốc \( \vec{v}_d \) của hai điểm \( M, N \) trong từng trường hợp!</li>
+                        <li><strong>Thí nghiệm 3 (Sóng dọc):</strong> Chuyển sang chế độ <strong>"📏 Sóng Dọc"</strong>, quan sát sự hình thành các vùng <strong>Nén (mật độ dày)</strong> và vùng <strong>Dãn (mật độ thưa)</strong> lan truyền dọc theo phương ngang.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: MÁY TÍNH THAM SỐ VẬT LÝ ==================== -->
+        <section id="tab4" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Module 1: Giải đại lượng đặc trưng sóng (7 cols) -->
+                <div class="lg:col-span-7 bg-white rounded-2xl p-6 shadow-md border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-sci-600 bg-sci-50 px-2.5 py-1 rounded border border-sci-200">Module 1: Giải Hệ Thức Sóng Cơ</span>
+                        <h2 class="text-xl font-extrabold text-slate-800 mt-2">Máy Tính Tìm Đại Lượng Còn Khuyết \( (\lambda, v, f, T) \)</h2>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Nhập vào các đại lượng đã biết (thường là 2 đại lượng độc lập) và <strong>bỏ trống</strong> các đại lượng cần tìm. Hệ thống sẽ tự động suy luận và trình bày lời giải từng bước bằng KaTeX!
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Bước sóng \( \lambda \text{ (m)} \):</label>
+                                <input type="number" id="calc-lambda" step="any" placeholder="Bỏ trống nếu cần tìm..." class="w-full px-3.5 py-2 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-sci-500 focus:outline-none font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Tốc độ truyền sóng \( v \text{ (m/s)} \):</label>
+                                <input type="number" id="calc-v" step="any" placeholder="VD: 2.5" class="w-full px-3.5 py-2 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-sci-500 focus:outline-none font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Tần số sóng \( f \text{ (Hz)} \):</label>
+                                <input type="number" id="calc-f" step="any" placeholder="VD: 50" class="w-full px-3.5 py-2 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-sci-500 focus:outline-none font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Chu kì sóng \( T \text{ (s)} \):</label>
+                                <input type="number" id="calc-T" step="any" placeholder="Bỏ trống nếu cần tìm..." class="w-full px-3.5 py-2 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-sci-500 focus:outline-none font-mono">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 mt-5">
+                            <button onclick="solveWaveBasic()" class="px-5 py-2.5 bg-sci-600 hover:bg-sci-700 text-white font-bold rounded-xl text-sm shadow transition flex items-center gap-2">
+                                <span>⚡</span> Phân tích & Tính toán
+                            </button>
+                            <button onclick="fillSampleWaveCalc()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs transition">
+                                📋 Nạp ví dụ mẫu
+                            </button>
+                            <button onclick="clearWaveCalc()" class="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold rounded-xl text-xs transition">
+                                🗑️ Xóa trắng
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step-by-step KaTeX Output Box -->
+                    <div id="calc-basic-result" class="mt-5 bg-slate-50 rounded-xl p-4 border border-slate-200 min-h-[160px] text-sm text-slate-800">
+                        <p class="text-xs text-slate-400 italic">Kết quả biến đổi công thức và thay số chi tiết sẽ hiển thị tại đây...</p>
+                    </div>
+                </div>
+
+                <!-- Module 2: Độ lệch pha & Cường độ sóng cầu (5 cols) -->
+                <div class="lg:col-span-5 bg-white rounded-2xl p-6 shadow-md border border-slate-200 flex flex-col justify-between space-y-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded border border-indigo-200">Module 2: Độ Lệch Pha & Cường Độ Sóng Cầu</span>
+                        <h2 class="text-lg font-extrabold text-slate-800 mt-2">Khảo Sát Pha & Cường Độ Âm \( I = \frac{P}{4\pi r^2} \)</h2>
+
+                        <!-- Sub-calculator A: Phase Difference -->
+                        <div class="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                            <h3 class="text-xs font-bold uppercase text-slate-700">A. Tính độ lệch pha \( \Delta \varphi \) giữa hai điểm</h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-slate-600">Khoảng cách \( d \text{ (m)} \):</label>
+                                    <input type="number" id="calc-d" step="any" value="0.6" class="w-full mt-1 px-2.5 py-1.5 rounded border border-slate-300 text-xs font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-slate-600">Bước sóng \( \lambda \text{ (m)} \):</label>
+                                    <input type="number" id="calc-lam2" step="any" value="2.4" class="w-full mt-1 px-2.5 py-1.5 rounded border border-slate-300 text-xs font-mono">
+                                </div>
+                            </div>
+                            <button onclick="solvePhaseDiff()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-xs shadow transition">
+                                Tính Độ Lệch Pha \( \Delta \varphi \)
+                            </button>
+                            <div id="calc-phase-result" class="text-xs bg-white p-3 rounded-lg border border-slate-200">
+                                Nhấn nút để xem kết luận trạng thái pha...
+                            </div>
+                        </div>
+
+                        <!-- Sub-calculator B: Wave Intensity -->
+                        <div class="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                            <h3 class="text-xs font-bold uppercase text-slate-700">B. Cường độ sóng cầu \( I = \frac{P}{4\pi r^2} \) (Bỏ trống 1 ô)</h3>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-slate-600">Công suất \( P \text{ (W)} \)</label>
+                                    <input type="number" id="calc-P" step="any" placeholder="VD: 1.0" class="w-full mt-1 px-2 py-1.5 rounded border border-slate-300 text-xs font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-slate-600">Bán kính \( r \text{ (m)} \)</label>
+                                    <input type="number" id="calc-r" step="any" placeholder="VD: 4.0" class="w-full mt-1 px-2 py-1.5 rounded border border-slate-300 text-xs font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-slate-600">\( I \text{ (W/m}^2\text{)} \)</label>
+                                    <input type="number" id="calc-I" step="any" placeholder="Bỏ trống..." class="w-full mt-1 px-2 py-1.5 rounded border border-slate-300 text-xs font-mono">
+                                </div>
+                            </div>
+                            <button onclick="solveIntensity()" class="w-full py-2 bg-sky-700 hover:bg-sky-800 text-white font-bold rounded-lg text-xs shadow transition">
+                                Giải Bài Toán Cường Độ Sóng
+                            </button>
+                            <div id="calc-intensity-result" class="text-xs bg-white p-3 rounded-lg border border-slate-200">
+                                Nhập 2 trong 3 đại lượng \( (P, r, I) \) để giải đại lượng còn lại.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: PHÒNG LUYỆN TẬP PHÂN HÓA ==================== -->
+        <section id="tab5" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">Hệ Thống Bài Tập Tự Luận Điển Hình</span>
+                        <h2 class="text-xl font-extrabold text-slate-800 mt-1">10 Bài Toán Phân Hóa Theo 3 Cấp Độ Nhận Thức</h2>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button onclick="filterPractice('all')" id="btn-prac-all" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-white">Tất cả (10)</button>
+                        <button onclick="filterPractice('level1')" id="btn-prac-level1" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-800 hover:bg-emerald-200">Cấp 1: Nhận biết - Thông hiểu (4)</button>
+                        <button onclick="filterPractice('level2')" id="btn-prac-level2" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-100 text-sky-800 hover:bg-sky-200">Cấp 2: Vận dụng (3)</button>
+                        <button onclick="filterPractice('level3')" id="btn-prac-level3" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-100 text-purple-800 hover:bg-purple-200">Cấp 3: Vận dụng cao & AI (3)</button>
+                    </div>
+                </div>
+
+                <!-- Practice List Container -->
+                <div id="practice-list" class="space-y-4 mt-5">
+                    <!-- Rendered dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: BÀI TỰ ĐÁNH GIÁ (INTERACTIVE QUIZ) ==================== -->
+        <section id="tab6" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase text-amber-700 bg-amber-50 px-2.5 py-1 rounded border border-amber-200">Kiểm Tra Đánh Giá Năng Lực</span>
+                        <h2 class="text-xl font-extrabold text-slate-800 mt-1">Đề Trắc Nghiệm Tương Tác: Mô Tả Sóng (10 Câu Chuẩn THPT)</h2>
+                    </div>
+                    <div id="quiz-score-banner" class="hidden bg-slate-900 text-white px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-3">
+                        <span>🏆 Điểm số: <span id="quiz-score-val" class="text-amber-400 text-lg font-mono">0/10</span></span>
+                        <span id="quiz-score-rank" class="text-xs bg-white/15 px-2.5 py-1 rounded">Chưa nộp</span>
+                    </div>
+                </div>
+
+                <!-- Quiz Questions Container -->
+                <div id="quiz-container" class="space-y-5 mt-5">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Submit & Reset Buttons -->
+                <div class="mt-6 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
+                    <p class="text-xs text-slate-500">💡 Sau khi bấm "Nộp bài & Xem lời giải", hệ thống sẽ chấm điểm và hiển thị giải thích chi tiết từng câu bằng công thức KaTeX.</p>
+                    <div class="flex gap-3">
+                        <button onclick="resetQuiz()" class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs md:text-sm transition">
+                            🔄 Làm lại đề
+                        </button>
+                        <button onclick="submitQuiz()" class="px-6 py-2.5 rounded-xl bg-sci-600 hover:bg-sci-700 text-white font-bold text-xs md:text-sm shadow-lg transition">
+                            ✅ Nộp bài & Xem kết quả
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 7: TIỆN ÍCH LỚP HỌC (CLASSROOM TOOLS) ==================== -->
+        <section id="tab7" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Tool 1: Đồng hồ đếm ngược (5 cols) -->
+                <div id="timer-card" class="lg:col-span-5 bg-white rounded-2xl p-6 shadow-md border-2 border-slate-200 flex flex-col justify-between items-center text-center">
+                    <div class="w-full border-b border-slate-100 pb-3 text-left">
+                        <span class="text-xs font-bold uppercase text-sci-600 bg-sci-50 px-2.5 py-1 rounded border border-sci-200">Tiện ích 1: Quản lý Hoạt động Nhóm</span>
+                        <h2 class="text-xl font-extrabold text-slate-800 mt-1">⏱️ Đồng Hồ Đếm Ngược (Visual Timer)</h2>
+                    </div>
+
+                    <!-- Circular SVG Progress Timer -->
+                    <div class="relative my-6 flex items-center justify-center">
+                        <svg class="w-56 h-56 -rotate-90 transform" viewBox="0 0 220 220">
+                            <circle cx="110" cy="110" r="95" stroke="#e2e8f0" stroke-width="14" fill="transparent" />
+                            <circle id="timer-ring" cx="110" cy="110" r="95" stroke="#0284c7" stroke-width="14" stroke-dasharray="596.9" stroke-dashoffset="0" stroke-linecap="round" fill="transparent" class="transition-all duration-500" />
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="timer-display" class="font-mono text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">03:00</span>
+                            <span id="timer-status" class="text-xs font-semibold text-slate-500 mt-1 uppercase tracking-wider">Sẵn sàng</span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Preset Buttons -->
+                    <div class="w-full space-y-3">
+                        <div class="grid grid-cols-4 gap-2">
+                            <button onclick="setTimerPreset(60)" class="py-1.5 px-2 bg-slate-100 hover:bg-sci-50 hover:text-sci-700 rounded-lg text-xs font-bold border border-slate-200 transition">1 Phút</button>
+                            <button onclick="setTimerPreset(180)" class="py-1.5 px-2 bg-slate-100 hover:bg-sci-50 hover:text-sci-700 rounded-lg text-xs font-bold border border-slate-200 transition">3 Phút</button>
+                            <button onclick="setTimerPreset(300)" class="py-1.5 px-2 bg-slate-100 hover:bg-sci-50 hover:text-sci-700 rounded-lg text-xs font-bold border border-slate-200 transition">5 Phút</button>
+                            <button onclick="setTimerPreset(600)" class="py-1.5 px-2 bg-slate-100 hover:bg-sci-50 hover:text-sci-700 rounded-lg text-xs font-bold border border-slate-200 transition">10 Phút</button>
+                        </div>
+
+                        <div class="flex items-center justify-center gap-2 pt-2">
+                            <button onclick="toggleTimer()" id="btn-timer-start" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm shadow transition">
+                                ▶️ Bắt đầu
+                            </button>
+                            <button onclick="resetTimer()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-sm transition">
+                                🔄 Đặt lại
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool 2: Vòng quay may mắn theo 4 Tổ (7 cols) -->
+                <div class="lg:col-span-7 bg-white rounded-2xl p-6 shadow-md border border-slate-200">
+                    <div class="border-b border-slate-100 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <span class="text-xs font-bold uppercase text-amber-600 bg-amber-50 px-2.5 py-1 rounded border border-amber-200">Tiện ích 2: Gọi Tên Ngẫu Nhiên</span>
+                            <h2 class="text-xl font-extrabold text-slate-800 mt-1">🎡 Vòng Quay May Mắn Theo 4 Tổ</h2>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <button onclick="selectWheelGroup('all')" id="btn-grp-all" class="px-2.5 py-1 rounded text-xs font-bold bg-sci-600 text-white">Cả lớp</button>
+                            <button onclick="selectWheelGroup('to1')" id="btn-grp-to1" class="px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Tổ 1</button>
+                            <button onclick="selectWheelGroup('to2')" id="btn-grp-to2" class="px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Tổ 2</button>
+                            <button onclick="selectWheelGroup('to3')" id="btn-grp-to3" class="px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Tổ 3</button>
+                            <button onclick="selectWheelGroup('to4')" id="btn-grp-to4" class="px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Tổ 4</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mt-4 items-center">
+                        <!-- Wheel Canvas (7 cols) -->
+                        <div class="md:col-span-7 flex flex-col items-center relative">
+                            <!-- Pointer Triangle -->
+                            <div class="z-10 -mb-3 text-2xl drop-shadow">🔻</div>
+                            <canvas id="wheelCanvas" width="300" height="300" class="max-w-full h-auto rounded-full shadow-lg border-4 border-slate-800"></canvas>
+                            <button onclick="spinLuckyWheel()" id="btn-spin-wheel" class="mt-4 px-6 py-2.5 bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-600 hover:to-rose-700 text-white font-extrabold rounded-full text-sm shadow-lg transform active:scale-95 transition">
+                                🎯 QUAY NGẪU NHIÊN!
+                            </button>
+                        </div>
+
+                        <!-- Student List Editor (5 cols) -->
+                        <div class="md:col-span-5 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-bold text-slate-700">Danh sách học sinh (mỗi dòng 1 tên):</label>
+                                <span id="wheel-count" class="text-[11px] font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600">8 HS</span>
+                            </div>
+                            <textarea id="wheel-names-input" rows="8" oninput="updateWheelFromTextarea()" class="w-full p-3 rounded-xl border border-slate-300 text-xs font-medium focus:ring-2 focus:ring-sci-500 focus:outline-none"></textarea>
+                            <p class="text-[11px] text-slate-500">
+                                💡 Giáo viên có thể dán trực tiếp danh sách học sinh từ Excel/Word vào ô trên hoặc bấm chọn nhanh từng Tổ.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Winner Popup Modal (Custom Modal - No alert()) -->
+            <div id="winner-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+                <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-amber-400 transform transition-all">
+                    <div class="text-5xl mb-3">🎉🌟🎉</div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-600 bg-amber-50 px-3 py-1 rounded-full">Chúc mừng học sinh được chọn</span>
+                    <h3 id="winner-name" class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-3">Nguyễn Văn An</h3>
+                    <p class="text-xs text-slate-500 mt-2">Xin mời em lên bảng/trả lời câu hỏi Vật lý hôm nay!</p>
+                    <div class="mt-6 flex justify-center gap-3">
+                        <button onclick="closeWinnerModal()" class="px-5 py-2 bg-sci-600 hover:bg-sci-700 text-white font-bold rounded-xl text-sm">
+                            Đóng & Tiếp tục
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-5 mt-10">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
+            <div class="font-semibold text-slate-200">
+                2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+            </div>
+            <div>
+                Học liệu số Vật lý 11 Tương tác • Chuyên đề Sóng Cơ Học
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== SYSTEM KATEX RENDER HELPER ====================
+        const katexConfig = {
+            delimiters: [
+                { left: "\\[", right: "\\]", display: true },
+                { left: "\\(", right: "\\)", display: false }
+            ],
+            throwOnError: false
+        };
+
+        function triggerMathRender(element = document.body) {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(element, katexConfig);
+            }
+        }
+
+        // ==================== TAB NAVIGATION ====================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            const targetTab = document.getElementById(tabId);
+            const targetBtn = document.getElementById('btn-' + tabId);
+            if (targetTab) targetTab.classList.remove('hidden');
+            if (targetBtn) targetBtn.classList.add('active');
+
+            if (tabId === 'tab3') {
+                resizeWaveCanvas();
+            }
+            if (tabId === 'tab7') {
+                drawLuckyWheel();
+            }
+            triggerMathRender(targetTab);
+        }
+
+        function toggleReveal(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+                triggerMathRender(el);
+            }
+        }
+
+        function checkWarmupChoice(question, isCorrect) {
+            const box = document.getElementById('warmup-feedback-' + question);
+            box.classList.remove('hidden');
+            if (question === 'A') {
+                if (isCorrect) {
+                    box.className = "mt-3 p-3 rounded-lg text-xs bg-emerald-50 border border-emerald-300 text-emerald-900";
+                    box.innerHTML = "✅ <strong>Chính xác!</strong> Tần số sóng \\( f \\) chỉ phụ thuộc vào nguồn phát nên giữ nguyên \\( f = 500 \\text{ Hz} \\). Khi vào nước tốc độ \\( v \\) tăng nên bước sóng \\( \\lambda = \\frac{v}{f} \\) tăng tỉ lệ thuận với \\( v \\).";
+                } else {
+                    box.className = "mt-3 p-3 rounded-lg text-xs bg-rose-50 border border-rose-300 text-rose-900";
+                    box.innerHTML = "❌ <strong>Chưa đúng!</strong> Hãy nhớ: Chu kì \\( T \\) và tần số \\( f \\) của sóng là bất biến khi truyền qua các môi trường khác nhau. Bước sóng \\( \\lambda = \\frac{v}{f} \\) mới là đại lượng thay đổi!";
+                }
+            } else {
+                if (isCorrect) {
+                    box.className = "mt-3 p-3 rounded-lg text-xs bg-emerald-50 border border-emerald-300 text-emerald-900";
+                    box.innerHTML = "✅ <strong>Xuất sắc!</strong> Đỉnh sóng đang tiến sang phải về phía sườn trước, nên các điểm thuộc sườn trước đang đi lên để đón đỉnh sóng, còn sườn sau đang hạ xuống về vị trí cân bằng.";
+                } else {
+                    box.className = "mt-3 p-3 rounded-lg text-xs bg-rose-50 border border-rose-300 text-rose-900";
+                    box.innerHTML = "❌ <strong>Sai lầm phổ biến!</strong> Các phần tử dây không chuyển động ngang theo sóng mà chỉ dao động thẳng đứng lên - xuống quanh vị trí cân bằng!";
+                }
+            }
+            triggerMathRender(box);
+        }
+
+        // ==================== TAB 3: WAVE SIMULATION LAB ====================
+        const waveCanvas = document.getElementById('waveCanvas');
+        const waveCtx = waveCanvas.getContext('2d');
+
+        let simState = {
+            mode: 'transverse', // 'transverse' | 'longitudinal'
+            playing: true,
+            t: 0,
+            dir: 1, // 1 for +Ox (left to right), -1 for -Ox
+            A: 4.0,     // cm
+            f: 1.0,     // Hz
+            v: 20.0,    // cm/s
+            xM: 10.0,   // cm
+            xN: 25.0,   // cm
+            showVec: true
+        };
+
+        function resizeWaveCanvas() {
+            const rect = waveCanvas.parentElement.getBoundingClientRect();
+            waveCanvas.width = rect.width || 700;
+            waveCanvas.height = rect.height || 280;
+            drawWaveSimulation();
+        }
+
+        window.addEventListener('resize', resizeWaveCanvas);
+
+        function setWaveMode(mode) {
+            simState.mode = mode;
+            const btnT = document.getElementById('btn-mode-transverse');
+            const btnL = document.getElementById('btn-mode-longitudinal');
+            if (mode === 'transverse') {
+                btnT.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-sci-600 text-white shadow";
+                btnL.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300";
+            } else {
+                btnL.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow";
+                btnT.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-200 text-slate-700 hover:bg-slate-300";
+            }
+            drawWaveSimulation();
+        }
+
+        function toggleSimPlay() {
+            simState.playing = !simState.playing;
+            const btn = document.getElementById('btn-sim-play');
+            btn.innerHTML = simState.playing ? "⏸️ Tạm dừng" : "▶️ Tiếp tục";
+            btn.className = simState.playing
+                ? "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 shadow"
+                : "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white hover:bg-sky-700 shadow";
+        }
+
+        function stepSimTime() {
+            simState.playing = false;
+            const btn = document.getElementById('btn-sim-play');
+            btn.innerHTML = "▶️ Tiếp tục";
+            const T = 1 / simState.f;
+            simState.t += T / 12;
+            drawWaveSimulation();
+        }
+
+        function resetSim() {
+            simState.t = 0;
+            drawWaveSimulation();
+        }
+
+        function toggleWaveDirection() {
+            simState.dir *= -1;
+            const btn = document.getElementById('btn-sim-dir');
+            btn.innerText = simState.dir === 1 ? "Chiều: Trái → Phải (+Ox)" : "Chiều: Phải → Trái (-Ox)";
+            drawWaveSimulation();
+        }
+
+        function updateSimParams() {
+            simState.A = parseFloat(document.getElementById('sim-A').value);
+            simState.f = parseFloat(document.getElementById('sim-f').value);
+            simState.v = parseFloat(document.getElementById('sim-v').value);
+            simState.xM = parseFloat(document.getElementById('sim-xM').value);
+            simState.xN = parseFloat(document.getElementById('sim-xN').value);
+            simState.showVec = document.getElementById('sim-show-vec').checked;
+
+            document.getElementById('lbl-sim-A').innerText = simState.A.toFixed(1) + " cm";
+            document.getElementById('lbl-sim-f').innerText = simState.f.toFixed(2) + " Hz";
+            document.getElementById('lbl-sim-v').innerText = simState.v.toFixed(0) + " cm/s";
+            document.getElementById('lbl-sim-xM').innerText = simState.xM.toFixed(0) + " cm";
+            document.getElementById('lbl-sim-xN').innerText = simState.xN.toFixed(0) + " cm";
+
+            const T = 1 / simState.f;
+            const lambda = simState.v * T;
+            const omega = 2 * Math.PI * simState.f;
+            const vmax = omega * simState.A;
+            const dMN = Math.abs(simState.xN - simState.xM);
+            const dPhiPi = (2 * dMN) / lambda; // in units of pi
+
+            document.getElementById('out-T').innerText = T.toFixed(2) + " s";
+            document.getElementById('out-lambda').innerText = lambda.toFixed(1) + " cm";
+            document.getElementById('out-vmax').innerText = vmax.toFixed(1) + " cm/s";
+            document.getElementById('out-dMN').innerText = dMN.toFixed(1) + " cm";
+
+            // Classify phase relation
+            const mod2 = dPhiPi % 2;
+            let phaseText = dPhiPi.toFixed(2) + "π rad";
+            if (Math.abs(mod2) < 0.05 || Math.abs(mod2 - 2) < 0.05) {
+                phaseText += " (Cùng pha)";
+            } else if (Math.abs(mod2 - 1) < 0.05) {
+                phaseText += " (Ngược pha)";
+            } else if (Math.abs(mod2 - 0.5) < 0.05 || Math.abs(mod2 - 1.5) < 0.05) {
+                phaseText += " (Vuông pha)";
+            } else {
+                phaseText += " (Lệch pha)";
+            }
+            document.getElementById('out-phase').innerText = phaseText;
+
+            drawWaveSimulation();
+        }
+
+        function drawArrow(ctx, x1, y1, x2, y2, color) {
+            const headlen = 7;
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const angle = Math.atan2(dy, dx);
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headlen * Math.cos(angle - Math.PI / 6), y2 - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - headlen * Math.cos(angle + Math.PI / 6), y2 - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawWaveSimulation() {
+            const W = waveCanvas.width;
+            const H = waveCanvas.height;
+            waveCtx.clearRect(0, 0, W, H);
+
+            const padLeft = 45;
+            const padRight = 25;
+            const plotW = W - padLeft - padRight;
+            const midY = H / 2;
+            const maxX = 50; // 50 cm along Ox
+            const scaleX = plotW / maxX;
+            const scaleY = (H * 0.36) / 6.0; // max A = 6 cm
+
+            const omega = 2 * Math.PI * simState.f;
+            const lambda = simState.v / simState.f;
+            const k = (2 * Math.PI) / lambda;
+
+            // Draw subtle grid
+            waveCtx.strokeStyle = "#1e293b";
+            waveCtx.lineWidth = 1;
+            for (let x = 0; x <= maxX; x += 5) {
+                const px = padLeft + x * scaleX;
+                waveCtx.beginPath();
+                waveCtx.moveTo(px, 15);
+                waveCtx.lineTo(px, H - 20);
+                waveCtx.stroke();
+
+                if (x % 10 === 0) {
+                    waveCtx.fillStyle = "#64748b";
+                    waveCtx.font = "11px JetBrains Mono";
+                    waveCtx.fillText(x + "cm", px - 12, H - 6);
+                }
+            }
+
+            // Draw axes
+            waveCtx.strokeStyle = "#475569";
+            waveCtx.lineWidth = 1.5;
+            waveCtx.beginPath();
+            waveCtx.moveTo(padLeft, midY);
+            waveCtx.lineTo(W - 10, midY);
+            waveCtx.moveTo(padLeft, 15);
+            waveCtx.lineTo(padLeft, H - 20);
+            waveCtx.stroke();
+
+            waveCtx.fillStyle = "#94a3b8";
+            waveCtx.font = "11px Inter";
+            waveCtx.fillText("u (cm)", 6, 24);
+            waveCtx.fillText("O", padLeft - 14, midY + 14);
+
+            if (simState.mode === 'transverse') {
+                // Draw Continuous Sine Wave Curve
+                waveCtx.strokeStyle = "#38bdf8";
+                waveCtx.lineWidth = 2.5;
+                waveCtx.beginPath();
+                for (let x = 0; x <= maxX; x += 0.25) {
+                    const phase = omega * simState.t - simState.dir * k * x;
+                    const u = simState.A * Math.cos(phase);
+                    const px = padLeft + x * scaleX;
+                    const py = midY - u * scaleY;
+                    if (x === 0) waveCtx.moveTo(px, py);
+                    else waveCtx.lineTo(px, py);
+                }
+                waveCtx.stroke();
+
+                // Draw discrete medium particles along the rope
+                for (let x = 0; x <= maxX; x += 2.5) {
+                    const phase = omega * simState.t - simState.dir * k * x;
+                    const u = simState.A * Math.cos(phase);
+                    const vd = -omega * simState.A * Math.sin(phase);
+                    const px = padLeft + x * scaleX;
+                    const py = midY - u * scaleY;
+
+                    if (simState.showVec && Math.abs(vd) > 1.5) {
+                        const vecLen = (vd / (omega * simState.A)) * 26;
+                        drawArrow(waveCtx, px, py, px, py - vecLen, "rgba(250, 204, 21, 0.75)");
+                    }
+
+                    waveCtx.fillStyle = "#e2e8f0";
+                    waveCtx.beginPath();
+                    waveCtx.arc(px, py, 3, 0, Math.PI * 2);
+                    waveCtx.fill();
+                }
+
+                // Highlight Probe M and Probe N
+                const probes = [
+                    { x: simState.xM, color: "#f43f5e", label: "M" },
+                    { x: simState.xN, color: "#10b981", label: "N" }
+                ];
+                probes.forEach(p => {
+                    const phase = omega * simState.t - simState.dir * k * p.x;
+                    const u = simState.A * Math.cos(phase);
+                    const vd = -omega * simState.A * Math.sin(phase);
+                    const px = padLeft + p.x * scaleX;
+                    const py = midY - u * scaleY;
+
+                    // Dashed projection to Ox
+                    waveCtx.setLineDash([3, 3]);
+                    waveCtx.strokeStyle = p.color;
+                    waveCtx.beginPath();
+                    waveCtx.moveTo(px, midY);
+                    waveCtx.lineTo(px, py);
+                    waveCtx.stroke();
+                    waveCtx.setLineDash([]);
+
+                    if (simState.showVec && Math.abs(vd) > 0.5) {
+                        const vecLen = (vd / (omega * simState.A)) * 34;
+                        drawArrow(waveCtx, px, py, px, py - vecLen, p.color);
+                    }
+
+                    waveCtx.fillStyle = p.color;
+                    waveCtx.beginPath();
+                    waveCtx.arc(px, py, 6.5, 0, Math.PI * 2);
+                    waveCtx.fill();
+                    waveCtx.strokeStyle = "#ffffff";
+                    waveCtx.lineWidth = 2;
+                    waveCtx.stroke();
+
+                    waveCtx.fillStyle = "#ffffff";
+                    waveCtx.font = "bold 12px Inter";
+                    waveCtx.fillText(p.label, px - 4, py - 10);
+                });
+            } else {
+                // LONGITUDINAL WAVE MODE (Particles oscillating horizontally along Ox)
+                const maxDispPx = Math.min(simState.A * 3.2, scaleX * 2.2);
+                for (let row = -2; row <= 2; row++) {
+                    const rowY = midY + row * 26;
+                    for (let x = 1; x <= maxX - 1; x += 1.25) {
+                        const phase = omega * simState.t - simState.dir * k * x;
+                        const u = simState.A * Math.cos(phase);
+                        const px = padLeft + x * scaleX + (u / simState.A) * maxDispPx;
+
+                        const isM = Math.abs(x - simState.xM) < 0.6 && row === 0;
+                        const isN = Math.abs(x - simState.xN) < 0.6 && row === 0;
+
+                        waveCtx.fillStyle = isM ? "#f43f5e" : (isN ? "#10b981" : "#38bdf8");
+                        waveCtx.beginPath();
+                        waveCtx.arc(px, rowY, (isM || isN) ? 6 : 3.2, 0, Math.PI * 2);
+                        waveCtx.fill();
+                    }
+                }
+                waveCtx.fillStyle = "#fde047";
+                waveCtx.font = "12px Inter";
+                waveCtx.fillText("Sóng dọc: Các phần tử dao động trùng phương truyền sóng (Tạo vùng NÉN - DÃN)", padLeft + 10, 28);
+            }
+
+            // Update M and N numeric status cards
+            const phaseM = omega * simState.t - simState.dir * k * simState.xM;
+            const uM = simState.A * Math.cos(phaseM);
+            const vM = -omega * simState.A * Math.sin(phaseM);
+
+            const phaseN = omega * simState.t - simState.dir * k * simState.xN;
+            const uN = simState.A * Math.cos(phaseN);
+            const vN = -omega * simState.A * Math.sin(phaseN);
+
+            document.getElementById('status-uM').innerText = (uM >= 0 ? "+" : "") + uM.toFixed(2) + " cm";
+            document.getElementById('status-vM').innerText = (vM >= 0 ? "+" : "") + vM.toFixed(1) + " cm/s";
+            document.getElementById('status-M-trend').innerText = Math.abs(vM) < 0.5 ? "Đang ở biên" : (vM > 0 ? "Đang đi lên ↑" : "Đang đi xuống ↓");
+
+            document.getElementById('status-uN').innerText = (uN >= 0 ? "+" : "") + uN.toFixed(2) + " cm";
+            document.getElementById('status-vN').innerText = (vN >= 0 ? "+" : "") + vN.toFixed(1) + " cm/s";
+            document.getElementById('status-N-trend').innerText = Math.abs(vN) < 0.5 ? "Đang ở biên" : (vN > 0 ? "Đang đi lên ↑" : "Đang đi xuống ↓");
+
+            document.getElementById('sim-time-display').innerText = "t = " + simState.t.toFixed(2) + " s";
+        }
+
+        let lastFrameTime = performance.now();
+        function simAnimationLoop(now) {
+            const dt = (now - lastFrameTime) / 1000;
+            lastFrameTime = now;
+            if (simState.playing) {
+                simState.t += dt * 0.55; // smooth slow-motion factor for clarity
+                drawWaveSimulation();
+            }
+            requestAnimationFrame(simAnimationLoop);
+        }
+
+        // ==================== TAB 4: PHYSICS CALCULATOR MODULE ====================
+        function fillSampleWaveCalc() {
+            document.getElementById('calc-lambda').value = "";
+            document.getElementById('calc-v').value = "340";
+            document.getElementById('calc-f').value = "500";
+            document.getElementById('calc-T').value = "";
+            solveWaveBasic();
+        }
+
+        function clearWaveCalc() {
+            document.getElementById('calc-lambda').value = "";
+            document.getElementById('calc-v').value = "";
+            document.getElementById('calc-f').value = "";
+            document.getElementById('calc-T').value = "";
+            document.getElementById('calc-basic-result').innerHTML = `<p class="text-xs text-slate-400 italic">Đã xóa dữ liệu. Hãy nhập các thông số mới...</p>`;
+        }
+
+        function solveWaveBasic() {
+            const lamVal = document.getElementById('calc-lambda').value.trim();
+            const vVal = document.getElementById('calc-v').value.trim();
+            const fVal = document.getElementById('calc-f').value.trim();
+            const TVal = document.getElementById('calc-T').value.trim();
+
+            let lam = lamVal !== "" ? parseFloat(lamVal) : null;
+            let v = vVal !== "" ? parseFloat(vVal) : null;
+            let f = fVal !== "" ? parseFloat(fVal) : null;
+            let T = TVal !== "" ? parseFloat(TVal) : null;
+
+            const resBox = document.getElementById('calc-basic-result');
+            let steps = [];
+
+            // Step 1: Resolve f and T if one is known
+            if (f !== null && T === null && f > 0) {
+                T = 1 / f;
+                steps.push(`• <strong>Bước 1 (Tính chu kì sóng \\( T \\)):</strong> \\[ T = \\frac{1}{f} = \\frac{1}{${f}} \\approx ${T.toFixed(4)} \\text{ s} \\]`);
+            } else if (T !== null && f === null && T > 0) {
+                f = 1 / T;
+                steps.push(`• <strong>Bước 1 (Tính tần số sóng \\( f \\)):</strong> \\[ f = \\frac{1}{T} = \\frac{1}{${T}} \\approx ${f.toFixed(4)} \\text{ Hz} \\]`);
+            }
+
+            // Step 2: Resolve remaining among (lam, v, f/T)
+            if (lam === null && v !== null && f !== null) {
+                lam = v / f;
+                steps.push(`• <strong>Bước 2 (Tính bước sóng \\( \\lambda \\)):</strong> \\[ \\lambda = \\frac{v}{f} = \\frac{${v}}{${f}} \\approx ${lam.toFixed(4)} \\text{ m} \\]`);
+            } else if (v === null && lam !== null && f !== null) {
+                v = lam * f;
+                steps.push(`• <strong>Bước 2 (Tính tốc độ truyền sóng \\( v \\)):</strong> \\[ v = \\lambda \\cdot f = ${lam} \\cdot ${f} \\approx ${v.toFixed(4)} \\text{ m/s} \\]`);
+            } else if (f === null && T === null && lam !== null && v !== null && lam > 0) {
+                f = v / lam;
+                T = 1 / f;
+                steps.push(`• <strong>Bước 1 (Tính tần số sóng \\( f \\)):</strong> \\[ f = \\frac{v}{\\lambda} = \\frac{${v}}{${lam}} \\approx ${f.toFixed(4)} \\text{ Hz} \\]`);
+                steps.push(`• <strong>Bước 2 (Tính chu kì sóng \\( T \\)):</strong> \\[ T = \\frac{1}{f} = \\frac{1}{${f.toFixed(4)}} \\approx ${T.toFixed(4)} \\text{ s} \\]`);
+            }
+
+            if (steps.length === 0) {
+                resBox.innerHTML = `<div class="text-rose-600 font-semibold text-xs">⚠️ Vui lòng nhập ít nhất 2 đại lượng độc lập (ví dụ: \\( v \\) và \\( f \\), hoặc \\( \\lambda \\) và \\( T \\)) và để trống đại lượng cần tìm!</div>`;
+                triggerMathRender(resBox);
+                return;
+            }
+
+            const omega = 2 * Math.PI * f;
+            steps.push(`• <strong>Tần số góc tương ứng:</strong> \\( \\omega = 2\\pi f \\approx ${omega.toFixed(2)} \\text{ rad/s} \\)`);
+
+            resBox.innerHTML = `
+                <div class="font-bold text-sci-800 border-b border-slate-200 pb-1.5 mb-2">✅ Lời Giải Tự Động Từng Bước:</div>
+                <div class="space-y-2 text-xs md:text-sm">${steps.join('')}</div>
+            `;
+            triggerMathRender(resBox);
+        }
+
+        function solvePhaseDiff() {
+            const d = parseFloat(document.getElementById('calc-d').value);
+            const lam = parseFloat(document.getElementById('calc-lam2').value);
+            const box = document.getElementById('calc-phase-result');
+
+            if (isNaN(d) || isNaN(lam) || lam <= 0) {
+                box.innerHTML = `<span class="text-rose-600">Vui lòng nhập \\( d > 0 \\) và \\( \\lambda > 0 \\) hợp lệ!</span>`;
+                triggerMathRender(box);
+                return;
+            }
+
+            const ratioPi = (2 * d) / lam;
+            const rad = ratioPi * Math.PI;
+            const mod2 = ratioPi % 2;
+
+            let relation = "Dao động lệch pha bất kỳ";
+            if (Math.abs(mod2) < 1e-4 || Math.abs(mod2 - 2) < 1e-4) relation = "Dao động CÙNG PHA (\\( d = k\\lambda \\))";
+            else if (Math.abs(mod2 - 1) < 1e-4) relation = "Dao động NGƯỢC PHA (\\( d = (k+0,5)\\lambda \\))";
+            else if (Math.abs(mod2 - 0.5) < 1e-4 || Math.abs(mod2 - 1.5) < 1e-4) relation = "Dao động VUÔNG PHA (\\( d = (k+0,5)\\frac{\\lambda}{2} \\))";
+
+            box.innerHTML = `
+                <div>\\[ \\Delta \\varphi = \\frac{2\\pi d}{\\lambda} = \\frac{2\\pi \\cdot ${d}}{${lam}} = ${ratioPi.toFixed(2)}\\pi \\text{ rad} \\approx ${rad.toFixed(3)} \\text{ rad} \\]</div>
+                <div class="font-bold text-indigo-700 mt-1">👉 Kết luận: ${relation}</div>
+            `;
+            triggerMathRender(box);
+        }
+
+        function solveIntensity() {
+            const Pval = document.getElementById('calc-P').value.trim();
+            const rval = document.getElementById('calc-r').value.trim();
+            const Ival = document.getElementById('calc-I').value.trim();
+
+            let P = Pval !== "" ? parseFloat(Pval) : null;
+            let r = rval !== "" ? parseFloat(rval) : null;
+            let I = Ival !== "" ? parseFloat(Ival) : null;
+
+            const box = document.getElementById('calc-intensity-result');
+
+            if (I === null && P !== null && r !== null && r > 0) {
+                I = P / (4 * Math.PI * r * r);
+                box.innerHTML = `\\[ I = \\frac{P}{4\\pi r^2} = \\frac{${P}}{4\\pi \\cdot ${r}^2} \\approx ${I.toExponential(3)} \\text{ W/m}^2 \\]`;
+            } else if (P === null && I !== null && r !== null && r > 0) {
+                P = I * 4 * Math.PI * r * r;
+                box.innerHTML = `\\[ P = I \\cdot 4\\pi r^2 = ${I} \\cdot 4\\pi \\cdot ${r}^2 \\approx ${P.toFixed(4)} \\text{ W} \\]`;
+            } else if (r === null && P !== null && I !== null && I > 0) {
+                r = Math.sqrt(P / (4 * Math.PI * I));
+                box.innerHTML = `\\[ r = \\sqrt{\\frac{P}{4\\pi I}} = \\sqrt{\\frac{${P}}{4\\pi \\cdot ${I}}} \\approx ${r.toFixed(3)} \\text{ m} \\]`;
+            } else {
+                box.innerHTML = `<span class="text-rose-600">Hãy nhập đúng 2 đại lượng và bỏ trống 1 đại lượng cần tìm!</span>`;
+            }
+            triggerMathRender(box);
+        }
+
+        // ==================== TAB 5: GUIDED PRACTICE DATA (10 PROBLEMS) ====================
+        const practiceProblems = [
+            {
+                id: 1,
+                level: 'level1',
+                levelName: 'Cấp 1: Nhận biết - Thông hiểu',
+                badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                title: 'Bài 1 (SGK KNTT): Con thuyền dao động trên mặt hồ',
+                question: 'Trên mặt hồ yên lặng, một người làm cho con thuyền dao động tạo ra sóng trên mặt nước. Thuyền thực hiện được \\( 24 \\text{ dao động} \\) trong \\( 40 \\text{ s} \\), mỗi dao động tạo ra một ngọn sóng cao \\( 12 \\text{ cm} \\) so với mặt hồ yên lặng và ngọn sóng tới bờ cách thuyền \\( 10 \\text{ m} \\) sau \\( 5 \\text{ s} \\). Hãy xác định: a) Chu kì dao động của thuyền; b) Tốc độ lan truyền của sóng; c) Bước sóng; d) Biên độ sóng.',
+                hint: 'Áp dụng \\( T = \\frac{\\Delta t}{N} \\) (vì đề cho 24 dao động toàn phần), tốc độ truyền sóng \\( v = \\frac{\\Delta s}{\\Delta t} \\) và bước sóng \\( \\lambda = v \\cdot T \\).',
+                solution: `
+                    <ul class="space-y-1.5">
+                        <li><strong>a) Chu kì dao động của thuyền:</strong> Tần số \\( f = \\frac{24}{40} = 0,6 \\text{ Hz} \\Rightarrow T = \\frac{1}{f} = \\frac{5}{3} \\approx 1,67 \\text{ s} \\).</li>
+                        <li><strong>b) Tốc độ lan truyền của sóng:</strong> \\[ v = \\frac{\\Delta s}{\\Delta t} = \\frac{10}{5} = 2 \\text{ m/s} \\]</li>
+                        <li><strong>c) Bước sóng:</strong> \\[ \\lambda = v \\cdot T = 2 \\cdot \\frac{5}{3} = \\frac{10}{3} \\approx 3,33 \\text{ m} \\]</li>
+                        <li><strong>d) Biên độ sóng:</strong> Bằng độ cao ngọn sóng so với mặt hồ yên lặng: \\( A = 12 \\text{ cm} = 0,12 \\text{ m} \\).</li>
+                    </ul>
+                `
+            },
+            {
+                id: 2,
+                level: 'level1',
+                levelName: 'Cấp 1: Nhận biết - Thông hiểu',
+                badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                title: 'Bài 2 (SGK CTST): Bài toán Chiếc phao câu cá nhô lên',
+                question: 'Một bạn học sinh đang câu cá trên hồ nước. Khi có sóng đi qua, bạn quan sát thấy phao câu cá nhô lên cao \\( 6 \\text{ lần} \\) trong \\( 4 \\text{ s} \\). Biết tốc độ truyền sóng là \\( v = 0,5 \\text{ m/s} \\). Tính khoảng cách giữa hai đỉnh sóng liên tiếp.',
+                hint: 'Cẩn thận bẫy đếm số chu kì: Phao nhô lên cao \\( N = 6 \\text{ lần} \\) liên tiếp tương ứng với \\( N - 1 = 5 \\text{ chu kì } T \\).',
+                solution: `
+                    <p>• Thời gian giữa \\( 6 \\text{ lần} \\) nhô cao liên tiếp ứng với \\( 5 \\text{ chu kì} \\) sóng:</p>
+                    \\[ T = \\frac{\\Delta t}{N - 1} = \\frac{4}{6 - 1} = 0,8 \\text{ s} \\]
+                    <p>• Khoảng cách giữa hai đỉnh sóng liên tiếp chính là một bước sóng \\( \\lambda \\):</p>
+                    \\[ \\lambda = v \\cdot T = 0,5 \\cdot 0,8 = 0,4 \\text{ m} = 40 \\text{ cm} \\]
+                `
+            },
+            {
+                id: 3,
+                level: 'level1',
+                levelName: 'Cấp 1: Nhận biết - Thông hiểu',
+                badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                title: 'Bài 3 (SGK CTST): Đọc các đặc trưng từ phương trình truyền sóng',
+                question: 'Một sóng truyền trên một dây rất dài có phương trình: \\[ u = 10 \\cos(2\\pi t + 0,01\\pi x) \\] trong đó \\( u \\) và \\( x \\) được tính bằng \\( \\text{cm} \\) và \\( t \\) được tính bằng \\( \\text{s} \\). Hãy xác định: a) Chu kì, tần số và biên độ sóng; b) Bước sóng và tốc độ truyền sóng; c) Giá trị của li độ \\( u \\) tại điểm có \\( x = 50 \\text{ cm} \\) vào thời điểm \\( t = 4 \\text{ s} \\).',
+                hint: 'Đồng nhất hệ số phương trình đã cho với dạng chuẩn \\( u = A \\cos\\left(\\frac{2\\pi}{T}t \\pm \\frac{2\\pi}{\\lambda}x\\right) \\). Lưu ý \\( x \\) tính bằng \\( \\text{cm} \\) nên \\( \\lambda \\) tìm ra có đơn vị là \\( \\text{cm} \\).',
+                solution: `
+                    <p>• <strong>a)</strong> Đối chiếu phương trình tổng quát: Biên độ \\( A = 10 \\text{ cm} \\); \\( \\omega = 2\\pi \\text{ rad/s} \\Rightarrow T = \\frac{2\\pi}{\\omega} = 1 \\text{ s} \\Rightarrow f = 1 \\text{ Hz} \\).</p>
+                    <p>• <strong>b)</strong> Ta có \\( \\frac{2\\pi}{\\lambda} = 0,01\\pi \\Rightarrow \\lambda = 200 \\text{ cm} = 2 \\text{ m} \\). Tốc độ truyền sóng: \\( v = \\lambda f = 2 \\cdot 1 = 2 \\text{ m/s} \\).</p>
+                    <p>• <strong>c)</strong> Thay \\( x = 50 \\text{ cm}, t = 4 \\text{ s} \\) vào phương trình:</p>
+                    \\[ u = 10 \\cos(2\\pi \\cdot 4 + 0,01\\pi \\cdot 50) = 10 \\cos(8\\pi + 0,5\\pi) = 0 \\text{ cm} \\]
+                `
+            },
+            {
+                id: 4,
+                level: 'level1',
+                levelName: 'Cấp 1: Nhận biết - Thông hiểu',
+                badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                title: 'Bài 4 (SBT CTST): Đo độ sâu đáy biển bằng sóng siêu âm',
+                question: 'Một tín hiệu của sóng siêu âm được gửi đi từ một chiếc tàu xuống đáy biển theo phương thẳng đứng. Sau \\( 0,8 \\text{ s} \\), tàu nhận được tín hiệu phản xạ từ đáy biển. Cho biết tốc độ truyền của sóng siêu âm trong nước biển bằng \\( v = 1,6 \\cdot 10^3 \\text{ m/s} \\). Độ sâu của đáy biển tại nơi khảo sát bằng bao nhiêu?',
+                hint: 'Sóng siêu âm truyền từ mặt biển xuống đáy biển rồi phản xạ ngược lại mặt biển nên quãng đường đi được là \\( s = 2d \\).',
+                solution: `
+                    <p>Quãng đường sóng siêu âm truyền đi và phản xạ lại trong \\( t = 0,8 \\text{ s} \\) là \\( 2d \\):</p>
+                    \\[ 2d = v \\cdot t \\Rightarrow d = \\frac{v \\cdot t}{2} = \\frac{1600 \\cdot 0,8}{2} = 640 \\text{ m} \\]
+                `
+            },
+            {
+                id: 5,
+                level: 'level2',
+                levelName: 'Cấp 2: Vận dụng',
+                badgeColor: 'bg-sky-100 text-sky-800 border-sky-300',
+                title: 'Bài 5: So sánh tốc độ truyền sóng và tốc độ dao động cực đại của phần tử',
+                question: 'Dao động âm có tần số \\( f = 500 \\text{ Hz} \\), biên độ \\( A = 0,25 \\text{ mm} \\), được truyền trong không khí với bước sóng \\( \\lambda = 70 \\text{ cm} \\). Tìm: a) Tốc độ truyền sóng âm; b) Tốc độ dao động cực đại của các phần tử không khí.',
+                hint: 'Phân biệt rõ công thức tốc độ truyền pha \\( v = \\lambda f \\) và tốc độ dao động cực đại của phần tử môi trường \\( v_{d\\max} = \\omega A = 2\\pi f A \\).',
+                solution: `
+                    <p>• <strong>a) Tốc độ truyền sóng âm trong không khí:</strong></p>
+                    \\[ v = \\lambda \\cdot f = 0,7 \\text{ m} \\cdot 500 \\text{ Hz} = 350 \\text{ m/s} \\]
+                    <p>• <strong>b) Tốc độ dao động cực đại của các phần tử không khí:</strong> Đổi \\( A = 0,25 \\text{ mm} = 2,5 \\cdot 10^{-4} \\text{ m} \\):</p>
+                    \\[ v_{d\\max} = \\omega A = 2\\pi f A = 2\\pi \\cdot 500 \\cdot 2,5 \\cdot 10^{-4} = 0,25\\pi \\approx 0,785 \\text{ m/s} \\]
+                `
+            },
+            {
+                id: 6,
+                level: 'level2',
+                levelName: 'Cấp 2: Vận dụng',
+                badgeColor: 'bg-sky-100 text-sky-800 border-sky-300',
+                title: 'Bài 6 (SGK CTST): Sự suy giảm cường độ sóng âm theo khoảng cách',
+                question: 'Một còi báo động có kích thước nhỏ phát sóng âm trong môi trường đồng chất, đẳng hướng. Ở vị trí cách còi một đoạn \\( r_1 = 15 \\text{ m} \\), cường độ sóng âm là \\( I_1 = 0,25 \\text{ W/m}^2 \\). Xem gần đúng sóng âm không bị môi trường hấp thụ. Ở khoảng cách \\( r_2 \\) bằng bao nhiêu tính từ vị trí của còi thì sóng âm có cường độ bằng \\( I_2 = 0,010 \\text{ W/m}^2 \\)?',
+                hint: 'Với sóng cầu đẳng hướng không hấp thụ năng lượng, cường độ sóng tỉ lệ nghịch với bình phương khoảng cách: \\( \\frac{I_1}{I_2} = \\frac{r_2^2}{r_1^2} \\).',
+                solution: `
+                    <p>• Cường độ sóng cầu tại khoảng cách \\( r \\) là \\( I = \\frac{P}{4\\pi r^2} \\). Lập tỉ số tại hai vị trí \\( r_1 \\) và \\( r_2 \\):</p>
+                    \\[ \\frac{I_1}{I_2} = \\left(\\frac{r_2}{r_1}\\right)^2 \\Rightarrow r_2 = r_1 \\sqrt{\\frac{I_1}{I_2}} = 15 \\cdot \\sqrt{\\frac{0,25}{0,010}} = 15 \\cdot 5 = 75 \\text{ m} \\]
+                `
+            },
+            {
+                id: 7,
+                level: 'level2',
+                levelName: 'Cấp 2: Vận dụng',
+                badgeColor: 'bg-sky-100 text-sky-800 border-sky-300',
+                title: 'Bài 7 (SBT KNTT): Biện luận tốc độ truyền sóng từ điều kiện ngược pha',
+                question: 'Một mũi nhọn \\( S \\) chạm nhẹ vào mặt nước dao động điều hòa với tần số \\( f = 40 \\text{ Hz} \\). Người ta thấy rằng hai điểm \\( A \\) và \\( B \\) trên mặt nước cùng nằm trên phương truyền sóng cách nhau một khoảng \\( d = 20 \\text{ cm} \\) luôn dao động ngược pha nhau. Biết tốc độ truyền sóng nằm trong khoảng từ \\( 3 \\text{ m/s} \\) đến \\( 5 \\text{ m/s} \\). Xác định tốc độ truyền sóng \\( v \\).',
+                hint: 'Hai điểm ngược pha cách nhau \\( d = (2k + 1)\\frac{\\lambda}{2} = (2k + 1)\\frac{v}{2f} \\). Rút \\( v \\) theo \\( k \\in \\mathbb{Z} \\) rồi chặn khoảng \\( 3 \\le v \\le 5 \\).',
+                solution: `
+                    <p>• Điều kiện hai điểm \\( A, B \\) trên phương truyền sóng dao động ngược pha (đổi \\( d = 0,2 \\text{ m} \\)):</p>
+                    \\[ d = (2k + 1)\\frac{\\lambda}{2} = (2k + 1)\\frac{v}{2f} \\Rightarrow v = \\frac{2 f d}{2k + 1} = \\frac{2 \\cdot 40 \\cdot 0,2}{2k + 1} = \\frac{16}{2k + 1} \\text{ (m/s)} \\]
+                    <p>• Theo đề bài \\( 3 \\text{ m/s} \\le v \\le 5 \\text{ m/s} \\):</p>
+                    \\[ 3 \\le \\frac{16}{2k + 1} \\le 5 \\Rightarrow 1,1 \\le k \\le 2,17 \\]
+                    <p>• Vì \\( k \\in \\mathbb{Z} \\) nên chọn \\( k = 2 \\Rightarrow v = \\frac{16}{2 \\cdot 2 + 1} = 3,2 \\text{ m/s} \\).</p>
+                `
+            },
+            {
+                id: 8,
+                level: 'level3',
+                levelName: 'Cấp 3: Vận dụng cao',
+                badgeColor: 'bg-purple-100 text-purple-800 border-purple-300',
+                title: 'Bài 8 (SBT KNTT - Sao *): Tìm thời điểm phần tử sóng lên vị trí cao nhất',
+                question: 'Một sóng cơ lan truyền qua điểm \\( M \\) rồi đến điểm \\( N \\) cùng nằm trên một phương truyền sóng cách nhau một phần ba bước sóng (\\( d = \\frac{\\lambda}{3} \\)). Tại thời điểm \\( t = 0 \\), li độ tại \\( M \\) là \\( u_M = +4 \\text{ cm} \\) và tại \\( N \\) là \\( u_N = -4 \\text{ cm} \\). Xác định thời điểm \\( t_1 \\) và \\( t_2 \\) gần nhất để \\( M \\) và \\( N \\) lên đến vị trí cao nhất. Biết chu kì sóng là \\( T = 1 \\text{ s} \\).',
+                hint: 'Dùng vòng tròn lượng giác hoặc đồ thị sóng: \\( M \\) sớm pha hơn \\( N \\) góc \\( \\Delta \\varphi = \\frac{2\\pi}{3} \\). Cùng tại \\( t = 0 \\) có \\( u_M = +4 \\text{ cm}, u_N = -4 \\text{ cm} \\) đối xứng nhau nên pha tại \\( M \\) là \\( -\\frac{\\pi}{6} \\) và tại \\( N \\) là \\( -\\frac{5\\pi}{6} \\) (cả hai đều đang đi lên!).',
+                solution: `
+                    <p>• Độ lệch pha giữa \\( M \\) và \\( N \\): \\( \\Delta \\varphi = \\frac{2\\pi d}{\\lambda} = \\frac{2\\pi}{3} \\). Vì sóng truyền từ \\( M \\) đến \\( N \\) nên \\( M \\) sớm pha hơn \\( N \\) góc \\( \\frac{2\\pi}{3} \\).</p>
+                    <p>• Tại \\( t = 0 \\), \\( u_M = +4 \\text{ cm} \\) và \\( u_N = -4 \\text{ cm} \\). Biểu diễn trên đường tròn lượng giác, ta suy ra tại \\( t = 0 \\): \\( \\varphi_M = -\\frac{\\pi}{6} \\text{ rad} \\) và \\( \\varphi_N = -\\frac{5\\pi}{6} \\text{ rad} \\) (biên độ sóng \\( A = \\frac{4}{\\cos(\\pi/6)} = \\frac{8}{\\sqrt{3}} \\text{ cm} \\), cả \\( M \\) và \\( N \\) đều đang đi lên).</p>
+                    <p>• Thời gian ngắn nhất để \\( M \\) đi từ pha \\( -\\frac{\\pi}{6} \\) đến biên dương (\\( \\varphi = 0 \\)):</p>
+                    \\[ t_1 = \\frac{\\Delta \\varphi_M}{2\\pi} T = \\frac{\\pi/6}{2\\pi} T = \\frac{T}{12} = \\frac{1}{12} \\text{ s} \\]
+                    <p>• Thời gian ngắn nhất để \\( N \\) đi từ pha \\( -\\frac{5\\pi}{6} \\) đến biên dương (\\( \\varphi = 0 \\)):</p>
+                    \\[ t_2 = \\frac{\\Delta \\varphi_N}{2\\pi} T = \\frac{5\\pi/6}{2\\pi} T = \\frac{5T}{12} = \\frac{5}{12} \\text{ s} \\]
+                `
+            },
+            {
+                id: 9,
+                level: 'level3',
+                levelName: 'Cấp 3: Vận dụng cao',
+                badgeColor: 'bg-purple-100 text-purple-800 border-purple-300',
+                title: 'Bài 9 (SBT KNTT - Sao *): Bài toán hình học đếm điểm đồng pha với nguồn',
+                question: 'Trên mặt thoáng của một chất lỏng, một mũi nhọn \\( O \\) chạm vào mặt thoáng dao động điều hòa với tần số \\( f \\), tạo thành sóng trên mặt thoáng với bước sóng \\( \\lambda \\). Xét hai phương truyền sóng \\( Ox \\) và \\( Oy \\) vuông góc với nhau. Gọi \\( M \\) là một điểm thuộc \\( Ox \\) cách \\( O \\) một đoạn \\( 16\\lambda \\) và \\( N \\) thuộc \\( Oy \\) cách \\( O \\) một đoạn \\( 12\\lambda \\). Tính số điểm dao động đồng pha với nguồn \\( O \\) trên đoạn \\( MN \\) (không kể \\( M, N \\)).',
+                hint: 'Kẻ đường cao \\( OH \\perp MN \\) trong tam giác vuông \\( OMN \\). Tính \\( OH \\) theo \\( \\lambda \\), sau đó chia đoạn \\( MN \\) thành hai nhánh \\( MH \\) và \\( HN \\) để đếm các giá trị nguyên \\( k \\) thỏa mãn \\( d = k\\lambda \\).',
+                solution: `
+                    <p>• Xét tam giác \\( OMN \\) vuông tại \\( O \\), kẻ đường cao \\( OH \\perp MN \\):</p>
+                    \\[ \\frac{1}{OH^2} = \\frac{1}{OM^2} + \\frac{1}{ON^2} = \\frac{1}{(16\\lambda)^2} + \\frac{1}{(12\\lambda)^2} \\Rightarrow OH = 9,6\\lambda \\]
+                    <p>• Các điểm dao động đồng pha với nguồn \\( O \\) cách \\( O \\) khoảng \\( d = k\\lambda \\ (k \\in \\mathbb{Z}^+) \\):</p>
+                    <p>+ Trên đoạn \\( MH \\) (không kể \\( M \\)): \\( 9,6\\lambda \\le k\\lambda < 16\\lambda \\Rightarrow k \\in \\{10; 11; 12; 13; 14; 15\\} \\) (có \\( 6 \\text{ điểm} \\), nếu tính cả \\( M \\) là 7).</p>
+                    <p>+ Trên đoạn \\( NH \\) (không kể \\( N \\)): \\( 9,6\\lambda \\le k\\lambda < 12\\lambda \\Rightarrow k \\in \\{10; 11\\} \\) (có \\( 2 \\text{ điểm} \\), nếu tính cả \\( N \\) là 3).</p>
+                    <p>• Vậy trên đoạn \\( MN \\) có \\( 8 \\text{ điểm} \\) (không kể hai đầu \\( M, N \\)) hoặc \\( 10 \\text{ điểm} \\) (nếu tính cả hai đầu mút \\( M, N \\)).</p>
+                `
+            },
+            {
+                id: 10,
+                level: 'level3',
+                levelName: 'Cấp 3: Vận dụng cao & Năng lực số/AI',
+                badgeColor: 'bg-purple-100 text-purple-800 border-purple-300',
+                title: 'Bài 10 (Tích hợp Năng lực Số & AI): Khoảng cách cực đại giữa hai phần tử sóng dọc',
+                question: 'Một sóng dọc truyền trong môi trường với bước sóng \\( \\lambda = 15 \\text{ cm} \\), biên độ không đổi \\( A = 5\\sqrt{3} \\text{ cm} \\). Gọi \\( P \\) và \\( Q \\) là hai điểm cùng nằm trên một phương truyền sóng. Khi chưa có sóng truyền đến, hai điểm \\( P \\) và \\( Q \\) nằm cách nguồn các khoảng lần lượt là \\( x_P = 20 \\text{ cm} \\) và \\( x_Q = 30 \\text{ cm} \\). <br>a) Tính khoảng cách xa nhất và gần nhất giữa hai phần tử \\( P, Q \\) khi có sóng truyền qua.<br>b) <strong>[Tư duy AI & Năng lực số]:</strong> Một học sinh dùng AI tạo công thức tính khoảng cách cực đại giữa \\( P, Q \\) và AI trả về công thức \\( L_{\\max} = \\sqrt{PQ_0^2 + (\\Delta u_{\\max})^2} \\). Hãy phản biện xem công thức của AI đúng hay sai trong bài toán này?',
+                hint: 'Cẩn thận! Công thức \\( \\sqrt{PQ_0^2 + \\Delta u_{\\max}^2} \\) chỉ đúng cho SÓNG NGANG. Còn đây là SÓNG DỌC nên các phần tử dao động dọc theo đường thẳng \\( PQ \\)!',
+                solution: `
+                    <p>• <strong>a) Giải bài toán Vật lý:</strong> Khoảng cách cân bằng ban đầu \\( O_1O_2 = x_Q - x_P = 30 - 20 = 10 \\text{ cm} \\).</p>
+                    <p>Độ lệch pha giữa \\( P \\) và \\( Q \\): \\[ \\Delta \\varphi = \\frac{2\\pi \\cdot O_1O_2}{\\lambda} = \\frac{2\\pi \\cdot 10}{15} = \\frac{4\\pi}{3} \\text{ rad} \\]</p>
+                    <p>Biên độ dao động tương đối giữa \\( P \\) và \\( Q \\): \\[ \\Delta u_{\\max} = 2 A \\left|\\sin\\frac{\\Delta \\varphi}{2}\\right| = 2 \\cdot 5\\sqrt{3} \\cdot \\sin\\left(\\frac{2\\pi}{3}\\right) = 15 \\text{ cm} \\]</p>
+                    <p>Vì là <strong>sóng dọc</strong>, khoảng cách tức thời là \\( l = |O_1O_2 + \\Delta u| \\):</p>
+                    <p>+ Khoảng cách xa nhất: \\( l_{\\max} = O_1O_2 + \\Delta u_{\\max} = 10 + 15 = 25 \\text{ cm} \\).</p>
+                    <p>+ Khoảng cách gần nhất (vì \\( \\Delta u_{\\max} > O_1O_2 \\)): \\( l_{\\min} = |O_1O_2 - \\Delta u_{\\max}| = |10 - 15| = 5 \\text{ cm} \\) (hoặc \\( 0 \\text{ cm} \\) tại thời điểm hai mặt sóng chạm nhau).</p>
+                    <p class="mt-2 p-2.5 bg-purple-50 border border-purple-200 rounded-lg">• <strong>b) Đánh giá Năng lực số / Phản biện AI:</strong> Công thức \\( \\sqrt{PQ_0^2 + (\\Delta u_{\\max})^2} \\) do AI đưa ra là <strong>SAI bản chất</strong> đối với bài toán này vì AI đã áp dụng định lý Pythagore của <em>sóng ngang</em> (dao động vuông góc phương truyền) cho <em>sóng dọc</em> (dao động cùng phương truyền). Khi sử dụng AI học Vật lý, học sinh cần kiểm tra kỹ điều kiện biên và phương dao động!</p>
+                `
+            }
+        ];
+
+        function renderPracticeList(filter = 'all') {
+            const container = document.getElementById('practice-list');
+            const filtered = filter === 'all' ? practiceProblems : practiceProblems.filter(p => p.level === filter);
+
+            container.innerHTML = filtered.map(p => `
+                <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 shadow-sm transition hover:border-sci-500">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full border ${p.badgeColor}">${p.levelName}</span>
+                        <span class="text-xs font-mono text-slate-400">Mã bài: #WAVE-0${p.id}</span>
+                    </div>
+                    <h3 class="font-bold text-base text-slate-800">${p.title}</h3>
+                    <p class="text-xs md:text-sm text-slate-700 mt-2 leading-relaxed">${p.question}</p>
+
+                    <div class="flex flex-wrap gap-2 mt-4 pt-3 border-t border-slate-200/80">
+                        <button onclick="toggleReveal('prac-hint-${p.id}')" class="px-3 py-1.5 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs transition">
+                            💡 Gợi ý tư duy
+                        </button>
+                        <button onclick="toggleReveal('prac-sol-${p.id}')" class="px-3 py-1.5 rounded-lg bg-sci-600 hover:bg-sci-700 text-white font-bold text-xs transition">
+                            📖 Xem Lời giải chi tiết
+                        </button>
+                    </div>
+
+                    <div id="prac-hint-${p.id}" class="hidden mt-3 p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-900">
+                        <strong>Gợi ý:</strong> ${p.hint}
+                    </div>
+                    <div id="prac-sol-${p.id}" class="hidden mt-3 p-4 rounded-xl bg-white border border-sci-200 text-xs md:text-sm text-slate-800 space-y-1">
+                        <div class="font-bold text-sci-700 border-b pb-1 mb-2">Lời giải chuẩn Vật lý 11:</div>
+                        ${p.solution}
+                    </div>
+                </div>
+            `).join('');
+
+            triggerMathRender(container);
+        }
+
+        function filterPractice(level) {
+            ['all', 'level1', 'level2', 'level3'].forEach(l => {
+                const btn = document.getElementById('btn-prac-' + l);
+                if (l === level) {
+                    btn.classList.add('ring-2', 'ring-offset-1', 'ring-slate-800');
+                } else {
+                    btn.classList.remove('ring-2', 'ring-offset-1', 'ring-slate-800');
+                }
+            });
+            renderPracticeList(level);
+        }
+
+        // ==================== TAB 6: INTERACTIVE QUIZ (10 QUESTIONS) ====================
+        const quizData = [
+            {
+                q: "Câu 1: Phát biểu nào sau đây là <strong>SAI</strong> khi nói về quá trình truyền sóng cơ?",
+                options: [
+                    "A. Quá trình truyền sóng là quá trình truyền dao động trong môi trường đàn hồi.",
+                    "B. Quá trình truyền sóng là quá trình truyền năng lượng.",
+                    "C. Quá trình truyền sóng là quá trình truyền pha dao động.",
+                    "D. Quá trình truyền sóng là quá trình truyền các phần tử vật chất đi xa."
+                ],
+                correct: 3,
+                explain: "Khi sóng cơ truyền đi, các phần tử vật chất chỉ dao động tại chỗ quanh vị trí cân bằng của chúng chứ <strong>không</strong> truyền đi theo sóng. Chỉ có pha dao động và năng lượng được truyền đi."
+            },
+            {
+                q: "Câu 2: Bước sóng \\( \\lambda \\) là khoảng cách giữa hai điểm:",
+                options: [
+                    "A. Gần nhau nhất mà dao động tại hai điểm đó cùng pha.",
+                    "B. Trên cùng một phương truyền sóng mà dao động tại hai điểm đó cùng pha.",
+                    "C. Trên cùng một phương truyền sóng mà dao động tại hai điểm đó ngược pha.",
+                    "D. Gần nhau nhất trên cùng một phương truyền sóng mà dao động tại hai điểm đó cùng pha."
+                ],
+                correct: 3,
+                explain: "Theo định nghĩa chuẩn SGK, bước sóng \\( \\lambda \\) là khoảng cách giữa hai điểm <strong>gần nhau nhất</strong> nằm <strong>trên cùng một phương truyền sóng</strong> mà dao động tại hai điểm đó <strong>cùng pha</strong>."
+            },
+            {
+                q: "Câu 3: Khi một sóng cơ học truyền từ không khí vào nước thì đại lượng nào sau đây <strong>KHÔNG</strong> thay đổi?",
+                options: [
+                    "A. Tốc độ truyền sóng \\( v \\).",
+                    "B. Tần số của sóng \\( f \\).",
+                    "C. Bước sóng \\( \\lambda \\).",
+                    "D. Khoảng cách giữa hai ngọn sóng liên tiếp."
+                ],
+                correct: 1,
+                explain: "Tần số sóng \\( f \\) (và chu kì \\( T = \\frac{1}{f} \\)) chỉ phụ thuộc vào nguồn phát sóng, hoàn toàn không thay đổi khi sóng truyền qua biên giới giữa hai môi trường khác nhau."
+            },
+            {
+                q: "Câu 4: Một sóng cơ có tần số \\( f = 120 \\text{ Hz} \\) truyền trong một môi trường với tốc độ \\( v = 60 \\text{ m/s} \\). Bước sóng \\( \\lambda \\) của sóng này là:",
+                options: [
+                    "A. \\( \\lambda = 1,0 \\text{ m} \\)",
+                    "B. \\( \\lambda = 2,0 \\text{ m} \\)",
+                    "C. \\( \\lambda = 0,5 \\text{ m} \\)",
+                    "D. \\( \\lambda = 0,25 \\text{ m} \\)"
+                ],
+                correct: 2,
+                explain: "Áp dụng công thức tính bước sóng: \\[ \\lambda = \\frac{v}{f} = \\frac{60}{120} = 0,5 \\text{ m} \\]"
+            },
+            {
+                q: "Câu 5: Một sóng hình sin lan truyền trên trục \\( Ox \\). Trên phương truyền sóng, khoảng cách ngắn nhất giữa hai điểm mà các phần tử môi trường tại đó dao động <strong>ngược pha</strong> nhau là \\( d_{\\min} = 0,4 \\text{ m} \\). Bước sóng của sóng này là:",
+                options: [
+                    "A. \\( 0,4 \\text{ m} \\)",
+                    "B. \\( 0,8 \\text{ m} \\)",
+                    "C. \\( 0,2 \\text{ m} \\)",
+                    "D. \\( 1,6 \\text{ m} \\)"
+                ],
+                correct: 1,
+                explain: "Khoảng cách ngắn nhất giữa hai điểm trên cùng phương truyền sóng dao động ngược pha là nửa bước sóng: \\[ d_{\\min} = \\frac{\\lambda}{2} = 0,4 \\text{ m} \\Rightarrow \\lambda = 2 \\cdot 0,4 = 0,8 \\text{ m} \\]"
+            },
+            {
+                q: "Câu 6: Xét một sóng truyền dọc theo trục \\( Ox \\) với phương trình \\( u = 6 \\cos(100\\pi t - 4\\pi x) \\text{ (cm)} \\) (trong đó \\( x \\) tính bằng \\( \\text{cm} \\), \\( t \\) tính bằng \\( \\text{s} \\)). Tại một thời điểm, hai điểm gần nhất dao động cùng pha và hai điểm gần nhất dao động ngược pha cách nhau các khoảng lần lượt bằng:",
+                options: [
+                    "A. \\( 1,00 \\text{ cm} \\) và \\( 0,50 \\text{ cm} \\)",
+                    "B. \\( 0,50 \\text{ cm} \\) và \\( 0,25 \\text{ cm} \\)",
+                    "C. \\( 0,25 \\text{ cm} \\) và \\( 0,50 \\text{ cm} \\)",
+                    "D. \\( 100 \\text{ cm} \\) và \\( 4 \\text{ cm} \\)"
+                ],
+                correct: 1,
+                explain: "Đồng nhất hệ số của \\( x \\) trong phương trình sóng: \\[ \\frac{2\\pi x}{\\lambda} = 4\\pi x \\Rightarrow \\lambda = \\frac{2\\pi}{4\\pi} = 0,50 \\text{ cm} \\] Khoảng cách gần nhất cùng pha là \\( \\lambda = 0,50 \\text{ cm} \\) và gần nhất ngược pha là \\( \\frac{\\lambda}{2} = 0,25 \\text{ cm} \\)."
+            },
+            {
+                q: "Câu 7: Một người quan sát một chiếc phao trên mặt biển thì thấy nó nhô lên cao \\( 10 \\text{ lần} \\) trong \\( 18 \\text{ s} \\). Khoảng cách giữa hai ngọn sóng liền kề là \\( 2 \\text{ m} \\). Tốc độ truyền sóng trên mặt nước biển là:",
+                options: [
+                    "A. \\( v = 1 \\text{ m/s} \\)",
+                    "B. \\( v = 2 \\text{ m/s} \\)",
+                    "C. \\( v = 4 \\text{ m/s} \\)",
+                    "D. \\( v = 8 \\text{ m/s} \\)"
+                ],
+                correct: 0,
+                explain: "Phao nhô lên \\( 10 \\text{ lần} \\) ứng với \\( 9 \\text{ chu kì } T \\): \\[ T = \\frac{18}{10 - 1} = 2 \\text{ s} \\] Khoảng cách giữa hai ngọn sóng liền kề là \\( \\lambda = 2 \\text{ m} \\). Tốc độ truyền sóng là: \\[ v = \\frac{\\lambda}{T} = \\frac{2}{2} = 1 \\text{ m/s} \\]"
+            },
+            {
+                q: "Câu 8: Một sóng cơ truyền theo trục \\( Ox \\) với phương trình \\( u = a \\cos(4\\pi t - 0,02\\pi x) \\) (trong đó \\( u \\) và \\( x \\) tính bằng \\( \\text{cm} \\), \\( t \\) tính bằng \\( \\text{s} \\)). Tốc độ truyền của sóng này là:",
+                options: [
+                    "A. \\( 100 \\text{ cm/s} \\)",
+                    "B. \\( 150 \\text{ cm/s} \\)",
+                    "C. \\( 200 \\text{ cm/s} \\)",
+                    "D. \\( 50 \\text{ cm/s} \\)"
+                ],
+                correct: 2,
+                explain: "Ta có \\( \\omega = 4\\pi \\text{ rad/s} \\Rightarrow f = 2 \\text{ Hz} \\) và \\( \\frac{2\\pi}{\\lambda} = 0,02\\pi \\Rightarrow \\lambda = 100 \\text{ cm} \\). Suy ra tốc độ truyền sóng: \\[ v = \\lambda f = 100 \\cdot 2 = 200 \\text{ cm/s} \\]"
+            },
+            {
+                q: "Câu 9: Một nguồn âm phát ra sóng âm hình cầu truyền đi giống nhau theo mọi hướng và năng lượng âm được bảo toàn. Để cường độ âm \\( I \\) nhận được tại một điểm giảm đi \\( 4 \\text{ lần} \\) so với vị trí ban đầu thì khoảng cách \\( r \\) từ điểm đó đến nguồn phải:",
+                options: [
+                    "A. Tăng lên \\( 2 \\text{ lần} \\).",
+                    "B. Giảm đi \\( 2 \\text{ lần} \\).",
+                    "C. Tăng lên \\( 4 \\text{ lần} \\).",
+                    "D. Giảm đi \\( 4 \\text{ lần} \\)."
+                ],
+                correct: 0,
+                explain: "Vì cường độ sóng cầu tỉ lệ nghịch với bình phương khoảng cách \\( I = \\frac{P}{4\\pi r^2} \\propto \\frac{1}{r^2} \\), nên để \\( I \\) giảm \\( 4 \\text{ lần} \\) thì khoảng cách \\( r \\) phải tăng lên \\( \\sqrt{4} = 2 \\text{ lần} \\)."
+            },
+            {
+                q: "Câu 10: Một sóng cơ được mô tả bởi phương trình \\( u = A \\cos\\left(2\\pi f t - \\frac{2\\pi x}{\\lambda}\\right) \\). Tốc độ dao động cực đại của các phần tử môi trường gấp \\( 4 \\text{ lần} \\) tốc độ truyền sóng khi:",
+                options: [
+                    "A. \\( 4\\lambda = \\pi A \\)",
+                    "B. \\( 2\\lambda = \\pi A \\)",
+                    "C. \\( 8\\lambda = \\pi A \\)",
+                    "D. \\( 6\\lambda = \\pi A \\)"
+                ],
+                correct: 1,
+                explain: "Tốc độ cực đại của phần tử môi trường là \\( v_{d\\max} = \\omega A = 2\\pi f A \\), tốc độ truyền sóng là \\( v = \\lambda f \\). Theo đề bài: \\[ v_{d\\max} = 4v \\Leftrightarrow 2\\pi f A = 4 \\lambda f \\Leftrightarrow 2\\lambda = \\pi A \\]"
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = quizData.map((item, idx) => `
+                <div class="bg-slate-50 rounded-xl p-5 border border-slate-200" id="quiz-card-${idx}">
+                    <p class="font-bold text-sm md:text-base text-slate-800 mb-3">${item.q}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                        ${item.options.map((opt, oIdx) => `
+                            <label id="lbl-q${idx}-o${oIdx}" class="flex items-center gap-2.5 p-3 rounded-lg bg-white border border-slate-300 cursor-pointer hover:border-sci-500 transition text-xs md:text-sm">
+                                <input type="radio" name="quiz-q-${idx}" value="${oIdx}" class="text-sci-600 focus:ring-sci-500">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="quiz-explain-${idx}" class="hidden mt-3 p-3.5 rounded-lg text-xs md:text-sm"></div>
+                </div>
+            `).join('');
+            triggerMathRender(container);
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            quizData.forEach((item, idx) => {
+                const selected = document.querySelector(`input[name="quiz-q-${idx}"]:checked`);
+                const userAns = selected ? parseInt(selected.value) : -1;
+                const expBox = document.getElementById(`quiz-explain-${idx}`);
+
+                // Reset option borders
+                item.options.forEach((_, oIdx) => {
+                    const lbl = document.getElementById(`lbl-q${idx}-o${oIdx}`);
+                    lbl.classList.remove('border-emerald-500', 'bg-emerald-50', 'border-rose-500', 'bg-rose-50');
+                });
+
+                const correctLbl = document.getElementById(`lbl-q${idx}-o${item.correct}`);
+                correctLbl.classList.add('border-emerald-500', 'bg-emerald-50');
+
+                expBox.classList.remove('hidden');
+                if (userAns === item.correct) {
+                    score++;
+                    expBox.className = "mt-3 p-3.5 rounded-lg text-xs md:text-sm bg-emerald-50 border border-emerald-300 text-emerald-950";
+                    expBox.innerHTML = `<strong>✅ Chính xác!</strong> ${item.explain}`;
+                } else {
+                    if (userAns !== -1) {
+                        const wrongLbl = document.getElementById(`lbl-q${idx}-o${userAns}`);
+                        wrongLbl.classList.add('border-rose-500', 'bg-rose-50');
+                    }
+                    expBox.className = "mt-3 p-3.5 rounded-lg text-xs md:text-sm bg-rose-50 border border-rose-300 text-rose-950";
+                    expBox.innerHTML = `<strong>❌ Chưa đúng!</strong> Đáp án đúng là <strong>${['A','B','C','D'][item.correct]}</strong>. <br><em>Giải thích:</em> ${item.explain}`;
+                }
+                // MANDATORY: Immediately call renderMathInElement on explanation container
+                renderMathInElement(expBox, katexConfig);
+            });
+
+            const banner = document.getElementById('quiz-score-banner');
+            banner.classList.remove('hidden');
+            document.getElementById('quiz-score-val').innerText = `${score}/10`;
+            const rankEl = document.getElementById('quiz-score-rank');
+            if (score >= 9) rankEl.innerText = "🌟 Xuất sắc!";
+            else if (score >= 7) rankEl.innerText = "👍 Khá - Giỏi";
+            else if (score >= 5) rankEl.innerText = "⚡ Đạt yêu cầu";
+            else rankEl.innerText = "💪 Cần ôn lại lý thuyết";
+
+            banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-score-banner').classList.add('hidden');
+            renderQuiz();
+        }
+
+        // ==================== TAB 7: CLASSROOM TOOLS ====================
+        // 1. Visual Timer
+        let timerTotalSeconds = 180;
+        let timerRemaining = 180;
+        let timerInterval = null;
+        let timerRunning = false;
+
+        function playBeepSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.6);
+            } catch (e) {}
+        }
+
+        function updateTimerUI() {
+            const mins = Math.floor(timerRemaining / 60);
+            const secs = timerRemaining % 60;
+            document.getElementById('timer-display').innerText =
+                String(mins).padStart(2, '0') + ":" + String(secs).padStart(2, '0');
+
+            const circumference = 596.9;
+            const offset = circumference * (1 - timerRemaining / timerTotalSeconds);
+            const ring = document.getElementById('timer-ring');
+            ring.style.strokeDashoffset = offset;
+
+            if (timerRemaining <= 10 && timerRemaining > 0) {
+                ring.setAttribute('stroke', '#ef4444');
+            } else {
+                ring.setAttribute('stroke', '#0284c7');
+            }
+        }
+
+        function setTimerPreset(seconds) {
+            pauseTimer();
+            timerTotalSeconds = seconds;
+            timerRemaining = seconds;
+            document.getElementById('timer-card').classList.remove('timer-alarm');
+            document.getElementById('timer-status').innerText = "Sẵn sàng";
+            updateTimerUI();
+        }
+
+        function toggleTimer() {
+            if (timerRunning) {
+                pauseTimer();
+            } else {
+                if (timerRemaining <= 0) timerRemaining = timerTotalSeconds;
+                timerRunning = true;
+                document.getElementById('btn-timer-start').innerHTML = "⏸️ Tạm dừng";
+                document.getElementById('timer-status').innerText = "Đang đếm ngược...";
+                document.getElementById('timer-card').classList.remove('timer-alarm');
+                timerInterval = setInterval(() => {
+                    if (timerRemaining > 0) {
+                        timerRemaining--;
+                        updateTimerUI();
+                        if (timerRemaining <= 3 && timerRemaining > 0) playBeepSound();
+                    } else {
+                        pauseTimer();
+                        playBeepSound();
+                        document.getElementById('timer-status').innerText = "⏰ HẾT GIỜ!";
+                        document.getElementById('timer-card').classList.add('timer-alarm');
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            timerRunning = false;
+            clearInterval(timerInterval);
+            document.getElementById('btn-timer-start').innerHTML = "▶️ Bắt đầu";
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timerRemaining = timerTotalSeconds;
+            document.getElementById('timer-card').classList.remove('timer-alarm');
+            document.getElementById('timer-status').innerText = "Sẵn sàng";
+            updateTimerUI();
+        }
+
+        // 2. Lucky Wheel (4 Groups)
+        const groupLists = {
+            to1: ["Nguyễn An (Tổ 1)", "Trần Bình (Tổ 1)", "Lê Châu (Tổ 1)", "Phạm Dũng (Tổ 1)", "Hoàng Giang (Tổ 1)", "Vũ Hà (Tổ 1)"],
+            to2: ["Đặng Khoa (Tổ 2)", "Bùi Linh (Tổ 2)", "Đỗ Minh (Tổ 2)", "Hồ Nga (Tổ 2)", "Ngô Phúc (Tổ 2)", "Dương Quân (Tổ 2)"],
+            to3: ["Lý Sơn (Tổ 3)", "Mai Thảo (Tổ 3)", "Trương Tuấn (Tổ 3)", "Võ Uyên (Tổ 3)", "Phan Vinh (Tổ 3)", "Trịnh Xuân (Tổ 3)"],
+            to4: ["Đinh Yến (Tổ 4)", "Lâm Bảo (Tổ 4)", "Kiều Khánh (Tổ 4)", "Tạ Ngọc (Tổ 4)", "Chu Phong (Tổ 4)", "Từ Tâm (Tổ 4)"]
+        };
+
+        let wheelNames = [...groupLists.to1, "Đặng Khoa (Tổ 2)", "Lý Sơn (Tổ 3)"];
+        let wheelAngle = 0;
+        let isSpinning = false;
+        const wheelColors = ["#0284c7", "#0d9488", "#4f46e5", "#d97706", "#e11d48", "#7c3aed", "#059669", "#2563eb"];
+
+        function selectWheelGroup(grp) {
+            ['all', 'to1', 'to2', 'to3', 'to4'].forEach(g => {
+                const btn = document.getElementById('btn-grp-' + g);
+                btn.className = (g === grp)
+                    ? "px-2.5 py-1 rounded text-xs font-bold bg-sci-600 text-white"
+                    : "px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200";
+            });
+
+            if (grp === 'all') {
+                wheelNames = [
+                    groupLists.to1[0], groupLists.to1[1],
+                    groupLists.to2[0], groupLists.to2[1],
+                    groupLists.to3[0], groupLists.to3[1],
+                    groupLists.to4[0], groupLists.to4[1]
+                ];
+            } else {
+                wheelNames = [...groupLists[grp]];
+            }
+            document.getElementById('wheel-names-input').value = wheelNames.join('\n');
+            document.getElementById('wheel-count').innerText = wheelNames.length + " HS";
+            drawLuckyWheel();
+        }
+
+        function updateWheelFromTextarea() {
+            const raw = document.getElementById('wheel-names-input').value;
+            wheelNames = raw.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+            if (wheelNames.length === 0) wheelNames = ["Học sinh 1"];
+            document.getElementById('wheel-count').innerText = wheelNames.length + " HS";
+            drawLuckyWheel();
+        }
+
+        function drawLuckyWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const radius = cx - 6;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const n = wheelNames.length;
+            const arc = (2 * Math.PI) / n;
+
+            for (let i = 0; i < n; i++) {
+                const startAngle = wheelAngle + i * arc;
+                const endAngle = startAngle + arc;
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.fill();
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Draw student name
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(startAngle + arc / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 12px Inter";
+                const nameText = wheelNames[i].length > 16 ? wheelNames[i].slice(0, 15) + "…" : wheelNames[i];
+                ctx.fillText(nameText, radius - 14, 4);
+                ctx.restore();
+            }
+
+            // Center cap
+            ctx.beginPath();
+            ctx.arc(cx, cy, 20, 0, Math.PI * 2);
+            ctx.fillStyle = "#0f172a";
+            ctx.fill();
+            ctx.strokeStyle = "#f8fafc";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+
+        function spinLuckyWheel() {
+            if (isSpinning || wheelNames.length === 0) return;
+            isSpinning = true;
+            const spinDuration = 3500;
+            const startAngle = wheelAngle;
+            const extraSpins = (5 + Math.random() * 4) * 2 * Math.PI;
+            const startTime = performance.now();
+
+            function animateWheel(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / spinDuration, 1);
+                // Ease out cubic
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                wheelAngle = startAngle + extraSpins * easeOut;
+                drawLuckyWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateWheel);
+                } else {
+                    isSpinning = false;
+                    // Pointer is at top (-Math.PI / 2)
+                    const n = wheelNames.length;
+                    const arc = (2 * Math.PI) / n;
+                    let normAngle = (1.5 * Math.PI - (wheelAngle % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+                    const winIdx = Math.floor(normAngle / arc) % n;
+                    playBeepSound();
+                    showWinnerModal(wheelNames[winIdx]);
+                }
+            }
+            requestAnimationFrame(animateWheel);
+        }
+
+        function showWinnerModal(name) {
+            document.getElementById('winner-name').innerText = name;
+            const modal = document.getElementById('winner-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeWinnerModal() {
+            const modal = document.getElementById('winner-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // ==================== INITIALIZATION ON LOAD ====================
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPracticeList('all');
+            renderQuiz();
+            selectWheelGroup('all');
+            updateSimParams();
+            resizeWaveCanvas();
+            triggerMathRender(document.body);
+            requestAnimationFrame(simAnimationLoop);
+        });
+    </script>
+</body>
+</html>
