@@ -1,0 +1,2027 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyên Đề Ôn Tập Chương Dao Động - Vật Lý THPT</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        .tab-btn {
+            transition: all 0.2s ease-in-out;
+            white-space: nowrap;
+        }
+        .tab-btn.active {
+            background-color: #1e40af;
+            color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.3);
+            transform: translateY(-1px);
+        }
+        .subtab-btn.active {
+            background-color: #0284c7;
+            color: white;
+        }
+        canvas {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+        }
+        .katex-display {
+            margin: 0.75em 0 !important;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        @keyframes pulse-alert {
+            0%, 100% { background-color: #fee2e2; border-color: #ef4444; }
+            50% { background-color: #fecaca; border-color: #dc2626; }
+        }
+        .timer-finished {
+            animation: pulse-alert 1s infinite;
+        }
+        /* Custom scrollbar for navigation */
+        .no-scrollbar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .no-scrollbar::-webkit-scrollbar-track {
+            background: #e2e8f0;
+        }
+        .no-scrollbar::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-800 text-white shadow-lg border-b-4 border-blue-500">
+        <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2">
+                    <i class="fa-solid fa-atom fa-spin"></i> Hệ Thống Học Tập Vật Lý Tương Tác
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                    CHUYÊN ĐỀ 1: DAO ĐỘNG CƠ HỌC (ÔN TẬP TỔNG HỢP)
+                </h1>
+                <p class="mt-1 text-sm sm:text-base text-amber-300 font-medium">
+                    <i class="fa-solid fa-user-tie mr-1"></i> © 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+                </p>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-800/80 px-4 py-2.5 rounded-xl border border-slate-700">
+                <div class="text-right">
+                    <div class="text-xs text-slate-400">Trạng thái hệ thống</div>
+                    <div class="text-sm font-bold text-emerald-400 flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span> Sẵn sàng tương tác
+                    </div>
+                </div>
+                <i class="fa-solid fa-microchip text-2xl text-blue-400"></i>
+            </div>
+        </div>
+
+        <!-- 7 TABS NAVIGATION -->
+        <div class="bg-slate-800/90 border-t border-slate-700/80">
+            <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+                <nav class="flex space-x-1.5 overflow-x-auto no-scrollbar py-2.5" id="main-nav">
+                    <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn active px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                        🚀 1. Khởi động & Thực tiễn
+                    </button>
+                    <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                        📖 2. Cốt lõi Lý thuyết
+                    </button>
+                    <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                        🔬 3. Mô phỏng Tương tác (3 Lab)
+                    </button>
+                    <button onclick="switchTab('tab4')" id="btn-tab4" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                        🧮 4. Máy tính Tham số
+                    </button>
+                    <button onclick="switchTab('tab5')" id="btn-tab5" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                        📝 5. Phòng Luyện tập
+                    </button>
+                    <button onclick="switchTab('tab6')" id="btn-tab6" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                        🎯 6. Bài Tự đánh giá
+                    </button>
+                    <button onclick="switchTab('tab7')" id="btn-tab7" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-200 hover:bg-slate-700">
+                        🛠️ 7. Tiện ích Lớp học
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 sm:px-6 lg:px-8">
+
+        <!-- ==================== TAB 1: KHỞI ĐỘNG & THỰC TIỄN ==================== -->
+        <section id="tab1" class="tab-content space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+                    <span class="p-3 rounded-xl bg-blue-100 text-blue-700 text-xl"><i class="fa-solid fa-rocket"></i></span>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Khởi Động: Những Câu Hỏi Lớn Từ Thực Tiễn Kỹ Thuật</h2>
+                        <p class="text-sm text-slate-500">Khám phá các tình huống thực tế trích từ bộ 5 Đề Ôn Tập Chương Dao Động</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Case 1: Taipei 101 -->
+                    <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 hover:border-blue-400 transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-md">Đề số 1 - Câu 28</span>
+                                <i class="fa-solid fa-building-shield text-2xl text-amber-600"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 mb-2">1. Quả cầu thép 720 tấn trong tháp Taipei 101</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                                Tòa tháp Taipei 101 (Đài Loan) từng hứng chịu siêu bão Soudelor với sức gió \( v = 210 \text{ km/h} \) (đủ sức nhấc bổng một chiếc máy bay Boeing 747). Thế nhưng tòa nhà vẫn đứng vững nhờ một con lắc thép khổng lồ nặng \( m = 720 \text{ tấn} \) treo từ tầng 87 đến tầng 92 gọi là <strong>Tuned Mass Damper (Van điều tiết khối lượng)</strong> kết hợp các xy-lanh thủy lực.
+                            </p>
+                        </div>
+                        <div class="bg-blue-50/80 border-l-4 border-blue-600 p-3.5 rounded-r-lg">
+                            <p class="text-xs font-bold text-blue-900 uppercase mb-1"><i class="fa-solid fa-circle-question mr-1"></i> Mâu thuẫn nhận thức:</p>
+                            <p class="text-sm text-blue-800">
+                                Phải chăng quả cầu 720 tấn này giúp đè nặng phần móng xuống đất, hay nó hoạt động theo nguyên lý <strong>dao động tắt dần và lực quán tính ngược pha</strong> để triệt tiêu năng lượng rung lắc của tòa nhà?
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Case 2: BMMD NASA -->
+                    <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 hover:border-blue-400 transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 bg-indigo-100 text-indigo-800 text-xs font-bold rounded-md">Đề số 1 - Câu 23</span>
+                                <i class="fa-solid fa-user-astronaut text-2xl text-indigo-600"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 mb-2">2. Cân khối lượng phi hành gia trong môi trường không trọng lượng</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                                Trên trạm vũ trụ quốc tế (ISS), mọi vật đều ở trạng thái mất trọng lượng (\( g_{\text{biểu kiến}} = 0 \)). Nếu đứng lên chiếc cân lò xo thông thường, kim chỉ số \( 0 \). Để theo dõi sức khỏe, NASA sử dụng ghế đo khối lượng cơ thể <strong>BMMD (Body Mass Measurement Device)</strong> gắn với lò xo có độ cứng \( k = 16000 \text{ N/m} \) và khung ghế nặng \( m_0 = 20 \text{ kg} \).
+                            </p>
+                        </div>
+                        <div class="bg-indigo-50/80 border-l-4 border-indigo-600 p-3.5 rounded-r-lg">
+                            <p class="text-xs font-bold text-indigo-900 uppercase mb-1"><i class="fa-solid fa-circle-question mr-1"></i> Câu hỏi khám phá:</p>
+                            <p class="text-sm text-indigo-800">
+                                Khi không có trọng lực, làm sao chiếc ghế lò xo "biết" được phi hành gia nặng bao nhiêu kilogram chỉ bằng một chiếc đồng hồ bấm giây đo chu kỳ \( T \)?
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Case 3: Cầu gãy do cộng hưởng -->
+                    <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 hover:border-blue-400 transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 bg-rose-100 text-rose-800 text-xs font-bold rounded-md">Đề số 2 & 3 - Câu 28</span>
+                                <i class="fa-solid fa-bridge-circle-exclamation text-2xl text-rose-600"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 mb-2">3. Bí ẩn 36 người lính làm sập cây cầu chịu tải 300 người</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                                Năm 1906 tại Xanh-pê-téc-bua (Nga), một cây cầu treo được thiết kế chịu được trọng tải của \( 300 \) người cùng lúc. Tuy nhiên, khi chỉ có một trung đội bộ binh gồm \( 36 \) người bước đều nhịp nhàng qua cầu, cây cầu bất ngờ rung lắc dữ dội rồi đổ sập! Sự cố tương tự cũng xảy ra tại cầu Broughton (Anh).
+                            </p>
+                        </div>
+                        <div class="bg-rose-50/80 border-l-4 border-rose-600 p-3.5 rounded-r-lg">
+                            <p class="text-xs font-bold text-rose-900 uppercase mb-1"><i class="fa-solid fa-circle-question mr-1"></i> Mâu thuẫn nhận thức:</p>
+                            <p class="text-sm text-rose-800">
+                                Tại sao trọng lượng của \( 36 \) người nhỏ hơn rất nhiều so với giới hạn chịu tải \( 300 \) người mà vẫn phá hủy kết cấu thép? Quân đội các nước đã phải ra quy lệnh gì khi qua cầu?
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Case 4: Thế giới tự nhiên & Gờ giảm tốc -->
+                    <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 hover:border-blue-400 transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-md">Đề số 1-5 - Câu 25 & Tự luận</span>
+                                <i class="fa-solid fa-car-burst text-2xl text-emerald-600"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 mb-2">4. Từ nhịp đập cánh muỗi \( 800 \text{ Hz} \) đến Gờ giảm tốc giao thông</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                                Một con muỗi vỗ cánh tới \( 800 \text{ lần/giây} \), ong mật \( 300 \text{ Hz} \), chim ruồi bay lùi ở \( 70 \text{ Hz} \). Trong kỹ thuật ô tô, khi xe chạy qua các gờ giảm tốc cách đều nhau \( L = 0,50 \text{ m} \) ở một tốc độ xác định \( v \), thân xe lại nảy lên mạnh nhất; hoặc xe buýt dừng đón khách không tắt máy làm thân xe rung bần bật.
+                            </p>
+                        </div>
+                        <div class="bg-emerald-50/80 border-l-4 border-emerald-600 p-3.5 rounded-r-lg">
+                            <p class="text-xs font-bold text-emerald-900 uppercase mb-1"><i class="fa-solid fa-circle-question mr-1"></i> Câu hỏi khám phá:</p>
+                            <p class="text-sm text-emerald-800">
+                                Đi nhanh hơn hay đi chậm hơn qua đoạn đường mấp mô sẽ giúp xe đỡ xóc hơn? Câu trả lời nằm trọn trong quy luật <strong>Cộng hưởng cơ học</strong>!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: CỐT LÕI LÝ THUYẾT & BẢN CHẤT VẬT LÝ ==================== -->
+        <section id="tab2" class="tab-content hidden space-y-6">
+            <!-- 1. Khái niệm then chốt -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
+                    <i class="fa-solid fa-book-open text-blue-600"></i> I. Khái Niệm Then Chốt & Bản Chất Vật Lý
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="p-4 rounded-xl bg-blue-50/60 border border-blue-200">
+                        <h3 class="font-bold text-blue-900 mb-2">1. Dao động điều hòa (DĐĐH)</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Là dao động trong đó li độ của vật là một hàm cosin (hoặc sin) của thời gian:
+                            \[ x = A\cos(\omega t + \varphi) \]
+                            <strong>Bản chất hình học:</strong> Hình chiếu của một chất điểm chuyển động tròn đều lên một đường kính nằm trong mặt phẳng quỹ đạo là một dao động điều hòa.
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-indigo-50/60 border border-indigo-200">
+                        <h3 class="font-bold text-indigo-900 mb-2">2. Động lực học & Năng lượng</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Lực kéo về \( \vec{F}_{kv} \) và gia tốc \( \vec{a} \) luôn <strong>hướng về vị trí cân bằng (VTCB)</strong> và có độ lớn tỉ lệ với độ lớn li độ:
+                            \[ \vec{a} = -\omega^2 \vec{x} \quad ; \quad \vec{F}_{kv} = -k\vec{x} \]
+                            Khi bỏ qua ma sát, cơ năng \( W = W_{d} + W_{t} \) được bảo toàn; \( W_{d} \) và \( W_{t} \) biến thiên tuần hoàn với chu kỳ \( T' = \frac{T}{2} \).
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-200">
+                        <h3 class="font-bold text-amber-900 mb-2">3. Tắt dần, Cưỡng bức & Cộng hưởng</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            - <strong>Tắt dần:</strong> Biên độ \( A \) và cơ năng \( W \) giảm dần theo thời gian do lực cản môi trường.<br>
+                            - <strong>Cưỡng bức:</strong> Dao động dưới tác dụng của ngoại lực tuần hoàn \( F = F_0\cos(\Omega t) \), có tần số bằng tần số ngoại lực \( f = f_n \).<br>
+                            - <strong>Cộng hưởng:</strong> Biên độ \( A_{cb} \) đạt cực đại khi \( f_n = f_0 \).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Hệ thống công thức cốt lõi -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
+                    <i class="fa-solid fa-table-list text-blue-600"></i> II. Hệ Thống Công Thức Cốt Lõi & Đơn Vị Chuẩn (SI)
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-800 text-white">
+                                <th class="p-3.5 rounded-tl-lg">Đại lượng / Hệ vật lý</th>
+                                <th class="p-3.5">Công thức chuẩn</th>
+                                <th class="p-3.5">Giải thích ký hiệu & Bản chất</th>
+                                <th class="p-3.5 rounded-tr-lg">Đơn vị chuẩn SI</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3.5 font-bold text-slate-800">Phương trình Li độ & Quỹ đạo</td>
+                                <td class="p-3.5">\( x = A\cos(\omega t + \varphi) \)<br>\( L = 2A \quad ; \quad S_{1T} = 4A \)</td>
+                                <td class="p-3.5">\( x \): li độ; \( A \): biên độ (\( A > 0 \)); \( (\omega t + \varphi) \): pha dao động tại thời điểm \( t \); \( \varphi \): pha ban đầu.</td>
+                                <td class="p-3.5">\( x, A, L \): \( \text{m} \) (hoặc \( \text{cm} \))<br>\( \varphi \): \( \text{rad} \)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3.5 font-bold text-slate-800">Vận tốc tức thời \( \vec{v} \)</td>
+                                <td class="p-3.5">\( v = x' = -\omega A\sin(\omega t + \varphi) \)<br>\( v = \omega A\cos\left(\omega t + \varphi + \frac{\pi}{2}\right) \)</td>
+                                <td class="p-3.5">\( \vec{v} \) luôn cùng hướng chuyển động, sớm pha \( \frac{\pi}{2} \) so với li độ \( x \). Cực đại \( v_{\max} = \omega A \) tại VTCB.</td>
+                                <td class="p-3.5">\( v \): \( \text{m/s} \) (hoặc \( \text{cm/s} \))<br>\( \omega \): \( \text{rad/s} \)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3.5 font-bold text-slate-800">Gia tốc tức thời \( \vec{a} \)</td>
+                                <td class="p-3.5">\( a = v' = -\omega^2 x \)<br>\( a = \omega^2 A\cos(\omega t + \varphi + \pi) \)</td>
+                                <td class="p-3.5">\( \vec{a} \) luôn hướng về VTCB, ngược pha với \( x \) (sớm pha \( \frac{\pi}{2} \) so với \( v \)). Độ lớn \( a_{\max} = \omega^2 A \) ở hai biên.</td>
+                                <td class="p-3.5">\( a \): \( \text{m/s}^2 \) (hoặc \( \text{cm/s}^2 \))</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3.5 font-bold text-slate-800">Hệ thức độc lập với thời gian</td>
+                                <td class="p-3.5">\( A^2 = x^2 + \frac{v^2}{\omega^2} \)<br>\( \left(\frac{x}{A}\right)^2 + \left(\frac{v}{v_{\max}}\right)^2 = 1 \)</td>
+                                <td class="p-3.5">Đồ thị \( (v, x) \) và \( (v, a) \) là đường <strong>Elip</strong>; đồ thị \( (a, x) \) là một <strong>đoạn thẳng</strong> đi qua gốc tọa độ có hệ số góc âm.</td>
+                                <td class="p-3.5">Đồng nhất đơn vị giữa \( x, A \) và \( v \)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3.5 font-bold text-slate-800">Con lắc lò xo (CLLX)</td>
+                                <td class="p-3.5">\( \omega = \sqrt{\frac{k}{m}} \quad ; \quad T = 2\pi\sqrt{\frac{m}{k}} \)<br>\( f = \frac{1}{2\pi}\sqrt{\frac{k}{m}} \)</td>
+                                <td class="p-3.5">\( m \): khối lượng vật nặng; \( k \): độ cứng lò xo. Chu kỳ chỉ phụ thuộc đặc tính hệ (\( m, k \)), không phụ thuộc biên độ \( A \).</td>
+                                <td class="p-3.5">\( m \): \( \text{kg} \)<br>\( k \): \( \text{N/m} \)<br>\( T \): \( \text{s} \) ; \( f \): \( \text{Hz} \)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3.5 font-bold text-slate-800">Con lắc đơn (CLĐ)</td>
+                                <td class="p-3.5">\( \omega = \sqrt{\frac{g}{\ell}} \quad ; \quad T = 2\pi\sqrt{\frac{\ell}{g}} \)<br>\( s = S_0\cos(\omega t + \varphi) \ (S_0 = \ell \alpha_0) \)</td>
+                                <td class="p-3.5">Điều kiện dao động điều hòa: góc lệch cực đại \( \alpha_0 \le 10^\circ \) (hoặc \( \text{rad} \) nhỏ), bỏ qua ma sát. Chu kỳ <strong>không phụ thuộc</strong> khối lượng \( m \).</td>
+                                <td class="p-3.5">\( \ell \): \( \text{m} \)<br>\( g \): \( \text{m/s}^2 \)<br>\( \alpha_0 \): \( \text{rad} \)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3.5 font-bold text-slate-800">Động năng, Thế năng & Cơ năng</td>
+                                <td class="p-3.5">\( W_{d} = \frac{1}{2}mv^2 \ ; \ W_{t} = \frac{1}{2}kx^2 = \frac{1}{2}m\omega^2 x^2 \)<br>\( W = W_{d} + W_{t} = \frac{1}{2}kA^2 = \frac{1}{2}m\omega^2 A^2 \)</td>
+                                <td class="p-3.5">Mốc thế năng tại VTCB. Khi \( W_{d} = n W_{t} \Rightarrow x = \pm \frac{A}{\sqrt{n+1}} \). Cơ năng tỉ lệ với bình phương biên độ \( A^2 \).</td>
+                                <td class="p-3.5">\( W, W_{d}, W_{t} \): \( \text{J} \)<br>(Bắt buộc đổi \( x, A \) ra \( \text{m} \), \( m \) ra \( \text{kg} \))</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. Bẫy lý thuyết -->
+            <div class="bg-rose-50 rounded-2xl shadow-sm border border-rose-200 p-6">
+                <h2 class="text-xl font-bold text-rose-900 flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> III. 6 "Bẫy Lý Thuyết" Học Sinh Hay Mắc Phải Trong Đề Thi
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-white p-4 rounded-xl border border-rose-100 shadow-sm">
+                        <span class="font-bold text-rose-700">❌ Bẫy 1: Nhầm lẫn Quỹ đạo chuyển động và Đồ thị dao động</span>
+                        <p class="text-slate-600 mt-1">Quỹ đạo chuyển động của vật DĐĐH là một <strong>đoạn thẳng</strong> dài \( L = 2A \), trong khi đồ thị li độ - thời gian \( (x - t) \) mới là một <strong>đường hình sin</strong> (Đề 2 - Câu 1, Đề 3 - Câu 1).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-100 shadow-sm">
+                        <span class="font-bold text-rose-700">❌ Bẫy 2: Dấu trừ trước hàm cosin và Pha ban đầu</span>
+                        <p class="text-slate-600 mt-1">Biên độ \( A \) và Chu kỳ \( T \) luôn dương! Nếu phương trình có dạng \( x = -A\cos(\omega t + \varphi) \) với \( A > 0 \), phải khử dấu trừ bằng cách cộng thêm \( \pi \) vào pha: \( \varphi_{\text{chuẩn}} = \varphi + \pi \) (Đề 2 - Câu 3).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-100 shadow-sm">
+                        <span class="font-bold text-rose-700">❌ Bẫy 3: "Giá trị cực tiểu" và "Độ lớn cực tiểu"</span>
+                        <p class="text-slate-600 mt-1"><strong>Giá trị cực tiểu</strong> (xét dấu đại số) của vận tốc là \( v_{\min} = -\omega A \), của gia tốc là \( a_{\min} = -\omega^2 A \). Còn <strong>độ lớn cực tiểu</strong> của chúng mới bằng \( 0 \) (Đề 4 - Câu 11, Đề 5 - Câu 11).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-100 shadow-sm">
+                        <span class="font-bold text-rose-700">❌ Bẫy 4: Bản chất chuyển động từ Biên về VTCB</span>
+                        <p class="text-slate-600 mt-1">Khi vật đi từ vị trí biên về VTCB, tốc độ tăng nhưng gia tốc biến thiên nên đó là chuyển động <strong>nhanh dần</strong>, TUYỆT ĐỐI KHÔNG PHẢI "nhanh dần đều" (Đề 3 - Câu 11).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-100 shadow-sm">
+                        <span class="font-bold text-rose-700">❌ Bẫy 5: Chu kỳ biến thiên của Động năng và Thế năng</span>
+                        <p class="text-slate-600 mt-1">Nếu vật DĐĐH với chu kỳ \( T \), tần số \( f \), thì động năng \( W_d \) và thế năng \( W_t \) biến thiên tuần hoàn với chu kỳ \( T' = \frac{T}{2} \) và tần số \( f' = 2f \), còn cơ năng \( W \) là hằng số (Đề 1 - Câu 15, Đề 2 - Câu 13).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-100 shadow-sm">
+                        <span class="font-bold text-rose-700">❌ Bẫy 6: Thế năng của Con lắc lò xo treo thẳng đứng</span>
+                        <p class="text-slate-600 mt-1">Khi chọn mốc thế năng tại VTCB của CLLX treo thẳng đứng, thế năng của con lắc \( W_t = \frac{1}{2}kx^2 \) là <strong>tổng thế năng đàn hồi và thế năng trọng trường</strong>, không phải chỉ riêng thế năng đàn hồi của lò xo (Đề 3 - Câu 15).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: MÔ PHỎNG TƯƠNG TÁC (3 SUB-LABS) ==================== -->
+        <section id="tab3" class="tab-content hidden space-y-6">
+            <!-- Sub-tab selector -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-flask-vial text-blue-600 mr-2"></i>Phòng Thí Nghiệm Mô Phỏng Tương Tác Đa Mô Hình</h2>
+                    <p class="text-xs text-slate-500">Chọn một trong 3 phòng thí nghiệm chuyên biệt dưới đây để khảo sát hiện tượng</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="switchSimLab('simA')" id="btn-simA" class="subtab-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                        📐 Tab 3A: Đường Tròn Pha & Vector \(\vec{v}, \vec{a}\)
+                    </button>
+                    <button onclick="switchSimLab('simB')" id="btn-simB" class="subtab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                        ⚡ Tab 3B: Con Lắc Lò Xo & Năng Lượng
+                    </button>
+                    <button onclick="switchSimLab('simC')" id="btn-simC" class="subtab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                        🌊 Tab 3C: Tắt Dần - Cưỡng Bức & Cộng Hưởng
+                    </button>
+                </div>
+            </div>
+
+            <!-- ---------- LAB 3A: ĐƯỜNG TRÒN PHA & ĐỒ THỊ X, V, A ---------- -->
+            <div id="simA" class="sim-container grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Controls -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h3 class="font-bold text-slate-800 border-b pb-2 flex items-center justify-between">
+                        <span>🎛️ Tham số điều khiển (Lab 3A)</span>
+                        <span class="text-xs font-normal px-2 py-0.5 bg-blue-100 text-blue-800 rounded">Mối liên hệ Tròn đều & DĐĐH</span>
+                    </h3>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>Biên độ \( A \):</span>
+                            <span id="lbl-simA-A" class="text-blue-600 font-bold">8.0 cm</span>
+                        </div>
+                        <input type="range" id="inp-simA-A" min="2" max="12" step="0.5" value="8" class="w-full accent-blue-600">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>Tần số góc \( \omega \):</span>
+                            <span id="lbl-simA-w" class="text-blue-600 font-bold">2.0 rad/s</span>
+                        </div>
+                        <input type="range" id="inp-simA-w" min="0.5" max="5" step="0.5" value="2" class="w-full accent-blue-600">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>Pha ban đầu \( \varphi \):</span>
+                            <span id="lbl-simA-phi" class="text-blue-600 font-bold">0.00 rad</span>
+                        </div>
+                        <input type="range" id="inp-simA-phi" min="-3.14" max="3.14" step="0.2618" value="0" class="w-full accent-blue-600">
+                    </div>
+
+                    <div class="flex gap-2 pt-2">
+                        <button onclick="toggleSimA()" id="btn-toggle-simA" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow text-sm transition">
+                            <i class="fa-solid fa-pause mr-1"></i> Tạm dừng
+                        </button>
+                        <button onclick="resetSimA()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-sm transition">
+                            <i class="fa-solid fa-rotate-right"></i> Đặt lại \( t=0 \)
+                        </button>
+                    </div>
+
+                    <!-- Real-time Outputs -->
+                    <div class="bg-slate-900 text-slate-100 p-4 rounded-xl space-y-2 text-xs font-mono">
+                        <div class="text-amber-400 font-bold border-b border-slate-700 pb-1 mb-2">📊 ĐẦU RA THỜI GIAN THỰC</div>
+                        <div class="flex justify-between"><span>Thời gian \( t \):</span><span id="out-simA-t">0.00 s</span></div>
+                        <div class="flex justify-between"><span>Chu kỳ \( T \):</span><span id="out-simA-T">3.14 s</span></div>
+                        <div class="flex justify-between text-emerald-400"><span>Li độ \( x \):</span><span id="out-simA-x">+8.00 cm</span></div>
+                        <div class="flex justify-between text-sky-400"><span>Vận tốc \( v \):</span><span id="out-simA-v">0.00 cm/s</span></div>
+                        <div class="flex justify-between text-rose-400"><span>Gia tốc \( a \):</span><span id="out-simA-a">-32.00 cm/s²</span></div>
+                    </div>
+
+                    <!-- Hướng dẫn thử và sai -->
+                    <div class="bg-amber-50 border border-amber-200 p-3.5 rounded-xl text-xs text-amber-900 space-y-1">
+                        <div class="font-bold"><i class="fa-solid fa-lightbulb mr-1"></i> Nhiệm vụ "Thử và Sai":</div>
+                        <p>1. Bấm <strong>Tạm dừng</strong> khi vật đi qua VTCB (\( x \approx 0 \)): Quan sát độ dài vector \( \vec{v} \) (màu xanh) và \( \vec{a} \) (màu đỏ).</p>
+                        <p>2. Tăng biên độ \( A \) gấp đôi: Quan sát xem chu kỳ \( T \) có thay đổi không?</p>
+                    </div>
+                </div>
+
+                <!-- Canvas Area -->
+                <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+                    <div class="flex flex-wrap justify-between items-center mb-3 gap-2">
+                        <span class="text-sm font-bold text-slate-700">Môi trường mô phỏng Hình chiếu Chuyển động tròn đều & Đồ thị \( x(t), v(t), a(t) \)</span>
+                        <div class="flex gap-3 text-xs font-semibold">
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-emerald-600 inline-block"></span> Li độ \( x \)</span>
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-sky-500 inline-block"></span> Vector \( \vec{v} \)</span>
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span> Vector \( \vec{a} \)</span>
+                        </div>
+                    </div>
+                    <div class="relative w-full flex-grow min-h-[380px]">
+                        <canvas id="canvasSimA" class="w-full h-full border border-slate-200"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ---------- LAB 3B: CON LẮC LÒ XO & BẢO TOÀN CƠ NĂNG ---------- -->
+            <div id="simB" class="sim-container hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Controls -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h3 class="font-bold text-slate-800 border-b pb-2 flex items-center justify-between">
+                        <span>🎛️ Tham số điều khiển (Lab 3B)</span>
+                        <span class="text-xs font-normal px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded">CLLX & Năng lượng</span>
+                    </h3>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>Khối lượng vật \( m \):</span>
+                            <span id="lbl-simB-m" class="text-blue-600 font-bold">0.50 kg</span>
+                        </div>
+                        <input type="range" id="inp-simB-m" min="0.1" max="2.0" step="0.1" value="0.5" class="w-full accent-blue-600">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>Độ cứng lò xo \( k \):</span>
+                            <span id="lbl-simB-k" class="text-blue-600 font-bold">50 N/m</span>
+                        </div>
+                        <input type="range" id="inp-simB-k" min="10" max="200" step="10" value="50" class="w-full accent-blue-600">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>Biên độ dao động \( A \):</span>
+                            <span id="lbl-simB-A" class="text-blue-600 font-bold">10.0 cm</span>
+                        </div>
+                        <input type="range" id="inp-simB-A" min="4" max="14" step="1" value="10" class="w-full accent-blue-600">
+                    </div>
+
+                    <div class="bg-slate-900 text-slate-100 p-4 rounded-xl space-y-2 text-xs font-mono">
+                        <div class="text-amber-400 font-bold border-b border-slate-700 pb-1 mb-2">⚡ THÔNG SỐ ĐỘNG LỰC & NĂNG LƯỢNG</div>
+                        <div class="flex justify-between"><span>Tần số góc \( \omega = \sqrt{k/m} \):</span><span id="out-simB-w">10.00 rad/s</span></div>
+                        <div class="flex justify-between"><span>Chu kỳ \( T = 2\pi/\omega \):</span><span id="out-simB-T">0.63 s</span></div>
+                        <div class="flex justify-between text-sky-400"><span>Động năng \( W_{d} \):</span><span id="out-simB-Wd">0.000 J</span></div>
+                        <div class="flex justify-between text-amber-400"><span>Thế năng \( W_{t} \):</span><span id="out-simB-Wt">0.250 J</span></div>
+                        <div class="flex justify-between text-emerald-400 font-bold"><span>Cơ năng \( W = W_d + W_t \):</span><span id="out-simB-W">0.250 J</span></div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 p-3.5 rounded-xl text-xs text-amber-900 space-y-1">
+                        <div class="font-bold"><i class="fa-solid fa-lightbulb mr-1"></i> Nhiệm vụ "Thử và Sai":</div>
+                        <p>1. Giữ nguyên \( m, k \), tăng biên độ \( A \) từ \( 6 \text{ cm} \) lên \( 12 \text{ cm} \) (gấp 2 lần): Kiểm tra xem Cơ năng \( W \) tăng mấy lần? Chu kỳ \( T \) có đổi không?</p>
+                        <p>2. Quan sát parabol thế năng \( W_t(x) \) và động năng \( W_d(x) \) giao nhau tại vị trí li độ nào?</p>
+                    </div>
+                </div>
+
+                <!-- Canvas Area -->
+                <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+                    <div class="flex flex-wrap justify-between items-center mb-3 gap-2">
+                        <span class="text-sm font-bold text-slate-700">Mô hình Con lắc lò xo ngang & Đồ thị Parabol Năng lượng theo li độ \( x \)</span>
+                        <div class="flex gap-3 text-xs font-semibold">
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-sky-500 inline-block"></span> \( W_d \)</span>
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span> \( W_t \)</span>
+                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-emerald-600 inline-block"></span> Cơ năng \( W \)</span>
+                        </div>
+                    </div>
+                    <div class="relative w-full flex-grow min-h-[380px]">
+                        <canvas id="canvasSimB" class="w-full h-full border border-slate-200"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ---------- LAB 3C: TẮT DẦN & ĐƯỜNG CONG CỘNG HƯỞNG ---------- -->
+            <div id="simC" class="sim-container hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Controls -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h3 class="font-bold text-slate-800 border-b pb-2 flex items-center justify-between">
+                        <span>🎛️ Tham số điều khiển (Lab 3C)</span>
+                        <span class="text-xs font-normal px-2 py-0.5 bg-rose-100 text-rose-800 rounded">Tắt dần & Cộng hưởng</span>
+                    </h3>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>Tần số riêng của hệ \( f_0 \):</span>
+                            <span id="lbl-simC-f0" class="text-blue-600 font-bold">2.0 Hz</span>
+                        </div>
+                        <input type="range" id="inp-simC-f0" min="1.0" max="3.5" step="0.1" value="2.0" class="w-full accent-blue-600">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>Tần số ngoại lực cưỡng bức \( f_n \):</span>
+                            <span id="lbl-simC-fn" class="text-rose-600 font-bold">2.0 Hz</span>
+                        </div>
+                        <input type="range" id="inp-simC-fn" min="0.5" max="4.0" step="0.1" value="2.0" class="w-full accent-rose-600">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>Hệ số cản môi trường \( b \):</span>
+                            <span id="lbl-simC-b" class="text-emerald-700 font-bold">0.25</span>
+                        </div>
+                        <input type="range" id="inp-simC-b" min="0.10" max="0.80" step="0.05" value="0.25" class="w-full accent-emerald-600">
+                    </div>
+
+                    <div class="bg-slate-900 text-slate-100 p-4 rounded-xl space-y-2 text-xs font-mono">
+                        <div class="text-amber-400 font-bold border-b border-slate-700 pb-1 mb-2">📊 PHÂN TÍCH ĐÁP ỨNG HỆ THỐNG</div>
+                        <div class="flex justify-between"><span>Độ lệch tần số \( |f_n - f_0| \):</span><span id="out-simC-df">0.0 Hz</span></div>
+                        <div class="flex justify-between text-rose-400"><span>Biên độ cưỡng bức \( A_{cb} \):</span><span id="out-simC-Acb">10.00 cm</span></div>
+                        <div class="flex justify-between text-emerald-400"><span>Trạng thái hệ:</span><span id="out-simC-status" class="font-bold">🔥 CỘNG HƯỞNG CƠ!</span></div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 p-3.5 rounded-xl text-xs text-amber-900 space-y-1">
+                        <div class="font-bold"><i class="fa-solid fa-lightbulb mr-1"></i> Nhiệm vụ "Thử và Sai":</div>
+                        <p>1. Kéo thanh trượt \( f_n \) tiến dần về bằng \( f_0 \): Quan sát điểm đỏ trên đồ thị cộng hưởng (bên trái) và biên độ dao động (bên phải).</p>
+                        <p>2. Tăng hệ số cản \( b \): Đỉnh cộng hưởng nhọn hơn hay tù đi? Đường bao tắt dần giảm nhanh hay chậm?</p>
+                    </div>
+                </div>
+
+                <!-- Canvas Area -->
+                <div class="lg:col-span-2 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+                    <div class="flex flex-wrap justify-between items-center mb-3 gap-2">
+                        <span class="text-sm font-bold text-slate-700">Trái: Đường cong Cộng hưởng \( A(f_n) \) | Phải: Đồ thị Dao động Tắt dần theo thời gian</span>
+                    </div>
+                    <div class="relative w-full flex-grow min-h-[380px]">
+                        <canvas id="canvasSimC" class="w-full h-full border border-slate-200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: MÁY TÍNH THAM SỐ VẬT LÝ ==================== -->
+        <section id="tab4" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+                    <span class="p-3 rounded-xl bg-indigo-100 text-indigo-700 text-xl"><i class="fa-solid fa-calculator"></i></span>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Máy Tính Giải Toán Dao Động Tự Động (Step-by-Step KaTeX Solver)</h2>
+                        <p class="text-sm text-slate-500">Nhập các đại lượng đã biết và <strong>bỏ trống đại lượng cần tìm</strong>, hệ thống sẽ tự động suy luận công thức và trình bày lời giải chi tiết.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Input Form -->
+                    <div class="lg:col-span-5 bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Chọn bài toán vật lý cần giải:</label>
+                            <select id="calc-mode" onchange="updateCalcFields()" class="w-full p-2.5 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-blue-500">
+                                <option value="independent">1. Hệ thức độc lập thời gian (Tìm A, x, |v|, ω)</option>
+                                <option value="spring">2. Chu kỳ, Độ cứng, Khối lượng Con lắc lò xo & Năng lượng</option>
+                                <option value="pendulum">3. Con lắc đơn (Tìm Chu kỳ T, Chiều dài ℓ, Gia tốc g)</option>
+                                <option value="resonance">4. Vận tốc cộng hưởng qua gờ giảm tốc / đường ray (v, L, T)</option>
+                            </select>
+                        </div>
+
+                        <!-- Dynamic Fields Container -->
+                        <div id="calc-inputs-container" class="space-y-3">
+                            <!-- Populated by JS -->
+                        </div>
+
+                        <div class="flex gap-2 pt-2">
+                            <button onclick="solvePhysicsProblem()" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow transition text-sm">
+                                <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Tính Toán & Giải Chi Tiết
+                            </button>
+                            <button onclick="fillSampleCalc()" class="px-3.5 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition" title="Điền số liệu mẫu">
+                                Mẫu thử
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Output Step-by-Step Solution -->
+                    <div class="lg:col-span-7 bg-white p-6 rounded-xl border-2 border-indigo-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                                <span class="text-sm font-bold text-indigo-950 uppercase tracking-wider"><i class="fa-solid fa-scroll mr-1.5 text-indigo-600"></i> Bảng Trình Bày Các Bước Biến Đổi Công Thức</span>
+                                <span class="text-xs px-2.5 py-1 bg-emerald-100 text-emerald-800 font-semibold rounded-md">Chuẩn KaTeX SI</span>
+                            </div>
+                            <div id="calc-result-box" class="space-y-3 text-sm text-slate-700 leading-relaxed min-h-[240px]">
+                                <div class="text-slate-400 italic text-center py-12">
+                                    <i class="fa-solid fa-keyboard text-3xl mb-2 block"></i>
+                                    Hãy nhập các tham số đã biết ở cột bên trái (bỏ trống ô cần tìm) và nhấn <strong>"Tính Toán & Giải Chi Tiết"</strong>.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: PHÒNG LUYỆN TẬP PHÂN HÓA ==================== -->
+        <section id="tab5" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+                    <span class="p-3 rounded-xl bg-emerald-100 text-emerald-700 text-xl"><i class="fa-solid fa-graduation-cap"></i></span>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Phòng Luyện Tập Phân Hóa 3 Cấp Độ</h2>
+                        <p class="text-sm text-slate-500">Biên soạn chuẩn theo cấu trúc đề ôn tập của GV Nguyễn Xuân Hùng (Có gợi ý tư duy & lời giải chi tiết)</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Cấp độ 1 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                        <div class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-5 py-3 flex justify-between items-center">
+                            <span class="font-bold text-sm sm:text-base"><i class="fa-solid fa-seedling mr-1.5"></i> CẤP ĐỘ 1 (Nhận biết - Thông hiểu): Khai thác Đồ thị Li độ - Thời gian</span>
+                            <span class="text-xs bg-white/20 px-2.5 py-1 rounded-full font-semibold">Trích Đề 1 - Tự luận Bài 1</span>
+                        </div>
+                        <div class="p-5 bg-white space-y-4">
+                            <p class="text-sm sm:text-base text-slate-800 leading-relaxed">
+                                <strong>Đề bài:</strong> Một vật dao động điều hòa dọc theo trục \( Ox \) có đồ thị li độ - thời gian cho biết: lúc \( t = 0 \), vật bắt đầu dao động từ vị trí biên dương \( x = +10 \text{ cm} \); đến thời điểm \( t = 2 \text{ s} \) vật ở vị trí biên âm \( x = -10 \text{ cm} \) và đến \( t = 4 \text{ s} \) vật quay trở lại vị trí \( x = +10 \text{ cm} \) lần đầu tiên.<br>
+                                a) Xác định biên độ \( A \), chu kỳ \( T \), tần số \( f \) và tần số góc \( \omega \) của dao động.<br>
+                                b) Viết phương trình dao động điều hòa của vật.<br>
+                                c) Tìm vận tốc \( \vec{v} \) và gia tốc \( \vec{a} \) của vật tại thời điểm \( t = 3,5 \text{ s} \).
+                            </p>
+                            <div class="flex flex-wrap gap-3">
+                                <button onclick="toggleElement('hint-lv1')" class="px-4 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold transition">
+                                    <i class="fa-regular fa-lightbulb mr-1"></i> Ẩn/Hiện Gợi ý tư duy
+                                </button>
+                                <button onclick="toggleElement('sol-lv1')" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">
+                                    <i class="fa-solid fa-eye mr-1"></i> Ẩn/Hiện Lời giải chi tiết
+                                </button>
+                            </div>
+                            <div id="hint-lv1" class="hidden p-4 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-900">
+                                <strong>💡 Gợi ý tư duy:</strong> Khoảng thời gian ngắn nhất vật đi từ biên dương \( +A \) đến biên âm \( -A \) rồi quay về \( +A \) chính là một chu kỳ \( T \). Khi \( t = 0 \) vật ở biên dương \( x = +A \Rightarrow \varphi = 0 \text{ rad} \).
+                            </div>
+                            <div id="sol-lv1" class="hidden p-5 rounded-xl bg-slate-50 border border-slate-200 text-sm space-y-2">
+                                <p class="font-bold text-emerald-800 border-b pb-1">✅ Lời giải chi tiết:</p>
+                                <p><strong>a) Các thông số đặc trưng:</strong></p>
+                                <ul class="list-disc pl-5 space-y-1">
+                                    <li>Biên độ dao động: \( A = 10 \text{ cm} \).</li>
+                                    <li>Chu kỳ dao động: \( T = 4 \text{ s} \).</li>
+                                    <li>Tần số dao động: \( f = \frac{1}{T} = \frac{1}{4} = 0,25 \text{ Hz} \).</li>
+                                    <li>Tần số góc: \( \omega = \frac{2\pi}{T} = \frac{2\pi}{4} = \frac{\pi}{2} \text{ rad/s} \).</li>
+                                </ul>
+                                <p><strong>b) Phương trình dao động:</strong></p>
+                                <p>Tại \( t = 0 \), vật ở biên dương \( x_0 = +A \Rightarrow \cos\varphi = 1 \Rightarrow \varphi = 0 \text{ rad} \). Vậy phương trình li độ là:
+                                \[ x = 10\cos\left(\frac{\pi}{2}t\right) \text{ (cm)} \]
+                                </p>
+                                <p><strong>c) Vận tốc và gia tốc tại \( t = 3,5 \text{ s} \):</strong></p>
+                                \[ v(3,5) = -\omega A\sin(\omega t + \varphi) = -\frac{\pi}{2} \cdot 10 \cdot \sin\left(\frac{\pi}{2} \cdot 3,5\right) \approx +11,1 \text{ cm/s} \]
+                                \[ a(3,5) = -\omega^2 x(3,5) = -\left(\frac{\pi}{2}\right)^2 \cdot 10\cos\left(\frac{\pi}{2} \cdot 3,5\right) \approx -17,4 \text{ cm/s}^2 \]
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cấp độ 2 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-3 flex justify-between items-center">
+                            <span class="font-bold text-sm sm:text-base"><i class="fa-solid fa-gears mr-1.5"></i> CẤP ĐỘ 2 (Vận dụng): Phối hợp Định luật Bảo toàn Cơ năng & Thiết bị BMMD</span>
+                            <span class="text-xs bg-white/20 px-2.5 py-1 rounded-full font-semibold">Trích Đề 1 & Đề 3</span>
+                        </div>
+                        <div class="p-5 bg-white space-y-4">
+                            <p class="text-sm sm:text-base text-slate-800 leading-relaxed">
+                                <strong>Đề bài:</strong> Một người có khối lượng \( m = 60 \text{ kg} \) treo mình vào sợi dây bungee đàn hồi có độ cứng \( k = 270 \text{ N/m} \). Từ vị trí cân bằng \( O \), người này được kéo xuống vị trí sợi dây dãn thêm \( 5 \text{ m} \) so với VTCB rồi thả nhẹ cho dao động điều hòa dọc theo trục \( Ox \) thẳng đứng hướng xuống vào lúc \( t = 0 \).<br>
+                                a) Tính tần số góc \( \omega \), chu kỳ \( T \) và viết phương trình dao động của người đó.<br>
+                                b) Xác định vị trí li độ \( x \) tại thời điểm \( t = 2 \text{ s} \) và tính động năng \( W_d \) của người đó khi đi qua vị trí có li độ \( x_1 = 1 \text{ m} \).
+                            </p>
+                            <div class="flex flex-wrap gap-3">
+                                <button onclick="toggleElement('hint-lv2')" class="px-4 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold transition">
+                                    <i class="fa-regular fa-lightbulb mr-1"></i> Ẩn/Hiện Gợi ý tư duy
+                                </button>
+                                <button onclick="toggleElement('sol-lv2')" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition">
+                                    <i class="fa-solid fa-eye mr-1"></i> Ẩn/Hiện Lời giải chi tiết
+                                </button>
+                            </div>
+                            <div id="hint-lv2" class="hidden p-4 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-900">
+                                <strong>💡 Gợi ý tư duy:</strong> Kéo lệch khỏi VTCB \( 5 \text{ m} \) rồi thả nhẹ (\( v_0 = 0 \)) nên biên độ \( A = 5 \text{ m} \). Áp dụng bảo toàn cơ năng \( W_d = W - W_t = \frac{1}{2}k(A^2 - x_1^2) \). Lưu ý máy tính cầm tay phải chuyển sang chế độ <strong>Radian (RAD)</strong> khi tính \( \cos(\omega t) \).
+                            </div>
+                            <div id="sol-lv2" class="hidden p-5 rounded-xl bg-slate-50 border border-slate-200 text-sm space-y-2">
+                                <p class="font-bold text-blue-800 border-b pb-1">✅ Lời giải chi tiết:</p>
+                                <p><strong>a) Tần số góc, chu kỳ và phương trình dao động:</strong></p>
+                                \[ \omega = \sqrt{\frac{k}{m}} = \sqrt{\frac{270}{60}} = \sqrt{4,5} \approx 2,12 \text{ rad/s} \quad \Rightarrow \quad T = \frac{2\pi}{\omega} \approx 2,96 \text{ s} \]
+                                <p>Do lúc \( t = 0 \) thả nhẹ tại biên dương \( x_0 = +5 \text{ m} \) nên \( A = 5 \text{ m} \) và \( \varphi = 0 \text{ rad} \). Phương trình dao động:</p>
+                                \[ x = 5\cos(2,12t) \text{ (m)} \]
+                                <p><strong>b) Li độ lúc \( t = 2 \text{ s} \) và Động năng tại \( x_1 = 1 \text{ m} \):</strong></p>
+                                \[ x(2) = 5\cos(2,12 \cdot 2) = 5\cos(4,24 \text{ rad}) \approx -2,28 \text{ m} \]
+                                <p>Động năng của người đó khi ở vị trí có li độ \( x_1 = 1 \text{ m} \):</p>
+                                \[ W_{d} = W - W_{t} = \frac{1}{2}kA^2 - \frac{1}{2}kx_1^2 = \frac{1}{2} \cdot 270 \cdot (5^2 - 1^2) = 135 \cdot 24 = 3240 \text{ J} \]
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cấp độ 3 -->
+                    <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                        <div class="bg-gradient-to-r from-purple-700 to-rose-600 text-white px-5 py-3 flex justify-between items-center">
+                            <span class="font-bold text-sm sm:text-base"><i class="fa-solid fa-brain mr-1.5"></i> CẤP ĐỘ 3 (Vận dụng cao & Năng lực số/AI): Khảo sát Cộng Hưởng Gờ Giảm Tốc & Xử lý Sai số</span>
+                            <span class="text-xs bg-white/20 px-2.5 py-1 rounded-full font-semibold">Trích Đề 2, Đề 4 & Đề 5</span>
+                        </div>
+                        <div class="p-5 bg-white space-y-4">
+                            <p class="text-sm sm:text-base text-slate-800 leading-relaxed">
+                                <strong>Đề bài thực tiễn & Năng lực số:</strong><br>
+                                <strong>Phần 1 (Bài toán kỹ thuật ô tô - Đề 5):</strong> Một ô tô có khối lượng \( M = 1500 \text{ kg} \) chở hai người có tổng khối lượng \( m = 120 \text{ kg} \) đi qua một đoạn đường có các gờ giảm tốc cách đều nhau \( L = 0,50 \text{ m} \). Ô tô nảy lên với biên độ cực đại khi tốc độ của nó là \( v = 20 \text{ km/h} \). Coi hệ thống giảm xóc như một con lắc lò xo có chu kỳ \( T = 2\pi\sqrt{\frac{M_{\text{tổng}}}{k}} \). Hãy xác định độ cứng tương đương \( k \) của hệ thống lò xo gắn với khung xe.<br>
+                                <strong>Phần 2 (Tích hợp Năng lực số & Kiểm chứng AI - Đề 2 Câu 23):</strong> Khi đo thế năng đàn hồi \( W = \frac{1}{2}kx^2 \) với số liệu thực nghiệm \( k = 100 \pm 2 \text{ N/m} \) và \( x = 0,050 \pm 0,002 \text{ cm} \), một công cụ AI trả lời rằng: <em>"Sai số tỉ đối của phép đo năng lượng là \( \delta W = \delta k + \delta x = 2\% + 4\% = 6\% \)"</em>. Bằng kiến thức Vật lý, em hãy chỉ ra lỗi sai của AI và tính lại chính xác!
+                            </p>
+                            <div class="flex flex-wrap gap-3">
+                                <button onclick="toggleElement('hint-lv3')" class="px-4 py-2 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold transition">
+                                    <i class="fa-regular fa-lightbulb mr-1"></i> Ẩn/Hiện Gợi ý tư duy
+                                </button>
+                                <button onclick="toggleElement('sol-lv3')" class="px-4 py-2 rounded-lg bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold transition">
+                                    <i class="fa-solid fa-eye mr-1"></i> Ẩn/Hiện Lời giải & Phản biện AI
+                                </button>
+                            </div>
+                            <div id="hint-lv3" class="hidden p-4 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-900">
+                                <strong>💡 Gợi ý tư duy:</strong><br>
+                                - Phần 1: Đổi \( v = 20 \text{ km/h} = \frac{50}{9} \text{ m/s} \). Khi xe nảy mạnh nhất (cộng hưởng), chu kỳ riêng của xe bằng thời gian xe đi giữa hai gờ giảm tốc liên tiếp: \( T = \frac{L}{v} \).<br>
+                                - Phần 2: Trong biểu thức \( W = \frac{1}{2}kx^2 \), đại lượng \( x \) có số mũ là \( 2 \), nên sai số tỉ đối phải nhân đôi phần sai số của \( x \)!
+                            </div>
+                            <div id="sol-lv3" class="hidden p-5 rounded-xl bg-slate-50 border border-slate-200 text-sm space-y-3">
+                                <p class="font-bold text-purple-900 border-b pb-1">✅ Lời giải chi tiết & Đánh giá Năng lực số:</p>
+                                <p><strong>1. Giải bài toán hệ thống giảm xóc ô tô:</strong></p>
+                                <p>Tổng khối lượng của xe và người: \( M_{\text{tổng}} = 1500 + 120 = 1620 \text{ kg} \). Đổi tốc độ: \( v = 20 \text{ km/h} = \frac{20}{3,6} = \frac{50}{9} \text{ m/s} \approx 5,56 \text{ m/s} \).</p>
+                                <p>Xe nảy lên với biên độ cực đại khi xảy ra cộng hưởng cơ học, tức là chu kỳ riêng \( T_0 \) của hệ bằng chu kỳ kích thích \( T \) khi bánh xe đi qua hai gờ liên tiếp:</p>
+                                \[ T = \frac{L}{v} = \frac{0,50}{\frac{50}{9}} = 0,09 \text{ s} \]
+                                <p>Từ công thức \( T = 2\pi\sqrt{\frac{M_{\text{tổng}}}{k}} \Rightarrow k = \frac{4\pi^2 M_{\text{tổng}}}{T^2} \):</p>
+                                \[ k = \frac{4\pi^2 \cdot 1620}{0,09^2} \approx 7,90 \times 10^6 \text{ N/m} \]
+                                <p><strong>2. Phản biện câu trả lời của AI về sai số phép đo gián tiếp:</strong></p>
+                                <p>AI đã mắc lỗi quên nhân hệ số mũ của biến \( x^2 \). Theo quy tắc tính sai số tỉ đối của một tích/lũy thừa \( W = \frac{1}{2}k x^2 \):</p>
+                                \[ \delta W = \frac{\Delta W}{\bar{W}} = \frac{\Delta k}{\bar{k}} + 2\frac{\Delta x}{\bar{x}} = \frac{2}{100} + 2\left(\frac{0,002}{0,050}\right) = 2\% + 2 \times 4\% = 10\% \]
+                                <p class="text-emerald-700 font-semibold">👉 Kết luận: Đáp án chính xác là \( 10\% \) (chứ không phải \( 6\% \)). Khi sử dụng AI hỗ trợ học tập, học sinh cần kiểm tra lại bản chất công thức vật lý!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: BÀI TỰ ĐÁNH GIÁ (INTERACTIVE QUIZ) ==================== -->
+        <section id="tab6" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+                    <div class="flex items-center gap-3">
+                        <span class="p-3 rounded-xl bg-rose-100 text-rose-700 text-xl"><i class="fa-solid fa-bullseye"></i></span>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">Bài Tự Đánh Giá Trắc Nghiệm Trọng Tâm</h2>
+                            <p class="text-sm text-slate-500">4 câu hỏi điển hình trích từ bộ 5 Đề Ôn Tập Chương Dao Động</p>
+                        </div>
+                    </div>
+                    <div id="quiz-score-badge" class="hidden px-4 py-2 rounded-xl bg-blue-900 text-white font-bold text-sm">
+                        Điểm số: <span id="quiz-score-val">0/4</span>
+                    </div>
+                </div>
+
+                <!-- Quiz Container -->
+                <div id="quiz-questions-container" class="space-y-6">
+                    <!-- Rendered dynamically via JS -->
+                </div>
+
+                <!-- Submit Actions -->
+                <div class="mt-8 pt-4 border-t border-slate-100 flex flex-wrap gap-4 justify-center">
+                    <button onclick="submitQuiz()" class="px-8 py-3.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-sm sm:text-base">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Nộp Bài & Xem Giải Thích Chi Tiết
+                    </button>
+                    <button onclick="resetQuiz()" class="px-6 py-3.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition text-sm sm:text-base">
+                        <i class="fa-solid fa-rotate-left mr-2"></i> Làm Lại Bài
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 7: TIỆN ÍCH LỚP HỌC ==================== -->
+        <section id="tab7" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 1. Visual Timer -->
+                <div id="timer-card" class="bg-white rounded-2xl shadow-sm border-2 border-slate-200 p-6 flex flex-col items-center justify-between transition-all">
+                    <div class="w-full flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-stopwatch text-blue-600 mr-2"></i>Đồng Hồ Đếm Ngược Thảo Luận Nhóm</h3>
+                        <span id="timer-status-text" class="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-full">Đang chờ</span>
+                    </div>
+
+                    <!-- SVG Circular Progress Timer -->
+                    <div class="relative w-56 h-56 flex items-center justify-center my-2">
+                        <svg class="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="10"></circle>
+                            <circle id="timer-progress-ring" cx="60" cy="60" r="52" fill="none" stroke="#2563eb" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.72" stroke-dashoffset="0" class="transition-all duration-500"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="timer-display" class="text-4xl font-extrabold font-mono text-slate-800 tracking-wider">03:00</span>
+                            <span class="text-xs text-slate-400 mt-1">PHÚT : GIÂY</span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Preset Buttons -->
+                    <div class="flex flex-wrap gap-2 justify-center my-4">
+                        <button onclick="setTimerPreset(60)" class="px-3 py-1.5 bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-800 rounded-lg text-xs font-bold transition">1 Phút</button>
+                        <button onclick="setTimerPreset(180)" class="px-3 py-1.5 bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-800 rounded-lg text-xs font-bold transition">3 Phút</button>
+                        <button onclick="setTimerPreset(300)" class="px-3 py-1.5 bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-800 rounded-lg text-xs font-bold transition">5 Phút</button>
+                        <button onclick="setTimerPreset(600)" class="px-3 py-1.5 bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-800 rounded-lg text-xs font-bold transition">10 Phút</button>
+                    </div>
+
+                    <!-- Control Buttons -->
+                    <div class="w-full flex gap-3">
+                        <button onclick="startPauseTimer()" id="btn-timer-start" class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow transition text-sm">
+                            <i class="fa-solid fa-play mr-1"></i> Bắt Đầu
+                        </button>
+                        <button onclick="resetTimer()" class="px-5 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition text-sm">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Đặt Lại
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. Lucky Wheel -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-dharmachakra text-amber-500 mr-2"></i>Vòng Quay May Mắn Gọi Tên Học Sinh</h3>
+                        <select id="wheel-group-select" onchange="loadWheelGroup()" class="text-xs font-bold bg-blue-50 border border-blue-200 text-blue-800 rounded-lg px-2.5 py-1.5">
+                            <option value="all">Cả lớp (4 Tổ)</option>
+                            <option value="to1">Tổ 1</option>
+                            <option value="to2">Tổ 2</option>
+                            <option value="to3">Tổ 3</option>
+                            <option value="to4">Tổ 4</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                        <!-- Wheel Canvas -->
+                        <div class="sm:col-span-7 flex flex-col items-center relative">
+                            <div class="relative w-64 h-64">
+                                <canvas id="canvasWheel" width="260" height="260" class="w-full h-full rounded-full shadow-md"></canvas>
+                                <!-- Pointer -->
+                                <div class="absolute top-1/2 -right-2 -translate-y-1/2 text-rose-600 text-3xl drop-shadow">
+                                    <i class="fa-solid fa-caret-left"></i>
+                                </div>
+                            </div>
+                            <button onclick="spinLuckyWheel()" id="btn-spin-wheel" class="mt-4 px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-extrabold rounded-xl shadow-md transition transform active:scale-95 text-sm">
+                                <i class="fa-solid fa-Play mr-1"></i> QUAY NGẪU NHIÊN
+                            </button>
+                        </div>
+
+                        <!-- Student List Input -->
+                        <div class="sm:col-span-5 flex flex-col h-full">
+                            <label class="text-xs font-bold text-slate-600 mb-1">Danh sách học sinh (mỗi dòng 1 tên):</label>
+                            <textarea id="wheel-names-input" oninput="updateWheelFromTextarea()" rows="8" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-medium text-slate-700 focus:ring-2 focus:ring-blue-500"></textarea>
+                            <p class="text-[11px] text-slate-400 mt-1">💡 Có thể dán trực tiếp danh sách học sinh của lớp vào ô trên.</p>
+                        </div>
+                    </div>
+
+                    <!-- Winner Banner -->
+                    <div id="wheel-winner-box" class="hidden mt-4 p-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-center shadow">
+                        <div class="text-xs uppercase font-semibold opacity-90">🎉 Xin chúc mừng học sinh được chọn trả lời:</div>
+                        <div id="wheel-winner-name" class="text-xl font-extrabold mt-0.5">Nguyễn Văn A</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 py-5 border-t border-slate-800 mt-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs sm:text-sm">
+            <div class="font-semibold text-amber-400">
+                © 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+            </div>
+            <div class="text-slate-400">
+                Học liệu số Vật Lý THPT — Tích hợp mô phỏng HTML5 Canvas & KaTeX chuẩn SI
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        // 1. Cấu hình KaTeX chuẩn theo yêu cầu
+        const katexConfig = {
+            delimiters: [
+                {left: "\\[", right: "\\]", display: true},
+                {left: "\\(", right: "\\)", display: false}
+            ],
+            throwOnError: false
+        };
+
+        function renderAllMath(element = document.body) {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(element, katexConfig);
+            }
+        }
+
+        // 2. Điều hướng 7 Tab chính
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            const targetTab = document.getElementById(tabId);
+            const targetBtn = document.getElementById('btn-' + tabId);
+            if (targetTab) targetTab.classList.remove('hidden');
+            if (targetBtn) targetBtn.classList.add('active');
+
+            if (tabId === 'tab3') {
+                resizeAllSimCanvases();
+            } else if (tabId === 'tab7') {
+                drawLuckyWheel();
+            }
+        }
+
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+                if (!el.classList.contains('hidden')) {
+                    renderAllMath(el);
+                }
+            }
+        }
+
+        // 3. Điều hướng Sub-tab Mô phỏng (Tab 3A, 3B, 3C)
+        let activeSimLab = 'simA';
+        function switchSimLab(simId) {
+            activeSimLab = simId;
+            document.querySelectorAll('.sim-container').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.subtab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(simId).classList.remove('hidden');
+            document.getElementById('btn-' + simId).classList.add('active');
+            resizeAllSimCanvases();
+        }
+
+        // ==================== MÔ PHỎNG LAB 3A, 3B, 3C ====================
+        let simARunning = true;
+        let simATime = 0;
+        let simAHistory = [];
+
+        let simBTime = 0;
+        let simCTime = 0;
+
+        function toggleSimA() {
+            simARunning = !simARunning;
+            const btn = document.getElementById('btn-toggle-simA');
+            btn.innerHTML = simARunning
+                ? '<i class="fa-solid fa-pause mr-1"></i> Tạm dừng'
+                : '<i class="fa-solid fa-play mr-1"></i> Tiếp tục';
+        }
+
+        function resetSimA() {
+            simATime = 0;
+            simAHistory = [];
+        }
+
+        function resizeAllSimCanvases() {
+            ['canvasSimA', 'canvasSimB', 'canvasSimC'].forEach(id => {
+                const canvas = document.getElementById(id);
+                if (canvas && canvas.parentElement) {
+                    const rect = canvas.parentElement.getBoundingClientRect();
+                    if (rect.width > 0 && rect.height > 0) {
+                        canvas.width = rect.width;
+                        canvas.height = Math.max(rect.height, 380);
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('resize', resizeAllSimCanvases);
+
+        // Vẽ mũi tên vector
+        function drawVectorArrow(ctx, x1, y1, x2, y2, color, label) {
+            const headlen = 8;
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            if (Math.hypot(dx, dy) < 2) return;
+            const angle = Math.atan2(dy, dx);
+            ctx.save();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - headlen * Math.cos(angle - Math.PI / 6), y2 - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(x2 - headlen * Math.cos(angle + Math.PI / 6), y2 - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+
+            if (label) {
+                ctx.font = 'bold 12px Inter, sans-serif';
+                ctx.fillText(label, x2 + 6, y2 - 6);
+            }
+            ctx.restore();
+        }
+
+        // Vòng lặp chính cho 3 Lab
+        function animateSimulations() {
+            const dt = 0.025;
+
+            // --- LAB 3A ---
+            if (activeSimLab === 'simA') {
+                const A = parseFloat(document.getElementById('inp-simA-A').value);
+                const w = parseFloat(document.getElementById('inp-simA-w').value);
+                const phi = parseFloat(document.getElementById('inp-simA-phi').value);
+
+                document.getElementById('lbl-simA-A').textContent = A.toFixed(1) + ' cm';
+                document.getElementById('lbl-simA-w').textContent = w.toFixed(1) + ' rad/s';
+                document.getElementById('lbl-simA-phi').textContent = phi.toFixed(2) + ' rad';
+
+                if (simARunning) {
+                    simATime += dt;
+                }
+
+                const phase = w * simATime + phi;
+                const x = A * Math.cos(phase);
+                const v = -w * A * Math.sin(phase);
+                const a = -w * w * x;
+                const T = (2 * Math.PI) / w;
+
+                document.getElementById('out-simA-t').textContent = simATime.toFixed(2) + ' s';
+                document.getElementById('out-simA-T').textContent = T.toFixed(2) + ' s';
+                document.getElementById('out-simA-x').textContent = (x >= 0 ? '+' : '') + x.toFixed(2) + ' cm';
+                document.getElementById('out-simA-v').textContent = (v >= 0 ? '+' : '') + v.toFixed(2) + ' cm/s';
+                document.getElementById('out-simA-a').textContent = (a >= 0 ? '+' : '') + a.toFixed(2) + ' cm/s²';
+
+                if (simARunning) {
+                    simAHistory.unshift({ x, v, a });
+                    if (simAHistory.length > 260) simAHistory.pop();
+                }
+
+                const canvas = document.getElementById('canvasSimA');
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    const W = canvas.width;
+                    const H = canvas.height;
+                    ctx.clearRect(0, 0, W, H);
+
+                    const scale = Math.min(W * 0.16, H * 0.32) / 12; // pixels per cm
+                    const cx = W * 0.25;
+                    const cy = H * 0.45;
+                    const R = A * scale;
+
+                    // Vẽ trục tọa độ đường tròn pha
+                    ctx.strokeStyle = '#cbd5e1';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(cx - 13 * scale, cy);
+                    ctx.lineTo(cx + 13 * scale, cy);
+                    ctx.moveTo(cx, cy - 13 * scale);
+                    ctx.lineTo(cx, cy + 13 * scale);
+                    ctx.stroke();
+
+                    // Đường tròn quỹ đạo bán kính A
+                    ctx.strokeStyle = '#94a3b8';
+                    ctx.setLineDash([4, 4]);
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, R, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    // Điểm M trên đường tròn
+                    const mx = cx + R * Math.cos(phase);
+                    const my = cy - R * Math.sin(phase);
+
+                    // Điểm hình chiếu P trên trục Ox
+                    const px = mx;
+                    const py = cy + 14 * scale;
+
+                    // Trục dao động Ox bên dưới đường tròn
+                    ctx.strokeStyle = '#334155';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx - 13 * scale, py);
+                    ctx.lineTo(cx + 13 * scale, py);
+                    ctx.stroke();
+                    ctx.fillStyle = '#334155';
+                    ctx.font = 'bold 12px Inter';
+                    ctx.fillText('O', cx - 4, py + 16);
+                    ctx.fillText('+A', cx + R - 8, py + 16);
+                    ctx.fillText('-A', cx - R - 8, py + 16);
+                    ctx.fillText('x', cx + 13 * scale + 5, py + 4);
+
+                    // Đường gióng từ M xuống P
+                    ctx.strokeStyle = '#10b981';
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(mx, my);
+                    ctx.lineTo(px, py);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    // Bán kính OM
+                    ctx.strokeStyle = '#1e40af';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(mx, my);
+                    ctx.stroke();
+
+                    // Vẽ chất điểm M
+                    ctx.fillStyle = '#1e40af';
+                    ctx.beginPath();
+                    ctx.arc(mx, my, 6, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillText('M', mx + 8, my - 6);
+
+                    // Vẽ chất điểm P (dao động điều hòa)
+                    ctx.fillStyle = '#059669';
+                    ctx.beginPath();
+                    ctx.arc(px, py, 8, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Vẽ vector v và a tại P
+                    drawVectorArrow(ctx, px, py - 12, px + v * 1.8, py - 12, '#0284c7', 'v⃗');
+                    drawVectorArrow(ctx, px, py - 26, px + a * 0.6, py - 26, '#e11d48', 'a⃗');
+
+                    // Vẽ đồ thị x(t) bên phải
+                    const gx0 = W * 0.52;
+                    const gw = W * 0.44;
+                    ctx.strokeStyle = '#cbd5e1';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(gx0, cy);
+                    ctx.lineTo(gx0 + gw, cy);
+                    ctx.moveTo(gx0, cy - 13 * scale);
+                    ctx.lineTo(gx0, cy + 13 * scale);
+                    ctx.stroke();
+                    ctx.fillStyle = '#475569';
+                    ctx.fillText('Đồ thị x(t) & v(t)', gx0 + 10, cy - 12 * scale);
+
+                    // Đường cong x(t)
+                    ctx.strokeStyle = '#059669';
+                    ctx.lineWidth = 2.5;
+                    ctx.beginPath();
+                    for (let i = 0; i < simAHistory.length; i++) {
+                        const hx = gx0 + (i / 260) * gw;
+                        const hy = cy - simAHistory[i].x * scale;
+                        if (i === 0) ctx.moveTo(hx, hy);
+                        else ctx.lineTo(hx, hy);
+                    }
+                    ctx.stroke();
+
+                    // Đường cong v(t) tỉ lệ nhỏ
+                    ctx.strokeStyle = '#0284c7';
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    for (let i = 0; i < simAHistory.length; i++) {
+                        const hx = gx0 + (i / 260) * gw;
+                        const hy = cy - (simAHistory[i].v / w) * scale * 0.7;
+                        if (i === 0) ctx.moveTo(hx, hy);
+                        else ctx.lineTo(hx, hy);
+                    }
+                    ctx.stroke();
+                }
+            }
+
+            // --- LAB 3B: CON LẮC LÒ XO & PARABOL NĂNG LƯỢNG ---
+            if (activeSimLab === 'simB') {
+                const m = parseFloat(document.getElementById('inp-simB-m').value);
+                const k = parseFloat(document.getElementById('inp-simB-k').value);
+                const A_cm = parseFloat(document.getElementById('inp-simB-A').value);
+                const A_m = A_cm / 100;
+
+                document.getElementById('lbl-simB-m').textContent = m.toFixed(2) + ' kg';
+                document.getElementById('lbl-simB-k').textContent = k.toFixed(0) + ' N/m';
+                document.getElementById('lbl-simB-A').textContent = A_cm.toFixed(1) + ' cm';
+
+                const w = Math.sqrt(k / m);
+                const T = (2 * Math.PI) / w;
+                simBTime += dt;
+
+                const x_cm = A_cm * Math.cos(w * simBTime * 0.35); // làm chậm vừa phải để dễ quan sát
+                const x_m = x_cm / 100;
+                const W = 0.5 * k * A_m * A_m;
+                const Wt = 0.5 * k * x_m * x_m;
+                const Wd = Math.max(0, W - Wt);
+
+                document.getElementById('out-simB-w').textContent = w.toFixed(2) + ' rad/s';
+                document.getElementById('out-simB-T').textContent = T.toFixed(2) + ' s';
+                document.getElementById('out-simB-Wd').textContent = Wd.toFixed(3) + ' J';
+                document.getElementById('out-simB-Wt').textContent = Wt.toFixed(3) + ' J';
+                document.getElementById('out-simB-W').textContent = W.toFixed(3) + ' J';
+
+                const canvas = document.getElementById('canvasSimB');
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    const W_c = canvas.width;
+                    const H_c = canvas.height;
+                    ctx.clearRect(0, 0, W_c, H_c);
+
+                    // Nửa trên: Vẽ Con lắc lò xo ngang
+                    const wallX = 40;
+                    const eqX = W_c * 0.28;
+                    const scaleX = (W_c * 0.16) / 14;
+                    const massX = eqX + x_cm * scaleX;
+                    const springY = H_c * 0.32;
+
+                    // Tường & Mặt sàn
+                    ctx.strokeStyle = '#475569';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(wallX, springY - 40);
+                    ctx.lineTo(wallX, springY + 25);
+                    ctx.lineTo(W_c * 0.5, springY + 25);
+                    ctx.stroke();
+
+                    // Lò xo ziczac
+                    const coils = 14;
+                    const springLen = (massX - 22) - wallX;
+                    ctx.strokeStyle = '#64748b';
+                    ctx.lineWidth = 2.5;
+                    ctx.beginPath();
+                    ctx.moveTo(wallX, springY);
+                    for (let i = 1; i <= coils; i++) {
+                        const sx = wallX + (i - 0.5) * (springLen / coils);
+                        const sy = springY + (i % 2 === 0 ? 12 : -12);
+                        ctx.lineTo(sx, sy);
+                    }
+                    ctx.lineTo(massX - 22, springY);
+                    ctx.stroke();
+
+                    // Vạch VTCB O
+                    ctx.strokeStyle = '#94a3b8';
+                    ctx.setLineDash([4, 4]);
+                    ctx.beginPath();
+                    ctx.moveTo(eqX, springY - 45);
+                    ctx.lineTo(eqX, springY + 45);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = '#334155';
+                    ctx.font = 'bold 12px Inter';
+                    ctx.fillText('VTCB O', eqX - 20, springY + 42);
+
+                    // Vật nặng m
+                    ctx.fillStyle = '#2563eb';
+                    ctx.beginPath();
+                    ctx.roundRect(massX - 22, springY - 22, 44, 44, 8);
+                    ctx.fill();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText('m', massX - 6, springY + 4);
+
+                    // Vector Lực kéo về F = -kx
+                    const F_scale = ( -k * x_m ) * 8;
+                    drawVectorArrow(ctx, massX, springY - 30, massX + F_scale, springY - 30, '#e11d48', 'F⃗_kv');
+
+                    // Nửa phải: Đồ thị Parabol Thế năng Wt(x) & Động năng Wd(x)
+                    const gx = W_c * 0.74;
+                    const gy = H_c * 0.80;
+                    const gHalfW = W_c * 0.18;
+                    const gHeight = H_c * 0.62;
+
+                    // Trục đồ thị năng lượng
+                    ctx.strokeStyle = '#64748b';
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(gx - gHalfW - 20, gy);
+                    ctx.lineTo(gx + gHalfW + 20, gy);
+                    ctx.moveTo(gx, gy + 10);
+                    ctx.lineTo(gx, gy - gHeight - 20);
+                    ctx.stroke();
+
+                    const curHalfW = (A_cm / 14) * gHalfW;
+                    // Đường Cơ năng W (ngang)
+                    ctx.strokeStyle = '#059669';
+                    ctx.lineWidth = 2.5;
+                    ctx.beginPath();
+                    ctx.moveTo(gx - curHalfW, gy - gHeight);
+                    ctx.lineTo(gx + curHalfW, gy - gHeight);
+                    ctx.stroke();
+
+                    // Parabol Thế năng Wt (màu cam)
+                    ctx.strokeStyle = '#f59e0b';
+                    ctx.beginPath();
+                    for (let u = -1; u <= 1.01; u += 0.05) {
+                        const px = gx + u * curHalfW;
+                        const py = gy - (u * u) * gHeight;
+                        if (u === -1) ctx.moveTo(px, py);
+                        else ctx.lineTo(px, py);
+                    }
+                    ctx.stroke();
+
+                    // Parabol Động năng Wd (màu xanh dương)
+                    ctx.strokeStyle = '#0ea5e9';
+                    ctx.beginPath();
+                    for (let u = -1; u <= 1.01; u += 0.05) {
+                        const px = gx + u * curHalfW;
+                        const py = gy - (1 - u * u) * gHeight;
+                        if (u === -1) ctx.moveTo(px, py);
+                        else ctx.lineTo(px, py);
+                    }
+                    ctx.stroke();
+
+                    // Điểm trạng thái hiện tại trên 2 parabol
+                    const uCur = x_cm / A_cm;
+                    const curPx = gx + uCur * curHalfW;
+                    const curPyWt = gy - (uCur * uCur) * gHeight;
+                    const curPyWd = gy - (1 - uCur * uCur) * gHeight;
+
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.beginPath();
+                    ctx.arc(curPx, curPyWt, 6, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = '#0ea5e9';
+                    ctx.beginPath();
+                    ctx.arc(curPx, curPyWd, 6, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = '#1e293b';
+                    ctx.fillText('-A', gx - curHalfW - 8, gy + 18);
+                    ctx.fillText('+A', gx + curHalfW - 8, gy + 18);
+                    ctx.fillText('O', gx - 4, gy + 18);
+                    ctx.fillText('Năng lượng (W, Wd, Wt)', gx - 65, gy - gHeight - 25);
+                }
+            }
+
+            // --- LAB 3C: TẮT DẦN & ĐƯỜNG CONG CỘNG HƯỞNG ---
+            if (activeSimLab === 'simC') {
+                const f0 = parseFloat(document.getElementById('inp-simC-f0').value);
+                const fn = parseFloat(document.getElementById('inp-simC-fn').value);
+                const b = parseFloat(document.getElementById('inp-simC-b').value);
+
+                document.getElementById('lbl-simC-f0').textContent = f0.toFixed(1) + ' Hz';
+                document.getElementById('lbl-simC-fn').textContent = fn.toFixed(1) + ' Hz';
+                document.getElementById('lbl-simC-b').textContent = b.toFixed(2);
+
+                const df = Math.abs(fn - f0);
+                // Biên độ cưỡng bức chuẩn hóa
+                const calcAmp = (f) => {
+                    return 2.5 / Math.sqrt(Math.pow(f * f - f0 * f0, 2) + Math.pow(b * f, 2));
+                };
+                const Acb = Math.min(12, calcAmp(fn));
+
+                document.getElementById('out-simC-df').textContent = df.toFixed(2) + ' Hz';
+                document.getElementById('out-simC-Acb').textContent = Acb.toFixed(2) + ' cm';
+                const statusEl = document.getElementById('out-simC-status');
+                if (df < 0.05) {
+                    statusEl.textContent = '🔥 CỘNG HƯỞNG CỰC ĐẠI!';
+                    statusEl.className = 'font-bold text-rose-400';
+                } else {
+                    statusEl.textContent = 'Dao động cưỡng bức ổn định';
+                    statusEl.className = 'font-bold text-emerald-400';
+                }
+
+                simCTime += dt;
+                const canvas = document.getElementById('canvasSimC');
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    const W = canvas.width;
+                    const H = canvas.height;
+                    ctx.clearRect(0, 0, W, H);
+
+                    // Nửa trái: Đồ thị cộng hưởng A(fn)
+                    const lx0 = 45;
+                    const ly0 = H * 0.82;
+                    const lw = W * 0.40;
+                    const lh = H * 0.65;
+
+                    ctx.strokeStyle = '#64748b';
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(lx0, ly0 - lh - 10);
+                    ctx.lineTo(lx0, ly0);
+                    ctx.lineTo(lx0 + lw, ly0);
+                    ctx.stroke();
+
+                    // Vạch f0
+                    const f0X = lx0 + (f0 / 4.2) * lw;
+                    ctx.strokeStyle = '#94a3b8';
+                    ctx.setLineDash([4, 4]);
+                    ctx.beginPath();
+                    ctx.moveTo(f0X, ly0);
+                    ctx.lineTo(f0X, ly0 - lh);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = '#1e40af';
+                    ctx.font = 'bold 12px Inter';
+                    ctx.fillText('f₀ = ' + f0.toFixed(1) + ' Hz', f0X - 25, ly0 + 18);
+
+                    // Vẽ đường cong cộng hưởng
+                    ctx.strokeStyle = '#2563eb';
+                    ctx.lineWidth = 2.5;
+                    ctx.beginPath();
+                    for (let f = 0.2; f <= 4.0; f += 0.04) {
+                        const px = lx0 + (f / 4.2) * lw;
+                        const amp = Math.min(12, calcAmp(f));
+                        const py = ly0 - (amp / 12) * lh;
+                        if (f <= 0.21) ctx.moveTo(px, py);
+                        else ctx.lineTo(px, py);
+                    }
+                    ctx.stroke();
+
+                    // Điểm làm việc hiện tại fn
+                    const fnX = lx0 + (fn / 4.2) * lw;
+                    const fnY = ly0 - (Acb / 12) * lh;
+                    ctx.fillStyle = '#e11d48';
+                    ctx.beginPath();
+                    ctx.arc(fnX, fnY, 7, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillText('A_cb', fnX + 8, fnY - 5);
+
+                    // Nửa phải: Đồ thị Dao động tắt dần theo thời gian
+                    const rx0 = W * 0.54;
+                    const ry0 = H * 0.48;
+                    const rw = W * 0.42;
+                    const rh = H * 0.34;
+
+                    ctx.strokeStyle = '#64748b';
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(rx0, ry0 - rh);
+                    ctx.lineTo(rx0, ry0 + rh);
+                    ctx.moveTo(rx0, ry0);
+                    ctx.lineTo(rx0 + rw, ry0);
+                    ctx.stroke();
+                    ctx.fillStyle = '#334155';
+                    ctx.fillText('Dao động tắt dần với hệ số cản b = ' + b.toFixed(2), rx0 + 10, ry0 - rh - 8);
+
+                    // Đường bao mũ e^(-bt)
+                    ctx.strokeStyle = '#94a3b8';
+                    ctx.setLineDash([3, 3]);
+                    ctx.beginPath();
+                    for (let t = 0; t <= 10; t += 0.1) {
+                        const tx = rx0 + (t / 10) * rw;
+                        const env = rh * Math.exp(-b * 0.9 * t);
+                        if (t === 0) ctx.moveTo(tx, ry0 - env);
+                        else ctx.lineTo(tx, ry0 - env);
+                    }
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    // Đường dao động tắt dần
+                    ctx.strokeStyle = '#059669';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    for (let t = 0; t <= 10; t += 0.03) {
+                        const tx = rx0 + (t / 10) * rw;
+                        const yVal = rh * Math.exp(-b * 0.9 * t) * Math.cos(2 * Math.PI * f0 * t * 0.5);
+                        if (t === 0) ctx.moveTo(tx, ry0 - yVal);
+                        else ctx.lineTo(tx, ry0 - yVal);
+                    }
+                    ctx.stroke();
+                }
+            }
+
+            requestAnimationFrame(animateSimulations);
+        }
+
+        // ==================== TAB 4: MÁY TÍNH THAM SỐ VẬT LÝ ====================
+        const calcModeConfigs = {
+            independent: [
+                { id: 'c_A', label: 'Biên độ dao động A (cm)', placeholder: 'Bỏ trống nếu cần tìm A' },
+                { id: 'c_x', label: 'Li độ tức thời x (cm)', placeholder: 'Bỏ trống nếu cần tìm |x|' },
+                { id: 'c_v', label: 'Tốc độ tức thời |v| (cm/s)', placeholder: 'Bỏ trống nếu cần tìm |v|' },
+                { id: 'c_w', label: 'Tần số góc ω (rad/s)', placeholder: 'Bỏ trống nếu cần tìm ω' }
+            ],
+            spring: [
+                { id: 'c_m', label: 'Khối lượng vật m (kg)', placeholder: 'Bỏ trống nếu cần tìm m' },
+                { id: 'c_k', label: 'Độ cứng lò xo k (N/m)', placeholder: 'Bỏ trống nếu cần tìm k' },
+                { id: 'c_T', label: 'Chu kỳ dao động T (s)', placeholder: 'Bỏ trống nếu cần tìm T' },
+                { id: 'c_As', label: 'Biên độ A (cm) [Tùy chọn để tính Cơ năng W]', placeholder: 'VD: 10' }
+            ],
+            pendulum: [
+                { id: 'c_l', label: 'Chiều dài dây treo ℓ (m)', placeholder: 'Bỏ trống nếu cần tìm ℓ' },
+                { id: 'c_g', label: 'Gia tốc rơi tự do g (m/s²)', placeholder: 'Bỏ trống nếu cần tìm g (VD Mặt Trăng)' },
+                { id: 'c_Tp', label: 'Chu kỳ con lắc đơn T (s)', placeholder: 'Bỏ trống nếu cần tìm T' }
+            ],
+            resonance: [
+                { id: 'c_L', label: 'Khoảng cách giữa 2 gờ/thanh ray L (m)', placeholder: 'Bỏ trống nếu cần tìm L' },
+                { id: 'c_vr', label: 'Tốc độ xe khi rung mạnh nhất v (m/s)', placeholder: 'Bỏ trống nếu cần tìm v' },
+                { id: 'c_Tr', label: 'Chu kỳ dao động riêng của hệ T₀ (s)', placeholder: 'Bỏ trống nếu cần tìm T₀' }
+            ]
+        };
+
+        function updateCalcFields() {
+            const mode = document.getElementById('calc-mode').value;
+            const container = document.getElementById('calc-inputs-container');
+            container.innerHTML = '';
+            calcModeConfigs[mode].forEach(field => {
+                container.innerHTML += `
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">${field.label}</label>
+                        <input type="number" step="any" id="${field.id}" placeholder="${field.placeholder}" class="w-full p-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                `;
+            });
+        }
+
+        function fillSampleCalc() {
+            const mode = document.getElementById('calc-mode').value;
+            if (mode === 'independent') {
+                document.getElementById('c_A').value = '';
+                document.getElementById('c_x').value = '3';
+                document.getElementById('c_v').value = '40';
+                document.getElementById('c_w').value = '10';
+            } else if (mode === 'spring') {
+                // Bài toán ghế đo khối lượng phi hành gia BMMD Đề 1 Câu 23
+                document.getElementById('c_m').value = '';
+                document.getElementById('c_k').value = '16000';
+                document.getElementById('c_T').value = '0.5';
+                document.getElementById('c_As').value = '5';
+            } else if (mode === 'pendulum') {
+                // Bài toán con lắc đơn trên Mặt Trăng Đề 3 Tự luận Bài 1
+                document.getElementById('c_l').value = '1.0';
+                document.getElementById('c_g').value = '';
+                document.getElementById('c_Tp').value = '4.95';
+            } else if (mode === 'resonance') {
+                // Bài toán tàu hỏa Đề 2 Câu 24
+                document.getElementById('c_L').value = '12.5';
+                document.getElementById('c_vr').value = '11.38';
+                document.getElementById('c_Tr').value = '';
+            }
+            solvePhysicsProblem();
+        }
+
+        function solvePhysicsProblem() {
+            const mode = document.getElementById('calc-mode').value;
+            const out = document.getElementById('calc-result-box');
+            const getVal = (id) => {
+                const v = document.getElementById(id)?.value;
+                return (v === '' || v === null || isNaN(parseFloat(v))) ? null : parseFloat(v);
+            };
+
+            let html = '';
+
+            if (mode === 'independent') {
+                const A = getVal('c_A');
+                const x = getVal('c_x');
+                const v = getVal('c_v');
+                const w = getVal('c_w');
+
+                if (A === null && x !== null && v !== null && w !== null) {
+                    const resA = Math.sqrt(x * x + (v * v) / (w * w));
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Tìm biên độ dao động \\( A \\) từ hệ thức độc lập với thời gian.</p>
+                        <p>1. Áp dụng công thức độc lập thời gian giữa li độ \\( x \\) và vận tốc \\( v \\):</p>
+                        \\[ A = \\sqrt{x^2 + \\frac{v^2}{\\omega^2}} \\]
+                        <p>2. Thay số liệu vào biểu thức:</p>
+                        \\[ A = \\sqrt{(${x})^2 + \\frac{(${v})^2}{(${w})^2}} = \\sqrt{${(x*x).toFixed(2)} + ${((v*v)/(w*w)).toFixed(2)}} \\approx ${resA.toFixed(2)} \\text{ cm} \\]
+                        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg font-bold text-emerald-900">
+                            Kết quả: Biên độ dao động \\( A = ${resA.toFixed(2)} \\text{ cm} \\) ; Tốc độ cực đại \\( v_{\\max} = \\omega A = ${(w*resA).toFixed(2)} \\text{ cm/s} \\).
+                        </div>
+                    `;
+                } else if (v === null && A !== null && x !== null && w !== null && Math.abs(x) <= A) {
+                    const resV = w * Math.sqrt(A * A - x * x);
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Tìm tốc độ tức thời \\( |v| \\) khi biết \\( A, x, \\omega \\).</p>
+                        \\[ |v| = \\omega \\sqrt{A^2 - x^2} = ${w} \\sqrt{${A}^2 - (${x})^2} \\approx ${resV.toFixed(2)} \\text{ cm/s} \\]
+                    `;
+                } else if (x === null && A !== null && v !== null && w !== null) {
+                    const inside = A * A - (v * v) / (w * w);
+                    if (inside < 0) {
+                        html = `<p class="text-rose-600 font-bold">⚠️ Dữ liệu không hợp lệ: Tốc độ \\( |v| \\) không thể vượt quá \\( v_{\\max} = \\omega A \\)!</p>`;
+                    } else {
+                        const resX = Math.sqrt(inside);
+                        html = `
+                            <p class="font-bold text-indigo-800">📌 Bài toán: Tìm độ lớn li độ \\( |x| \\).</p>
+                            \\[ |x| = \\sqrt{A^2 - \\frac{v^2}{\\omega^2}} = \\sqrt{${A}^2 - \\frac{${v}^2}{${w}^2}} \\approx ${resX.toFixed(2)} \\text{ cm} \\]
+                        `;
+                    }
+                } else if (w === null && A !== null && x !== null && v !== null && A > Math.abs(x)) {
+                    const resW = Math.abs(v) / Math.sqrt(A * A - x * x);
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Tìm tần số góc \\( \\omega \\).</p>
+                        \\[ \\omega = \\frac{|v|}{\\sqrt{A^2 - x^2}} = \\frac{${Math.abs(v)}}{\\sqrt{${A}^2 - (${x})^2}} \\approx ${resW.toFixed(2)} \\text{ rad/s} \\]
+                    `;
+                } else {
+                    html = `<p class="text-amber-700 font-semibold">⚠️ Vui lòng nhập đúng 3 đại lượng đã biết và để trống 1 đại lượng cần tìm!</p>`;
+                }
+            } else if (mode === 'spring') {
+                const m = getVal('c_m');
+                const k = getVal('c_k');
+                const T = getVal('c_T');
+                const As = getVal('c_As') || 10;
+
+                if (T === null && m !== null && k !== null) {
+                    const resT = 2 * Math.PI * Math.sqrt(m / k);
+                    const W = 0.5 * k * Math.pow(As / 100, 2);
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Tính chu kỳ \\( T \\) và Cơ năng \\( W \\) của Con lắc lò xo.</p>
+                        \\[ T = 2\\pi\\sqrt{\\frac{m}{k}} = 2\\pi\\sqrt{\\frac{${m}}{${k}}} \\approx ${resT.toFixed(3)} \\text{ s} \\]
+                        \\[ W = \\frac{1}{2}kA^2 = \\frac{1}{2} \\cdot ${k} \\cdot (${(As/100).toFixed(3)})^2 \\approx ${W.toFixed(4)} \\text{ J} \\]
+                    `;
+                } else if (m === null && k !== null && T !== null) {
+                    const resM = (k * T * T) / (4 * Math.PI * Math.PI);
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Tính khối lượng \\( m \\) của vật nặng từ chu kỳ \\( T \\) và độ cứng \\( k \\).</p>
+                        \\[ T = 2\\pi\\sqrt{\\frac{m}{k}} \\implies m = \\frac{k \\cdot T^2}{4\\pi^2} \\]
+                        \\[ m = \\frac{${k} \\cdot (${T})^2}{4\\pi^2} \\approx ${resM.toFixed(3)} \\text{ kg} \\]
+                    `;
+                } else if (k === null && m !== null && T !== null) {
+                    const resK = (4 * Math.PI * Math.PI * m) / (T * T);
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Tính độ cứng lò xo \\( k \\).</p>
+                        \\[ k = \\frac{4\\pi^2 m}{T^2} = \\frac{4\\pi^2 \\cdot ${m}}{(${T})^2} \\approx ${resK.toFixed(2)} \\text{ N/m} \\]
+                    `;
+                } else {
+                    html = `<p class="text-amber-700 font-semibold">⚠️ Vui lòng nhập 2 trong 3 đại lượng \\( (m, k, T) \\) và bỏ trống đại lượng còn lại!</p>`;
+                }
+            } else if (mode === 'pendulum') {
+                const l = getVal('c_l');
+                const g = getVal('c_g');
+                const Tp = getVal('c_Tp');
+
+                if (g === null && l !== null && Tp !== null) {
+                    const resG = (4 * Math.PI * Math.PI * l) / (Tp * Tp);
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Xác định gia tốc rơi tự do \\( g \\) bằng Con lắc đơn (Đề 3 - Tự luận Bài 1).</p>
+                        \\[ T = 2\\pi\\sqrt{\\frac{\\ell}{g}} \\implies g = \\frac{4\\pi^2 \\ell}{T^2} \\]
+                        \\[ g = \\frac{4\\pi^2 \\cdot ${l}}{(${Tp})^2} \\approx ${resG.toFixed(2)} \\mathrm{\\ m/s^2} \\]
+                    `;
+                } else if (Tp === null && l !== null && g !== null) {
+                    const resT = 2 * Math.PI * Math.sqrt(l / g);
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Tính chu kỳ \\( T \\) của Con lắc đơn.</p>
+                        \\[ T = 2\\pi\\sqrt{\\frac{\\ell}{g}} = 2\\pi\\sqrt{\\frac{${l}}{${g}}} \\approx ${resT.toFixed(3)} \\text{ s} \\]
+                    `;
+                } else if (l === null && g !== null && Tp !== null) {
+                    const resL = (g * Tp * Tp) / (4 * Math.PI * Math.PI);
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Tính chiều dài \\( \\ell \\) của Con lắc đơn.</p>
+                        \\[ \\ell = \\frac{g \\cdot T^2}{4\\pi^2} = \\frac{${g} \\cdot (${Tp})^2}{4\\pi^2} \\approx ${resL.toFixed(3)} \\text{ m} \\ (\\text{hay } ${(resL*100).toFixed(1)} \\text{ cm}) \\]
+                    `;
+                } else {
+                    html = `<p class="text-amber-700 font-semibold">⚠️ Vui lòng nhập 2 trong 3 đại lượng \\( (\\ell, g, T) \\) và bỏ trống 1 đại lượng cần tìm!</p>`;
+                }
+            } else if (mode === 'resonance') {
+                const L = getVal('c_L');
+                const v = getVal('c_vr');
+                const Tr = getVal('c_Tr');
+
+                if (Tr === null && L !== null && v !== null) {
+                    const resT = L / v;
+                    const l_eq = (9.8 * resT * resT) / (4 * Math.PI * Math.PI);
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Cộng hưởng cơ học khi xe/tàu đi qua thanh ray hoặc gờ giảm tốc (Đề 2 - Câu 24).</p>
+                        <p>1. Khi xảy ra cộng hưởng (biên độ rung cực đại), chu kỳ riêng \\( T_0 \\) bằng thời gian đi hết mỗi đoạn \\( L \\):</p>
+                        \\[ T_0 = \\frac{L}{v} = \\frac{${L}}{${v}} \\approx ${resT.toFixed(3)} \\text{ s} \\]
+                        <p>2. Nếu treo con lắc đơn trên tàu tại nơi có \\( g = 9,8 \\mathrm{\\ m/s^2} \\), chiều dài con lắc đơn là:</p>
+                        \\[ \\ell = \\frac{g T_0^2}{4\\pi^2} \\approx ${(l_eq*100).toFixed(1)} \\text{ cm} \\]
+                    `;
+                } else if (v === null && L !== null && Tr !== null) {
+                    const resV = L / Tr;
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Tìm tốc độ \\( v \\) gây cộng hưởng mạnh nhất.</p>
+                        \\[ v = \\frac{L}{T_0} = \\frac{${L}}{${Tr}} \\approx ${resV.toFixed(2)} \\text{ m/s} = ${(resV*3.6).toFixed(2)} \\text{ km/h} \\]
+                    `;
+                } else if (L === null && v !== null && Tr !== null) {
+                    const resL = v * Tr;
+                    html = `
+                        <p class="font-bold text-indigo-800">📌 Bài toán: Tìm khoảng cách \\( L \\) giữa hai gờ giảm tốc.</p>
+                        \\[ L = v \\cdot T_0 = ${v} \\cdot ${Tr} \\approx ${resL.toFixed(2)} \\text{ m} \\]
+                    `;
+                } else {
+                    html = `<p class="text-amber-700 font-semibold">⚠️ Vui lòng nhập 2 trong 3 đại lượng \\( (L, v, T_0) \\) và bỏ trống 1 đại lượng!</p>`;
+                }
+            }
+
+            out.innerHTML = html;
+            renderAllMath(out);
+        }
+
+        // ==================== TAB 6: INTERACTIVE QUIZ ====================
+        const quizData = [
+            {
+                id: 1,
+                source: "Đề số 1 - Câu 22",
+                question: "Một vật nhỏ dao động điều hòa dọc theo trục \\( Ox \\) với biên độ \\( A = 5 \\text{ cm} \\), chu kỳ \\( T = 2 \\text{ s} \\). Tại thời điểm \\( t = 0 \\), vật đi qua vị trí cân bằng \\( O \\) theo chiều dương. Phương trình dao động của vật là:",
+                options: [
+                    "\\( x = 5\\cos\\left(2\\pi t - \\frac{\\pi}{2}\\right) \\text{ (cm)} \\)",
+                    "\\( x = 5\\cos\\left(2\\pi t + \\frac{\\pi}{2}\\right) \\text{ (cm)} \\)",
+                    "\\( x = 5\\cos\\left(\\pi t + \\frac{\\pi}{2}\\right) \\text{ (cm)} \\)",
+                    "\\( x = 5\\cos\\left(\\pi t - \\frac{\\pi}{2}\\right) \\text{ (cm)} \\)"
+                ],
+                correct: 3,
+                explanation: "Ta có tần số góc \\( \\omega = \\frac{2\\pi}{T} = \\frac{2\\pi}{2} = \\pi \\text{ rad/s} \\). Tại \\( t = 0 \\), vật qua VTCB \\( x = 0 \\) theo chiều dương (\\( v > 0 \\)) nên pha ban đầu \\( \\varphi = -\\frac{\\pi}{2} \\text{ rad} \\). Vậy phương trình là \\( x = 5\\cos\\left(\\pi t - \\frac{\\pi}{2}\\right) \\text{ (cm)} \\)."
+            },
+            {
+                id: 2,
+                source: "Đề số 1 - Câu 20",
+                question: "Một chất điểm dao động tắt dần có biên độ giảm đi \\( 5\\% \\) sau mỗi chu kỳ. Phần năng lượng (cơ năng) của chất điểm bị giảm đi trong một dao động toàn phần là:",
+                options: [
+                    "\\( 5\\% \\)",
+                    "\\( 9,75\\% \\)",
+                    "\\( 9,9\\% \\)",
+                    "\\( 9,5\\% \\)"
+                ],
+                correct: 1,
+                explanation: "Sau một chu kỳ, biên độ còn lại là \\( A' = 0,95 A \\). Vì cơ năng tỉ lệ với bình phương biên độ \\( W \\propto A^2 \\), nên phần năng lượng bị mất đi sau một chu kỳ là: \\[ \\frac{\\Delta W}{W} = 1 - \\left(\\frac{A'}{A}\\right)^2 = 1 - (0,95)^2 = 1 - 0,9025 = 0,0975 = 9,75\\% \\]"
+            },
+            {
+                id: 3,
+                source: "Đề số 3 - Câu 24",
+                question: "Một con lắc lò xo gồm lò xo có độ cứng \\( k = 20 \\text{ N/m} \\) và vật nhỏ khối lượng \\( m \\) đang dao động cưỡng bức dưới tác dụng của ngoại lực \\( F = 5\\cos(10t) \\text{ (N)} \\) (\\( t \\) tính bằng giây). Biết hệ đang xảy ra hiện tượng cộng hưởng. Giá trị của \\( m \\) là:",
+                options: [
+                    "\\( 500 \\text{ g} \\)",
+                    "\\( 125 \\text{ g} \\)",
+                    "\\( 200 \\text{ g} \\)",
+                    "\\( 250 \\text{ g} \\)"
+                ],
+                correct: 2,
+                explanation: "Khi xảy ra hiện tượng cộng hưởng cơ học, tần số góc riêng của hệ bằng tần số góc của ngoại lực cưỡng bức: \\[ \\omega_0 = \\Omega = 10 \\text{ rad/s} \\implies \\sqrt{\\frac{k}{m}} = 10 \\implies m = \\frac{k}{10^2} = \\frac{20}{100} = 0,2 \\text{ kg} = 200 \\text{ g} \\]"
+            },
+            {
+                id: 4,
+                source: "Đề số 4 - Câu 27",
+                question: "Một con lắc lò xo dao động điều hòa với biên độ \\( A = 10 \\text{ cm} \\). Đồ thị biểu diễn mối liên hệ giữa động năng \\( W_{d} \\) và vận tốc \\( v \\) cho biết động năng cực đại là \\( W_{d\\max} = 200 \\text{ mJ} \\) và tốc độ cực đại là \\( v_{\\max} = 20\\pi \\text{ cm/s} \\). Lấy \\( \\pi^2 = 10 \\). Khối lượng \\( m \\) của vật nặng là:",
+                options: [
+                    "\\( 100 \\text{ g} \\)",
+                    "\\( 40 \\text{ g} \\)",
+                    "\\( 4 \\text{ kg} \\)",
+                    "\\( 1 \\text{ kg} \\)"
+                ],
+                correct: 0,
+                explanation: "Đổi đơn vị chuẩn SI: \\( W_{d\\max} = 200 \\text{ mJ} = 0,2 \\text{ J} \\) và \\( v_{\\max} = 20\\pi \\text{ cm/s} = 0,2\\pi \\text{ m/s} \\). Áp dụng công thức động năng cực đại: \\[ W_{d\\max} = \\frac{1}{2}mv_{\\max}^2 \\implies m = \\frac{2 W_{d\\max}}{v_{\\max}^2} = \\frac{2 \\cdot 0,2}{(0,2\\pi)^2} = \\frac{0,4}{0,04 \\cdot 10} = 1 \\text{ kg} \\] Lưu ý: Nếu đề bài lấy \\( W_{d\\max} = 200 \\text{ mJ} \\) ứng với \\( v = 20\\pi \\text{ cm/s} \\) thì \\( m = 1 \\text{ kg} \\); nếu \\( W_{d\\max} = 20 \\text{ mJ} \\) thì \\( m = 0,1 \\text{ kg} = 100 \\text{ g} \\). Theo đáp án chuẩn của đề thi là \\( 1 \\text{ kg} \\) (hoặc \\( 100 \\text{ g} \\) khi quy đổi hệ số)."
+            }
+        ];
+
+        // Điều chỉnh đáp án câu 4 chính xác tuyệt đối về toán học SI: 0,4 / 0,4 = 1 kg (index 3)
+        quizData[3].correct = 3;
+        quizData[3].explanation = "Đổi đơn vị chuẩn SI: \\( W_{d\\max} = 200 \\text{ mJ} = 0,2 \\text{ J} \\) và \\( v_{\\max} = 20\\pi \\text{ cm/s} = 0,2\\pi \\text{ m/s} \\). Áp dụng công thức động năng cực đại: \\[ W_{d\\max} = \\frac{1}{2} m v_{\\max}^2 \\implies m = \\frac{2 W_{d\\max}}{v_{\\max}^2} = \\frac{2 \\cdot 0,2}{0,04 \\cdot \\pi^2} = \\frac{0,4}{0,4} = 1 \\text{ kg} \\]";
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-questions-container');
+            container.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+
+            quizData.forEach((q, qIdx) => {
+                let optionsHTML = '';
+                q.options.forEach((opt, oIdx) => {
+                    optionsHTML += `
+                        <label id="lbl-q${qIdx}-o${oIdx}" class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 hover:bg-blue-50/50 cursor-pointer transition">
+                            <input type="radio" name="quiz-q${qIdx}" value="${oIdx}" class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+                            <span class="font-bold text-slate-700">${letters[oIdx]}.</span>
+                            <span class="text-sm text-slate-800">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                container.innerHTML += `
+                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 font-bold text-xs rounded-lg">Câu ${qIdx + 1} (${q.source})</span>
+                        </div>
+                        <p class="text-sm sm:text-base font-semibold text-slate-800 leading-relaxed">${q.question}</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            ${optionsHTML}
+                        </div>
+                        <div id="exp-q${qIdx}" class="hidden p-4 rounded-xl text-sm leading-relaxed"></div>
+                    </div>
+                `;
+            });
+            renderAllMath(container);
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            const letters = ['A', 'B', 'C', 'D'];
+
+            quizData.forEach((q, qIdx) => {
+                const selected = document.querySelector(`input[name="quiz-q${qIdx}"]:checked`);
+                const expBox = document.getElementById(`exp-q${qIdx}`);
+
+                for (let oIdx = 0; oIdx < 4; oIdx++) {
+                    const lbl = document.getElementById(`lbl-q${qIdx}-o${oIdx}`);
+                    lbl.classList.remove('bg-emerald-100', 'border-emerald-500', 'bg-rose-100', 'border-rose-500');
+                    if (oIdx === q.correct) {
+                        lbl.classList.add('bg-emerald-100', 'border-emerald-500');
+                    }
+                }
+
+                const userVal = selected ? parseInt(selected.value) : -1;
+                if (userVal === q.correct) {
+                    score++;
+                    expBox.className = "p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-950 text-sm space-y-1";
+                    expBox.innerHTML = `<div class="font-bold text-emerald-800">✅ Chính xác! Đáp án đúng là ${letters[q.correct]}.</div><div>${q.explanation}</div>`;
+                } else {
+                    if (userVal !== -1) {
+                        document.getElementById(`lbl-q${qIdx}-o${userVal}`).classList.add('bg-rose-100', 'border-rose-500');
+                    }
+                    expBox.className = "p-4 rounded-xl bg-rose-50 border border-rose-300 text-rose-950 text-sm space-y-1";
+                    expBox.innerHTML = `<div class="font-bold text-rose-800">❌ Chưa chính xác! Đáp án đúng phải là ${letters[q.correct]}.</div><div>${q.explanation}</div>`;
+                }
+                expBox.classList.remove('hidden');
+                // BẮT BUỘC gọi lại renderMathInElement ngay sau khi in lời giải
+                renderMathInElement(expBox, katexConfig);
+            });
+
+            const badge = document.getElementById('quiz-score-badge');
+            document.getElementById('quiz-score-val').textContent = `${score} / ${quizData.length}`;
+            badge.classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-score-badge').classList.add('hidden');
+            renderQuiz();
+        }
+
+        // ==================== TAB 7: TIỆN ÍCH LỚP HỌC ====================
+        // A. VISUAL TIMER
+        let timerTotalSeconds = 180;
+        let timerRemainingSeconds = 180;
+        let timerInterval = null;
+        let timerRunning = false;
+
+        function playBeepAlert() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.6);
+            } catch (e) {}
+        }
+
+        function updateTimerUI() {
+            const mins = Math.floor(timerRemainingSeconds / 60);
+            const secs = timerRemainingSeconds % 60;
+            document.getElementById('timer-display').textContent =
+                String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+
+            const circumference = 326.72;
+            const offset = circumference * (1 - timerRemainingSeconds / timerTotalSeconds);
+            document.getElementById('timer-progress-ring').style.strokeDashoffset = offset;
+        }
+
+        function setTimerPreset(seconds) {
+            pauseTimer();
+            timerTotalSeconds = seconds;
+            timerRemainingSeconds = seconds;
+            document.getElementById('timer-card').classList.remove('timer-finished');
+            document.getElementById('timer-status-text').textContent = 'Sẵn sàng';
+            updateTimerUI();
+        }
+
+        function startPauseTimer() {
+            if (timerRunning) {
+                pauseTimer();
+            } else {
+                if (timerRemainingSeconds <= 0) timerRemainingSeconds = timerTotalSeconds;
+                timerRunning = true;
+                document.getElementById('timer-card').classList.remove('timer-finished');
+                document.getElementById('timer-status-text').textContent = 'Đang đếm ngược...';
+                document.getElementById('btn-timer-start').innerHTML = '<i class="fa-solid fa-pause mr-1"></i> Tạm Dừng';
+                timerInterval = setInterval(() => {
+                    timerRemainingSeconds--;
+                    updateTimerUI();
+                    if (timerRemainingSeconds <= 0) {
+                        pauseTimer();
+                        document.getElementById('timer-card').classList.add('timer-finished');
+                        document.getElementById('timer-status-text').textContent = '🔔 HẾT GIỜ!';
+                        playBeepAlert();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            timerRunning = false;
+            clearInterval(timerInterval);
+            document.getElementById('btn-timer-start').innerHTML = '<i class="fa-solid fa-play mr-1"></i> Bắt Đầu';
+        }
+
+        function resetTimer() {
+            setTimerPreset(timerTotalSeconds);
+        }
+
+        // B. LUCKY WHEEL
+        const studentGroups = {
+            to1: ["An (Tổ 1)", "Bình (Tổ 1)", "Châu (Tổ 1)", "Dũng (Tổ 1)", "Giang (Tổ 1)"],
+            to2: ["Hải (Tổ 2)", "Hương (Tổ 2)", "Khánh (Tổ 2)", "Linh (Tổ 2)", "Minh (Tổ 2)"],
+            to3: ["Nam (Tổ 3)", "Ngọc (Tổ 3)", "Phúc (Tổ 3)", "Quân (Tổ 3)", "Thảo (Tổ 3)"],
+            to4: ["Trang (Tổ 4)", "Tuấn (Tổ 4)", "Việt (Tổ 4)", "Vy (Tổ 4)", "Yến (Tổ 4)"]
+        };
+
+        let wheelNames = [];
+        let wheelAngle = 0;
+        let isSpinning = false;
+        const wheelColors = ['#2563eb', '#059669', '#d97706', '#e11d48', '#7c3aed', '#0284c7', '#0d9488', '#ea580c'];
+
+        function loadWheelGroup() {
+            const g = document.getElementById('wheel-group-select').value;
+            if (g === 'all') {
+                wheelNames = [...studentGroups.to1, ...studentGroups.to2, ...studentGroups.to3, ...studentGroups.to4];
+            } else {
+                wheelNames = [...studentGroups[g]];
+            }
+            document.getElementById('wheel-names-input').value = wheelNames.join('\n');
+            drawLuckyWheel();
+        }
+
+        function updateWheelFromTextarea() {
+            const raw = document.getElementById('wheel-names-input').value;
+            wheelNames = raw.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+            if (wheelNames.length === 0) wheelNames = ["Học sinh 1"];
+            drawLuckyWheel();
+        }
+
+        function drawLuckyWheel() {
+            const canvas = document.getElementById('canvasWheel');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const r = cx - 6;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const n = wheelNames.length;
+            const arc = (2 * Math.PI) / n;
+
+            for (let i = 0; i < n; i++) {
+                const start = wheelAngle + i * arc;
+                const end = start + arc;
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, start, end);
+                ctx.closePath();
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Vẽ tên học sinh
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(start + arc / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 11px Inter, sans-serif';
+                ctx.fillText(wheelNames[i].substring(0, 16), r - 12, 4);
+                ctx.restore();
+            }
+
+            // Tâm vòng quay
+            ctx.beginPath();
+            ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+            ctx.fillStyle = '#1e293b';
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+
+        function spinLuckyWheel() {
+            if (isSpinning || wheelNames.length === 0) return;
+            isSpinning = true;
+            document.getElementById('wheel-winner-box').classList.add('hidden');
+
+            const spinDuration = 3500;
+            const startAngle = wheelAngle;
+            const totalRotation = (Math.PI * 2 * (5 + Math.random() * 4));
+            const startTime = performance.now();
+
+            function step(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / spinDuration, 1);
+                // Ease out cubic
+                const ease = 1 - Math.pow(1 - progress, 3);
+                wheelAngle = startAngle + totalRotation * ease;
+                drawLuckyWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    isSpinning = false;
+                    const n = wheelNames.length;
+                    const arc = (2 * Math.PI) / n;
+                    const normalized = ((2 * Math.PI - (wheelAngle % (2 * Math.PI))) + 2 * Math.PI) % (2 * Math.PI);
+                    const winIdx = Math.floor(normalized / arc) % n;
+
+                    const winBox = document.getElementById('wheel-winner-box');
+                    document.getElementById('wheel-winner-name').textContent = wheelNames[winIdx];
+                    winBox.classList.remove('hidden');
+                    playBeepAlert();
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        // Khởi tạo toàn bộ ứng dụng khi tải trang
+        window.onload = function () {
+            renderAllMath();
+            updateCalcFields();
+            renderQuiz();
+            loadWheelGroup();
+            resizeAllSimCanvases();
+            animateSimulations();
+        };
+    </script>
+</body>
+</html>
