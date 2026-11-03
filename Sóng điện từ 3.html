@@ -1,0 +1,2398 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyên Đề Sóng Điện Từ - Vật Lý 11</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        .tab-btn.active {
+            background-color: #0284c7;
+            color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(2, 132, 199, 0.3);
+        }
+        .spectrum-gradient {
+            background: linear-gradient(90deg, 
+                #1e3a8a 0%, 
+                #2563eb 18%, 
+                #dc2626 35%, 
+                #eab308 42%, 
+                #22c55e 48%, 
+                #3b82f6 53%, 
+                #9333ea 58%, 
+                #6b21a8 72%, 
+                #334155 86%, 
+                #0f172a 100%);
+        }
+        .katex-display {
+            margin: 0.75em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        @keyframes flashRed {
+            0%, 100% { background-color: #fee2e2; border-color: #ef4444; }
+            50% { background-color: #fecaca; border-color: #b91c1c; }
+        }
+        .timer-finished {
+            animation: flashRed 0.8s infinite;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="bg-gradient-to-r from-slate-900 via-sky-900 to-slate-900 text-white shadow-lg border-b-4 border-sky-500">
+        <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="text-center md:text-left">
+                <span class="inline-block px-3 py-1 bg-sky-500/20 border border-sky-400/40 text-sky-300 text-xs font-bold uppercase tracking-widest rounded-full mb-2">
+                    Chương II: Sóng • Bài 11 • Vật Lý 11
+                </span>
+                <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight text-white">
+                    SÓNG ĐIỆN TỪ & THANG SÓNG ĐIỆN TỪ
+                </h1>
+                <p class="mt-1.5 text-sm md:text-base font-medium text-amber-300 flex items-center justify-center md:justify-start gap-2">
+                    <span>🏛️</span> 2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+                </p>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-800/80 px-4 py-2.5 rounded-xl border border-slate-700 text-xs md:text-sm">
+                <div>
+                    <div class="text-slate-400">Hằng số tốc độ ánh sáng</div>
+                    <div class="font-bold text-sky-300">\( c = 3 \cdot 10^8 \text{ m/s} \)</div>
+                </div>
+                <div class="h-8 w-px bg-slate-700"></div>
+                <div>
+                    <div class="text-slate-400">Bản chất sóng</div>
+                    <div class="font-bold text-emerald-400">Sóng ngang (\(\vec{E} \perp \vec{B} \perp \vec{c}\))</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NAVIGATION 7 TABS -->
+        <nav class="bg-slate-800/95 border-t border-slate-700 sticky top-0 z-30 backdrop-blur">
+            <div class="max-w-7xl mx-auto px-2 py-2 flex items-center gap-1.5 overflow-x-auto">
+                <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn active px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold whitespace-nowrap transition flex items-center gap-1.5 text-slate-200 hover:bg-slate-700">
+                    🚀 1. Khởi động
+                </button>
+                <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold whitespace-nowrap transition flex items-center gap-1.5 text-slate-200 hover:bg-slate-700">
+                    📖 2. Cốt lõi Lý thuyết
+                </button>
+                <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold whitespace-nowrap transition flex items-center gap-1.5 text-slate-200 hover:bg-slate-700">
+                    🔬 3. Mô phỏng Tương tác
+                </button>
+                <button onclick="switchTab('tab4')" id="btn-tab4" class="tab-btn px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold whitespace-nowrap transition flex items-center gap-1.5 text-slate-200 hover:bg-slate-700">
+                    🧮 4. Máy tính Tham số
+                </button>
+                <button onclick="switchTab('tab5')" id="btn-tab5" class="tab-btn px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold whitespace-nowrap transition flex items-center gap-1.5 text-slate-200 hover:bg-slate-700">
+                    📝 5. Luyện tập Phân hóa
+                </button>
+                <button onclick="switchTab('tab6')" id="btn-tab6" class="tab-btn px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold whitespace-nowrap transition flex items-center gap-1.5 text-slate-200 hover:bg-slate-700">
+                    🎯 6. Bài Tự đánh giá
+                </button>
+                <button onclick="switchTab('tab7')" id="btn-tab7" class="tab-btn px-3.5 py-2 rounded-lg text-xs md:text-sm font-semibold whitespace-nowrap transition flex items-center gap-1.5 text-slate-200 hover:bg-slate-700">
+                    🛠️ 7. Tiện ích Lớp học
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+
+        <!-- ==================== TAB 1: KHỞI ĐỘNG & THỰC TIỄN ==================== -->
+        <section id="tab1" class="tab-content space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-col md:flex-row gap-6 items-center">
+                    <div class="flex-1 space-y-3">
+                        <span class="px-3 py-1 bg-sky-100 text-sky-800 text-xs font-bold rounded-full uppercase">Tình huống Mở đầu</span>
+                        <h2 class="text-2xl font-bold text-slate-800">Tại sao tín hiệu có thể xuyên qua khoảng không vũ trụ trống rỗng?</h2>
+                        <p class="text-slate-600 leading-relaxed">
+                            Ở bài trước, chúng ta đã biết <strong>sóng cơ học</strong> (như sóng âm, sóng nước) bắt buộc phải có môi trường vật chất đàn hồi (rắn, lỏng, khí) để lan truyền. Thế nhưng, khoảng không gian giữa Trái Đất, Mặt Trăng và Mặt Trời gần như là <strong>chân không tuyệt đối</strong>. 
+                        </p>
+                        <p class="text-slate-600 leading-relaxed">
+                            Vậy bằng cách nào ánh sáng Mặt Trời vẫn chiếu sáng Trái Đất mỗi ngày, và các nhà khoa học NASA vẫn điều khiển được xe tự hành <em>Perseverance</em> trên Sao Hỏa cách chúng ta hàng trăm triệu kilômét?
+                        </p>
+                    </div>
+                    <div class="w-full md:w-80 bg-slate-900 text-white p-5 rounded-xl border border-slate-700 space-y-3">
+                        <div class="text-sky-400 font-bold text-sm flex items-center gap-2">
+                            <span>📡</span> Thông số thực tế từ Vũ trụ
+                        </div>
+                        <div class="text-xs space-y-2 text-slate-300">
+                            <div class="flex justify-between border-b border-slate-700 pb-1">
+                                <span>Khoảng cách Trái Đất - Mặt Trăng:</span>
+                                <span class="font-semibold text-white">\( \approx 384\,400 \text{ km} \)</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-700 pb-1">
+                                <span>Thời gian sóng khứ hồi Mặt Trăng:</span>
+                                <span class="font-semibold text-emerald-400">\( \approx 2,56 \text{ s} \)</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-700 pb-1">
+                                <span>Độ cao vệ tinh địa tĩnh (Vinasat):</span>
+                                <span class="font-semibold text-amber-300">\( 36\,600 \text{ km} \)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Thời gian ánh sáng từ Mặt Trời:</span>
+                                <span class="font-semibold text-sky-300">\( \approx 8 \text{ phút } 20 \text{ s} \)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 Câu hỏi Mâu thuẫn nhận thức -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-bold text-lg mb-3">1</div>
+                        <h3 class="font-bold text-lg text-slate-800 mb-2">Nghịch lý Chân không & Sóng</h3>
+                        <p class="text-sm text-slate-600 mb-4">
+                            Chuông điện reo trong bình kín hút chân không thì ta không nghe thấy tiếng, nhưng ta vẫn nhìn thấy rất rõ búa gõ vào chuông. Tại sao sóng âm bị chặn lại còn ánh sáng thì truyền qua bình thường?
+                        </p>
+                    </div>
+                    <div>
+                        <button onclick="toggleElement('warmup-ans1')" class="w-full py-2 px-4 bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold text-sm rounded-lg transition">
+                            💡 Giải mã bản chất Vật lý
+                        </button>
+                        <div id="warmup-ans1" class="hidden mt-3 p-3 bg-slate-50 rounded-lg text-xs text-slate-700 border border-slate-200 leading-relaxed">
+                            <strong>Giải thích:</strong> Sóng âm là sóng cơ, cần sự dao động của các phân tử khí. Còn ánh sáng có bản chất là <strong>sóng điện từ</strong> — là sự lan truyền của điện từ trường biến thiên, không cần bất kỳ hạt vật chất nào làm môi trường trung gian, tốc độ trong chân không đạt cực đại \( c = 3 \cdot 10^8 \text{ m/s} \).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg mb-3">2</div>
+                        <h3 class="font-bold text-lg text-slate-800 mb-2">Bí ẩn Mặt nạ Thợ hàn & Tầng Ozone</h3>
+                        <p class="text-sm text-slate-600 mb-4">
+                            Tại sao người thợ hàn điện bắt buộc phải đeo mặt nạ kính đen bảo hộ dù chỉ nhìn tia lửa hàn vài giây? Mặt Trời cũng phát ra bức xạ tương tự cực mạnh nhưng tại sao sinh vật trên Trái Đất vẫn an toàn?
+                        </p>
+                    </div>
+                    <div>
+                        <button onclick="toggleElement('warmup-ans2')" class="w-full py-2 px-4 bg-amber-50 hover:bg-amber-100 text-amber-700 font-semibold text-sm rounded-lg transition">
+                            💡 Giải mã bản chất Vật lý
+                        </button>
+                        <div id="warmup-ans2" class="hidden mt-3 p-3 bg-slate-50 rounded-lg text-xs text-slate-700 border border-slate-200 leading-relaxed">
+                            <strong>Giải thích:</strong> Hồ quang điện có nhiệt độ trên \( 2000\text{ }^\circ\text{C} \) phát ra <strong>tia tử ngoại (UV)</strong> bước sóng ngắn (\( 10 \text{ nm} - 400 \text{ nm} \)), tần số cao, năng lượng lớn làm tổn thương giác mạc. Ánh sáng Mặt Trời đi qua khí quyển Trái Đất đã bị <strong>tầng Ozone hấp thụ</strong> phần lớn tia UV nguy hiểm.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg mb-3">3</div>
+                        <h3 class="font-bold text-lg text-slate-800 mb-2">Độ trễ Truyền hình Vệ tinh</h3>
+                        <p class="text-sm text-slate-600 mb-4">
+                            Khi xem truyền hình trực tiếp qua vệ tinh địa tĩnh ở độ cao \( h = 36\,600 \text{ km} \), tại sao hình ảnh và âm thanh luôn trễ hơn thực tế ít nhất khoảng \( 0,25 \text{ s} \) dù sóng truyền nhanh bằng ánh sáng?
+                        </p>
+                    </div>
+                    <div>
+                        <button onclick="toggleElement('warmup-ans3')" class="w-full py-2 px-4 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold text-sm rounded-lg transition">
+                            💡 Giải mã bản chất Vật lý
+                        </button>
+                        <div id="warmup-ans3" class="hidden mt-3 p-3 bg-slate-50 rounded-lg text-xs text-slate-700 border border-slate-200 leading-relaxed">
+                            <strong>Giải thích:</strong> Sóng vi ba phải đi từ đài phát mặt đất lên vệ tinh (\( \ge 36\,600 \text{ km} \)) rồi phát tiếp về chảo thu trên mặt đất (tối đa theo phương tiếp tuyến khoảng \( 42\,521 \text{ km} \)). Tổng quãng đường lên tới \( d \approx 79\,121 \text{ km} \), mất thời gian \( t = \frac{d}{c} \approx 0,264 \text{ s} \).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: CỐT LÕI LÝ THUYẾT ==================== -->
+        <section id="tab2" class="tab-content hidden space-y-6">
+            <!-- 1. Khái niệm & Đặc điểm Sóng điện từ -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold text-sky-900 border-b border-slate-200 pb-3 mb-4 flex items-center gap-2">
+                    <span>⚡</span> I. Khái niệm & Bản chất Vật lý của Sóng Điện Từ
+                </h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="space-y-3 text-sm md:text-base text-slate-700">
+                        <div class="p-3.5 bg-sky-50 border-l-4 border-sky-600 rounded-r-xl">
+                            <strong>Định nghĩa (Thuyết điện từ Maxwell):</strong> Sóng điện từ là điện từ trường biến thiên lan truyền trong không gian.
+                        </div>
+                        <ul class="space-y-2.5 list-disc pl-5">
+                            <li><strong>Môi trường truyền:</strong> Lan truyền được trong mọi môi trường vật chất (rắn, lỏng, khí) và <strong>truyền được cả trong chân không</strong>.</li>
+                            <li><strong>Tốc độ trong chân không:</strong> Mọi sóng điện từ truyền trong chân không với cùng tốc độ lớn nhất bằng tốc độ ánh sáng:
+                                \[ c = 3 \cdot 10^8 \text{ m/s} \]
+                            </li>
+                            <li><strong>Trong môi trường vật chất có chiết suất \( n > 1 \):</strong> Tần số \( f \) không đổi, tốc độ truyền sóng và bước sóng đều giảm \( n \) lần:
+                                \[ v = \frac{c}{n} < c \quad \text{và} \quad \lambda_n = \frac{\lambda}{n} \]
+                            </li>
+                            <li><strong>Bản chất sóng ngang:</strong> Phương truyền sóng vuông góc với phương dao động của cường độ điện trường \( \vec{E} \) và cảm ứng từ \( \vec{B} \).</li>
+                            <li><strong>Quan hệ pha và hướng:</strong> Tại mỗi điểm, \( \vec{E} \) và \( \vec{B} \) luôn <strong>dao động cùng pha</strong>, vuông góc với nhau và vuông góc với phương truyền sóng (tạo thành tam diện thuận theo quy tắc đinh ốc / bàn tay phải).</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 flex flex-col justify-between">
+                        <h3 class="font-bold text-slate-800 mb-3 text-center">Hệ thống Công thức Cốt lõi & Đơn vị SI</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs md:text-sm text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-200 text-slate-800">
+                                        <th class="p-2.5 border border-slate-300">Công thức</th>
+                                        <th class="p-2.5 border border-slate-300">Đại lượng & Ý nghĩa vật lý</th>
+                                        <th class="p-2.5 border border-slate-300">Đơn vị SI</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="p-2.5 border border-slate-300 font-semibold">\( \lambda = c \cdot T = \frac{c}{f} \)</td>
+                                        <td class="p-2.5 border border-slate-300">
+                                            \( \lambda \): Bước sóng trong chân không<br>
+                                            \( f \): Tần số sóng điện từ<br>
+                                            \( T \): Chu kỳ sóng
+                                        </td>
+                                        <td class="p-2.5 border border-slate-300">
+                                            \( \text{m} \)<br>
+                                            \( \text{Hz} \)<br>
+                                            \( \text{s} \)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2.5 border border-slate-300 font-semibold">\( v_2 = \frac{\lambda_2}{\lambda_1} v_1 \)</td>
+                                        <td class="p-2.5 border border-slate-300">Liên hệ tốc độ và bước sóng khi truyền qua 2 môi trường (do \( f \) không đổi)</td>
+                                        <td class="p-2.5 border border-slate-300">\( \text{m/s}, \text{ m} \)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2.5 border border-slate-300 font-semibold">\( I = \frac{P}{4\pi r^2} \)</td>
+                                        <td class="p-2.5 border border-slate-300">
+                                            \( I \): Cường độ sóng đẳng hướng<br>
+                                            \( P \): Công suất nguồn phát<br>
+                                            \( r \): Khoảng cách tới nguồn
+                                        </td>
+                                        <td class="p-2.5 border border-slate-300">
+                                            \( \text{W/m}^2 \)<br>
+                                            \( \text{W} \)<br>
+                                            \( \text{m} \)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2.5 border border-slate-300 font-semibold">\( d = \frac{c \cdot \Delta t}{2} \)</td>
+                                        <td class="p-2.5 border border-slate-300">
+                                            \( d \): Khoảng cách định vị Radar<br>
+                                            \( \Delta t \): Thời gian thu - phát khứ hồi
+                                        </td>
+                                        <td class="p-2.5 border border-slate-300">
+                                            \( \text{m} \)<br>
+                                            \( \text{s} \)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Bảng Thang sóng điện từ -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold text-sky-900 border-b border-slate-200 pb-3 mb-4 flex items-center gap-2">
+                    <span>🌈</span> II. Thang Sóng Điện Từ & Mô Hình Trực Quan (Hình 11.3 SGK)
+                </h2>
+
+                <!-- Sơ đồ Mô hình Thang sóng điện từ chuẩn SGK Hình 11.3 -->
+                <div class="mb-6 bg-slate-950 text-white p-5 rounded-2xl border border-slate-800 shadow-inner">
+                    <div class="flex flex-col md:flex-row items-center justify-between text-xs font-bold uppercase tracking-wider text-amber-300 mb-2 gap-2">
+                        <span>⬅️ Bước sóng ngắn (\(\lambda\) giảm) • Tần số cao (\(f\) tăng)</span>
+                        <span class="px-3 py-1 bg-amber-500/20 border border-amber-400/40 rounded-full">⚡ Năng lượng bức xạ tăng dần (\(\varepsilon = hf\))</span>
+                        <span>Bước sóng dài (\(\lambda\) tăng) • Tần số thấp (\(f\) giảm) ➡️</span>
+                    </div>
+
+                    <!-- SVG Sóng sin biến thiên tần số từ Gamma đến Vô tuyến -->
+                    <div class="w-full overflow-x-auto my-2">
+                        <svg viewBox="0 0 900 185" class="w-full h-auto min-w-[680px]">
+                            <!-- Nền phân vùng -->
+                            <rect x="20" y="10" width="120" height="80" fill="rgba(244,63,94,0.12)" rx="6"/>
+                            <rect x="140" y="10" width="120" height="80" fill="rgba(168,85,247,0.12)" rx="6"/>
+                            <rect x="260" y="10" width="120" height="80" fill="rgba(139,92,246,0.12)" rx="6"/>
+                            <rect x="380" y="10" width="60" height="80" fill="rgba(234,179,8,0.22)" rx="6"/>
+                            <rect x="440" y="10" width="140" height="80" fill="rgba(239,68,68,0.12)" rx="6"/>
+                            <rect x="580" y="10" width="140" height="80" fill="rgba(14,165,233,0.12)" rx="6"/>
+                            <rect x="720" y="10" width="160" height="80" fill="rgba(59,130,246,0.12)" rx="6"/>
+
+                            <!-- Đường sóng sin có bước sóng giãn dần từ trái sang phải -->
+                            <path id="svg- chirped-wave" d="" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+
+                            <!-- Trục Bước sóng (m / nm) -->
+                            <line x1="20" y1="100" x2="880" y2="100" stroke="#94a3b8" stroke-width="1.5"/>
+                            <g fill="#cbd5e1" font-size="11" text-anchor="middle" font-weight="600">
+                                <text x="45" y="116">10⁻⁵ nm</text>
+                                <text x="135" y="116">10⁻³ nm</text>
+                                <text x="235" y="116">1 nm</text>
+                                <text x="410" y="116">0,38–0,76 μm</text>
+                                <text x="545" y="116">10⁶ nm (1 mm)</text>
+                                <text x="695" y="116">1 m</text>
+                                <text x="840" y="116">10³ m (1 km)</text>
+                            </g>
+
+                            <!-- Nhãn tên các vùng bức xạ -->
+                            <g font-size="13" font-weight="bold" text-anchor="middle">
+                                <text x="80" y="140" fill="#fda4af">☢️ Tia Gamma</text>
+                                <text x="200" y="140" fill="#d8b4fe">🦴 Tia X</text>
+                                <text x="320" y="140" fill="#c4b5fd">☀️ Tử ngoại</text>
+                                <text x="410" y="140" fill="#fde047">👁️ Khả kiến</text>
+                                <text x="510" y="140" fill="#fca5a5">🔥 Hồng ngoại</text>
+                                <text x="650" y="140" fill="#7dd3fc">📶 Vi ba</text>
+                                <text x="800" y="140" fill="#93c5fd">📻 Sóng vô tuyến</text>
+                            </g>
+
+                            <!-- Trục Tần số (Hz) -->
+                            <line x1="20" y1="154" x2="880" y2="154" stroke="#64748b" stroke-width="1.5"/>
+                            <g fill="#94a3b8" font-size="11" text-anchor="middle">
+                                <text x="45" y="172">10²⁴ Hz</text>
+                                <text x="135" y="172">10²⁰ Hz</text>
+                                <text x="235" y="172">10¹⁷ Hz</text>
+                                <text x="330" y="172">10¹⁵ Hz</text>
+                                <text x="490" y="172">10¹² Hz</text>
+                                <text x="615" y="172">10¹⁰ Hz</text>
+                                <text x="715" y="172">10⁸ Hz</text>
+                                <text x="800" y="172">10⁵ Hz</text>
+                                <text x="860" y="172">10³ Hz</text>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Dải phóng đại Ánh sáng nhìn thấy (Tím -> Đỏ) -->
+                    <div class="mt-2 pt-3 border-t border-slate-800">
+                        <div class="text-center text-xs text-slate-300 mb-1.5 font-semibold">
+                            🔍 Phóng đại vùng <strong>Ánh sáng nhìn thấy (Khả kiến)</strong>: Quang phổ liên tục từ Tím đến Đỏ
+                        </div>
+                        <div class="h-7 rounded-xl w-full flex items-center justify-between px-4 text-xs font-extrabold text-white shadow-md"
+                             style="background: linear-gradient(90deg, #7e22ce 0%, #4338ca 18%, #0284c7 35%, #16a34a 55%, #eab308 75%, #ea580c 88%, #dc2626 100%);">
+                            <span>Tím (\(\lambda \approx 0,38\text{ }\mu\text{m} \mid f \approx 7,89 \cdot 10^{14}\text{ Hz}\))</span>
+                            <span class="hidden sm:inline">Chàm • Lam • Lục • Vàng • Cam</span>
+                            <span>Đỏ (\(\lambda \approx 0,76\text{ }\mu\text{m} \mid f \approx 3,95 \cdot 10^{14}\text{ Hz}\))</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs md:text-sm text-left border-collapse">
+                        <thead>
+                            <tr class="bg-sky-900 text-white">
+                                <th class="p-3 border border-slate-300">Loại bức xạ</th>
+                                <th class="p-3 border border-slate-300">Phạm vi Bước sóng (\(\lambda\))</th>
+                                <th class="p-3 border border-slate-300">Phạm vi Tần số (\(f\))</th>
+                                <th class="p-3 border border-slate-300">Nguồn phát điển hình</th>
+                                <th class="p-3 border border-slate-300">Ứng dụng thực tiễn</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 border border-slate-200 font-bold text-blue-900">1. Sóng vô tuyến</td>
+                                <td class="p-3 border border-slate-200">\( 1 \text{ mm} \rightarrow 100 \text{ km} \)</td>
+                                <td class="p-3 border border-slate-200">\( 3 \cdot 10^3 \rightarrow 3 \cdot 10^{11} \text{ Hz} \)</td>
+                                <td class="p-3 border border-slate-200">Anten đài phát thanh, truyền hình</td>
+                                <td class="p-3 border border-slate-200">Phát thanh (AM/FM), truyền hình mặt đất (VHF/UHF), thông tin vũ trụ.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 border border-slate-200 font-bold text-sky-700">2. Sóng vi ba</td>
+                                <td class="p-3 border border-slate-200">\( 1 \text{ mm} \rightarrow 1 \text{ m} \)</td>
+                                <td class="p-3 border border-slate-200">\( 3 \cdot 10^8 \rightarrow 3 \cdot 10^{11} \text{ Hz} \)</td>
+                                <td class="p-3 border border-slate-200">Trạm phát sóng di động, súng Magnetron</td>
+                                <td class="p-3 border border-slate-200">Mạng di động 4G/5G, Wifi, truyền thông vệ tinh, radar, lò vi sóng.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 border border-slate-200 font-bold text-red-700">3. Tia hồng ngoại (IR)</td>
+                                <td class="p-3 border border-slate-200">\( 0,76 \text{ }\mu\text{m} \rightarrow 1 \text{ mm} \)</td>
+                                <td class="p-3 border border-slate-200">\( 3 \cdot 10^{11} \rightarrow 3,95 \cdot 10^{14} \text{ Hz} \)</td>
+                                <td class="p-3 border border-slate-200">Mọi vật có nhiệt độ cao hơn môi trường (cơ thể người, bếp than, LED hồng ngoại)</td>
+                                <td class="p-3 border border-slate-200">Tác dụng nhiệt nổi bật: sấy khô nông sản, sưởi ấm y học, điều khiển từ xa, camera nhìn đêm.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 bg-amber-50/40">
+                                <td class="p-3 border border-slate-200 font-bold text-amber-700">4. Ánh sáng nhìn thấy</td>
+                                <td class="p-3 border border-slate-200">\( 0,38 \text{ }\mu\text{m} \rightarrow 0,76 \text{ }\mu\text{m} \)<br><span class="text-xs text-slate-500">(Tím: \( 380 \text{ nm} \) – Đỏ: \( 760 \text{ nm} \))</span></td>
+                                <td class="p-3 border border-slate-200">\( 3,95 \cdot 10^{14} \rightarrow 7,89 \cdot 10^{14} \text{ Hz} \)</td>
+                                <td class="p-3 border border-slate-200">Mặt Trời, bóng đèn, tia chớp, ngọn lửa</td>
+                                <td class="p-3 border border-slate-200">Chiếu sáng, quang hợp, pin quang điện, cáp quang. Duy nhất mắt người nhìn thấy.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 border border-slate-200 font-bold text-purple-700">5. Tia tử ngoại (UV)</td>
+                                <td class="p-3 border border-slate-200">\( 10 \text{ nm} \rightarrow 400 \text{ nm} \)</td>
+                                <td class="p-3 border border-slate-200">\( 7,5 \cdot 10^{14} \rightarrow 3 \cdot 10^{16} \text{ Hz} \)</td>
+                                <td class="p-3 border border-slate-200">Vật có nhiệt độ \( > 2000\text{ }^\circ\text{C} \) (hồ quang điện, đèn hơi thủy ngân, Mặt Trời)</td>
+                                <td class="p-3 border border-slate-200">Khử trùng nước/dụng cụ y tế, tổng hợp vitamin D, tìm vết nứt trên bề mặt kim loại.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 border border-slate-200 font-bold text-slate-800">6. Tia X (Röntgen)</td>
+                                <td class="p-3 border border-slate-200">\( 30 \text{ pm} \rightarrow 3 \text{ nm} \)</td>
+                                <td class="p-3 border border-slate-200">\( 10^{17} \rightarrow 10^{19} \text{ Hz} \)</td>
+                                <td class="p-3 border border-slate-200">Chùm electron tốc độ cao đập vào tấm kim loại nguyên tử lượng lớn (ống tia X)</td>
+                                <td class="p-3 border border-slate-200">Đâm xuyên mạnh: chụp X-quang, CT y tế, soi hành lý sân bay, tìm khuyết tật bên trong vật đúc.</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 border border-slate-200 font-bold text-rose-900">7. Tia Gamma (\(\gamma\))</td>
+                                <td class="p-3 border border-slate-200">\( 10^{-5} \text{ nm} \rightarrow 0,1 \text{ nm} \)</td>
+                                <td class="p-3 border border-slate-200">\( > 3 \cdot 10^{18} \text{ Hz} \)</td>
+                                <td class="p-3 border border-slate-200">Phản ứng hạt nhân, phân rã phóng xạ, vũ trụ</td>
+                                <td class="p-3 border border-slate-200">Dao mổ gamma điều trị khối u não, xạ trị ung thư, kiểm tra khuyết tật công nghiệp siêu dày.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3. Bẫy lý thuyết -->
+            <div class="bg-rose-50 rounded-2xl border-2 border-rose-200 p-6">
+                <h2 class="text-xl font-bold text-rose-800 mb-4 flex items-center gap-2">
+                    <span>⚠️</span> III. Các "Bẫy Lý Thuyết" Học Sinh Hay Mắc Phải
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm">
+                        <div class="font-bold text-rose-700 mb-1">❌ Sai lầm 1: Sóng điện từ truyền từ không khí vào nước thì tần số giảm.</div>
+                        <div class="text-slate-700">✅ <strong>Bản chất đúng:</strong> Khi truyền qua các môi trường khác nhau, <strong>tần số \( f \) và chu kỳ \( T \) luôn KHÔNG ĐỔI</strong>. Chỉ có tốc độ \( v = \frac{c}{n} \) và bước sóng \( \lambda_n = \frac{\lambda}{n} \) cùng giảm đi \( n \) lần.</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm">
+                        <div class="font-bold text-rose-700 mb-1">❌ Sai lầm 2: Tia X hay tia Gamma bị lệch trong điện trường và từ trường.</div>
+                        <div class="text-slate-700">✅ <strong>Bản chất đúng:</strong> Mọi bức xạ trong thang sóng điện từ (kể cả tia X, tia \(\gamma\)) đều <strong>không mang điện tích</strong> nên <strong>KHÔNG bị lệch</strong> trong điện trường và từ trường.</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm">
+                        <div class="font-bold text-rose-700 mb-1">❌ Sai lầm 3: Trong sóng điện từ, \(\vec{E}\) và \(\vec{B}\) vuông góc với nhau nên lệch pha nhau \(\frac{\pi}{2}\).</div>
+                        <div class="text-slate-700">✅ <strong>Bản chất đúng:</strong> \(\vec{E}\) và \(\vec{B}\) <strong>vuông phương</strong> trong không gian (\(\vec{E} \perp \vec{B}\)) nhưng biến thiên <strong>CÙNG PHA</strong> theo thời gian (khi \(E\) cực đại thì \(B\) cũng cực đại).</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm">
+                        <div class="font-bold text-rose-700 mb-1">❌ Sai lầm 4: Tia tử ngoại có bước sóng ngắn nên truyền trong chân không nhanh hơn tia hồng ngoại.</div>
+                        <div class="text-slate-700">✅ <strong>Bản chất đúng:</strong> Trong chân không, <strong>tất cả</strong> các sóng điện từ từ sóng vô tuyến đến tia \(\gamma\) đều có <strong>cùng tốc độ \( c = 3 \cdot 10^8 \text{ m/s} \)</strong>.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: MÔ PHỎNG TƯƠNG TÁC ==================== -->
+        <section id="tab3" class="tab-content hidden space-y-6">
+            <!-- Sub-navigation cho 3 Phòng Lab -->
+            <div class="flex flex-wrap gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-200 items-center justify-between">
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="switchSimMode('wave3d')" id="sim-btn-wave3d" class="px-4 py-2 rounded-xl font-bold text-sm bg-sky-600 text-white shadow">
+                        🌊 Mô hình 1: Sóng Điện Từ 3D (\(\vec{E}, \vec{B}, \vec{c}\))
+                    </button>
+                    <button onclick="switchSimMode('spectrum')" id="sim-btn-spectrum" class="px-4 py-2 rounded-xl font-bold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200">
+                        🌈 Mô hình 2: Khám phá Thang Sóng Điện Từ
+                    </button>
+                    <button onclick="switchSimMode('satellite')" id="sim-btn-satellite" class="px-4 py-2 rounded-xl font-bold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200">
+                        🛰️ Mô hình 3: Vệ tinh Địa tĩnh & Vùng phủ sóng
+                    </button>
+                </div>
+                <div class="text-xs text-slate-500 italic">
+                    💡 Thay đổi các thanh trượt (Inputs) để quan sát trực tiếp sự biến thiên (Outputs)
+                </div>
+            </div>
+
+            <!-- MÔ HÌNH 1: SÓNG ĐIỆN TỪ 3D -->
+            <div id="sim-panel-wave3d" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Cột điều khiển (Inputs) -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+                    <h3 class="font-bold text-lg text-slate-800 border-b pb-2">🎛️ Tham số điều khiển (Inputs)</h3>
+                    
+                    <div>
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span>Tần số tương đối (\(f\)):</span>
+                            <span id="lbl-sim-freq" class="text-sky-600 font-bold">\( 6,0 \cdot 10^{14} \text{ Hz} \)</span>
+                        </div>
+                        <input type="range" id="inp-sim-freq" min="1" max="15" step="0.5" value="6" oninput="updateWaveSimParams()" class="w-full accent-sky-600">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span>Chiết suất môi trường (\(n\)):</span>
+                            <span id="lbl-sim-n" class="text-emerald-600 font-bold">\( n = 1,00 \) (Chân không)</span>
+                        </div>
+                        <input type="range" id="inp-sim-n" min="1.0" max="2.4" step="0.05" value="1.0" oninput="updateWaveSimParams()" class="w-full accent-emerald-600">
+                        <div class="flex gap-1.5 mt-2 flex-wrap">
+                            <button onclick="setRefractiveIndex(1.0)" class="px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded">Chân không (1,0)</button>
+                            <button onclick="setRefractiveIndex(1.33)" class="px-2 py-1 text-xs bg-sky-50 hover:bg-sky-100 text-sky-700 rounded">Nước (1,33)</button>
+                            <button onclick="setRefractiveIndex(1.5)" class="px-2 py-1 text-xs bg-amber-50 hover:bg-amber-100 text-amber-700 rounded">Thủy tinh (1,5)</button>
+                            <button onclick="setRefractiveIndex(2.4)" class="px-2 py-1 text-xs bg-purple-50 hover:bg-purple-100 text-purple-700 rounded">Kim cương (2,4)</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span>Biên độ trường (\(E_0, B_0\)):</span>
+                            <span id="lbl-sim-amp" class="text-rose-600 font-bold">100%</span>
+                        </div>
+                        <input type="range" id="inp-sim-amp" min="40" max="130" step="5" value="100" oninput="updateWaveSimParams()" class="w-full accent-rose-600">
+                    </div>
+
+                    <div class="flex gap-2 pt-2">
+                        <button onclick="toggleWavePause()" id="btn-wave-pause" class="flex-1 py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg text-sm transition">
+                            ⏸️ Tạm dừng
+                        </button>
+                    </div>
+
+                    <!-- Outputs thông số -->
+                    <div class="bg-slate-900 text-white p-4 rounded-xl space-y-2 text-xs">
+                        <div class="font-bold text-sky-400 uppercase tracking-wider mb-1">📊 Đầu ra (Outputs)</div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Tốc độ truyền sóng \(v = \frac{c}{n}\):</span>
+                            <span id="out-sim-v" class="font-bold text-emerald-400">\( 3,00 \cdot 10^8 \text{ m/s} \)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Bước sóng Chân không \(\lambda_0\):</span>
+                            <span id="out-sim-lam0" class="font-bold text-white">\( 500 \text{ nm} \)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Bước sóng trong môi trường \(\lambda\):</span>
+                            <span id="out-sim-lam" class="font-bold text-amber-300">\( 500 \text{ nm} \)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Độ lệch pha \(\Delta \varphi_{E,B}\):</span>
+                            <span class="font-bold text-sky-300">\( 0 \text{ rad} \) (Cùng pha)</span>
+                        </div>
+                    </div>
+
+                    <!-- Hướng dẫn Thử & Sai -->
+                    <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 space-y-1.5">
+                        <div class="font-bold">🧭 Nhiệm vụ "Thử và Sai":</div>
+                        <p>1. Giữ nguyên tần số \( f \), chọn môi trường <strong>Nước (\(n = 1,33\))</strong> hoặc kéo thanh trượt \( n \) tăng lên: Quan sát khoảng cách giữa 2 đỉnh sóng (\(\lambda\)) co ngắn lại hay giãn ra?</p>
+                        <p>2. Bấm <strong>Tạm dừng</strong> tại một thời điểm bất kỳ: Kiểm tra xem khi \(\vec{E}\) (màu đỏ) bằng \(0\) hoặc đạt cực đại thì \(\vec{B}\) (màu xanh) có giá trị như thế nào?</p>
+                    </div>
+                </div>
+
+                <!-- Khu vực Canvas 3D -->
+                <div class="lg:col-span-2 bg-slate-900 rounded-2xl shadow-lg border border-slate-700 p-4 flex flex-col justify-between">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2 text-xs text-slate-300">
+                        <div class="flex items-center gap-4">
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span> Vectơ Cường độ điện trường \(\vec{E}\) (Trục \(Oy\))</span>
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-sky-400 inline-block"></span> Vectơ Cảm ứng từ \(\vec{B}\) (Trục \(Oz\))</span>
+                            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> Phương truyền sóng \(\vec{v}\) (Trục \(Ox\))</span>
+                        </div>
+                    </div>
+                    <canvas id="canvasWave3D" width="760" height="420" class="w-full h-auto bg-slate-950 rounded-xl border border-slate-800"></canvas>
+                    <div class="mt-3 text-center text-xs text-slate-400">
+                        Quy tắc tam diện thuận: Xoay đinh ốc từ \(\vec{E}\) sang \(\vec{B}\) thì chiều tiến của đinh ốc là chiều truyền sóng \(\vec{v}\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÔ HÌNH 2: THANG SÓNG ĐIỆN TỪ TƯƠNG TÁC -->
+            <div id="sim-panel-spectrum" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Cột điều khiển Thang sóng -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+                    <h3 class="font-bold text-lg text-slate-800 border-b pb-2">🌈 Điều khiển Thang Sóng Điện Từ</h3>
+                    
+                    <div>
+                        <div class="flex justify-between text-xs md:text-sm font-medium mb-1">
+                            <span>Số mũ tần số (\(\log_{10} f\)):</span>
+                            <span id="lbl-spec-f" class="text-sky-600 font-bold">\( f = 5,00 \cdot 10^{14} \text{ Hz} \)</span>
+                        </div>
+                        <input type="range" id="inp-spec-logf" min="4" max="21" step="0.05" value="14.7" oninput="updateSpectrumSim()" class="w-full accent-sky-600">
+                        <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+                            <span>\(10^4\text{ Hz}\) (Vô tuyến)</span>
+                            <span>\(10^{14}\text{ Hz}\) (Khả kiến)</span>
+                            <span>\(10^{21}\text{ Hz}\) (Tia \(\gamma\))</span>
+                        </div>
+                    </div>
+
+                    <!-- Nút chọn nhanh 7 vùng bức xạ -->
+                    <div>
+                        <div class="text-xs font-bold text-slate-500 uppercase mb-2">Chọn nhanh vùng bức xạ:</div>
+                        <div class="grid grid-cols-2 gap-1.5 text-xs">
+                            <button onclick="setSpectrumLogF(6.5)" class="p-2 bg-blue-50 hover:bg-blue-100 text-blue-800 rounded-lg font-semibold text-left">📻 1. Sóng vô tuyến</button>
+                            <button onclick="setSpectrumLogF(9.8)" class="p-2 bg-sky-50 hover:bg-sky-100 text-sky-800 rounded-lg font-semibold text-left">📶 2. Sóng vi ba</button>
+                            <button onclick="setSpectrumLogF(13.0)" class="p-2 bg-red-50 hover:bg-red-100 text-red-800 rounded-lg font-semibold text-left">🔥 3. Tia hồng ngoại</button>
+                            <button onclick="setSpectrumLogF(14.75)" class="p-2 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-lg font-semibold text-left">👁️ 4. Ánh sáng khả kiến</button>
+                            <button onclick="setSpectrumLogF(15.8)" class="p-2 bg-purple-50 hover:bg-purple-100 text-purple-800 rounded-lg font-semibold text-left">☀️ 5. Tia tử ngoại</button>
+                            <button onclick="setSpectrumLogF(18.0)" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg font-semibold text-left">🦴 6. Tia X (Röntgen)</button>
+                            <button onclick="setSpectrumLogF(20.2)" class="col-span-2 p-2 bg-rose-50 hover:bg-rose-100 text-rose-800 rounded-lg font-semibold text-center">☢️ 7. Tia Gamma (\(\gamma\))</button>
+                        </div>
+                    </div>
+
+                    <!-- Outputs thông số vật lý -->
+                    <div class="bg-slate-900 text-white p-4 rounded-xl space-y-2 text-xs">
+                        <div class="font-bold text-sky-400 uppercase tracking-wider mb-1">📊 Thông số Bức xạ (Chân không)</div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Loại bức xạ:</span>
+                            <span id="out-spec-name" class="font-bold text-amber-300">Ánh sáng nhìn thấy</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Bước sóng \(\lambda = \frac{c}{f}\):</span>
+                            <span id="out-spec-lam" class="font-bold text-emerald-400">\( 6,00 \cdot 10^{-7} \text{ m} \)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Đổi đơn vị thông dụng:</span>
+                            <span id="out-spec-unit" class="font-bold text-white">\( 600 \text{ nm} \)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Năng lượng \(\varepsilon = hf\):</span>
+                            <span id="out-spec-energy" class="font-bold text-rose-400">\( 2,07 \text{ eV} \)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Tốc độ chân không \(c\):</span>
+                            <span class="font-bold text-sky-300">\( 3 \cdot 10^8 \text{ m/s} \) (Không đổi)</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 space-y-1">
+                        <div class="font-bold">🧭 Nhiệm vụ "Thử và Sai":</div>
+                        <p>Kéo thanh trượt từ <strong>Sóng vô tuyến</strong> sang <strong>Tia Gamma</strong>: Quan sát mật độ gợn sóng trên màn hình Canvas, so sánh <strong>kích thước tương đương</strong> (từ tòa nhà, con người đến hạt nhân nguyên tử) và khả năng đâm xuyên!</p>
+                    </div>
+                </div>
+
+                <!-- Khu vực Canvas Mô hình Thang sóng điện từ -->
+                <div class="lg:col-span-2 bg-slate-900 rounded-2xl shadow-lg border border-slate-700 p-4 flex flex-col justify-between space-y-3">
+                    <canvas id="canvasSpectrum" width="760" height="310" class="w-full h-auto bg-slate-950 rounded-xl border border-slate-800"></canvas>
+                    
+                    <!-- Thẻ chi tiết Nguồn phát, Ứng dụng, Khả năng đâm xuyên -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700">
+                            <div class="text-sky-400 font-bold mb-1">🔦 Nguồn phát chủ yếu</div>
+                            <div id="spec-card-source" class="text-slate-200 leading-relaxed">Mặt Trời, bóng đèn, ngọn lửa, tia chớp...</div>
+                        </div>
+                        <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700">
+                            <div class="text-emerald-400 font-bold mb-1">🛠️ Ứng dụng thực tiễn</div>
+                            <div id="spec-card-app" class="text-slate-200 leading-relaxed">Chiếu sáng, quang hợp, pin quang điện, thông tin cáp quang.</div>
+                        </div>
+                        <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700">
+                            <div class="text-amber-400 font-bold mb-1">🛡️ Đặc tính & Đâm xuyên</div>
+                            <div id="spec-card-pen" class="text-slate-200 leading-relaxed">Duy nhất mắt người nhìn thấy được. Truyền qua không khí, nước, thủy tinh trong suốt.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÔ HÌNH 3: VỆ TINH ĐỊA TĨNH -->
+            <div id="sim-panel-satellite" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+                    <h3 class="font-bold text-lg text-slate-800 border-b pb-2">🛰️ Điều khiển Vệ tinh & Trạm phát</h3>
+                    
+                    <div>
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span>Độ cao vệ tinh (\(h\)):</span>
+                            <span id="lbl-sat-h" class="text-sky-600 font-bold">\( 36\,600 \text{ km} \)</span>
+                        </div>
+                        <input type="range" id="inp-sat-h" min="2000" max="45000" step="200" value="36600" oninput="updateSatelliteSim()" class="w-full accent-sky-600">
+                        <div class="flex gap-1.5 mt-1">
+                            <button onclick="setSatHeight(36600)" class="px-2 py-1 text-xs bg-sky-50 text-sky-700 rounded font-medium">Địa tĩnh SGK (36 600 km)</button>
+                            <button onclick="setSatHeight(20200)" class="px-2 py-1 text-xs bg-emerald-50 text-emerald-700 rounded font-medium">Vệ tinh GPS (20 200 km)</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm font-medium mb-1">
+                            <span>Công suất phát sóng (\(P\)):</span>
+                            <span id="lbl-sat-p" class="text-amber-600 font-bold">\( 25,0 \text{ kW} \)</span>
+                        </div>
+                        <input type="range" id="inp-sat-p" min="1" max="100" step="1" value="25" oninput="updateSatelliteSim()" class="w-full accent-amber-600">
+                    </div>
+
+                    <div class="bg-slate-900 text-white p-4 rounded-xl space-y-2 text-xs">
+                        <div class="font-bold text-sky-400 uppercase tracking-wider mb-1">📡 Thông số Vật lý Vệ tinh</div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Bán kính Trái Đất \(R\):</span>
+                            <span class="font-bold">\( 6\,400 \text{ km} \)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Đoạn tiếp tuyến cực đại \(AB\):</span>
+                            <span id="out-sat-ab" class="font-bold text-emerald-400">\( 42\,521,1 \text{ km} \)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Tổng quãng đường cực đại \(d_{\max}\):</span>
+                            <span id="out-sat-dmax" class="font-bold text-amber-300">\( 79\,121,1 \text{ km} \)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Thời gian truyền cực đại \(t_{\max}\):</span>
+                            <span id="out-sat-tmax" class="font-bold text-sky-300">\( 0,264 \text{ s} \)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Góc phủ sóng xích đạo (\(\pm \varphi\)):</span>
+                            <span id="out-sat-phi" class="font-bold text-purple-300">\( \pm 81^\circ 27' \)</span>
+                        </div>
+                        <div class="flex justify-between border-t border-slate-700 pt-1.5">
+                            <span class="text-slate-400">Cường độ sóng tại tâm \(D\) (\(I_D\)):</span>
+                            <span id="out-sat-id" class="font-bold text-rose-400">\( 1,49 \cdot 10^{-12} \text{ W/m}^2 \)</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 bg-sky-50 border border-sky-200 rounded-xl text-xs text-sky-900 space-y-1">
+                        <div class="font-bold">🧭 Nhiệm vụ "Thử và Sai":</div>
+                        <p>Hãy giảm độ cao vệ tinh xuống \( h = 6\,400 \text{ km} \) (bằng bán kính Trái Đất \( R \)). Khi đó góc giới hạn kinh độ phủ sóng \(\varphi\) bằng bao nhiêu độ? Tại sao cần ít nhất 3 vệ tinh địa tĩnh để phủ sóng toàn bộ xích đạo?</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 bg-slate-900 rounded-2xl shadow-lg border border-slate-700 p-4 flex flex-col justify-between">
+                    <div class="text-xs text-slate-300 mb-2 flex justify-between items-center">
+                        <span>Mô hình Hình học Truyền sóng: Đài phát \(D\) \(\rightarrow\) Vệ tinh \(A\) \(\rightarrow\) Điểm giới hạn tiếp tuyến \(B\)</span>
+                        <span class="px-2 py-0.5 bg-sky-500/20 text-sky-300 rounded">\( AB = \sqrt{(R+h)^2 - R^2} \)</span>
+                    </div>
+                    <canvas id="canvasSatellite" width="760" height="420" class="w-full h-auto bg-slate-950 rounded-xl border border-slate-800"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: MÁY TÍNH THAM SỐ VẬT LÝ ==================== -->
+        <section id="tab4" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold text-sky-900 mb-2">🧮 Máy Tính Giải Toán Sóng Điện Từ (Từng bước KaTeX)</h2>
+                <p class="text-sm text-slate-600 mb-5">
+                    Chọn dạng bài toán, nhập các đại lượng đã biết và <strong>bỏ trống đúng 1 ô cần tìm</strong>, hệ thống sẽ tự động phân tích công thức và trình bày lời giải chi tiết chuẩn SI.
+                </p>
+
+                <!-- Chọn chế độ tính -->
+                <div class="flex flex-wrap gap-2 mb-6 border-b border-slate-200 pb-4">
+                    <button onclick="switchCalcMode('mode1')" id="calc-btn-mode1" class="px-4 py-2 rounded-xl text-sm font-bold bg-sky-600 text-white">
+                        1. Bước sóng - Tần số - Môi trường (\(\lambda, f, n\))
+                    </button>
+                    <button onclick="switchCalcMode('mode2')" id="calc-btn-mode2" class="px-4 py-2 rounded-xl text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">
+                        2. Cường độ sóng Đẳng hướng (\(I, P, r\))
+                    </button>
+                    <button onclick="switchCalcMode('mode3')" id="calc-btn-mode3" class="px-4 py-2 rounded-xl text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">
+                        3. Định vị Radar & Vệ tinh địa tĩnh (\(d, t, h\))
+                    </button>
+                </div>
+
+                <!-- MODE 1: Bước sóng & Tần số -->
+                <div id="calc-panel-mode1" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tần số \( f \) (\(\text{Hz}\))</label>
+                        <input type="number" step="any" id="c1-f" placeholder="Bỏ trống nếu cần tìm (VD: 6e14)" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                        <span class="text-xs text-slate-400">Gợi ý: Nhập 6e14 cho \( 6 \cdot 10^{14} \)</span>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Bước sóng \(\lambda\) trong môi trường (\(\text{m}\))</label>
+                        <input type="number" step="any" id="c1-lam" placeholder="Bỏ trống nếu cần tìm (VD: 5e-7)" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                        <span class="text-xs text-slate-400">Gợi ý: Nhập 5e-7 cho \( 5 \cdot 10^{-7} \text{ m} \)</span>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Chiết suất môi trường \( n \)</label>
+                        <input type="number" step="any" id="c1-n" value="1" placeholder="Mặc định n = 1 (Chân không)" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                        <span class="text-xs text-slate-400">Chân không/Không khí: \( n = 1 \)</span>
+                    </div>
+                </div>
+
+                <!-- MODE 2: Cường độ sóng -->
+                <div id="calc-panel-mode2" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Công suất nguồn phát \( P \) (\(\text{W}\))</label>
+                        <input type="number" step="any" id="c2-p" placeholder="Bỏ trống nếu cần tìm (VD: 25000)" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Khoảng cách \( r \) (\(\text{m}\))</label>
+                        <input type="number" step="any" id="c2-r" placeholder="Bỏ trống nếu cần tìm (VD: 575000)" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Cường độ sóng \( I \) (\(\text{W/m}^2\))</label>
+                        <input type="number" step="any" id="c2-i" placeholder="Bỏ trống nếu cần tìm (VD: 6e-9)" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                    </div>
+                </div>
+
+                <!-- MODE 3: Radar -->
+                <div id="calc-panel-mode3" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Khoảng cách từ Radar đến mục tiêu \( d \) (\(\text{m}\))</label>
+                        <input type="number" step="any" id="c3-d" placeholder="Bỏ trống nếu cần tìm (VD: 3.75e8)" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Thời gian thu - phát khứ hồi \( \Delta t \) (\(\text{s}\))</label>
+                        <input type="number" step="any" id="c3-t" placeholder="Bỏ trống nếu cần tìm (VD: 2.5)" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button onclick="solvePhysicsCalculator()" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl text-sm shadow transition">
+                        ⚡ Phân tích & Giải chi tiết
+                    </button>
+                    <button onclick="fillSampleCalc()" class="px-4 py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-800 font-semibold rounded-xl text-sm border border-amber-200 transition">
+                        📌 Điền số liệu mẫu SGK
+                    </button>
+                    <button onclick="clearCalculator()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition">
+                        🔄 Xóa trắng
+                    </button>
+                </div>
+
+                <!-- Khu vực hiển thị lời giải KaTeX -->
+                <div id="calc-result-box" class="mt-6 p-5 bg-slate-50 rounded-xl border border-slate-200 text-sm space-y-2">
+                    <div class="text-slate-500 italic">Nhập các thông số và nhấn "Phân tích & Giải chi tiết" để xem hướng dẫn biến đổi từng bước...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: PHÒNG LUYỆN TẬP PHÂN HÓA ==================== -->
+        <section id="tab5" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-sky-900">📝 Phòng Luyện Tập Phân Hóa (10 Bài Toán Điển Hình)</h2>
+                        <p class="text-sm text-slate-600">Biên soạn sát với Sách Giáo Khoa, Sách Bài Tập Vật Lý 11 và tích hợp đánh giá Năng lực Số / AI.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="filterPractice('all')" class="prac-filter px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white">Tất cả (10)</button>
+                        <button onclick="filterPractice('level1')" class="prac-filter px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-800">Cấp 1: Nhận biết - Thông hiểu (4)</button>
+                        <button onclick="filterPractice('level2')" class="prac-filter px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-100 text-amber-800">Cấp 2: Vận dụng (3)</button>
+                        <button onclick="filterPractice('level3')" class="prac-filter px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-100 text-purple-800">Cấp 3: Vận dụng cao & Năng lực AI (3)</button>
+                    </div>
+                </div>
+
+                <div id="practice-list" class="space-y-4">
+                    <!-- Được render tự động từ mảng JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: BÀI TỰ ĐÁNH GIÁ (QUIZ) ==================== -->
+        <section id="tab6" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-sky-900">🎯 Bài Tự Đánh Giá Trắc Nghiệm (10 Câu Hỏi)</h2>
+                        <p class="text-sm text-slate-600">Chọn đáp án đúng nhất cho từng câu hỏi và nhấn "Nộp bài & Xem giải thích chi tiết".</p>
+                    </div>
+                    <div id="quiz-score-banner" class="hidden px-4 py-2 rounded-xl bg-sky-50 border border-sky-200 text-sky-900 font-bold text-sm">
+                        Điểm số: <span id="quiz-score-val">0/10</span>
+                    </div>
+                </div>
+
+                <div id="quiz-container" class="space-y-5">
+                    <!-- Render bằng JS -->
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-slate-200 flex flex-wrap gap-3">
+                    <button onclick="submitQuiz()" class="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition">
+                        ✅ Nộp bài & Xem kết quả
+                    </button>
+                    <button onclick="resetQuiz()" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl transition">
+                        🔄 Làm lại đề
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 7: TIỆN ÍCH LỚP HỌC ==================== -->
+        <section id="tab7" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- 1. Đồng hồ đếm ngược (Visual Timer) -->
+                <div id="timer-card" class="bg-white rounded-2xl shadow-sm border-2 border-slate-200 p-6 flex flex-col items-center justify-between">
+                    <div class="w-full flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                        <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">⏱️ Đồng Hồ Đếm Ngược Thảo Luận</h3>
+                        <span id="timer-status-badge" class="px-2.5 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600">Sẵn sàng</span>
+                    </div>
+
+                    <!-- Vòng tròn SVG Progress -->
+                    <div class="relative w-56 h-56 flex items-center justify-center my-2">
+                        <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="52" stroke="#e2e8f0" stroke-width="10" fill="transparent" />
+                            <circle id="timer-ring" cx="60" cy="60" r="52" stroke="#0284c7" stroke-width="10" stroke-linecap="round" fill="transparent" stroke-dasharray="326.72" stroke-dashoffset="0" class="transition-all duration-300" />
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="timer-display" class="text-4xl font-extrabold text-slate-800 tracking-wider font-mono">02:00</span>
+                            <span class="text-xs text-slate-400 mt-1">Phút : Giây</span>
+                        </div>
+                    </div>
+
+                    <!-- Chọn nhanh thời gian -->
+                    <div class="flex flex-wrap justify-center gap-2 my-3">
+                        <button onclick="setTimerSeconds(30)" class="px-3 py-1.5 bg-slate-100 hover:bg-sky-100 hover:text-sky-700 rounded-lg text-xs font-bold transition">30 giây</button>
+                        <button onclick="setTimerSeconds(60)" class="px-3 py-1.5 bg-slate-100 hover:bg-sky-100 hover:text-sky-700 rounded-lg text-xs font-bold transition">1 phút</button>
+                        <button onclick="setTimerSeconds(120)" class="px-3 py-1.5 bg-slate-100 hover:bg-sky-100 hover:text-sky-700 rounded-lg text-xs font-bold transition">2 phút</button>
+                        <button onclick="setTimerSeconds(180)" class="px-3 py-1.5 bg-slate-100 hover:bg-sky-100 hover:text-sky-700 rounded-lg text-xs font-bold transition">3 phút</button>
+                        <button onclick="setTimerSeconds(300)" class="px-3 py-1.5 bg-slate-100 hover:bg-sky-100 hover:text-sky-700 rounded-lg text-xs font-bold transition">5 phút</button>
+                    </div>
+
+                    <!-- Điều khiển Timer -->
+                    <div class="flex gap-3 w-full mt-2">
+                        <button onclick="startPauseTimer()" id="btn-timer-toggle" class="flex-1 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl text-sm shadow transition">
+                            ▶️ Bắt đầu
+                        </button>
+                        <button onclick="resetTimer()" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-sm transition">
+                            🔄 Đặt lại
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. Vòng quay may mắn (Lucky Wheel) -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3 mb-4">
+                        <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">🎡 Vòng Quay Gọi Tên Theo 4 Tổ</h3>
+                        <div class="flex gap-1">
+                            <button onclick="selectWheelGroup('all')" id="grp-all" class="grp-btn px-2.5 py-1 rounded text-xs font-bold bg-sky-600 text-white">Cả lớp</button>
+                            <button onclick="selectWheelGroup('to1')" id="grp-to1" class="grp-btn px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-700">Tổ 1</button>
+                            <button onclick="selectWheelGroup('to2')" id="grp-to2" class="grp-btn px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-700">Tổ 2</button>
+                            <button onclick="selectWheelGroup('to3')" id="grp-to3" class="grp-btn px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-700">Tổ 3</button>
+                            <button onclick="selectWheelGroup('to4')" id="grp-to4" class="grp-btn px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-700">Tổ 4</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                        <div class="relative flex flex-col items-center">
+                            <canvas id="canvasWheel" width="260" height="260" class="max-w-full h-auto"></canvas>
+                            <button onclick="spinLuckyWheel()" id="btn-spin-wheel" class="mt-3 w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold rounded-xl shadow text-sm transition">
+                                🎯 QUAY NGẪU NHIÊN
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase">Danh sách học sinh (Mỗi dòng 1 tên):</label>
+                            <textarea id="wheel-names-input" rows="7" oninput="updateWheelFromTextarea()" class="w-full p-2.5 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none"></textarea>
+                            <p class="text-[11px] text-slate-400">Có thể dán danh sách học sinh thực tế của lớp vào ô trên.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- POPUP CHÚC MỪNG VÒNG QUAY -->
+    <div id="winner-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center shadow-2xl border-2 border-amber-400 space-y-4">
+            <div class="text-5xl">🎉</div>
+            <div class="text-xs font-bold uppercase tracking-widest text-amber-600">Xin chúc mừng học sinh được chọn</div>
+            <div id="winner-name" class="text-2xl md:text-3xl font-extrabold text-sky-900 py-2 bg-amber-50 rounded-xl border border-amber-200">
+                Nguyễn Văn A
+            </div>
+            <p class="text-xs text-slate-500">Hãy đứng dậy trả lời câu hỏi hoặc lên bảng thực hiện nhiệm vụ nhé!</p>
+            <button onclick="closeWinnerModal()" class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl text-sm">
+                Đóng cửa sổ
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-10">
+        <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-2 text-xs md:text-sm">
+            <div class="font-semibold text-slate-200">
+                2026 - GV Nguyễn Xuân Hùng | THPT Lương Thế Vinh - Đức Trọng
+            </div>
+            <div>
+                Học liệu số Tương tác Vật Lý 11 • Chương trình GDPT 2018
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ==================== CẤU HÌNH KATEX ====================
+        const katexConfig = {
+            delimiters: [
+                { left: "\\[", right: "\\]", display: true },
+                { left: "\\(", right: "\\)", display: false }
+            ],
+            throwOnError: false
+        };
+
+        function triggerMathRender(element = document.body) {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(element, katexConfig);
+            }
+        }
+
+        // ==================== CHUYỂN ĐỔI TAB ====================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const target = document.getElementById(tabId);
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (target) target.classList.remove('hidden');
+            if (activeBtn) activeBtn.classList.add('active');
+
+            if (tabId === 'tab3') {
+                updateSatelliteSim();
+                updateSpectrumSim();
+            }
+            triggerMathRender(target);
+        }
+
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+                triggerMathRender(el);
+            }
+        }
+
+        // Vẽ sóng sin biến thiên tần số (Chirped Wave) cho Hình 11.3 ở Tab 2
+        function initStaticChirpedWaveSVG() {
+            const path = document.getElementById('svg- chirped-wave');
+            if (!path) return;
+            let d = "M 25 50 ";
+            let phase = 0;
+            for (let x = 25; x <= 875; x += 2) {
+                const norm = (x - 25) / 850; // 0 (Gamma) -> 1 (Vô tuyến)
+                // Tần số góc giảm dần từ trái qua phải
+                const localFreq = 0.65 * Math.pow(1 - norm * 0.88, 2.4) + 0.025;
+                phase += localFreq;
+                const y = 50 + 30 * Math.sin(phase);
+                d += `L ${x} ${y.toFixed(1)} `;
+            }
+            path.setAttribute('d', d);
+        }
+
+        // ==================== TAB 3: MÔ PHỎNG TƯƠNG TÁC ====================
+        let currentSimMode = 'wave3d';
+        let wavePaused = false;
+        let wavePhase = 0;
+        let spectrumAnimPhase = 0;
+
+        function switchSimMode(mode) {
+            currentSimMode = mode;
+            const panels = {
+                wave3d: document.getElementById('sim-panel-wave3d'),
+                spectrum: document.getElementById('sim-panel-spectrum'),
+                satellite: document.getElementById('sim-panel-satellite')
+            };
+            const buttons = {
+                wave3d: document.getElementById('sim-btn-wave3d'),
+                spectrum: document.getElementById('sim-btn-spectrum'),
+                satellite: document.getElementById('sim-btn-satellite')
+            };
+
+            Object.keys(panels).forEach(k => {
+                if (k === mode) {
+                    panels[k].classList.remove('hidden');
+                    buttons[k].className = "px-4 py-2 rounded-xl font-bold text-sm bg-sky-600 text-white shadow";
+                } else {
+                    panels[k].classList.add('hidden');
+                    buttons[k].className = "px-4 py-2 rounded-xl font-bold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200";
+                }
+            });
+
+            if (mode === 'satellite') updateSatelliteSim();
+            if (mode === 'spectrum') updateSpectrumSim();
+        }
+
+        // ==================== MÔ HÌNH 2: THANG SÓNG ĐIỆN TỪ TƯƠNG TÁC ====================
+        function setSpectrumLogF(val) {
+            document.getElementById('inp-spec-logf').value = val;
+            updateSpectrumSim();
+        }
+
+        function formatFriendlyWavelength(lam) {
+            if (lam >= 1000) return `\\( ${(lam / 1000).toFixed(2).replace('.', ',')} \\text{ km} \\)`;
+            if (lam >= 1) return `\\( ${lam.toFixed(2).replace('.', ',')} \\text{ m} \\)`;
+            if (lam >= 1e-2) return `\\( ${(lam * 100).toFixed(2).replace('.', ',')} \\text{ cm} \\)`;
+            if (lam >= 1e-3) return `\\( ${(lam * 1000).toFixed(2).replace('.', ',')} \\text{ mm} \\)`;
+            if (lam >= 1e-6) return `\\( ${(lam * 1e6).toFixed(2).replace('.', ',')} \\text{ }\\mu\\text{m} \\)`;
+            if (lam >= 1e-9) return `\\( ${(lam * 1e9).toFixed(2).replace('.', ',')} \\text{ nm} \\)`;
+            return `\\( ${(lam * 1e12).toFixed(2).replace('.', ',')} \\text{ pm} \\)`;
+        }
+
+        function getSpectrumDetails(lam) {
+            if (lam > 1) {
+                return {
+                    name: "Sóng vô tuyến (Radio)",
+                    color: "#3b82f6",
+                    scaleObj: "🏢 Tòa nhà cao tầng / Ngọn núi (1 m – 100 km)",
+                    source: "Phát ra từ anten của đài phát thanh, truyền hình mặt đất.",
+                    app: "Truyền thanh (AM/FM), truyền hình địa phương, liên lạc hàng hải.",
+                    pen: "Phản xạ tốt trên tầng điện li (sóng ngắn) hoặc truyền thẳng (VHF/UHF)."
+                };
+            } else if (lam >= 1e-3) {
+                return {
+                    name: "Sóng vi ba (Microwave)",
+                    color: "#0ea5e9",
+                    scaleObj: "🐝 Con ong / Hạt cát (1 mm – 1 m)",
+                    source: "Anten trạm thu phát di động BTS, súng điện tử Magnetron.",
+                    app: "Điện thoại di động 4G/5G, Wifi, truyền hình vệ tinh, Radar, lò vi sóng.",
+                    pen: "Xuyên qua tầng điện li vào vũ trụ; bị phân tử nước hấp thụ mạnh gây nóng."
+                };
+            } else if (lam > 0.76e-6) {
+                return {
+                    name: "Tia hồng ngoại (Infrared - IR)",
+                    color: "#ef4444",
+                    scaleObj: "🦠 Tế bào vi khuẩn / Đầu kim (0,76 μm – 1 mm)",
+                    source: "Mọi vật có nhiệt độ cao hơn môi trường (cơ thể người 37°C, bếp than, mặt trời).",
+                    app: "Sấy khô công nghiệp, sưởi ấm y tế, điều khiển từ xa (Remote), camera ban đêm.",
+                    pen: "Tác dụng nổi bật nhất là tác dụng nhiệt; mắt người không nhìn thấy."
+                };
+            } else if (lam >= 0.38e-6) {
+                let subColor = "#eab308";
+                let colorName = "Vàng - Lục";
+                const nm = lam * 1e9;
+                if (nm >= 640) { subColor = "#ef4444"; colorName = "Đỏ"; }
+                else if (nm >= 590) { subColor = "#f97316"; colorName = "Da cam"; }
+                else if (nm >= 560) { subColor = "#eab308"; colorName = "Vàng"; }
+                else if (nm >= 500) { subColor = "#22c55e"; colorName = "Lục"; }
+                else if (nm >= 450) { subColor = "#0ea5e9"; colorName = "Lam"; }
+                else { subColor = "#a855f7"; colorName = "Chàm - Tím"; }
+
+                return {
+                    name: `Ánh sáng nhìn thấy (Màu ${colorName})`,
+                    color: subColor,
+                    scaleObj: "🦠 Virus / Đơn bào (380 nm – 760 nm)",
+                    source: "Mặt Trời, tia sét, bóng đèn LED, ngọn lửa.",
+                    app: "Chiếu sáng, quang hợp cây xanh, pin mặt trời, cáp quang.",
+                    pen: "Duy nhất mắt người nhìn thấy được (quang phổ liên tục từ Đỏ đến Tím)."
+                };
+            } else if (lam >= 10e-9) {
+                return {
+                    name: "Tia tử ngoại (Ultraviolet - UV)",
+                    color: "#a855f7",
+                    scaleObj: "🧬 Phân tử ADN / Protein (10 nm – 400 nm)",
+                    source: "Vật có nhiệt độ trên 2000°C (Hồ quang điện hàn, đèn thủy ngân, Mặt Trời).",
+                    app: "Khử trùng thực phẩm/y tế, tổng hợp Vitamin D, tìm vết nứt bề mặt sản phẩm.",
+                    pen: "Kích thích phát quang, ion hóa không khí; bị tầng Ozone, nước và thủy tinh hấp thụ mạnh."
+                };
+            } else if (lam >= 30e-12) {
+                return {
+                    name: "Tia X (Tia Röntgen)",
+                    color: "#cbd5e1",
+                    scaleObj: "⚛️ Nguyên tử (30 pm – 3 nm)",
+                    source: "Chùm electron tốc độ cao đập vào đối âm cực kim loại nặng trong ống tia X.",
+                    app: "Chụp X-quang, CT chẩn đoán y khoa, soi hành lý sân bay, dò khuyết tật bên trong kim loại.",
+                    pen: "Khả năng đâm xuyên mạnh qua mô mềm, gỗ, giấy; bị chặn lại bởi xương và chì."
+                };
+            } else {
+                return {
+                    name: "Tia Gamma (γ)",
+                    color: "#f43f5e",
+                    scaleObj: "💥 Hạt nhân nguyên tử (< 0,1 nm)",
+                    source: "Phản ứng hạt nhân, sự phân rã phóng xạ, bùng nổ vũ trụ.",
+                    app: "Dao mổ Gamma phẫu thuật u não, xạ trị ung thư, kiểm tra kết cấu công nghiệp dày.",
+                    pen: "Bước sóng ngắn nhất, năng lượng lớn nhất và đâm xuyên mạnh nhất (cần bê tông dày/chì để chắn)."
+                };
+            }
+        }
+
+        function updateSpectrumSim() {
+            const logF = parseFloat(document.getElementById('inp-spec-logf').value);
+            const f = Math.pow(10, logF);
+            const c = 3e8;
+            const lam = c / f;
+            // Năng lượng photon eV: E = h*f / e = (6.626e-34 * f) / 1.602e-19
+            const energyEV = (6.626e-34 * f) / 1.602e-19;
+
+            const expF = Math.floor(logF);
+            const mantF = (f / Math.pow(10, expF)).toFixed(2).replace('.', ',');
+            const expLam = Math.floor(Math.log10(lam));
+            const mantLam = (lam / Math.pow(10, expLam)).toFixed(2).replace('.', ',');
+
+            document.getElementById('lbl-spec-f').innerHTML = `\\( f = ${mantF} \\cdot 10^{${expF}} \\text{ Hz} \\)`;
+            document.getElementById('out-spec-lam').innerHTML = `\\( ${mantLam} \\cdot 10^{${expLam}} \\text{ m} \\)`;
+            document.getElementById('out-spec-unit').innerHTML = formatFriendlyWavelength(lam);
+
+            let eStr = "";
+            if (energyEV < 0.01) {
+                const expE = Math.floor(Math.log10(energyEV));
+                const mantE = (energyEV / Math.pow(10, expE)).toFixed(2).replace('.', ',');
+                eStr = `\\( ${mantE} \\cdot 10^{${expE}} \\text{ eV} \\)`;
+            } else if (energyEV < 1000) {
+                eStr = `\\( ${energyEV.toFixed(2).replace('.', ',')} \\text{ eV} \\)`;
+            } else {
+                eStr = `\\( ${(energyEV / 1000).toFixed(1).replace('.', ',')} \\text{ keV} \\)`;
+            }
+            document.getElementById('out-spec-energy').innerHTML = eStr;
+
+            const info = getSpectrumDetails(lam);
+            document.getElementById('out-spec-name').innerText = info.name;
+            document.getElementById('spec-card-source').innerText = info.source;
+            document.getElementById('spec-card-app').innerText = info.app;
+            document.getElementById('spec-card-pen').innerText = info.pen;
+
+            triggerMathRender(document.getElementById('sim-panel-spectrum'));
+            drawSpectrumCanvas(logF, info);
+        }
+
+        function drawSpectrumCanvas(logF, info) {
+            const canvas = document.getElementById('canvasSpectrum');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width;
+            const H = canvas.height;
+            ctx.clearRect(0, 0, W, H);
+
+            // 1. Vẽ thanh Thang sóng điện từ ngang từ logF = 4 đến logF = 21
+            const barX = 40;
+            const barY = 35;
+            const barW = W - 80;
+            const barH = 38;
+
+            const bands = [
+                { name: "Vô tuyến", min: 4, max: 8.5, color: "#1d4ed8" },
+                { name: "Vi ba", min: 8.5, max: 11.5, color: "#0284c7" },
+                { name: "Hồng ngoại", min: 11.5, max: 14.6, color: "#dc2626" },
+                { name: "Khả kiến", min: 14.6, max: 14.9, color: "#eab308" },
+                { name: "Tử ngoại", min: 14.9, max: 16.5, color: "#7e22ce" },
+                { name: "Tia X", min: 16.5, max: 19.0, color: "#475569" },
+                { name: "Tia γ", min: 19.0, max: 21.0, color: "#be123c" }
+            ];
+
+            bands.forEach(b => {
+                const x1 = barX + ((b.min - 4) / 17) * barW;
+                const x2 = barX + ((b.max - 4) / 17) * barW;
+                ctx.fillStyle = b.color;
+                ctx.fillRect(x1, barY, x2 - x1, barH);
+                ctx.strokeStyle = "#0f172a";
+                ctx.lineWidth = 1.5;
+                ctx.strokeRect(x1, barY, x2 - x1, barH);
+
+                if (x2 - x1 > 42) {
+                    ctx.fillStyle = "#ffffff";
+                    ctx.font = "bold 11px Inter";
+                    ctx.textAlign = "center";
+                    ctx.fillText(b.name, (x1 + x2) / 2, barY + 23);
+                }
+            });
+
+            // Con trỏ vị trí hiện tại trên thanh
+            const cursorX = barX + ((logF - 4) / 17) * barW;
+            ctx.fillStyle = "#fde047";
+            ctx.beginPath();
+            ctx.moveTo(cursorX, barY - 4);
+            ctx.lineTo(cursorX - 8, barY - 16);
+            ctx.lineTo(cursorX + 8, barY - 16);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.strokeStyle = "#fde047";
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(cursorX, barY);
+            ctx.lineTo(cursorX, barY + barH + 8);
+            ctx.stroke();
+
+            // Nhãn thước logarit tần số dưới thanh
+            ctx.fillStyle = "#94a3b8";
+            ctx.font = "10px Inter";
+            ctx.textAlign = "center";
+            for (let p = 4; p <= 20; p += 2) {
+                const tx = barX + ((p - 4) / 17) * barW;
+                ctx.fillText(`10^${p} Hz`, tx, barY + barH + 20);
+            }
+
+            // 2. Vẽ sóng điện từ động tương ứng với tần số được chọn
+            const waveCenterY = 185;
+            const waveAmp = 52;
+            const normFreq = (logF - 4) / 17; // 0 -> 1
+            const spatialK = 0.015 + Math.pow(normFreq, 2.1) * 0.38;
+
+            // Vẽ trục cân bằng
+            ctx.strokeStyle = "#334155";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(barX, waveCenterY);
+            ctx.lineTo(barX + barW, waveCenterY);
+            ctx.stroke();
+
+            // Vẽ đường sóng phát sáng
+            ctx.save();
+            ctx.strokeStyle = info.color;
+            ctx.shadowColor = info.color;
+            ctx.shadowBlur = 12;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (let x = 0; x <= barW; x += 2) {
+                const y = waveCenterY + waveAmp * Math.sin(spatialK * x - spectrumAnimPhase);
+                if (x === 0) ctx.moveTo(barX + x, y);
+                else ctx.lineTo(barX + x, y);
+            }
+            ctx.stroke();
+            ctx.restore();
+
+            // 3. Thanh thông tin kích thước so sánh trực quan ở đáy Canvas
+            ctx.fillStyle = "#1e293b";
+            ctx.fillRect(barX, H - 46, barW, 34);
+            ctx.strokeStyle = "#334155";
+            ctx.strokeRect(barX, H - 46, barW, 34);
+
+            ctx.fillStyle = "#38bdf8";
+            ctx.font = "bold 12px Inter";
+            ctx.textAlign = "left";
+            ctx.fillText(`📏 Kích thước bước sóng tương đương: ${info.scaleObj}`, barX + 14, H - 25);
+
+            ctx.fillStyle = "#fde047";
+            ctx.textAlign = "right";
+            ctx.fillText(info.name, barX + barW - 14, H - 25);
+        }
+
+        function setRefractiveIndex(val) {
+            document.getElementById('inp-sim-n').value = val;
+            updateWaveSimParams();
+        }
+
+        function toggleWavePause() {
+            wavePaused = !wavePaused;
+            const btn = document.getElementById('btn-wave-pause');
+            btn.innerHTML = wavePaused ? '▶️ Tiếp tục chạy' : '⏸️ Tạm dừng';
+        }
+
+        function updateWaveSimParams() {
+            const fVal = parseFloat(document.getElementById('inp-sim-freq').value); // *10^14 Hz
+            const nVal = parseFloat(document.getElementById('inp-sim-n').value);
+            const ampVal = parseFloat(document.getElementById('inp-sim-amp').value);
+
+            let envName = "Môi trường bất kỳ";
+            if (Math.abs(nVal - 1.0) < 0.02) envName = "Chân không";
+            else if (Math.abs(nVal - 1.33) < 0.03) envName = "Nước";
+            else if (Math.abs(nVal - 1.5) < 0.03) envName = "Thủy tinh";
+            else if (Math.abs(nVal - 2.4) < 0.05) envName = "Kim cương";
+
+            document.getElementById('lbl-sim-freq').innerHTML = `\\( ${fVal.toFixed(1).replace('.', ',')} \\cdot 10^{14} \\text{ Hz} \\)`;
+            document.getElementById('lbl-sim-n').innerHTML = `\\( n = ${nVal.toFixed(2).replace('.', ',')} \\) (${envName})`;
+            document.getElementById('lbl-sim-amp').innerText = `${ampVal}%`;
+
+            const v = (3.0 / nVal).toFixed(2).replace('.', ',');
+            const lam0 = Math.round((3e8 / (fVal * 1e14)) * 1e9); // nm
+            const lam = Math.round(lam0 / nVal);
+
+            document.getElementById('out-sim-v').innerHTML = `\\( ${v} \\cdot 10^8 \\text{ m/s} \\)`;
+            document.getElementById('out-sim-lam0').innerHTML = `\\( ${lam0} \\text{ nm} \\)`;
+            document.getElementById('out-sim-lam').innerHTML = `\\( ${lam} \\text{ nm} \\)`;
+
+            triggerMathRender(document.getElementById('sim-panel-wave3d'));
+        }
+
+        function drawWave3D() {
+            const canvas = document.getElementById('canvasWave3D');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width;
+            const H = canvas.height;
+
+            ctx.clearRect(0, 0, W, H);
+
+            const fVal = parseFloat(document.getElementById('inp-sim-freq').value);
+            const nVal = parseFloat(document.getElementById('inp-sim-n').value);
+            const ampScale = parseFloat(document.getElementById('inp-sim-amp').value) / 100;
+
+            const originX = 75;
+            const originY = H / 2;
+            const axisLen = W - 120;
+
+            // Vẽ trục tọa độ Oxyz
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1.5;
+
+            // Trục Oy (Điện trường E - thẳng đứng)
+            ctx.beginPath();
+            ctx.moveTo(originX, originY + 150);
+            ctx.lineTo(originX, originY - 150);
+            ctx.stroke();
+            ctx.fillStyle = '#f87171';
+            ctx.font = 'bold 13px Inter';
+            ctx.fillText('E (Oy)', originX - 20, originY - 160);
+
+            // Trục Oz (Từ trường B - xiên góc 3D)
+            ctx.beginPath();
+            ctx.moveTo(originX + 90, originY - 65);
+            ctx.lineTo(originX - 90, originY + 65);
+            ctx.stroke();
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillText('B (Oz)', originX - 95, originY + 82);
+
+            // Trục Ox (Phương truyền sóng v)
+            ctx.strokeStyle = '#fbbf24';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(originX, originY);
+            ctx.lineTo(originX + axisLen, originY);
+            ctx.stroke();
+            ctx.fillStyle = '#fbbf24';
+            ctx.fillText('Phương truyền sóng v (Ox)', originX + axisLen - 140, originY - 12);
+
+            // Số bước sóng không gian tỷ lệ với f * n
+            const kSpatial = (fVal * nVal) * 0.0042;
+            const maxE = 110 * ampScale;
+
+            // Vẽ các vectơ B (màu xanh da trời, xiên góc)
+            for (let x = 0; x <= axisLen - 20; x += 16) {
+                const val = Math.sin(kSpatial * x - wavePhase);
+                const bx = -val * maxE * 0.55;
+                const by = val * maxE * 0.38;
+
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.65)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(originX + x, originY);
+                ctx.lineTo(originX + x + bx, originY + by);
+                ctx.stroke();
+            }
+
+            // Đường bao B
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            for (let x = 0; x <= axisLen - 20; x += 3) {
+                const val = Math.sin(kSpatial * x - wavePhase);
+                const bx = -val * maxE * 0.55;
+                const by = val * maxE * 0.38;
+                if (x === 0) ctx.moveTo(originX + x + bx, originY + by);
+                else ctx.lineTo(originX + x + bx, originY + by);
+            }
+            ctx.stroke();
+
+            // Vẽ các vectơ E (màu đỏ, thẳng đứng)
+            for (let x = 0; x <= axisLen - 20; x += 16) {
+                const val = Math.sin(kSpatial * x - wavePhase);
+                const ey = -val * maxE;
+
+                ctx.strokeStyle = 'rgba(248, 113, 113, 0.75)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(originX + x, originY);
+                ctx.lineTo(originX + x, originY + ey);
+                ctx.stroke();
+            }
+
+            // Đường bao E
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            for (let x = 0; x <= axisLen - 20; x += 3) {
+                const val = Math.sin(kSpatial * x - wavePhase);
+                const ey = -val * maxE;
+                if (x === 0) ctx.moveTo(originX + x, originY + ey);
+                else ctx.lineTo(originX + x, originY + ey);
+            }
+            ctx.stroke();
+
+            if (!wavePaused) {
+                wavePhase += (0.045 * (fVal / 6)) / nVal;
+            }
+            if (currentSimMode === 'spectrum') {
+                spectrumAnimPhase += 0.08;
+                const logF = parseFloat(document.getElementById('inp-spec-logf').value);
+                const c = 3e8;
+                const lam = c / Math.pow(10, logF);
+                drawSpectrumCanvas(logF, getSpectrumDetails(lam));
+            }
+            requestAnimationFrame(drawWave3D);
+        }
+
+        // ==================== MÔ HÌNH 2: VỆ TINH ĐỊA TĨNH ====================
+        function setSatHeight(h) {
+            document.getElementById('inp-sat-h').value = h;
+            updateSatelliteSim();
+        }
+
+        function updateSatelliteSim() {
+            const h = parseFloat(document.getElementById('inp-sat-h').value); // km
+            const P_kW = parseFloat(document.getElementById('inp-sat-p').value); // kW
+            const R = 6400; // km
+            const c = 3e8; // m/s
+
+            document.getElementById('lbl-sat-h').innerHTML = `\\( ${h.toLocaleString('vi-VN')} \\text{ km} \\)`;
+            document.getElementById('lbl-sat-p').innerHTML = `\\( ${P_kW.toFixed(1).replace('.', ',')} \\text{ kW} \\)`;
+
+            const AC = R + h;
+            const AB = Math.sqrt(AC * AC - R * R);
+            const dMax = h + AB;
+            const tMax = (dMax * 1000) / c;
+            const cosPhi = R / AC;
+            const phiRad = Math.acos(cosPhi);
+            const phiDegTotal = phiRad * (180 / Math.PI);
+            const degInt = Math.floor(phiDegTotal);
+            const minInt = Math.round((phiDegTotal - degInt) * 60);
+
+            const hMeters = h * 1000;
+            const P_W = P_kW * 1000;
+            const I_D = P_W / (4 * Math.PI * hMeters * hMeters);
+
+            document.getElementById('out-sat-ab').innerHTML = `\\( ${AB.toFixed(1).replace('.', ',')} \\text{ km} \\)`;
+            document.getElementById('out-sat-dmax').innerHTML = `\\( ${dMax.toFixed(1).replace('.', ',')} \\text{ km} \\)`;
+            document.getElementById('out-sat-tmax').innerHTML = `\\( ${tMax.toFixed(3).replace('.', ',')} \\text{ s} \\)`;
+            document.getElementById('out-sat-phi').innerHTML = `\\( \\pm ${degInt}^\\circ ${minInt}' \\)`;
+            document.getElementById('out-sat-id').innerHTML = `\\( ${I_D.toExponential(2).replace('.', ',')} \\text{ W/m}^2 \\)`;
+
+            triggerMathRender(document.getElementById('sim-panel-satellite'));
+            drawSatelliteCanvas(R, h, phiRad, AB);
+        }
+
+        function drawSatelliteCanvas(R, h, phiRad, AB) {
+            const canvas = document.getElementById('canvasSatellite');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width;
+            const H = canvas.height;
+            ctx.clearRect(0, 0, W, H);
+
+            const cx = 190;
+            const cy = H / 2;
+            const rPx = 85; // Bán kính Trái Đất trên canvas
+            // Quy đổi khoảng cách vệ tinh hợp lý trên màn hình
+            const ratio = Math.min(4.8, Math.max(1.3, (R + h) / R));
+            const satX = cx + rPx * ratio * 0.95;
+            const satY = cy;
+
+            // Vẽ quỹ đạo vệ tinh
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.25)';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.arc(cx, cy, satX - cx, -0.7, 0.7);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Điểm tiếp tuyến B1, B2
+            const drawPhi = Math.acos(rPx / (satX - cx));
+            const b1x = cx + rPx * Math.cos(drawPhi);
+            const b1y = cy - rPx * Math.sin(drawPhi);
+            const b2x = cx + rPx * Math.cos(drawPhi);
+            const b2y = cy + rPx * Math.sin(drawPhi);
+
+            // Vùng phủ sóng màu xanh nhạt
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.14)';
+            ctx.beginPath();
+            ctx.moveTo(satX, satY);
+            ctx.lineTo(b1x, b1y);
+            ctx.arc(cx, cy, rPx, -drawPhi, drawPhi, false);
+            ctx.closePath();
+            ctx.fill();
+
+            // Trái Đất
+            const grad = ctx.createRadialGradient(cx - 20, cy - 20, 10, cx, cy, rPx);
+            grad.addColorStop(0, '#0284c7');
+            grad.addColorStop(1, '#1e3a8a');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(cx, cy, rPx, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Cung xích đạo được phủ sóng
+            ctx.strokeStyle = '#4ade80';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(cx, cy, rPx, -drawPhi, drawPhi);
+            ctx.stroke();
+
+            // Bán kính CB và góc vuông tại B
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(b1x, b1y);
+            ctx.stroke();
+
+            // Đường nối tâm C - Đài phát D - Vệ tinh A
+            ctx.strokeStyle = '#fbbf24';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(satX, satY);
+            ctx.stroke();
+
+            // Tia tiếp tuyến AB
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(satX, satY);
+            ctx.lineTo(b1x, b1y);
+            ctx.moveTo(satX, satY);
+            ctx.lineTo(b2x, b2y);
+            ctx.stroke();
+
+            // Vẽ Vệ tinh A
+            ctx.fillStyle = '#f59e0b';
+            ctx.beginPath();
+            ctx.arc(satX, satY, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 13px Inter';
+            ctx.fillText('Vệ tinh A', satX - 25, satY - 16);
+
+            // Nhãn các điểm C, D, B
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText('C (Tâm TĐ)', cx - 40, cy + 20);
+            ctx.fillStyle = '#fde047';
+            ctx.fillText('D (Đài phát)', cx + rPx + 6, cy - 8);
+            ctx.fillStyle = '#4ade80';
+            ctx.fillText('B (Tiếp tuyến)', b1x - 20, b1y - 12);
+            ctx.fillText(`h = ${h.toLocaleString('vi-VN')} km`, (cx + rPx + satX) / 2 - 35, cy + 22);
+        }
+
+        // ==================== TAB 4: MÁY TÍNH THAM SỐ VẬT LÝ ====================
+        let currentCalcMode = 'mode1';
+
+        function switchCalcMode(mode) {
+            currentCalcMode = mode;
+            ['mode1', 'mode2', 'mode3'].forEach(m => {
+                document.getElementById('calc-panel-' + m).classList.add('hidden');
+                document.getElementById('calc-btn-' + m).className = "px-4 py-2 rounded-xl text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200";
+            });
+            document.getElementById('calc-panel-' + mode).classList.remove('hidden');
+            document.getElementById('calc-btn-' + mode).className = "px-4 py-2 rounded-xl text-sm font-bold bg-sky-600 text-white";
+        }
+
+        function classifyRadiation(lambdaVac) {
+            if (lambdaVac >= 1) return "Sóng vô tuyến";
+            if (lambdaVac >= 1e-3) return "Sóng vi ba (Sóng vô tuyến cực ngắn)";
+            if (lambdaVac > 0.76e-6) return "Tia hồng ngoại (IR)";
+            if (lambdaVac >= 0.38e-6) return "Ánh sáng nhìn thấy (Khả kiến)";
+            if (lambdaVac >= 10e-9) return "Tia tử ngoại (UV)";
+            if (lambdaVac >= 30e-12) return "Tia X (Tia Röntgen)";
+            return "Tia Gamma (\\(\\gamma\\))";
+        }
+
+        function fillSampleCalc() {
+            if (currentCalcMode === 'mode1') {
+                document.getElementById('c1-f').value = "6e14";
+                document.getElementById('c1-lam').value = "";
+                document.getElementById('c1-n').value = "1.333";
+            } else if (currentCalcMode === 'mode2') {
+                document.getElementById('c2-p').value = "25000";
+                document.getElementById('c2-r').value = "575000";
+                document.getElementById('c2-i').value = "";
+            } else {
+                document.getElementById('c3-d').value = "";
+                document.getElementById('c3-t').value = "2.5";
+            }
+            solvePhysicsCalculator();
+        }
+
+        function clearCalculator() {
+            ['c1-f', 'c1-lam', 'c2-p', 'c2-r', 'c2-i', 'c3-d', 'c3-t'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            document.getElementById('c1-n').value = '1';
+            document.getElementById('calc-result-box').innerHTML = `<div class="text-slate-500 italic">Đã xóa dữ liệu. Hãy nhập các đại lượng đã biết và bỏ trống đại lượng cần tìm.</div>`;
+        }
+
+        function solvePhysicsCalculator() {
+            const box = document.getElementById('calc-result-box');
+            const c = 3e8;
+
+            if (currentCalcMode === 'mode1') {
+                const fStr = document.getElementById('c1-f').value.trim();
+                const lamStr = document.getElementById('c1-lam').value.trim();
+                const nStr = document.getElementById('c1-n').value.trim();
+
+                if (fStr === '' && lamStr !== '' && nStr !== '') {
+                    const lam = parseFloat(lamStr);
+                    const n = parseFloat(nStr);
+                    const v = c / n;
+                    const f = v / lam;
+                    const lam0 = lam * n;
+                    const radType = classifyRadiation(lam0);
+
+                    box.innerHTML = `
+                        <div class="font-bold text-sky-800 text-base mb-2">✅ Kết quả giải tìm Tần số \\( f \\):</div>
+                        <p><strong>Bước 1:</strong> Tính tốc độ truyền sóng điện từ trong môi trường có chiết suất \\( n = ${n} \\):</p>
+                        \\[ v = \\frac{c}{n} = \\frac{3 \\cdot 10^8}{${n}} \\approx ${v.toExponential(3)} \\text{ m/s} \\]
+                        <p><strong>Bước 2:</strong> Áp dụng công thức liên hệ giữa bước sóng và tần số:</p>
+                        \\[ f = \\frac{v}{\\lambda} = \\frac{${v.toExponential(3)}}{${lam.toExponential(3)}} \\approx ${f.toExponential(3)} \\text{ Hz} \\]
+                        <p><strong>Bước 3:</strong> Phân loại bức xạ trong thang sóng điện từ (theo bước sóng chân không \\( \\lambda_0 = n \\cdot \\lambda = ${lam0.toExponential(3)} \\text{ m} \\)):</p>
+                        <div class="p-2.5 bg-sky-100 text-sky-900 rounded-lg font-semibold">👉 Thuộc vùng: ${radType}</div>
+                    `;
+                } else if (lamStr === '' && fStr !== '' && nStr !== '') {
+                    const f = parseFloat(fStr);
+                    const n = parseFloat(nStr);
+                    const lam0 = c / f;
+                    const lam = lam0 / n;
+                    const radType = classifyRadiation(lam0);
+
+                    box.innerHTML = `
+                        <div class="font-bold text-sky-800 text-base mb-2">✅ Kết quả giải tìm Bước sóng \\( \\lambda \\):</div>
+                        <p><strong>Bước 1:</strong> Bước sóng của bức xạ khi truyền trong chân không:</p>
+                        \\[ \\lambda_0 = \\frac{c}{f} = \\frac{3 \\cdot 10^8}{${f.toExponential(3)}} \\approx ${lam0.toExponential(3)} \\text{ m} \\]
+                        <p><strong>Bước 2:</strong> Bước sóng khi truyền trong môi trường có chiết suất \\( n = ${n} \\):</p>
+                        \\[ \\lambda = \\frac{\\lambda_0}{n} = \\frac{${lam0.toExponential(3)}}{${n}} \\approx ${lam.toExponential(3)} \\text{ m} \\]
+                        <div class="p-2.5 bg-sky-100 text-sky-900 rounded-lg font-semibold">👉 Phân loại bức xạ: ${radType}</div>
+                    `;
+                } else if (nStr === '' && fStr !== '' && lamStr !== '') {
+                    const f = parseFloat(fStr);
+                    const lam = parseFloat(lamStr);
+                    const v = lam * f;
+                    const n = c / v;
+                    box.innerHTML = `
+                        <div class="font-bold text-sky-800 text-base mb-2">✅ Kết quả giải tìm Chiết suất môi trường \\( n \\):</div>
+                        \\[ v = \\lambda \\cdot f = ${lam.toExponential(3)} \\cdot ${f.toExponential(3)} = ${v.toExponential(3)} \\text{ m/s} \\]
+                        \\[ n = \\frac{c}{v} = \\frac{3 \\cdot 10^8}{${v.toExponential(3)}} \\approx ${n.toFixed(3)} \\]
+                    `;
+                } else {
+                    box.innerHTML = `<div class="text-rose-600 font-semibold">⚠️ Vui lòng nhập 2 ô đã biết và để trống đúng 1 ô cần tìm!</div>`;
+                }
+            } else if (currentCalcMode === 'mode2') {
+                const pStr = document.getElementById('c2-p').value.trim();
+                const rStr = document.getElementById('c2-r').value.trim();
+                const iStr = document.getElementById('c2-i').value.trim();
+
+                if (iStr === '' && pStr !== '' && rStr !== '') {
+                    const P = parseFloat(pStr);
+                    const r = parseFloat(rStr);
+                    const I = P / (4 * Math.PI * r * r);
+                    box.innerHTML = `
+                        <div class="font-bold text-sky-800 text-base mb-2">✅ Kết quả tính Cường độ sóng \\( I \\):</div>
+                        <p>Áp dụng công thức cường độ sóng truyền đẳng hướng trong không gian:</p>
+                        \\[ I = \\frac{P}{4\\pi r^2} = \\frac{${P}}{4\\pi \\cdot (${r})^2} \\approx ${I.toExponential(3)} \\text{ W/m}^2 \\]
+                    `;
+                } else if (pStr === '' && iStr !== '' && rStr !== '') {
+                    const I = parseFloat(iStr);
+                    const r = parseFloat(rStr);
+                    const P = I * 4 * Math.PI * r * r;
+                    box.innerHTML = `
+                        <div class="font-bold text-sky-800 text-base mb-2">✅ Kết quả tính Công suất nguồn phát \\( P \\):</div>
+                        \\[ P = I \\cdot 4\\pi r^2 = ${I.toExponential(3)} \\cdot 4\\pi \\cdot (${r})^2 \\approx ${P.toExponential(3)} \\text{ W} \\]
+                    `;
+                } else if (rStr === '' && pStr !== '' && iStr !== '') {
+                    const P = parseFloat(pStr);
+                    const I = parseFloat(iStr);
+                    const r = Math.sqrt(P / (4 * Math.PI * I));
+                    box.innerHTML = `
+                        <div class="font-bold text-sky-800 text-base mb-2">✅ Kết quả tính Khoảng cách \\( r \\):</div>
+                        \\[ I = \\frac{P}{4\\pi r^2} \\Rightarrow r = \\sqrt{\\frac{P}{4\\pi I}} = \\sqrt{\\frac{${P}}{4\\pi \\cdot ${I.toExponential(3)}}} \\approx ${r.toFixed(3)} \\text{ m} \\]
+                    `;
+                } else {
+                    box.innerHTML = `<div class="text-rose-600 font-semibold">⚠️ Vui lòng nhập 2 đại lượng đã biết và bỏ trống đúng 1 đại lượng cần tìm!</div>`;
+                }
+            } else {
+                const dStr = document.getElementById('c3-d').value.trim();
+                const tStr = document.getElementById('c3-t').value.trim();
+                if (dStr === '' && tStr !== '') {
+                    const t = parseFloat(tStr);
+                    const d = (c * t) / 2;
+                    box.innerHTML = `
+                        <div class="font-bold text-sky-800 text-base mb-2">✅ Kết quả tính Khoảng cách định vị Radar \\( d \\):</div>
+                        <p>Do tín hiệu sóng điện từ truyền từ trạm phát tới mục tiêu rồi phản xạ trở lại trạm thu nên tổng quãng đường đi là \\( 2d \\):</p>
+                        \\[ d = \\frac{c \\cdot \\Delta t}{2} = \\frac{3 \\cdot 10^8 \\cdot ${t}}{2} = ${d.toExponential(3)} \\text{ m} = ${(d/1000).toLocaleString('vi-VN')} \\text{ km} \\]
+                    `;
+                } else if (tStr === '' && dStr !== '') {
+                    const d = parseFloat(dStr);
+                    const t = (2 * d) / c;
+                    box.innerHTML = `
+                        <div class="font-bold text-sky-800 text-base mb-2">✅ Kết quả tính Thời gian phản xạ khứ hồi \\( \\Delta t \\):</div>
+                        \\[ \\Delta t = \\frac{2d}{c} = \\frac{2 \\cdot ${d}}{3 \\cdot 10^8} \\approx ${t.toExponential(3)} \\text{ s} \\]
+                    `;
+                } else {
+                    box.innerHTML = `<div class="text-rose-600 font-semibold">⚠️ Hãy nhập 1 ô và để trống ô còn lại!</div>`;
+                }
+            }
+
+            triggerMathRender(box);
+        }
+
+        // ==================== TAB 5: DỮ LIỆU 10 BÀI TẬP PHÂN HÓA ====================
+        const practiceProblems = [
+            {
+                id: 1,
+                level: 'level1',
+                badge: 'Cấp 1 • Nhận biết - Thông hiểu',
+                badgeColor: 'bg-emerald-100 text-emerald-800',
+                title: 'Bài 1 (SGK KNTT): Phân loại bức xạ theo tần số và bước sóng',
+                question: 'Trong chân không, hãy xác định tên loại sóng điện từ tương ứng với: a) Tần số \\( f_1 = 200 \\text{ kHz} \\) và \\( f_2 = 10^{18} \\text{ Hz} \\); b) Bước sóng \\( \\lambda_1 = 3 \\text{ cm} \\) và \\( \\lambda_2 = 5 \\text{ }\\mu\\text{m} \\).',
+                hint: 'Đổi các đơn vị về chuẩn SI (\\(\\text{Hz}\\) và \\(\\text{m}\\)), sau đó đối chiếu với bảng Thang sóng điện từ ở Tab 2.',
+                solution: `
+                    <p><strong>a) Theo tần số:</strong></p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Với \\( f_1 = 200 \\text{ kHz} = 2 \\cdot 10^5 \\text{ Hz} \\Rightarrow \\lambda_1 = \\frac{3 \\cdot 10^8}{2 \\cdot 10^5} = 1500 \\text{ m} \\): Thuộc vùng <strong>Sóng vô tuyến</strong>.</li>
+                        <li>Với \\( f_2 = 10^{18} \\text{ Hz} \\Rightarrow \\lambda_2 = \\frac{3 \\cdot 10^8}{10^{18}} = 3 \\cdot 10^{-10} \\text{ m} = 0,3 \\text{ nm} \\): Thuộc vùng <strong>Tia X (tia Röntgen)</strong>.</li>
+                    </ul>
+                    <p class="mt-2"><strong>b) Theo bước sóng:</strong></p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>\\( \\lambda_1 = 3 \\text{ cm} = 0,03 \\text{ m} \\) (nằm trong khoảng \\( 1 \\text{ mm} \\rightarrow 1 \\text{ m} \\)): Thuộc vùng <strong>Sóng vi ba</strong>.</li>
+                        <li>\\( \\lambda_2 = 5 \\text{ }\\mu\\text{m} = 5 \\cdot 10^{-6} \\text{ m} \\) (nằm trong khoảng \\( 0,76 \\text{ }\\mu\\text{m} \\rightarrow 1 \\text{ mm} \\)): Thuộc vùng <strong>Tia hồng ngoại</strong>.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 2,
+                level: 'level1',
+                badge: 'Cấp 1 • Nhận biết - Thông hiểu',
+                badgeColor: 'bg-emerald-100 text-emerald-800',
+                title: 'Bài 2: Xác định dải tần số của ánh sáng nhìn thấy',
+                question: 'Cho biết bước sóng trong chân không của ánh sáng đỏ là \\( \\lambda_{\\text{đỏ}} = 760 \\text{ nm} \\) và của ánh sáng tím là \\( \\lambda_{\\text{tím}} = 380 \\text{ nm} \\). Hãy tính phạm vi tần số của vùng ánh sáng nhìn thấy.',
+                hint: 'Sử dụng công thức \\( f = \\frac{c}{\\lambda} \\) với \\( 1 \\text{ nm} = 10^{-9} \\text{ m} \\).',
+                solution: `
+                    <p>Áp dụng công thức \\( f = \\frac{c}{\\lambda} \\):</p>
+                    \\[ f_{\\text{đỏ}} = \\frac{c}{\\lambda_{\\text{đỏ}}} = \\frac{3 \\cdot 10^8}{760 \\cdot 10^{-9}} \\approx 3,95 \\cdot 10^{14} \\text{ Hz} \\]
+                    \\[ f_{\\text{tím}} = \\frac{c}{\\lambda_{\\text{tím}}} = \\frac{3 \\cdot 10^8}{380 \\cdot 10^{-9}} \\approx 7,89 \\cdot 10^{14} \\text{ Hz} \\]
+                    <p>Vậy dải tần số của ánh sáng nhìn thấy nằm trong khoảng từ \\( 3,95 \\cdot 10^{14} \\text{ Hz} \\) đến \\( 7,89 \\cdot 10^{14} \\text{ Hz} \\).</p>
+                `
+            },
+            {
+                id: 3,
+                level: 'level1',
+                badge: 'Cấp 1 • Nhận biết - Thông hiểu',
+                badgeColor: 'bg-emerald-100 text-emerald-800',
+                title: 'Bài 3 (SGK CTST): Sóng điện thoại di động tại Việt Nam',
+                question: 'Điện thoại di động ở Việt Nam sử dụng sóng điện từ có tần số trong khoảng từ \\( 850 \\text{ MHz} \\) đến \\( 2600 \\text{ MHz} \\). Tính dải bước sóng tương ứng trong không khí. Mắt người có nhìn thấy các sóng này không? Vì sao?',
+                hint: 'Đổi \\( 1 \\text{ MHz} = 10^6 \\text{ Hz} \\) rồi tính \\( \\lambda_1, \\lambda_2 \\). So sánh với vùng khả kiến \\( 0,38 \\text{ }\\mu\\text{m} - 0,76 \\text{ }\\mu\\text{m} \\).',
+                solution: `
+                    <p>Bước sóng ứng với tần số \\( f_1 = 850 \\text{ MHz} = 850 \\cdot 10^6 \\text{ Hz} \\):</p>
+                    \\[ \\lambda_1 = \\frac{c}{f_1} = \\frac{3 \\cdot 10^8}{850 \\cdot 10^6} \\approx 0,35 \\text{ m} \\]
+                    <p>Bước sóng ứng với tần số \\( f_2 = 2600 \\text{ MHz} = 2600 \\cdot 10^6 \\text{ Hz} \\):</p>
+                    \\[ \\lambda_2 = \\frac{c}{f_2} = \\frac{3 \\cdot 10^8}{2600 \\cdot 10^6} \\approx 0,12 \\text{ m} \\]
+                    <p>Dải bước sóng từ \\( 0,12 \\text{ m} \\) đến \\( 0,35 \\text{ m} \\) thuộc vùng <strong>sóng vi ba (vô tuyến)</strong>, nằm ngoài vùng ánh sáng khả kiến nên mắt người không thể nhìn thấy.</p>
+                `
+            },
+            {
+                id: 4,
+                level: 'level1',
+                badge: 'Cấp 1 • Nhận biết - Thông hiểu',
+                badgeColor: 'bg-emerald-100 text-emerald-800',
+                title: 'Bài 4 (SBT CTST): Sự thay đổi bước sóng khi truyền vào nước',
+                question: 'Biết tốc độ ánh sáng trong chân không là \\( c = 3 \\cdot 10^8 \\text{ m/s} \\). a) Tính bước sóng trong chân không của ánh sáng có tần số \\( f = 6 \\cdot 10^{14} \\text{ Hz} \\). b) Bước sóng của ánh sáng này bằng bao nhiêu khi truyền trong nước có chiết suất \\( n = \\frac{4}{3} \\)?',
+                hint: 'Khi truyền từ chân không vào nước, tần số \\( f \\) giữ nguyên còn tốc độ giảm \\( n \\) lần: \\( \\lambda_n = \\frac{\\lambda_0}{n} \\).',
+                solution: `
+                    <p>a) Bước sóng của ánh sáng trong chân không:</p>
+                    \\[ \\lambda_0 = \\frac{c}{f} = \\frac{3 \\cdot 10^8}{6 \\cdot 10^{14}} = 5 \\cdot 10^{-7} \\text{ m} = 500 \\text{ nm} \\]
+                    <p>b) Bước sóng của ánh sáng khi truyền trong nước (\\( n = \\frac{4}{3} \\)):</p>
+                    \\[ \\lambda_n = \\frac{\\lambda_0}{n} = \\frac{5 \\cdot 10^{-7}}{4/3} = 3,75 \\cdot 10^{-7} \\text{ m} = 375 \\text{ nm} \\]
+                `
+            },
+            {
+                id: 5,
+                level: 'level2',
+                badge: 'Cấp 2 • Vận dụng',
+                badgeColor: 'bg-amber-100 text-amber-800',
+                title: 'Bài 5 (SBT KNTT): Đo khoảng cách Trái Đất - Mặt Trăng bằng sóng vô tuyến',
+                question: 'Người ta phát một tín hiệu sóng vô tuyến ngắn có tần số \\( f = 10^7 \\text{ Hz} \\) từ Trái Đất tới Mặt Trăng và thu tín hiệu phản xạ trở lại sau khoảng thời gian \\( \\Delta t = 2,5 \\text{ s} \\). Tính khoảng cách từ Trái Đất đến Mặt Trăng và bước sóng của sóng vô tuyến đã dùng.',
+                hint: 'Tín hiệu đi từ Trái Đất đến Mặt Trăng rồi quay về nên quãng đường tổng cộng là \\( 2d = c \\cdot \\Delta t \\).',
+                solution: `
+                    <p>a) Khoảng cách từ Trái Đất đến Mặt Trăng:</p>
+                    \\[ d = \\frac{c \\cdot \\Delta t}{2} = \\frac{3 \\cdot 10^8 \\cdot 2,5}{2} = 3,75 \\cdot 10^8 \\text{ m} = 375\\,000 \\text{ km} \\]
+                    <p>b) Bước sóng của sóng vô tuyến đã sử dụng:</p>
+                    \\[ \\lambda = \\frac{c}{f} = \\frac{3 \\cdot 10^8}{10^7} = 30 \\text{ m} \\]
+                `
+            },
+            {
+                id: 6,
+                level: 'level2',
+                badge: 'Cấp 2 • Vận dụng',
+                badgeColor: 'bg-amber-100 text-amber-800',
+                title: 'Bài 6 (SBT CTST): Hệ thống định vị toàn cầu GPS',
+                question: 'Mỗi vệ tinh GPS chuyển động ở độ cao \\( h = 2,02 \\cdot 10^7 \\text{ m} \\) so với mặt đất và phát tín hiệu điện từ đẳng hướng với công suất \\( P = 25,0 \\text{ W} \\) ở tần số \\( f = 1575,42 \\text{ MHz} \\). Tính cường độ tín hiệu nhận được tại trạm mặt đất ngay dưới vệ tinh và bước sóng tín hiệu.',
+                hint: 'Áp dụng công thức cường độ sóng cầu đẳng hướng \\( I = \\frac{P}{4\\pi h^2} \\).',
+                solution: `
+                    <p>a) Cường độ tín hiệu điện từ nhận được tại trạm thu ngay dưới vệ tinh:</p>
+                    \\[ I = \\frac{P}{4\\pi h^2} = \\frac{25,0}{4\\pi \\cdot (2,02 \\cdot 10^7)^2} \\approx 4,88 \\cdot 10^{-15} \\text{ W/m}^2 \\]
+                    <p>b) Bước sóng của tín hiệu GPS:</p>
+                    \\[ \\lambda = \\frac{c}{f} = \\frac{3 \\cdot 10^8}{1575,42 \\cdot 10^6} \\approx 0,19 \\text{ m} \\]
+                `
+            },
+            {
+                id: 7,
+                level: 'level2',
+                badge: 'Cấp 2 • Vận dụng',
+                badgeColor: 'bg-amber-100 text-amber-800',
+                title: 'Bài 7 (SBT CTST): Khoảng cách an toàn trước trạm phát Radar vi sóng',
+                question: 'Biết cường độ vi sóng tối đa không gây nguy hiểm cho cơ thể người khi bị phơi nhiễm là \\( I_{\\max} = 1,5 \\text{ W/m}^2 \\). Một radar phát vi sóng đẳng hướng có công suất \\( P = 10 \\text{ W} \\). Xác định khoảng cách tối thiểu từ người đến radar để đảm bảo an toàn.',
+                hint: 'Từ điều kiện \\( I = \\frac{P}{4\\pi r^2} \\le I_{\\max} \\), suy ra \\( r_{\\min} = \\sqrt{\\frac{P}{4\\pi I_{\\max}}} \\).',
+                solution: `
+                    <p>Để đảm bảo an toàn cho cơ thể người, cường độ vi sóng tại vị trí đứng phải thỏa mãn:</p>
+                    \\[ I = \\frac{P}{4\\pi r^2} \\le I_{\\max} \\Rightarrow r_{\\min} = \\sqrt{\\frac{P}{4\\pi I_{\\max}}} \\]
+                    <p>Thay số:</p>
+                    \\[ r_{\\min} = \\sqrt{\\frac{10}{4\\pi \\cdot 1,5}} \\approx 0,728 \\text{ m} = 72,8 \\text{ cm} \\]
+                `
+            },
+            {
+                id: 8,
+                level: 'level3',
+                badge: 'Cấp 3 • Vận dụng cao',
+                badgeColor: 'bg-purple-100 text-purple-800',
+                title: 'Bài 8 (SBT KNTT): Radar bắn tốc độ phương tiện chuyển động',
+                question: 'Một anten radar phát ra những xung sóng điện từ đến một máy bay đang chuyển động thẳng đều về phía radar. Thời gian từ lúc phát xung đến lúc nhận sóng phản xạ lần thứ nhất là \\( t_1 = 80 \\text{ }\\mu\\text{s} \\). Sau \\( \\Delta T = 2 \\text{ giây} \\) (hoặc \\( 2 \\text{ phút} \\) tùy đề), radar phát xung lần thứ hai thì thời gian thu - phát là \\( t_2 = 76 \\text{ }\\mu\\text{s} \\). Tính khoảng cách máy bay ở 2 lần đo và tốc độ trung bình của máy bay (xét cả 2 trường hợp \\( \\Delta T = 2 \\text{ s} \\) và \\( \\Delta T = 2 \\text{ phút} \\)).',
+                hint: 'Tính \\( d_1 = \\frac{c t_1}{2} \\) và \\( d_2 = \\frac{c t_2}{2} \\). Tốc độ trung bình \\( \\bar{v} = \\frac{d_1 - d_2}{\\Delta T} \\).',
+                solution: `
+                    <p>Khoảng cách từ máy bay đến radar trong 2 lần đo là:</p>
+                    \\[ d_1 = \\frac{c \\cdot t_1}{2} = \\frac{3 \\cdot 10^8 \\cdot 80 \\cdot 10^{-6}}{2} = 12\\,000 \\text{ m} \\]
+                    \\[ d_2 = \\frac{c \\cdot t_2}{2} = \\frac{3 \\cdot 10^8 \\cdot 76 \\cdot 10^{-6}}{2} = 11\\,400 \\text{ m} \\]
+                    <p>Quãng đường vật di chuyển lại gần radar: \\( \\Delta d = d_1 - d_2 = 600 \\text{ m} \\).</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Nếu thời gian giữa 2 lần đo là \\( \\Delta T = 2 \\text{ s} \\): \\( \\bar{v} = \\frac{600}{2} = 300 \\text{ m/s} \\).</li>
+                        <li>Nếu đổi \\( \\Delta T = 2 \\text{ phút} = 120 \\text{ s} \\): \\( \\bar{v} = \\frac{600}{120} = 5 \\text{ m/s} \\).</li>
+                    </ul>
+                `
+            },
+            {
+                id: 9,
+                level: 'level3',
+                badge: 'Cấp 3 • Vận dụng cao',
+                badgeColor: 'bg-purple-100 text-purple-800',
+                title: 'Bài 9 (SGK & SBT KNTT): Thời gian truyền tín hiệu cực đại của Vệ tinh Địa tĩnh',
+                question: 'Một vệ tinh địa tĩnh ở độ cao \\( h = 36\\,600 \\text{ km} \\) so với đài phát hình \\( D \\) trên mặt đất (\\( D \\) nằm trên đường thẳng nối vệ tinh \\( A \\) và tâm Trái Đất \\( C \\)). Coi Trái Đất là hình cầu bán kính \\( R = 6\\,400 \\text{ km} \\). Vệ tinh nhận sóng từ đài phát rồi phát lại tức thời về mặt đất. Tính khoảng thời gian lớn nhất mà sóng truyền hình đi từ đài phát đến một điểm \\( B \\) xa nhất trên mặt Trái Đất.',
+                hint: 'Điểm xa nhất \\( B \\) trên mặt đất nhận được sóng khi tia \\( AB \\) tiếp tuyến với mặt cầu Trái Đất (\\( \\widehat{ABC} = 90^\\circ \\)).',
+                solution: `
+                    <p>Quãng đường truyền sóng dài nhất ứng với hành trình từ đài phát \\( D \\) lên vệ tinh \\( A \\) (\\( AD = h = 36\\,600 \\text{ km} \\)), sau đó truyền theo phương tiếp tuyến \\( AB \\) tới mặt đất.</p>
+                    <p>Xét tam giác vuông \\( ABC \\) vuông tại \\( B \\) với \\( AC = R + h = 6\\,400 + 36\\,600 = 43\\,000 \\text{ km} \\):</p>
+                    \\[ AB = \\sqrt{AC^2 - BC^2} = \\sqrt{(R+h)^2 - R^2} = \\sqrt{43\\,000^2 - 6\\,400^2} \\approx 42\\,521,1 \\text{ km} \\]
+                    <p>Tổng quãng đường lớn nhất sóng truyền đi là:</p>
+                    \\[ d_{\\max} = AD + AB = 36\\,600 + 42\\,521,1 = 79\\,121,1 \\text{ km} = 7,91211 \\cdot 10^7 \\text{ m} \\]
+                    <p>Thời gian truyền sóng lớn nhất:</p>
+                    \\[ t_{\\max} = \\frac{d_{\\max}}{c} = \\frac{7,91211 \\cdot 10^7}{3 \\cdot 10^8} \\approx 0,264 \\text{ s} \\]
+                `
+            },
+            {
+                id: 10,
+                level: 'level3',
+                badge: 'Cấp 3 • Tích hợp Năng lực Số & AI',
+                badgeColor: 'bg-purple-100 text-purple-800',
+                title: 'Bài 10 (SBT KNTT + Tư duy AI): Vùng phủ sóng kinh độ của Vệ tinh & Kiểm chứng AI',
+                question: 'Vệ tinh địa tĩnh đứng yên so với mặt đất trong mặt phẳng xích đạo tại kinh tuyến gốc \\( 0^\\circ \\). Cho bán kính Trái Đất \\( R = 6\\,400 \\text{ km} \\), khối lượng Trái Đất \\( M = 6 \\cdot 10^{24} \\text{ kg} \\), chu kỳ tự quay \\( T = 24 \\text{ h} = 86\\,400 \\text{ s} \\), \\( G = 6,67 \\cdot 10^{-11} \\text{ N}\\cdot\\text{m}^2/\\text{kg}^2 \\). Một học sinh hỏi trợ lý AI và nhận được câu trả lời: "Bán kính quỹ đạo vệ tinh là \\( r \\approx 42,3 \\cdot 10^6 \\text{ m} \\) và vệ tinh phủ sóng toàn bộ \\( 180^\\circ \\) xích đạo". Hãy dùng kiến thức Vật lý để kiểm chứng kết quả của AI.',
+                hint: 'Cân bằng lực hấp dẫn và lực hướng tâm \\( \\frac{GMm}{r^2} = m \\omega^2 r \\) để tìm \\( r \\). Sau đó tính \\( \\cos\\varphi = \\frac{R}{r} \\) để tìm giới hạn kinh độ Đông - Tây.',
+                solution: `
+                    <p><strong>Bước 1: Kiểm chứng bán kính quỹ đạo \\( r \\) của AI:</strong></p>
+                    <p>Lực hấp dẫn đóng vai trò là lực hướng tâm giữ vệ tinh chuyển động tròn đều cùng chu kỳ tự quay \\( T \\) của Trái Đất:</p>
+                    \\[ F_{hd} = F_{ht} \\Leftrightarrow \\frac{GMm}{r^2} = m \\left(\\frac{2\\pi}{T}\\right)^2 r \\Rightarrow r = \\sqrt[3]{GM\\left(\\frac{T}{2\\pi}\\right)^2} \\]
+                    \\[ r = \\sqrt[3]{6,67 \\cdot 10^{-11} \\cdot 6 \\cdot 10^{24} \\cdot \\left(\\frac{86\\,400}{2\\pi}\\right)^2} \\approx 42,29 \\cdot 10^6 \\text{ m} = 42\\,290 \\text{ km} \\]
+                    <p>👉 Giá trị \\( r \\approx 42,3 \\cdot 10^6 \\text{ m} \\) của AI là <strong>Chính xác</strong>.</p>
+                    <p class="mt-2"><strong>Bước 2: Kiểm chứng góc phủ sóng trên xích đạo:</strong></p>
+                    <p>Sóng cực ngắn truyền thẳng trong miền giữa hai tiếp tuyến kẻ từ vệ tinh tới Trái Đất:</p>
+                    \\[ \\cos\\varphi = \\frac{R}{r} = \\frac{6,4 \\cdot 10^6}{42,3 \\cdot 10^6} \\approx 0,1513 \\Rightarrow \\varphi \\approx 81^\\circ 18' \\text{ (hoặc } \\approx 81^\\circ 20' \\text{ nếu lấy } \\frac{R}{r} \\approx \\frac{1}{7}\\text{)} \\]
+                    <p>👉 Vậy vùng phủ sóng chỉ từ \\( 81^\\circ 20' \\) kinh độ Tây đến \\( 81^\\circ 20' \\) kinh độ Đông (tổng góc ở tâm \\( 2\\varphi \\approx 162^\\circ 40' < 180^\\circ \\)). Nhận định của AI rằng vệ tinh phủ sóng đủ \\( 180^\\circ \\) là <strong>Sai bản chất hình học</strong> (do mặt cầu Trái Đất che khuất).</p>
+                `
+            }
+        ];
+
+        function renderPracticeList(filter = 'all') {
+            const container = document.getElementById('practice-list');
+            const filtered = filter === 'all' ? practiceProblems : practiceProblems.filter(p => p.level === filter);
+
+            container.innerHTML = filtered.map(p => `
+                <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/60 hover:bg-white transition shadow-sm">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <span class="px-2.5 py-1 rounded-full text-xs font-bold ${p.badgeColor}">${p.badge}</span>
+                        <div class="flex gap-2">
+                            <button onclick="toggleElement('prac-hint-${p.id}')" class="px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-lg text-xs font-semibold transition">
+                                💡 Gợi ý tư duy
+                            </button>
+                            <button onclick="toggleElement('prac-sol-${p.id}')" class="px-3 py-1 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-semibold transition">
+                                📖 Xem lời giải chi tiết
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-base mb-2">${p.title}</h3>
+                    <div class="text-sm text-slate-700 leading-relaxed">${p.question}</div>
+                    
+                    <div id="prac-hint-${p.id}" class="hidden mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900">
+                        <strong>Gợi ý:</strong> ${p.hint}
+                    </div>
+                    <div id="prac-sol-${p.id}" class="hidden mt-3 p-4 bg-white border-l-4 border-sky-600 rounded-r-lg text-xs md:text-sm text-slate-700 space-y-1 shadow-inner">
+                        ${p.solution}
+                    </div>
+                </div>
+            `).join('');
+
+            triggerMathRender(container);
+        }
+
+        function filterPractice(level) {
+            renderPracticeList(level);
+        }
+
+        // ==================== TAB 6: DỮ LIỆU 10 CÂU TRẮC NGHIỆM ====================
+        const quizData = [
+            {
+                q: "Câu 1: Phát biểu nào sau đây là SAI khi nói về sóng điện từ?",
+                options: [
+                    "A. Tất cả các sóng điện từ đều truyền trong chân không với cùng tốc độ \\( c = 3 \\cdot 10^8 \\text{ m/s} \\).",
+                    "B. Sóng điện từ là sóng ngang và mang năng lượng.",
+                    "C. Sóng điện từ chỉ truyền được trong các môi trường vật chất đàn hồi, không truyền được trong chân không.",
+                    "D. Trong sóng điện từ, \\( \\vec{E} \\) và \\( \\vec{B} \\) tại một điểm luôn dao động cùng pha."
+                ],
+                correct: 2,
+                explain: "Sóng điện từ là sự lan truyền của điện từ trường biến thiên nên truyền được cả trong chân không với tốc độ \\( c = 3 \\cdot 10^8 \\text{ m/s} \\)."
+            },
+            {
+                q: "Câu 2 (SBT KNTT): Theo thứ tự bước sóng tăng dần thì sắp xếp nào dưới đây là ĐÚNG?",
+                options: [
+                    "A. Vi sóng, tia tử ngoại, tia hồng ngoại, tia X.",
+                    "B. Tia X, tia tử ngoại, tia hồng ngoại, vi sóng.",
+                    "C. Tia tử ngoại, tia X, tia hồng ngoại, vi sóng.",
+                    "D. Tia hồng ngoại, tia tử ngoại, vi sóng, tia X."
+                ],
+                correct: 1,
+                explain: "Thứ tự bước sóng tăng dần (tần số giảm dần): Tia \\( \\gamma \\) \\( \\rightarrow \\) Tia X \\( \\rightarrow \\) Tia tử ngoại \\( \\rightarrow \\) Ánh sáng nhìn thấy \\( \\rightarrow \\) Tia hồng ngoại \\( \\rightarrow \\) Vi sóng \\( \\rightarrow \\) Sóng vô tuyến."
+            },
+            {
+                q: "Câu 3 (SBT CTST): Khi sóng điện từ truyền từ không khí vào nước (chiết suất \\( n = \\frac{4}{3} \\)) thì:",
+                options: [
+                    "A. Tần số không đổi, tốc độ truyền sóng và bước sóng đều giảm.",
+                    "B. Tần số, tốc độ truyền sóng và bước sóng đều giảm.",
+                    "C. Tốc độ truyền sóng giảm, bước sóng tăng.",
+                    "D. Tốc độ truyền sóng và bước sóng đều tăng."
+                ],
+                correct: 0,
+                explain: "Khi truyền từ không khí vào nước, tần số \\( f \\) không đổi, tốc độ \\( v = \\frac{c}{n} \\) giảm nên bước sóng \\( \\lambda = \\frac{v}{f} \\) cũng giảm."
+            },
+            {
+                q: "Câu 4 (SBT KNTT): Sóng điện từ trong chân không có bước sóng nào dưới đây thuộc về vùng tia hồng ngoại?",
+                options: [
+                    "A. \\( 7 \\cdot 10^{-2} \\text{ m} \\)",
+                    "B. \\( 7 \\cdot 10^{-6} \\text{ m} \\)",
+                    "C. \\( 7 \\cdot 10^{-9} \\text{ m} \\)",
+                    "D. \\( 7 \\cdot 10^{-12} \\text{ m} \\)"
+                ],
+                correct: 1,
+                explain: "Tia hồng ngoại có bước sóng nằm trong khoảng từ \\( 0,76 \\text{ }\\mu\\text{m} \\) (\\( 0,76 \\cdot 10^{-6} \\text{ m} \\)) đến \\( 1 \\text{ mm} \\) (\\( 10^{-3} \\text{ m} \\)). Do đó \\( 7 \\cdot 10^{-6} \\text{ m} = 7 \\text{ }\\mu\\text{m} \\) thuộc vùng hồng ngoại."
+            },
+            {
+                q: "Câu 5 (SBT CTST): Một sóng điện từ truyền thẳng đứng từ dưới lên trên theo chiều dương trục \\( Oz \\). Tại một thời điểm, vectơ cường độ điện trường \\( \\vec{E} \\) hướng theo chiều dương trục \\( Oy \\) (trong hệ trục \\( Oxyz \\) thuận). Khi đó vectơ cảm ứng từ \\( \\vec{B} \\) hướng:",
+                options: [
+                    "A. Ngược chiều dương của trục \\( Oz \\).",
+                    "B. Theo chiều dương của trục \\( Ox \\).",
+                    "C. Ngược chiều dương của trục \\( Ox \\).",
+                    "D. Ngược chiều dương của trục \\( Oy \\)."
+                ],
+                correct: 2,
+                explain: "Ba vectơ \\( (\\vec{E}, \\vec{B}, \\vec{v}) \\) lập thành một tam diện thuận: \\( \\vec{E} \\times \\vec{B} \\) cùng hướng \\( \\vec{v} \\). Vì \\( \\vec{v} \\uparrow\\uparrow Oz \\) (vectơ đơn vị \\( \\vec{k} \\)) và \\( \\vec{E} \\uparrow\\uparrow Oy \\) (vectơ đơn vị \\( \\vec{j} \\)), mà \\( \\vec{j} \\times (-\\vec{i}) = \\vec{k} \\), nên \\( \\vec{B} \\) phải hướng ngược chiều dương của trục \\( Ox \\)."
+            },
+            {
+                q: "Câu 6 (SBT KNTT): Một sóng vô tuyến có tần số \\( f = 10^8 \\text{ Hz} \\) truyền trong không trung với tốc độ \\( c = 3 \\cdot 10^8 \\text{ m/s} \\). Bước sóng của sóng đó là:",
+                options: [
+                    "A. \\( 1,5 \\text{ m} \\)",
+                    "B. \\( 3,0 \\text{ m} \\)",
+                    "C. \\( 0,33 \\text{ m} \\)",
+                    "D. \\( 300 \\text{ m} \\)"
+                ],
+                correct: 1,
+                explain: "Áp dụng công thức: \\( \\lambda = \\frac{c}{f} = \\frac{3 \\cdot 10^8}{10^8} = 3,0 \\text{ m} \\)."
+            },
+            {
+                q: "Câu 7 (SBT KNTT): Một sóng ánh sáng có bước sóng \\( \\lambda_1 \\) và tốc độ \\( v_1 \\) khi truyền trong chân không. Khi đi vào trong tấm thủy tinh, sóng có bước sóng \\( \\lambda_2 \\) và tốc độ \\( v_2 \\). Biểu thức nào dưới đây biểu diễn ĐÚNG mối liên hệ giữa \\( v_2 \\) với \\( \\lambda_1, \\lambda_2, v_1 \\)?",
+                options: [
+                    "A. \\( v_2 = \\frac{\\lambda_1}{\\lambda_2} v_1 \\)",
+                    "B. \\( v_2 = \\frac{\\lambda_2}{\\lambda_1} v_1 \\)",
+                    "C. \\( v_2 = \\frac{\\lambda_1 \\lambda_2}{v_1} \\)",
+                    "D. \\( v_2 = \\lambda_1 \\lambda_2 v_1 \\)"
+                ],
+                correct: 1,
+                explain: "Khi truyền qua các môi trường khác nhau, tần số \\( f \\) không đổi: \\( f = \\frac{v_1}{\\lambda_1} = \\frac{v_2}{\\lambda_2} \\Rightarrow v_2 = \\frac{\\lambda_2}{\\lambda_1} v_1 \\)."
+            },
+            {
+                q: "Câu 8: Cơ thể con người ở thân nhiệt \\( 37\\text{ }^\\circ\\text{C} \\) phát ra chủ yếu loại bức xạ nào sau đây?",
+                options: [
+                    "A. Tia X.",
+                    "B. Tia tử ngoại.",
+                    "C. Tia hồng ngoại.",
+                    "D. Ánh sáng nhìn thấy."
+                ],
+                correct: 2,
+                explain: "Mọi vật có nhiệt độ lớn hơn \\( 0 \\text{ K} \\) đều phát ra tia hồng ngoại. Cơ thể người ở \\( 37\\text{ }^\\circ\\text{C} \\) cao hơn nhiệt độ môi trường nên phát bức xạ hồng ngoại ra xung quanh."
+            },
+            {
+                q: "Câu 9: Khi nói về tia X (tia Röntgen), phát biểu nào sau đây là ĐÚNG?",
+                options: [
+                    "A. Tia X có bước sóng lớn hơn bước sóng của ánh sáng tím.",
+                    "B. Tia X bị lệch hướng khi đi qua vùng có điện trường mạnh.",
+                    "C. Tia X có khả năng đâm xuyên mạnh và làm đen kính ảnh.",
+                    "D. Tia X có tần số nhỏ hơn tần số của tia hồng ngoại."
+                ],
+                correct: 2,
+                explain: "Tia X có bước sóng rất ngắn (\\( 30 \\text{ pm} \\rightarrow 3 \\text{ nm} \\)), tần số rất lớn nên có khả năng đâm xuyên mạnh, tác dụng mạnh lên kính ảnh và không bị lệch trong điện trường, từ trường."
+            },
+            {
+                q: "Câu 10 (SBT CTST): Một máy phát sóng vô tuyến AM phát đẳng hướng trong không gian. Ở khoảng cách \\( r = 30,0 \\text{ km} \\) từ máy phát này, ta nhận được sóng có cường độ \\( I = 4,42 \\cdot 10^{-6} \\text{ W/m}^2 \\). Công suất phát \\( P \\) của máy phát gần giá trị nào nhất?",
+                options: [
+                    "A. \\( 5,0 \\text{ kW} \\)",
+                    "B. \\( 50 \\text{ kW} \\)",
+                    "C. \\( 25 \\text{ kW} \\)",
+                    "D. \\( 100 \\text{ kW} \\)"
+                ],
+                correct: 1,
+                explain: "Ta có \\( I = \\frac{P}{4\\pi r^2} \\Rightarrow P = I \\cdot 4\\pi r^2 = 4,42 \\cdot 10^{-6} \\cdot 4\\pi \\cdot (30\\,000)^2 \\approx 50\\,000 \\text{ W} = 50 \\text{ kW} \\)."
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = quizData.map((item, idx) => `
+                <div id="qcard-${idx}" class="p-5 rounded-xl border border-slate-200 bg-slate-50/70 space-y-3">
+                    <div class="font-bold text-slate-800 text-sm md:text-base">${item.q}</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                        ${item.options.map((opt, oIdx) => `
+                            <label class="flex items-start gap-2.5 p-3 rounded-lg border border-slate-200 bg-white hover:bg-sky-50 cursor-pointer transition text-xs md:text-sm">
+                                <input type="radio" name="quiz-q-${idx}" value="${oIdx}" class="mt-1 accent-sky-600">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="qexp-${idx}" class="hidden p-3.5 rounded-lg text-xs md:text-sm border"></div>
+                </div>
+            `).join('');
+
+            triggerMathRender(container);
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            quizData.forEach((item, idx) => {
+                const selected = document.querySelector(`input[name="quiz-q-${idx}"]:checked`);
+                const expBox = document.getElementById(`qexp-${idx}`);
+                const card = document.getElementById(`qcard-${idx}`);
+                expBox.classList.remove('hidden');
+
+                const optionLetters = ['A', 'B', 'C', 'D'];
+                const correctLetter = optionLetters[item.correct];
+
+                if (selected && parseInt(selected.value) === item.correct) {
+                    score++;
+                    card.className = "p-5 rounded-xl border-2 border-emerald-400 bg-emerald-50/30 space-y-3";
+                    expBox.className = "p-3.5 rounded-lg text-xs md:text-sm bg-emerald-100/80 border border-emerald-300 text-emerald-950";
+                    expBox.innerHTML = `<strong>✅ Chính xác (Đáp án ${correctLetter})!</strong> ${item.explain}`;
+                } else {
+                    card.className = "p-5 rounded-xl border-2 border-rose-400 bg-rose-50/30 space-y-3";
+                    expBox.className = "p-3.5 rounded-lg text-xs md:text-sm bg-rose-100/80 border border-rose-300 text-rose-950";
+                    expBox.innerHTML = `<strong>❌ Chưa đúng (Đáp án đúng là ${correctLetter}).</strong> ${item.explain}`;
+                }
+            });
+
+            const banner = document.getElementById('quiz-score-banner');
+            banner.classList.remove('hidden');
+            document.getElementById('quiz-score-val').innerText = `${score} / ${quizData.length}`;
+
+            // GỌI NGAY renderMathInElement TRÊN KHỐI CHỨA KẾT QUẢ
+            const quizContainer = document.getElementById('quiz-container');
+            renderMathInElement(quizContainer, katexConfig);
+        }
+
+        function resetQuiz() {
+            document.getElementById('quiz-score-banner').classList.add('hidden');
+            renderQuiz();
+        }
+
+        // ==================== TAB 7: TIỆN ÍCH LỚP HỌC ====================
+        // 1. VISUAL TIMER
+        let totalTimerSec = 120;
+        let remainingTimerSec = 120;
+        let timerInterval = null;
+        let timerRunning = false;
+        const RING_CIRCUMFERENCE = 326.72;
+
+        function playBeepSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                [0, 0.25, 0.5].forEach(delay => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880, ctx.currentTime + delay);
+                    gain.gain.setValueAtTime(0.25, ctx.currentTime + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.2);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + delay);
+                    osc.stop(ctx.currentTime + delay + 0.2);
+                });
+            } catch (e) {}
+        }
+
+        function updateTimerUI() {
+            const mins = String(Math.floor(remainingTimerSec / 60)).padStart(2, '0');
+            const secs = String(remainingTimerSec % 60).padStart(2, '0');
+            document.getElementById('timer-display').innerText = `${mins}:${secs}`;
+
+            const fraction = totalTimerSec > 0 ? remainingTimerSec / totalTimerSec : 0;
+            const offset = RING_CIRCUMFERENCE * (1 - fraction);
+            document.getElementById('timer-ring').style.strokeDashoffset = offset;
+        }
+
+        function setTimerSeconds(sec) {
+            pauseTimerInternal();
+            totalTimerSec = sec;
+            remainingTimerSec = sec;
+            document.getElementById('timer-card').classList.remove('timer-finished');
+            document.getElementById('timer-status-badge').innerText = "Sẵn sàng";
+            document.getElementById('timer-status-badge').className = "px-2.5 py-1 text-xs font-bold rounded-full bg-slate-100 text-slate-600";
+            updateTimerUI();
+        }
+
+        function pauseTimerInternal() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = null;
+            timerRunning = false;
+            document.getElementById('btn-timer-toggle').innerHTML = '▶️ Bắt đầu';
+        }
+
+        function startPauseTimer() {
+            const card = document.getElementById('timer-card');
+            card.classList.remove('timer-finished');
+
+            if (timerRunning) {
+                pauseTimerInternal();
+                document.getElementById('timer-status-badge').innerText = "Tạm dừng";
+                document.getElementById('timer-status-badge').className = "px-2.5 py-1 text-xs font-bold rounded-full bg-amber-100 text-amber-800";
+            } else {
+                if (remainingTimerSec <= 0) remainingTimerSec = totalTimerSec;
+                timerRunning = true;
+                document.getElementById('btn-timer-toggle').innerHTML = '⏸️ Tạm dừng';
+                document.getElementById('timer-status-badge').innerText = "Đang đếm ngược...";
+                document.getElementById('timer-status-badge').className = "px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800";
+
+                timerInterval = setInterval(() => {
+                    remainingTimerSec--;
+                    updateTimerUI();
+                    if (remainingTimerSec <= 0) {
+                        pauseTimerInternal();
+                        card.classList.add('timer-finished');
+                        document.getElementById('timer-status-badge').innerText = "⏰ HẾT GIỜ!";
+                        document.getElementById('timer-status-badge').className = "px-2.5 py-1 text-xs font-bold rounded-full bg-rose-600 text-white";
+                        playBeepSound();
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            setTimerSeconds(totalTimerSec);
+        }
+
+        // 2. LUCKY WHEEL (4 TỔ)
+        const defaultGroups = {
+            to1: ["Tổ 1 - Minh Anh", "Tổ 1 - Quốc Bảo", "Tổ 1 - Gia Huy", "Tổ 1 - Thùy Linh", "Tổ 1 - Tuấn Kiệt", "Tổ 1 - Bảo Ngọc"],
+            to2: ["Tổ 2 - Hoàng Nam", "Tổ 2 - Phương Thảo", "Tổ 2 - Đức Trọng", "Tổ 2 - Thanh Trúc", "Tổ 2 - Minh Khôi", "Tổ 2 - Khánh Vy"],
+            to3: ["Tổ 3 - Đăng Khoa", "Tổ 3 - Ngọc Ánh", "Tổ 3 - Thành Đạt", "Tổ 3 - Hồng Nhung", "Tổ 3 - Quang Vinh", "Tổ 3 - Mai Phương"],
+            to4: ["Tổ 4 - Xuân Phúc", "Tổ 4 - Kim Ngân", "Tổ 4 - Trung Hiếu", "Tổ 4 - Yến Nhi", "Tổ 4 - Hải Đăng", "Tổ 4 - Bảo Trâm"]
+        };
+
+        let wheelSegments = [];
+        let wheelAngle = 0;
+        let isSpinning = false;
+        const wheelColors = ['#0284c7', '#059669', '#d97706', '#7c3aed', '#e11d48', '#2563eb', '#0d9488', '#ea580c'];
+
+        function selectWheelGroup(grp) {
+            document.querySelectorAll('.grp-btn').forEach(b => {
+                b.className = "grp-btn px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-700";
+            });
+            document.getElementById('grp-' + grp).className = "grp-btn px-2.5 py-1 rounded text-xs font-bold bg-sky-600 text-white";
+
+            let list = [];
+            if (grp === 'all') {
+                list = [...defaultGroups.to1, ...defaultGroups.to2, ...defaultGroups.to3, ...defaultGroups.to4];
+            } else {
+                list = [...defaultGroups[grp]];
+            }
+            document.getElementById('wheel-names-input').value = list.join('\n');
+            wheelSegments = list;
+            drawLuckyWheel();
+        }
+
+        function updateWheelFromTextarea() {
+            const raw = document.getElementById('wheel-names-input').value;
+            wheelSegments = raw.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+            if (wheelSegments.length === 0) wheelSegments = ["Học sinh 1", "Học sinh 2"];
+            drawLuckyWheel();
+        }
+
+        function drawLuckyWheel() {
+            const canvas = document.getElementById('canvasWheel');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const r = cx - 12;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const N = wheelSegments.length;
+            const arc = (Math.PI * 2) / N;
+
+            for (let i = 0; i < N; i++) {
+                const start = wheelAngle + i * arc;
+                const end = start + arc;
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, start, end);
+                ctx.closePath();
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // Vẽ chữ
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(start + arc / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = N > 12 ? 'bold 9px Inter' : 'bold 11px Inter';
+                const label = wheelSegments[i].length > 16 ? wheelSegments[i].slice(0, 15) + '…' : wheelSegments[i];
+                ctx.fillText(label, r - 10, 4);
+                ctx.restore();
+            }
+
+            // Tâm vòng quay
+            ctx.beginPath();
+            ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+            ctx.fillStyle = '#0f172a';
+            ctx.fill();
+            ctx.strokeStyle = '#f8fafc';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Kim chỉ bên phải (góc 0 rad)
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 2, cy - 10);
+            ctx.lineTo(canvas.width - 2, cy + 10);
+            ctx.lineTo(canvas.width - 22, cy);
+            ctx.closePath();
+            ctx.fillStyle = '#f59e0b';
+            ctx.fill();
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        }
+
+        function spinLuckyWheel() {
+            if (isSpinning || wheelSegments.length === 0) return;
+            isSpinning = true;
+
+            const spinDuration = 3500;
+            const startAngle = wheelAngle;
+            const totalRotation = (Math.PI * 2 * (5 + Math.random() * 4));
+            const startTime = performance.now();
+
+            function animateWheel(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / spinDuration, 1);
+                // Ease out cubic
+                const ease = 1 - Math.pow(1 - progress, 3);
+                wheelAngle = startAngle + totalRotation * ease;
+                drawLuckyWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateWheel);
+                } else {
+                    isSpinning = false;
+                    const N = wheelSegments.length;
+                    const arc = (Math.PI * 2) / N;
+                    const normalized = ((Math.PI * 2) - (wheelAngle % (Math.PI * 2))) % (Math.PI * 2);
+                    const winIdx = Math.floor(normalized / arc) % N;
+                    showWinnerModal(wheelSegments[winIdx]);
+                }
+            }
+
+            requestAnimationFrame(animateWheel);
+        }
+
+        function showWinnerModal(name) {
+            playBeepSound();
+            document.getElementById('winner-name').innerText = name;
+            const modal = document.getElementById('winner-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeWinnerModal() {
+            const modal = document.getElementById('winner-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // ==================== KHỞI TẠO HỆ THỐNG ====================
+        window.addEventListener('DOMContentLoaded', () => {
+            initStaticChirpedWaveSVG();
+            renderPracticeList('all');
+            renderQuiz();
+            selectWheelGroup('all');
+            updateTimerUI();
+            updateWaveSimParams();
+            updateSpectrumSim();
+            drawWave3D();
+            updateSatelliteSim();
+            triggerMathRender(document.body);
+        });
+    </script>
+</body>
+</html>
